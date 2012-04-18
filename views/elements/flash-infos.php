@@ -1,0 +1,1 @@
+<h1>INFOS : <?php echo $messageFlash['msg']; ?></h1>

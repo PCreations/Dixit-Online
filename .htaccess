@@ -1,0 +1,7 @@
+Options +FollowSymlinks
+RewriteEngine On
+
+RewriteCond %{SCRIPT_FILENAME} !index.php [NC]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ /mvc/index.php?page=$1 [L]

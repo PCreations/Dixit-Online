@@ -16,7 +16,7 @@ $currentController;
 /**
  * Titre par défaut des pages. Peut-être surchargé par $pageTitlePrefix et $finalPageTitle
  */ 
-$pageTitle = 'IMAC MVC'; 
+$pageTitle = 'Dixit Online'; 
 
 /**
  * Tableau contenant la liste des fichiers .js à inclure
@@ -27,7 +27,6 @@ $JS_FILES = array();
  * Tableau contenant la liste des fichiers .css à inclure
  */
 $CSS_FILES = array();
-
 
 require_once('core/core.php');
 

@@ -236,3 +236,7 @@ function useModels($models) {
 		include_once(ROOT . DS . 'models' . DS . $model . '.php');
 	}
 }
+
+function isLogged() {
+	return isset($_SESSION[USER_MODEL][USER_PK]);
+}

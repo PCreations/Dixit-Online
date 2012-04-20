@@ -49,3 +49,9 @@ define('FLASH_INFOS', 2);
 
 /** Défini la clé de sécurité utilisé pour hasher les chaînes de caractères **/
 define('SECURITY_KEY', '5465qs6d564qs5§ù*qs$ù');
+
+/** Défini le nom du model utilisé pour gérer les utilisateurs **/
+define('USER_MODEL', 'user');
+
+/** Défini le nom du champ utilisé pour la clé primaire de la table représentant les utilisateurs **/
+define('USER_PK', 'us_id');

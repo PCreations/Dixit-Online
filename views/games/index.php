@@ -5,6 +5,7 @@
 		<th>Nom</th>
 		<th>Type</th>
 		<th>Joueurs</th>
+		<th>Actions</th>
 	</tr>
 <?php foreach($partiesEnAttente as $partie): ?>
 	<tr>

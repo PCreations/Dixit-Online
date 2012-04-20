@@ -89,8 +89,8 @@ function parseURL($url) {
 	if(isset($pageTitlePrefix))
 		$pageTitle = $pageTitlePrefix;
 
-	/* vérification de l'existence de l'action, si elle n'existe pas on redirige vers l'action par défaut du contrôleur (la fonction index par configuration de base) */
-	if (!function_exists($action)) {
+	/* vérification de l'existence et de la visibilité de l'action, si elle n'existe pas on redirige vers l'action par défaut du contrôleur (la fonction index par configuration de base) */
+	if (!function_exists($action) || strpos($action, '_') === 0) {
 		$action = INDEX_ACTION;
 		if (!function_exists($action))
 			redirect(HTTP_ERROR_CONTROLLER, HTTP_404_ACTION, array(), 404);

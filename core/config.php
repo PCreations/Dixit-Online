@@ -45,4 +45,7 @@ define('FLASH_SUCCESS',  0);
 define('FLASH_ERROR',  1);
 
 /** Défini le nom de la constante de message flash  d'information **/
-define('FLASH_INFO', 2);
+define('FLASH_INFOS', 2);
+
+/** Défini la clé de sécurité utilisé pour hasher les chaînes de caractères **/
+define('SECURITY_KEY', '5465qs6d564qs5§ù*qs$ù');

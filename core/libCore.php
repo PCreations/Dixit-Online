@@ -1,6 +1,4 @@
 <?php
-$messageFlash;
-
 /**
  * \brief Rend la vue demandée en y affectant les différentes variables définies dans le contrôleur et génération des liens vers les fichiers .css et .js. A utiliser depuis le \b contrôleur
  *
@@ -15,7 +13,7 @@ function render($requestedView, $vars = array()) {
 	global $JS_FILES; //récupération de la liste des fichiers .js
 	global $pageTitle; //récupération du titre
 	global $layout; //récupération du layout
-	global $messageFlash; //récupération du message flash
+	$messageFlash = isset($_SESSION['messageFlash']) ? $_SESSION['messageFlash'] : null; //récupération du message flash
 
 	$jsList = '';
 	$cssList = '';
@@ -54,6 +52,7 @@ function render($requestedView, $vars = array()) {
 	ob_start();
 	if (is_array($messageFlash)) {
 		require_once("views/elements/{$messageFlash['msgView']}.php");
+		unset($_SESSION['messageFlash']);
 	}
 	require_once("views/$currentController/$requestedView.php"); //on bufferise le contenu de la vue
 	$contentForLayout = ob_get_clean(); //qu'on stocke dans la variable $contentForLayout
@@ -192,22 +191,48 @@ function l($controller, $action, $params = array()) {
  * \param $type type du message. Peut prendre les valeurs FLASH_INFO pour un message informatif, FLASH_SUCCESS pour une nofitication de succès et FLASH_ERROR pour une notification d'erreur
  * \details Le message flash est un petit message qui sera affiché juste avant l'inclusion de votre vue, très utile pour des notifications
  */
-function setMessage($msg, $type = FLASH_INFO) {
-	global $messageFlash;
-	
+function setMessage($msg, $type = FLASH_INFOS) {
 	$msgView;
 	switch($type) {
-		case 'FLASH_ERROR':
+		case FLASH_ERROR:
 			$msgView = 'flash-error';
 			break;
-		case 'FLASH_SUCCESS':
+		case FLASH_SUCCESS:
 			$msgView = 'flash-success';
 			break;
-		case 'FLASH_INFOS':
+		case FLASH_INFOS:
 		default:
 			$msgView = 'flash-infos';
 			break;
 	}
-	$messageFlash = array('msgView' => $msgView,
-					      'msg' => $msg);
+	$_SESSION['messageFlash'] = array('msgView' => $msgView,
+					      			  'msg' => $msg);
+}
+
+/**
+ * \brief Crypte une chaîne de caractère à l'aide de la clé de sécurité
+ *
+ * \author Pierre Criulanscy
+ * \since 0.1.3
+ * \param $data contenu texte du message
+ * \return la chaine cryptée
+ */
+function encrypt($string) {
+	if(!is_string($string)) {
+		die(trigger_error('La fonction encrypt() ne peut crypter que des chaînes de caractères'));
+	}
+	return sha1(md5($string.SECURITY_KEY));
+}
+
+function debug($data, $die = false) {
+	echo '<pre>';
+	print_r($data);
+	echo '</pre>';
+	if ($die) die();
+}
+
+function useModels($models) {
+	foreach($models as $model) {
+		include_once(ROOT . DS . 'models' . DS . $model . '.php');
+	}
 }

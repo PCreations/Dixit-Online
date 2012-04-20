@@ -1,9 +1,9 @@
 <?php
+session_start();
 require_once("core/config.php");
 require_once("core/libCore.php");
 require_once("core/dispatcher.php");
 require_once("core/database.config.php");
-
 
 /* Connexion à la base de données */
 try

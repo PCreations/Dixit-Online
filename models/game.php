@@ -13,23 +13,62 @@ function getWaintingGames() {
 	return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function addPlayersInGames($gameID, $userID) {
+function addPlayerInGame($gameID, $userID) {
 	global $db;
 
-	$db->prepare('INSERT INTO plays(us_id, ga_id)
-				VALUES(:userID, :gameID)');
-	$result = $db->execute(array('userID' => $userID,
-								'gameID' => $gameID));
-	return $result->fetchAll(PDO::FETCH_ASSOC);
+	$query = $db->prepare('INSERT INTO plays(us_id, ga_id)
+						VALUES(:userID, :gameID)');
+	try {
+		$query->execute(array('userID' => $userID,
+						  	 'gameID' => $gameID));
+	}
+	catch(Exception $e) {
+		return false;
+	}
+
+	return true;
+}
+
+function removePlayerFromGame($gameID, $userID) {
+	global $db;
+
+	$query = $db->prepare('DELETE FROM plays
+						WHERE ga_id = :gameID
+						AND us_id = :userID');
+	return $query->execute(array('gameID' => $gameID,
+						'userID' => $userID));
 }
 
 function getPlayersInGames($gameID) {
 	global $db;
 
-	$db->prepare('SELECT us_id
-				FROM plays
-				WHERE ga_id = ?');
-	$result = $db->execute($gameID);
+	$query = $db->prepare('SELECT us_id
+						FROM plays
+						WHERE ga_id = ?');
+	$query->execute(array($gameID));
+	$result = $query->fetch(PDO::FETCH_ASSOC);
+	$result = (!$result) ? array() : $result;
+	return $result;
+}
 
-	return $result->fetchAll(PDO::FETCH_ASSOC);
+/**
+ * Vérifie que la partie n'est pas complète
+**/
+function checkPlayersInGame($gameID) {
+	global $db;
+
+	$query = $db->prepare('SELECT COUNT(plays.us_id) as nbPlayersInGame, game_types.gt_nb_players as nbPlayersMax
+						FROM plays
+						NATURAL JOIN games
+						NATURAL JOIN game_types
+						WHERE games.ga_id = ?');
+	$query->execute(array($gameID));
+	$result = $query->fetch(PDO::FETCH_ASSOC);
+	return $result['nbPlayersInGame'] < $result['nbPlayersMax'];
+}
+
+function startGame($gameID) {
+	global $db;
+
+	
 }

@@ -45,6 +45,9 @@ function login() {
 			if(!empty($userInfos)) {
 				$_SESSION[USER_MODEL] = $userInfos;
 				setMessage('Vous êtes maintenant connecté.', FLASH_SUCCESS);
+				/*if(isset($_SESSION['redirectBack']))
+					redirect($_SESSION['redirectBack']['controller'], $_SESSION['redirectBack']['controller'], $_SESSION['redirectBack']['params']);
+				else*/
 				redirect('users', 'account', array($_SESSION[USER_MODEL][USER_PK]));
 			}
 			else {

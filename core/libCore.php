@@ -114,7 +114,7 @@ function addCSS($css) {
  * \param $params paramètres éventuels à passer à l'action
  * \param $code code HTTP que le serveur doit renvoyer pour la page
  */
-function redirect($controller, $action, $params = array(), $code = 200) {
+function redirect($controller, $action = INDEX_ACTION, $params = array(), $code = 200) {
 	global $currentController;
 	$httpCodes = array(
 				100 => 'Continue', 101 => 'Switching Protocols',
@@ -140,7 +140,14 @@ function redirect($controller, $action, $params = array(), $code = 200) {
 		$code = '200';
 	}
 	header("HTTP/1.0 $code " . $httpCodes[$code]);
-	header('Location: ' . l($controller, $action, $params));
+	$listeParams = '';
+
+	if(isset($params)) {
+		foreach($params as $param) {
+			$listeParams .= "/$param";
+		}
+	}
+	header('Location: ' . BASE_URL . $controller . '/' . $action . $listeParams);
 	exit();
 }
 
@@ -149,14 +156,17 @@ function redirect($controller, $action, $params = array(), $code = 200) {
  *
  * \author Pierre Criulanscy
  * \since 0.1.1
+ * \param $textLink texte du lien
  * \param $controller nom du contrôleur
  * \param $action nom de l'action
  * \param $params paramètres éventuels à passer à l'action sous forme de tableau
- * \return le lien absolu vers l'action demandée
+ * \param $attrs attributs éventuels du lien (title, alt, etc.). La clé est le nom de l'attribut et sa valeur la valeur de celui-ci
+ * \return le lien formaté vers l'action demandée
  */
-function createLink($controller, $action, $params = array()) {
+function createLink($textLink, $controller, $action, $params = array(), $attrs = array()) {
 	
 	$listeParams = '';
+	$link = '<a href="';
 
 	if(isset($params)) {
 		foreach($params as $param) {
@@ -164,7 +174,14 @@ function createLink($controller, $action, $params = array()) {
 		}
 	}
 
-	return BASE_URL . $controller . '/' . $action . $listeParams;
+	$link .= BASE_URL . $controller . '/' . $action . $listeParams. '"';
+
+	foreach($attrs as $key => $value) {
+		$link .= " $key=\"$value\"";
+	}
+
+	$link .= ">$textLink</a>";
+	return $link;
 }
 
 
@@ -178,8 +195,8 @@ function createLink($controller, $action, $params = array()) {
  * \param $params paramètres éventuels à passer à l'action sous forme de tableau
  * \return le lien absolu vers l'action demandée
  */
-function l($controller, $action, $params = array()) {
-	return createLink($controller, $action, $params);
+function l($textLink, $controller, $action, $params = array(), $attrs = array()) {
+	return createLink($textLink, $controller, $action, $params, $attrs);
 }
 
 /**

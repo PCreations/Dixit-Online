@@ -12,6 +12,7 @@
 		<td><?php echo $partie['ga_name'];?></td>
 		<td><?php echo $partie['gt_name'];?></td>
 		<td><?php echo $partie['nbPlayersInGame'] . '/' . $partie['gt_nb_players'];?></td>
+		<td><?php echo $partie['action'];?></td>
 	</tr>
 <?php endforeach; ?>
 </table>

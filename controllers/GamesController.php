@@ -1,13 +1,14 @@
 <?php
 
 useModels(array('user', 'game'));
+define('CARD_PER_PLAYER', 2); //pour tester
 
 function index() {
 	$partiesEnAttente = getWaintingGames();
 	foreach($partiesEnAttente as &$partie) {
 		if(isLogged()) {
 			$userID = $_SESSION[USER_MODEL][USER_PK];
-			if(!in_array($userID, getPlayersInGames($partie['ga_id']))) {
+			if(!in_array($userID, getPlayersInGame($partie['ga_id']))) {
 				$partie['action'] = createLink('rejoindre', 'games', 'joinGame', array($partie['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
 			}
 			else{
@@ -29,7 +30,7 @@ function joinGame($gameID, $userID) {
 	}
 	else {
 		if(checkPlayersInGame($gameID)) {
-			if(in_array($userID, getPlayersInGames($gameID))) {
+			if(in_array($userID, getPlayersInGame($gameID))) {
 				setMessage('Vous êtes déjà dans cette partie', FLASH_ERROR);
 				redirect('games');
 			}
@@ -39,7 +40,7 @@ function joinGame($gameID, $userID) {
 			}
 			else {
 				if(checkPlayersInGame($gameID)) {
-					startGame($gameID);
+					_startGame($gameID);
 				}
 				setMessage('Vous avez rejoint la partie', FLASH_SUCCESS);
 				redirect('users', 'account');
@@ -62,7 +63,7 @@ function quiteGame($gameID, $userID) {
 			setMessage('Vous ne pouvez pas faire quitter un autre joueur que vous', FLASH_ERROR);
 			redirect('games');
 		}
-		else if(!in_array($userID, getPlayersInGames($gameID))) {
+		else if(!in_array($userID, getPlayersInGame($gameID))) {
 			setMessage('Ce joueur ne joue pas dans cette partie', FLASH_ERROR);
 			redirect('games');
 		}
@@ -77,4 +78,26 @@ function quiteGame($gameID, $userID) {
 			}
 		}
 	}
+}
+
+function startGame($gameID) {
+	//Récupération du deck associé au type de la partie
+	$deck = getDeck($gameID);
+
+	//Récupération des joueurs dans le jeu
+	$playersIDS = getPlayersInGame($gameID);
+	debug($playersIDS);
+	$players = array();
+	foreach($playersIDS as $playerID) {
+		$players[] = getUserInfos($playerID['us_id']);
+	}
+
+	debug($players, true);
+
+	//Distribution des cartes
+
+
+	//Le reste forme la pioche
+
+	//
 }

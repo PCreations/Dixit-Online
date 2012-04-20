@@ -43,6 +43,6 @@ function getUserInfos($id) {
 	$query = $db->prepare('SELECT *
 						FROM users
 						WHERE us_id = ?');
-	$query->execute($id);
+	$query->execute(array($id));
 	return $query->fetch(PDO::FETCH_ASSOC);
 }

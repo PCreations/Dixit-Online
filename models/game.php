@@ -39,14 +39,14 @@ function removePlayerFromGame($gameID, $userID) {
 						'userID' => $userID));
 }
 
-function getPlayersInGames($gameID) {
+function getPlayersInGame($gameID) {
 	global $db;
 
 	$query = $db->prepare('SELECT us_id
 						FROM plays
 						WHERE ga_id = ?');
 	$query->execute(array($gameID));
-	$result = $query->fetch(PDO::FETCH_ASSOC);
+	$result = $query->fetchAll(PDO::FETCH_ASSOC);
 	$result = (!$result) ? array() : $result;
 	return $result;
 }
@@ -59,16 +59,28 @@ function checkPlayersInGame($gameID) {
 
 	$query = $db->prepare('SELECT COUNT(plays.us_id) as nbPlayersInGame, game_types.gt_nb_players as nbPlayersMax
 						FROM plays
-						NATURAL JOIN games
-						NATURAL JOIN game_types
+						INNER JOIN games
+						ON games.ga_id = plays.ga_id
+						INNER JOIN game_types
+						ON games.gt_id = game_types.gt_id
 						WHERE games.ga_id = ?');
 	$query->execute(array($gameID));
 	$result = $query->fetch(PDO::FETCH_ASSOC);
 	return $result['nbPlayersInGame'] < $result['nbPlayersMax'];
 }
 
-function startGame($gameID) {
+function getDeck($gameID) {
 	global $db;
 
-	
+	$query = $db->prepare('SELECT cards.ca_id, cards.ca_name, cards.ca_image
+						FROM cards
+						INNER JOIN deck
+						ON deck.ca_id = cards.ca_id
+						INNER JOIN game_types as gt
+						ON gt.gt_id = deck.gt_id
+						INNER JOIN games
+						ON games.gt_id = gt.gt_id 
+						WHERE games.ga_id = ?');
+	$query->execute(array($gameID));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
 }

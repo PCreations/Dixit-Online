@@ -72,7 +72,7 @@ function checkPlayersInGame($gameID) {
 function getDeck($gameID) {
 	global $db;
 
-	$query = $db->prepare('SELECT cards.ca_id, cards.ca_name, cards.ca_image
+	$query = $db->prepare('SELECT cards.ca_id
 						FROM cards
 						INNER JOIN deck
 						ON deck.ca_id = cards.ca_id
@@ -83,4 +83,38 @@ function getDeck($gameID) {
 						WHERE games.ga_id = ?');
 	$query->execute(array($gameID));
 	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function definePlayPosition($gameID, $userID, $position) {
+	global $db;
+
+	$query = $db->prepare('UPDATE plays
+						SET pl_position = :position
+						WHERE ga_id = :gameID
+						AND us_id = :userID');
+	$query->execute(array('position' => $position,
+						'gameID' => $gameID,
+						'userID' => $userID));
+	$query->closeCursor();
+}
+
+function saveHand($gameID, $userID, $cardID) {
+	global $db;
+
+	$query = $db->prepare('INSERT INTO hands(ca_id, us_id, ga_id)
+						VALUES(:cardID, :userID, :gameID)');
+	$query->execute(array('cardID' => $cardID,
+						'userID' => $userID,
+						'gameID' => $gameID));
+	$query->closeCursor();
+}
+
+function savePick($gameID, $cardID) {
+	global $db;
+
+	$query = $db->prepare('INSERT INTO pick(ga_id, ca_id)
+						VALUES(:gameID, :cardID)');
+	$query->execute(array('cardID' => $cardID,
+						'gameID' => $gameID));
+	$query->closeCursor();
 }

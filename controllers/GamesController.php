@@ -80,24 +80,54 @@ function quiteGame($gameID, $userID) {
 	}
 }
 
-function startGame($gameID) {
+function _startGame($gameID) {
 	//Récupération du deck associé au type de la partie
 	$deck = getDeck($gameID);
 
 	//Récupération des joueurs dans le jeu
 	$playersIDS = getPlayersInGame($gameID);
-	debug($playersIDS);
-	$players = array();
-	foreach($playersIDS as $playerID) {
-		$players[] = getUserInfos($playerID['us_id']);
-	}
-
-	debug($players, true);
 
 	//Distribution des cartes
+	$hands = _dealCards($deck, CARD_PER_PLAYER, count($playersIDS));
 
+	$i=0;
+	foreach($playersIDS as $player) {
+		foreach($hands[$i] as $hand) {
+			saveHand($gameID, $player['us_id'], $hand['ca_id']);
+		}
+		$i++;
+	}
 
-	//Le reste forme la pioche
+	//Sauvegarde de la pioche
+	foreach($deck as $card) {
+		savePick($gameID, $card['ca_id']);
+	}
 
-	//
+	//Définition d'un ordre de jeu
+	shuffle($playersIDS);
+	foreach($playersIDS as $key => $player) {
+		definePlayPosition($gameID, $player['us_id'], $key+1);
+	}
+
+}
+
+function _dealCards(&$deck, $nbCards, $nbPlayers) {
+	if($nbPlayers * $nbCards > count($deck)) {
+		trigger_error('Erreur : Pas assez de cartes dans le deck');
+		die();
+	}
+	$hands = array();
+	shuffle($deck);
+
+	for($i=0; $i<$nbPlayers; $i++) {
+		$hands[] = array_slice($deck, $i*$nbCards, $nbCards);
+	}
+
+	$deck = array_slice($deck, $nbPlayers*$nbCards, $nbPlayers*$nbCards);
+
+	return $hands;
+}
+
+function play($gameID) {
+
 }

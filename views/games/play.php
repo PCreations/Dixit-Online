@@ -1,3 +1,4 @@
+<p>Vous êtes connecté en tant que : <?php echo $_SESSION[USER_MODEL]['us_pseudo'];?></p>
 <h1>Phase actuelle : <?php echo $turn['phase']['title'];?></h1>
 <h2><?php echo $turn['phase']['infos'];?></h2>
 
@@ -7,12 +8,12 @@
 
 <h3>Table</h3>
 <?php
-_displayBoard($turn['phase']['id'], $turn['tu_id']);
+_displayBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn['tu_id'], $storyteller, $actionStatus);
 ?>
 
 <h3>Votre main</h3>
 <?php
-_displayHand($turn['phase']['id'], $_SESSION[USER_MODEL][USER_PK], $turn['game']['ga_id'], $turn['tu_id'], $storyteller);
+_displayHand($turn['phase']['id'], $_SESSION[USER_MODEL][USER_PK], $turn['game']['ga_id'], $turn['tu_id'], $storyteller, $actionStatus);
 ?>
 <?php
 /*

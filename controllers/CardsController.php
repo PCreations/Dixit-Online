@@ -58,8 +58,12 @@ function _addCardInBoard($cardID, $turnID, $gameID, $userID) {
 
 function addStorytellerCard() {
 	if(!isPost()) {
-		trigger_error('Vous n\'avez pas accès à cette page');
+		trigger_error('Vous n\'avez pas accès à cette page', FLASH_ERROR);
 		die();
+	}
+	if(!isLogged()) {
+		setMessage('Vous n\'êtes pas connecté');
+		redirect('users', 'login');
 	}
 	else {
 		if(!empty($_POST['comment']) && isset($_POST['cardID'])) {
@@ -67,6 +71,7 @@ function addStorytellerCard() {
 			addTurnComment($turnID, $comment);
 			changeHandCardStatus($cardID, $_SESSION[USER_MODEL][USER_PK], $gameID);
 			addCardInBoard($cardID, $turnID);
+			setMessage('Votre carte a bien été ajoutée.', FLASH_SUCCESS);
 			redirect('games', 'play', array($_POST['gameID']));
 		}
 		else {
@@ -79,4 +84,32 @@ function addStorytellerCard() {
 			redirect('games', 'play', array($_POST['gameID']));
 		}
 	}
+}
+
+function vote() {
+	if(!isPost()) {
+		trigger_error('Vous n\'avez pas accès à cette page');
+		die();
+	}
+	if(!isLogged()) {
+		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);
+		redirect('users', 'login');
+	}
+	else {
+		if(!isset($_POST['cardID'])) {
+			setMessage('Vous devez sélectionner une carte', FLASH_ERROR);
+			redirect('games', 'play', array($_POST['gameID']));
+		}
+		else if($_POST['cardID'] == getOneRowResult(getPlayerCardInBoard($_POST['gameID'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id')) {
+			setMessage('Vous ne pouvez pas voter pour votre propre carte', FLASH_ERROR);
+			redirect('games', 'play', array($_POST['gameID']));
+		}
+		else {
+			extract($_POST);
+			setMessage('Votre vote a bien été pris en compte', FLASH_SUCCESS);
+			addGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
+			redirect('games', 'play', array($_POST['gameID']));
+		}
+	}
+
 }

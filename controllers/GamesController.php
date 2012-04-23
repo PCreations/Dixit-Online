@@ -6,6 +6,7 @@ define('CARD_PER_PLAYER', 2); //pour tester
 define('STORYTELLER_PHASE', 0);
 define('BOARD_PHASE', 1);
 define('VOTE_PHASE', 2);
+define('POINTS_PHASE', 3);
 
 //constante de statut
 define('ACTION_IN_PROGRESS', 3);
@@ -151,6 +152,10 @@ function play($gameID) {
 			setMessage('Vous ne jouez pas dans cette partie', FLASH_ERROR);
 			redirect('games');
 		}
+		else if(checkPlayersInGame($gameID)) {
+			setMessage('Cette partie n\'a pas encore débutée', FLASH_ERROR);
+			redirect('games');
+		}
 		else {
 			$storyteller = false; //permet de savoir si le joueur connecté est actuellement le conteur ou non
 			$vars = array();
@@ -159,6 +164,7 @@ function play($gameID) {
 			$gameInfos = getGameInfos($gameID);
 			$gameTypeInfos = getGameTypeInfos($gameInfos['gt_id'], array('gt_name'));
 			$gameCreatorInfos = getUserInfos($gameInfos['us_id'], array('us_pseudo'));
+			$actionStatus;
 
 			$playersInfos = array();
 			$i=0;
@@ -180,8 +186,9 @@ function play($gameID) {
 					$playersInfos[$i]['status'] = _checkAction($phase, $playerID, $gameID, $currentTurn['tu_id']);
 				}
 
-				//Alors on va récupérer sa main
+				//Alors on va récupérer sa main et son statut
 				if($playerID == $_SESSION[USER_MODEL][USER_PK]) {
+					$actionStatus = _checkAction($phase, $playerID, $gameID, $currentTurn['tu_id']);
 					$playersInfos[$i]['hand'] = getCardsInHand($userID, $gameID);
 				}
 
@@ -212,6 +219,10 @@ function play($gameID) {
 						$vars['turn']['phase']['title'] = 'Phase de vote';
 						$vars['turn']['phase']['infos'] = 'Attendez le résultat des votes';
 						break;
+					case POINTS_PHASE:
+						$vars['turn']['phase']['title'] = 'Décompte des points';
+						$vars['turn']['phase']['infos'] = 'Voici le calcul des points :';
+						break;
 				}
 			}
 			else {
@@ -222,17 +233,22 @@ function play($gameID) {
 						break;
 					case BOARD_PHASE:
 						$vars['turn']['phase']['title'] = 'Tour des joueurs';
-						$vars['turn']['phase']['infos'] = 'Sélectionnez une carte de votre main qui correspond au mieux à la description du conteur';
+						$vars['turn']['phase']['infos'] = ($actionStatus == ACTION_IN_PROGRESS) ? 'Sélectionnez une carte de votre main qui correspond au mieux à la description du conteur' : 'Attendez que tous les joueurs ait choisi une carte';
 						break;
 					case VOTE_PHASE:
 						$vars['turn']['phase']['title'] = 'Phase de vote';
-						$vars['turn']['phase']['infos'] = 'Votez pour la carte que vous pensez être celle du conteur !';
+						$vars['turn']['phase']['infos'] = ($actionStatus == ACTION_IN_PROGRESS) ? 'Votez pour la carte que vous pensez être celle du conteur !' : 'Attendez que tous les joueurs ait fini de voter';
+						break;
+					case POINTS_PHASE :
+						$vars['turn']['phase']['title'] = 'Décompte des points';
+						$vars['turn']['phase']['infos'] = 'Voici le calcul des points :';
 						break;
 				}
 			}
 			$vars['turn']['phase']['id'] = $phase;
 			$vars['storyteller'] = $storyteller;
-			//debug($vars, true);
+			$vars['actionStatus'] = $actionStatus;
+			debug($vars);
 			render('play', $vars);
 		}
 	}
@@ -241,13 +257,14 @@ function play($gameID) {
 function _getActualGamePhase($gameID, $turnID) {
 	$nbCards = count(getCardsInBoard($turnID));
 	$nbPlayers = count(getPlayersInGame($gameID));
-
 	if($nbCards == 0) {
 		return STORYTELLER_PHASE;
 	}
 	else if($nbCards < $nbPlayers) {
 		return BOARD_PHASE;
 	}
+	else if(count(getTurnsVote($turnID)) == ($nbPlayers - 1))
+		return POINTS_PHASE;
 	else
 		return VOTE_PHASE;
 }
@@ -263,10 +280,20 @@ function _checkAction($phase, $playerID, $gameID, $turnID) {
 			break;
 		case VOTE_PHASE:
 			//Si l'id du joueur se trouve dans le tableau des joueurs ayant déjà voté alors l'action est effectuée
-			$action = in_array($playerID, getSpecificArrayValues(getTurnsVote($turnID), 'us_id'));
+			if(!in_array($playerID, getSpecificArrayValues(getTurnsVote($turnID), 'us_id'))) {
+				$action = false;
+				//Si dans le tableau c'est que le joueur est le storyteller et donc qu'il n'a pas a voter
+				if(in_array($playerID, getSpecificArrayValues(getTurnInfos($turnID, array('us_id')), 'us_id')))
+					$action = true;
+			}
+			else
+				$action = true;
 			break;
-		default:
+		case STORYTELLER_PHASE:
 			$action = false;
+			break;
+		case POINTS_PHASE:
+			$action = true;
 			break;
 	}
 
@@ -274,7 +301,7 @@ function _checkAction($phase, $playerID, $gameID, $turnID) {
 }
 
 //Permet d'afficher le tableau des cartes en fonction de la phase. Si la phase est BOARD_PHASE alors les cartes apparaissent face cachées et si c'est la VOTE_PHASE elles apparaissent face visible avec la possibilité de voter
-function _displayBoard($phase, $turnID) {
+function _displayBoard($phase, $gameID, $turnID, $storyteller, $actionStatus) {
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turnID),'ca_id');
 	$cards = array();
 
@@ -283,27 +310,40 @@ function _displayBoard($phase, $turnID) {
 	}
 
 	if($phase == BOARD_PHASE) {
+		//récupération de la carte du joueur
 		foreach($cards as $card) {
 			echo '<img src="' . IMG_DIR . 'cards/back.jpg" alt="card back" title="Carte face cachée"/>';
 			echo "\n";
 		}
 	}
 	else if($phase == VOTE_PHASE) {
+		//$userCardID = getOneRowResult(getPlayerCardInBoard($gameID, $_SESSION[USER_MODEL][USER_PK]), 'ca_id');
 		shuffle($cards);
-		echo '<form method="post" action="' . BASE_URL . 'cards/vote">';
-		foreach($cards as $card) {
-			echo '<label for="' . $card['ca_id'] . '"><img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_name'] . '" /></label><input type="radio" id="' . $card['ca_id'] .'" name="cardID" value="' . $card['ca_id'] . '" />';
-				
+		if($actionStatus == ACTION_IN_PROGRESS && !$storyteller) {
+			echo '<form method="post" action="' . BASE_URL . 'cards/vote">';
+			foreach($cards as $card) {
+				echo '<label for="' . $card['ca_id'] . '"><img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_name'] . '" /></label><input type="radio" id="' . $card['ca_id'] .'" name="cardID" value="' . $card['ca_id'] . '" />';
+			}
+				echo '<input type="hidden" name="gameID" value="' . $gameID . '" />';
+				echo '<input type="hidden" name="turnID" value="' . $turnID . '" />';
+				echo '<input type="submit" value="voter" />';
+			echo '</form>';
 		}
-			echo '<input type="submit" value="voter" />';
-		echo '</form>';
+		else {
+			foreach($cards as $card) {
+				echo '<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_name'] . '" />';
+			}
+		}
+	}
+	else if($phase == STORYTELLER_PHASE){
+		echo 'Le conteur n\'a pas encore choisi sa carte';
 	}
 	else {
-		echo 'Le conteur n\'a pas encore choisi sa carte';
+		echo 'décompte des points';
 	}
 }
 
-function _displayHand($phase, $userID, $gameID, $turnID, $storyteller) {
+function _displayHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus) {
 	$hand = getCardsInHand($userID, $gameID);
 
 	switch($phase) {
@@ -328,8 +368,11 @@ function _displayHand($phase, $userID, $gameID, $turnID, $storyteller) {
 		case BOARD_PHASE:
 			foreach($hand as $card) {
 				if(!$storyteller) {
-					echo l('<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_name'] . '" />', 'cards', 'addCard', array($gameID, $turnID, $card['ca_id']));
-
+					//die(var_dump($actionStatus));
+					if($actionStatus == ACTION_IN_PROGRESS) 
+						echo l('<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_name'] . '" />', 'cards', 'addCard', array($gameID, $turnID, $card['ca_id']));
+					else
+						echo '<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_name'] . '" />';
 				}
 				else {
 					echo '<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_name'] . '" />';
@@ -340,6 +383,9 @@ function _displayHand($phase, $userID, $gameID, $turnID, $storyteller) {
 			foreach($hand as $card) {
 				echo '<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_name'] . '" />';
 			}
+			break;
+		case POINTS_PHASE:
+			echo 'test';
 			break;
 	}
 }

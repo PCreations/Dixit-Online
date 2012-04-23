@@ -167,6 +167,18 @@ function getCurrentGameTurn($gameID) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+function getTurnInfos($turnID, $fields = array('*')) {
+	global $db;
+
+	$fields = implode(',', $fields);
+
+	$query = $db->prepare('SELECT '.$fields.'
+						FROM turns
+						WHERE tu_id = ?');
+	$query->execute(array($turnID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
 function getTurnsVote($turnID) {
 	global $db;
 

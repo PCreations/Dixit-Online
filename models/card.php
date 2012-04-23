@@ -103,3 +103,13 @@ function getPlayerCardInBoard($gameID, $userID) {
 						'userID' => $userID));
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
+
+function addGameVote($userID, $cardID, $turnID) {
+	global $db;
+
+	$query = $db->prepare('INSERT INTO votes(us_id, ca_id, tu_id)
+						VALUES(:userID, :cardID, :turnID)');
+	$query->execute(array('userID' => $userID,
+						'cardID' => $cardID,
+						'turnID' => $turnID));
+}

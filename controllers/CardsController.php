@@ -25,7 +25,7 @@ function addCard($gameID, $turnID, $cardID) {
 	else {
 		$userID = $_SESSION[USER_MODEL][USER_PK];
 
-		if(!_isOwnedBy($cardID, $userID, $gameID)) { //Vérification si la carte appartient bien au joueur
+		if(!_isOwnedBy($cardID, $userID, $turnID)) { //Vérification si la carte appartient bien au joueur
 			setMessage('Vous essayer d\'ajouter une carte qui ne vous appartient pas', FLASH_ERROR);
 			redirect('games', 'play', array($gameID));
 		}
@@ -34,20 +34,20 @@ function addCard($gameID, $turnID, $cardID) {
 			redirect('games', 'play', array($gameID));
 		}
 		else { //Sinon tout à l'air bon on peut ajouter la carte
-			_addCardInBoard($cardID, $turnID, $gameID, $userID);
+			_addCardInBoard($cardID, $turnID, $userID);
 			setMessage('Votre carte a bien été ajoutée', FLASH_SUCCESS);
 			redirect('games', 'play', array($gameID));
 		}
 	}
 }
 
-function _isOwnedBy($cardID, $userID, $gameID) {
-	$cardsIDs = getSpecificArrayValues(getCardsInHand($userID, $gameID), 'ca_id');
+function _isOwnedBy($cardID, $userID, $turnID) {
+	$cardsIDs = getSpecificArrayValues(getCardsInHand($userID, $turnID), 'ca_id');
 	return in_array($cardID, $cardsIDs);
 }
 
-function _addCardInBoard($cardID, $turnID, $gameID, $userID) {
-	if(changeHandCardStatus($cardID, $userID, $gameID)) {
+function _addCardInBoard($cardID, $turnID, $userID) {
+	if(changeHandCardStatus($cardID, $userID, $turnID)) {
 		addCardInBoard($cardID, $turnID);
 	}
 	else {
@@ -69,7 +69,7 @@ function addStorytellerCard() {
 		if(!empty($_POST['comment']) && isset($_POST['cardID'])) {
 			extract($_POST);
 			addTurnComment($turnID, $comment);
-			changeHandCardStatus($cardID, $_SESSION[USER_MODEL][USER_PK], $gameID);
+			changeHandCardStatus($cardID, $_SESSION[USER_MODEL][USER_PK], $turnID);
 			addCardInBoard($cardID, $turnID);
 			setMessage('Votre carte a bien été ajoutée.', FLASH_SUCCESS);
 			redirect('games', 'play', array($_POST['gameID']));
@@ -100,7 +100,7 @@ function vote() {
 			setMessage('Vous devez sélectionner une carte', FLASH_ERROR);
 			redirect('games', 'play', array($_POST['gameID']));
 		}
-		else if($_POST['cardID'] == getOneRowResult(getPlayerCardInBoard($_POST['gameID'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id')) {
+		else if($_POST['cardID'] == getOneRowResult(getPlayerCardInBoard($_POST['turnID'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id')) {
 			setMessage('Vous ne pouvez pas voter pour votre propre carte', FLASH_ERROR);
 			redirect('games', 'play', array($_POST['gameID']));
 		}

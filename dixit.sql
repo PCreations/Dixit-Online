@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Lun 23 Avril 2012 à 21:43
+-- Généré le : Lun 23 Avril 2012 à 22:16
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -190,12 +190,12 @@ INSERT INTO `game_types` (`gt_id`, `gt_name`, `gt_nb_players`) VALUES
 CREATE TABLE IF NOT EXISTS `hands` (
   `ca_id` int(11) NOT NULL,
   `us_id` int(11) NOT NULL,
-  `ga_id` int(11) NOT NULL,
+  `tu_id` int(11) NOT NULL,
   `ct_id` int(11) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`ca_id`,`us_id`,`ga_id`),
+  PRIMARY KEY (`ca_id`,`us_id`,`tu_id`),
   KEY `us_id` (`us_id`),
   KEY `ct_id` (`ct_id`),
-  KEY `ga_id` (`ga_id`)
+  KEY `tu_id` (`tu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -256,7 +256,7 @@ CREATE TABLE IF NOT EXISTS `turns` (
   PRIMARY KEY (`tu_id`),
   KEY `ga_id` (`ga_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Contenu de la table `turns`
@@ -368,7 +368,7 @@ ALTER TABLE `games`
 -- Contraintes pour la table `hands`
 --
 ALTER TABLE `hands`
-  ADD CONSTRAINT `hands_ibfk_5` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hands_ibfk_5` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `hands_ibfk_1` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `hands_ibfk_2` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `hands_ibfk_4` FOREIGN KEY (`ct_id`) REFERENCES `card_status` (`ct_id`) ON UPDATE CASCADE;

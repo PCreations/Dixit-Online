@@ -91,11 +91,14 @@ function quiteGame($gameID, $userID) {
 }
 
 function _startGame($gameID) {
-	//Récupération du deck associé au type de la partie
-	$deck = getDeck($gameID);
-
 	//Récupération des joueurs dans le jeu
 	$playersIDS = getPlayersInGame($gameID);
+
+	//Démarre le 1er tour
+	$turnID = addTurn($gameID, $playersIDS[0]['us_id']);
+
+	//Récupération du deck associé au type de la partie
+	$deck = getDeck($gameID);
 
 	//Distribution des cartes
 	$hands = _dealCards($deck, CARD_PER_PLAYER, count($playersIDS));
@@ -103,7 +106,7 @@ function _startGame($gameID) {
 	$i=0;
 	foreach($playersIDS as $player) {
 		foreach($hands[$i] as $hand) {
-			saveHand($gameID, $player['us_id'], $hand['ca_id']);
+			saveHand($turnID, $player['us_id'], $hand['ca_id']);
 		}
 		$i++;
 	}
@@ -119,9 +122,6 @@ function _startGame($gameID) {
 	foreach($playersIDS as $key => $player) {
 		definePlayPosition($gameID, $player['us_id'], $key+1);
 	}
-
-	//Démarre le 1er tour
-	addTurn($gameID, $playersIDS[0]['us_id']);
 }
 
 function _dealCards(&$deck, $nbCards, $nbPlayers) {
@@ -189,7 +189,7 @@ function play($gameID) {
 				//Alors on va récupérer sa main et son statut
 				if($playerID == $_SESSION[USER_MODEL][USER_PK]) {
 					$actionStatus = _checkAction($phase, $playerID, $gameID, $currentTurn['tu_id']);
-					$playersInfos[$i]['hand'] = getCardsInHand($userID, $gameID);
+					$playersInfos[$i]['hand'] = getCardsInHand($userID, $currentTurn['tu_id']);
 				}
 
 				$i++;
@@ -344,7 +344,7 @@ function _displayBoard($phase, $gameID, $turnID, $storyteller, $actionStatus) {
 }
 
 function _displayHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus) {
-	$hand = getCardsInHand($userID, $gameID);
+	$hand = getCardsInHand($userID, $turnID);
 
 	switch($phase) {
 		case STORYTELLER_PHASE:

@@ -22,7 +22,7 @@ function getCardsInBoard($turnID) {
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getCardsInHand($userID, $gameID) {
+function getCardsInHand($userID, $turnID) {
 	global $db;
 
 	$query = $db->prepare('SELECT c.ca_id, c.ca_name, c.ca_image
@@ -32,10 +32,10 @@ function getCardsInHand($userID, $gameID) {
 						INNER JOIN card_status as ct
 						ON ct.ct_id = h.ct_id
 						WHERE h.us_id = :userID
-						AND h.ga_id = :gameID
+						AND h.tu_id = :turnID
 						AND ct.ct_name = "En main"');
 	$query->execute(array('userID' => $userID,
-						'gameID' => $gameID));
+						'turnID' => $turnID));
 
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -52,17 +52,17 @@ function isAlreadyInBoard($cardID, $turnID) {
 	return is_array($query->fetch(PDO::FETCH_ASSOC));
 }
 
-function changeHandCardStatus($cardID, $userID, $gameID) {
+function changeHandCardStatus($cardID, $userID, $turnID) {
 	global $db;
 
 	$query = $db->prepare('UPDATE hands
 						SET ct_id = 2
 						WHERE ca_id = :cardID
 						AND us_id = :userID
-						AND ga_id = :gameID');
+						AND tu_id = :turnID');
 	return $query->execute(array('cardID' => $cardID,
 						'userID' => $userID,
-						'gameID' => $gameID));
+						'turnID' => $turnID));
 }
 
 function addCardInBoard($cardID, $turnID) {
@@ -84,22 +84,20 @@ function addTurnComment($turnID, $comment) {
 						'turnID' => $turnID));
 }
 
-function getPlayerCardInBoard($gameID, $userID) {
+function getPlayerCardInBoard($turnID, $userID) {
 	global $db;
 
 	$query = $db->prepare('SELECT b.ca_id
 						FROM boards as b
 						INNER JOIN hands as h
 						ON h.ca_id = b.ca_id
-						INNER JOIN games as g
-						ON g.ga_id = h.ga_id
 						INNER JOIN turns as t
-						ON t.ga_id = h.ga_id
+						ON t.tu_id = h.tu_id
 						INNER JOIN users as u
 						ON u.us_id = h.us_id
-						WHERE h.ga_id = :gameID
+						WHERE h.tu_id = :turnID
 						AND u.us_id = :userID');
-	$query->execute(array('gameID' => $gameID,
+	$query->execute(array('turnID' => $turnID,
 						'userID' => $userID));
 	return $query->fetch(PDO::FETCH_ASSOC);
 }

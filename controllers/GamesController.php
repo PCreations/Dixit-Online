@@ -1,7 +1,10 @@
 <?php
 
-useModels(array('user', 'game'));
+useModels(array('user', 'game', 'card'));
 define('CARD_PER_PLAYER', 2); //pour tester
+define('STORYTELLER_PHASE', 0);
+define('BOARD_PHASE', 1);
+define('VOTE_PHASE', 2);
 
 function index() {
 	$partiesEnAttente = getWaintingGames();
@@ -63,7 +66,7 @@ function quiteGame($gameID, $userID) {
 			setMessage('Vous ne pouvez pas faire quitter un autre joueur que vous', FLASH_ERROR);
 			redirect('games');
 		}
-		else if(!in_array($userID, getPlayersInGame($gameID))) {
+		else if(!isInGame($gameID, $userID)) {
 			setMessage('Ce joueur ne joue pas dans cette partie', FLASH_ERROR);
 			redirect('games');
 		}
@@ -80,7 +83,7 @@ function quiteGame($gameID, $userID) {
 	}
 }
 
-function _startGame($gameID) {
+function startGame($gameID) {
 	//Récupération du deck associé au type de la partie
 	$deck = getDeck($gameID);
 
@@ -105,10 +108,13 @@ function _startGame($gameID) {
 
 	//Définition d'un ordre de jeu
 	shuffle($playersIDS);
+
 	foreach($playersIDS as $key => $player) {
 		definePlayPosition($gameID, $player['us_id'], $key+1);
 	}
 
+	//Démarre le 1er tour
+	addTurn($gameID, $playersIDS[0]['us_id']);
 }
 
 function _dealCards(&$deck, $nbCards, $nbPlayers) {
@@ -129,5 +135,50 @@ function _dealCards(&$deck, $nbCards, $nbPlayers) {
 }
 
 function play($gameID) {
+	if(!isLogged()) {
+		setMessage('Vous devez être connecté pour rejoindre une partie', FLASH_ERROR);
+		redirect('users', 'login');
+	}
+	else {
+		$userID = $_SESSION[USER_MODEL][USER_PK];
+		if(!isInGame($gameID, $userID)) {
+			setMessage('Vous ne jouez pas dans cette partie', FLASH_ERROR);
+			redirect('games');
+		}
+		else {
+			$phase = _getActualGamePhase($gameID);
+			$currentTurn = getCurrentGameTurn($gameID);
+			$vars = array();
+			$vars['phase'] = $phase;
+			$vars['storyteller'] = ($userID == $currentTurn['us_id']);
+			$vars['cards'] = getCardsInHand($userID, $gameID);
+			$vars['gameID'] = $gameID;
+			$vars['turnID'] = $currentTurn['tu_id'];
+			switch($phase) {
+				case STORYTELLER_PHASE:
+						
+					break;
+				case BOARD_PHASE:
+					
+					break;
+				case VOTE_PHASE:
+					break;
+			}
+			render('play', $vars);
+		}
+	}
+}
 
+function _getActualGamePhase($gameID) {
+	$nbCards = count(getCardsInBoard($gameID));
+	$nbPlayers = count(getPlayersInGame($gameID));
+
+	if($nbCards == 0) {
+		return STORYTELLER_PHASE;
+	}
+	else if($nbCards < $nbPlayers) {
+		return BOARD_PHASE;
+	}
+	else
+		return VOTE_PHASE;
 }

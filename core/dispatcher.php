@@ -44,6 +44,7 @@ function parseURL($url) {
 	global $CSS_FILES; //récupération de la liste des fichiers .css
 	global $JS_FILES; //récupération de la liste des fichiers .js
 	global $pageTitle; //récupération du titre
+	global $referer;
 
 	/* suppression des '/' en fin d'url et extraction sous forme de tableau des différents éléments */
 	$url = rtrim($url, '/');
@@ -96,6 +97,10 @@ function parseURL($url) {
 			redirect(HTTP_ERROR_CONTROLLER, HTTP_404_ACTION, array(), 404);
 	}
 
+	$referer['controller'] = $currentController;
+	$referer['action'] = $action;
+	$referer['params'] = $params;
+	
 	/* Appel de l'action demandée pour le controller demandé */
 	call_user_func_array($action, $params);
 }

@@ -20,11 +20,11 @@ function render($requestedView, $vars = array()) {
 
 	if(is_array($JS_FILES)) {
 		foreach ($JS_FILES as $js) {
-			$jsList .= "<script type=\"text/javascript\" scr=\"" . JS_DIR . "$js\"></script>\n";
+			$jsList .= "<script type=\"text/javascript\" src=\"" . JS_DIR . "$js\"></script>\n";
 		}
 	}
 	else
-		$jsList = "<script type=\"text/javascript\" scr=\"" . JS_DIR . "$js\"></script>\n";
+		$jsList = "<script type=\"text/javascript\" src=\"" . JS_DIR . "$js\"></script>\n";
 	if(is_array($CSS_FILES)) {
 		foreach ($CSS_FILES as $css) {
 			$cssList .= "<link rel=\"stylesheet\" href=\"" . CSS_DIR . "$css\" />";
@@ -181,7 +181,7 @@ function createLink($textLink, $controller, $action, $params = array(), $attrs =
 	}
 
 	$link .= ">$textLink</a>";
-	return $link;
+	return ($textLink !== false) ? $link : BASE_URL . $controller . '/' . $action . $listeParams;
 }
 
 
@@ -256,4 +256,13 @@ function useModels($models) {
 
 function isLogged() {
 	return isset($_SESSION[USER_MODEL][USER_PK]);
+}
+
+function isPost() {
+	return ($_SERVER['REQUEST_METHOD'] == 'POST') ? true : false;
+}
+
+function redirectReferer() {
+	global $referer;
+	redirect($referer['controller'], $referer['action'], $referer['params']);
 }

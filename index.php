@@ -13,6 +13,9 @@ $layout = 'layout';
  */
 $currentController;
 
+
+$referer;
+
 /**
  * Titre par défaut des pages. Peut-être surchargé par $pageTitlePrefix et $finalPageTitle
  */ 
@@ -21,12 +24,13 @@ $pageTitle = 'Dixit Online';
 /**
  * Tableau contenant la liste des fichiers .js à inclure
  */
-$JS_FILES = array('jquery-1.7.2.min.js');
+$JS_FILES = array('jquery-1.7.2.min.js', 'script.js');
 
 /**
  * Tableau contenant la liste des fichiers .css à inclure
  */
 $CSS_FILES = array();
+
 
 require_once('core/core.php');
 

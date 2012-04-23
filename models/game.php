@@ -51,6 +51,18 @@ function getPlayersInGame($gameID) {
 	return $result;
 }
 
+function isInGame($gameID, $userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT us_id
+						FROM plays
+						WHERE ga_id = :gameID
+						AND us_id = :userID');
+	$query->execute(array('gameID' => $gameID,
+						'userID' => $userID));
+	return is_array($query->fetch(PDO::FETCH_ASSOC));
+}
+
 /**
  * Vérifie que la partie n'est pas complète
 **/
@@ -117,4 +129,26 @@ function savePick($gameID, $cardID) {
 	$query->execute(array('cardID' => $cardID,
 						'gameID' => $gameID));
 	$query->closeCursor();
+}
+
+function addTurn($gameID, $userID) {
+	global $db;
+
+	$query = $db->prepare('INSERT INTO turns(ga_id, us_id, tu_date_start)
+						VALUES(:gameID, :userID, NOW())');
+	$query->execute(array('gameID' => $gameID,
+						'userID' => $userID));
+	$query->closeCursor();
+}
+
+function getCurrentGameTurn($gameID) {
+	global $db;
+
+	$query = $db->prepare('SELECT *
+						FROM turns
+						WHERE ga_id = ?
+						ORDER BY tu_id DESC
+						LIMIT 1');
+	$query->execute(array($gameID));
+	return $query->fetch(PDO::FETCH_ASSOC);
 }

@@ -13,6 +13,10 @@ $layout = 'layout';
  */
 $currentController;
 
+$currentAction;
+
+$currentParams;
+
 
 $referer;
 

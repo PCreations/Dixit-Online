@@ -20,18 +20,18 @@ useModels(array('card'));
 function addCard($gameID, $turnID, $cardID) {
 	if(!isLogged()) {
 		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);
-		redirectReferer();
+		redirect('users', 'login');
 	}
 	else {
 		$userID = $_SESSION[USER_MODEL][USER_PK];
 
 		if(!_isOwnedBy($cardID, $userID, $gameID)) { //Vérification si la carte appartient bien au joueur
 			setMessage('Vous essayer d\'ajouter une carte qui ne vous appartient pas', FLASH_ERROR);
-			redirectReferer();
+			redirect('games', 'play', array($gameID));
 		}
 		else if(isAlreadyInBoard($cardID, $turnID)) { //Vérification si la carte n'est pas déjà dans le board
 			setMessage('Vous avez déjà sélectionné cette carte', FLASH_ERROR);
-			redirectReferer();
+			redirect('games', 'play', array($gameID));
 		}
 		else { //Sinon tout à l'air bon on peut ajouter la carte
 			_addCardInBoard($cardID, $turnID, $gameID, $userID);
@@ -42,21 +42,41 @@ function addCard($gameID, $turnID, $cardID) {
 }
 
 function _isOwnedBy($cardID, $userID, $gameID) {
-	$cards = getCardsInHand($userID, $gameID);
-	$cardsIDs = array();
-	foreach($cards as $card){
-		$cardsIDs[] = $card['ca_id'];
-	}
-
+	$cardsIDs = getSpecificArrayValues(getCardsInHand($userID, $gameID), 'ca_id');
 	return in_array($cardID, $cardsIDs);
 }
 
 function _addCardInBoard($cardID, $turnID, $gameID, $userID) {
-	if (removeCardFromHand($cardID, $userID, $gameID)) {
+	if(changeHandCardStatus($cardID, $userID, $gameID)) {
 		addCardInBoard($cardID, $turnID);
 	}
 	else {
 		trigger_error('Impossible de supprimer la carte de la main');
 		die();
+	}
+}
+
+function addStorytellerCard() {
+	if(!isPost()) {
+		trigger_error('Vous n\'avez pas accès à cette page');
+		die();
+	}
+	else {
+		if(!empty($_POST['comment']) && isset($_POST['cardID'])) {
+			extract($_POST);
+			addTurnComment($turnID, $comment);
+			changeHandCardStatus($cardID, $_SESSION[USER_MODEL][USER_PK], $gameID);
+			addCardInBoard($cardID, $turnID);
+			redirect('games', 'play', array($_POST['gameID']));
+		}
+		else {
+			$errors;
+			if(empty($_POST['comment'])) $errors .= 'Le commentaire associé à la carte ne peut pas être vide !<br />';
+			if(!isset($_POST['cardID'])) $errors .= 'Vous devez sélectionner une carte';
+
+			setMessage($errors, FLASH_ERROR);
+			
+			redirect('games', 'play', array($_POST['gameID']));
+		}
 	}
 }

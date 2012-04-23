@@ -262,7 +262,14 @@ function isPost() {
 	return ($_SERVER['REQUEST_METHOD'] == 'POST') ? true : false;
 }
 
-function redirectReferer() {
-	global $referer;
-	redirect($referer['controller'], $referer['action'], $referer['params']);
+function getSpecificArrayValues($array, $key) {
+	$cleanedArray = array();
+	foreach($array as $data) {
+		$cleanedArray[] = $data[$key];
+	}
+	return $cleanedArray;
+}
+
+function getOneRowResult($array, $key) {
+	return $array[$key];
 }

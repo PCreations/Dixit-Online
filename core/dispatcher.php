@@ -41,11 +41,13 @@ function dispatch($defaultController = null, $defaultAction = INDEX_ACTION, $rew
  */
 function parseURL($url) {
 	global $currentController; //récupération de la variable qui stockera le contrôleur ocurant
+	global $currentAction;
+	global $currentParams;
 	global $CSS_FILES; //récupération de la liste des fichiers .css
 	global $JS_FILES; //récupération de la liste des fichiers .js
 	global $pageTitle; //récupération du titre
-	global $referer;
 
+	
 	/* suppression des '/' en fin d'url et extraction sous forme de tableau des différents éléments */
 	$url = rtrim($url, '/');
 	$params = explode('/', $url);
@@ -96,10 +98,6 @@ function parseURL($url) {
 		if (!function_exists($action))
 			redirect(HTTP_ERROR_CONTROLLER, HTTP_404_ACTION, array(), 404);
 	}
-
-	$referer['controller'] = $currentController;
-	$referer['action'] = $action;
-	$referer['params'] = $params;
 	
 	/* Appel de l'action demandée pour le controller demandé */
 	call_user_func_array($action, $params);

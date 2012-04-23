@@ -1,5 +1,18 @@
 <?php
 
+function getGameInfos($gameID, $fields = array('*')) {
+	global $db;
+
+	$fields = implode(',', $fields);
+
+	$query = $db->prepare('SELECT ' . $fields . '
+						FROM games
+						WHERE ga_id = ?');
+	$query->execute(array($gameID));
+
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
 function getWaintingGames() {
 	global $db;
 
@@ -44,7 +57,8 @@ function getPlayersInGame($gameID) {
 
 	$query = $db->prepare('SELECT us_id
 						FROM plays
-						WHERE ga_id = ?');
+						WHERE ga_id = ?
+						ORDER BY pl_position');
 	$query->execute(array($gameID));
 	$result = $query->fetchAll(PDO::FETCH_ASSOC);
 	$result = (!$result) ? array() : $result;
@@ -64,7 +78,7 @@ function isInGame($gameID, $userID) {
 }
 
 /**
- * Vérifie que la partie n'est pas complète
+ * Vérifie que la partie n'est pas complète. Retourne true s'il reste des places et false sinon
 **/
 function checkPlayersInGame($gameID) {
 	global $db;
@@ -150,5 +164,62 @@ function getCurrentGameTurn($gameID) {
 						ORDER BY tu_id DESC
 						LIMIT 1');
 	$query->execute(array($gameID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function getTurnsVote($turnID) {
+	global $db;
+
+	$query = $db->prepare('SELECT *
+						FROM votes
+						WHERE tu_id = ?');
+	$query->execute(array($turnID));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getGameUserPosition($gameID, $userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT pl_position
+						FROM plays
+						WHERE ga_id = :gameID
+						AND us_id = :userID');
+	$query->execute(array('gameID' => $gameID,
+						'userID' => $userID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function getOrderUserInfos($gameID, $fields = array('*')) {
+	global $db;
+
+	$fields = implode(',', $fields);
+
+	$query = $db->prepare('SELECT '.$fields.'
+						FROM users as u
+						INNER JOIN plays as pl
+						ON u.us_id = pl.us_id
+						INNER JOIN games as g
+						ON g.ga_id = pl.ga_id
+						WHERE pl.ga_id = ?
+						ORDER BY pl.pl_position');
+	$query->execute(array($gameID));
+
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getTotalUserPointsInGame($gameID, $userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT SUM(points) as nbPoints
+						FROM earned_points as ep
+						INNER JOIN turns as t
+						ON t.tu_id = ep.tu_id
+						INNER JOIN games as g
+						ON g.ga_id = t.ga_id
+						WHERE g.ga_id = :gameID
+						AND ep.us_id = :userID');
+	$query->execute(array('gameID' => $gameID, 
+						'userID' => $userID));
+
 	return $query->fetch(PDO::FETCH_ASSOC);
 }

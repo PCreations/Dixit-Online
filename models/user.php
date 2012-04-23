@@ -37,10 +37,11 @@ function checkLogin($pseudo, $password) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
-function getUserInfos($id) {
+function getUserInfos($id, $fields = array('*')) {
 	global $db;
+	$fields = implode(',', $fields);
 
-	$query = $db->prepare('SELECT *
+	$query = $db->prepare('SELECT '.$fields.' 
 						FROM users
 						WHERE us_id = ?');
 	$query->execute(array($id));

@@ -5,10 +5,24 @@
 <h3>Conteur : <?php echo $turn['storyteller']['us_pseudo'];?></h3>
 <p><?php echo $turn['tu_comment'];?></p>
 
-
+<table>
+	<caption>Joueurs</caption>
+	<tr>
+		<th>Pseudo : </th>
+		<th>Points : </th>
+		<th>Statut : </th>
+	</tr>
+	<?php foreach($turn['players'] as $player): ?>
+	<tr>
+		<td><?php echo $player['us_pseudo'] . (($player['role'] == 'conteur') ? ' : conteur' : '');?></td>
+		<td><?php echo ($player['points'] != null) ? $player['points'] : '0';?></td>
+		<td><?php _displayStatus($player['status'], $turn['phase']['id'], $player['role']);?></td>
+	</tr>
+	<?php endforeach; ?>
+</table>
 <h3>Table</h3>
 <?php
-_displayBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn['tu_id'], $storyteller, $actionStatus);
+_displayBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn, $storyteller, $actionStatus);
 ?>
 
 <h3>Votre main</h3>

@@ -203,6 +203,18 @@ function getGameUserPosition($gameID, $userID) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+function getUserByPosition($gameID, $position) {
+	global $db;
+
+	$query = $db->prepare('SELECT us_id
+						FROM plays
+						WHERE ga_id = :gameID
+						AND pl_position = :position');
+	$query->execute(array('gameID' => $gameID,
+						'position' => $position));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
 function getOrderUserInfos($gameID, $fields = array('*')) {
 	global $db;
 

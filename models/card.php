@@ -12,6 +12,22 @@ function getCardInfos($cardID, $fields = array('*')) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+function getCardOwner($cardID, $turnID) {
+	global $db;
+
+	$query = $db->prepare('SELECT h.us_id 
+						FROM boards as b
+						INNER JOIN hands as h
+						ON h.tu_id = b.tu_id AND h.ca_id = b.ca_id
+						INNER JOIN turns as t
+						ON h.tu_id = t.tu_id
+						WHERE b.tu_id = :turnID
+						AND b.ca_id = :cardID');
+	$query->execute(array('turnID' => $turnID,
+						'cardID' => $cardID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
 function getCardsInBoard($turnID) {
 	global $db;
 
@@ -20,6 +36,20 @@ function getCardsInBoard($turnID) {
 						WHERE tu_id = ?');
 	$query->execute(array($turnID));
 	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getStorytellerCardInBoard($turnID) {
+	global $db;
+
+	$query = $db->prepare('SELECT b.ca_id 
+					FROM boards as b
+					INNER JOIN hands as h
+					ON h.tu_id = b.tu_id AND h.ca_id = b.ca_id
+					INNER JOIN turns as t
+					ON h.us_id = t.us_id
+					WHERE b.tu_id = ?');
+	$query->execute(array($turnID));
+	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
 function getCardsInHand($userID, $turnID) {
@@ -32,7 +62,7 @@ function getCardsInHand($userID, $turnID) {
 						INNER JOIN card_status as ct
 						ON ct.ct_id = h.ct_id
 						WHERE h.us_id = :userID
-						AND h.tu_id = :turnID
+						AND h.tu_id <= :turnID
 						AND ct.ct_name = "En main"');
 	$query->execute(array('userID' => $userID,
 						'turnID' => $turnID));
@@ -109,5 +139,71 @@ function addGameVote($userID, $cardID, $turnID) {
 						VALUES(:userID, :cardID, :turnID)');
 	$query->execute(array('userID' => $userID,
 						'cardID' => $cardID,
+						'turnID' => $turnID));
+}
+
+function getCardVoteInTurn($cardID, $turnID) {
+	global $db;
+
+	$query = $db->prepare('SELECT us_id
+						FROM votes
+						WHERE ca_id = :cardID
+						AND tu_id = :turnID');
+	$query->execute(array('cardID' => $cardID,
+						'turnID' => $turnID));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getTotalCardVoteInTurn($cardID, $turnID) {
+	global $db;
+
+	$query = $db->prepare('SELECT COUNT(us_id) as total
+						FROM votes
+						WHERE ca_id = :cardID
+						AND tu_id = :turnID');
+	$query->execute(array('cardID' => $cardID,
+						'turnID' => $turnID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function addPoints($userID, $turnID, $points) {
+	global $db;
+
+	$query = $db->prepare('INSERT into earned_points(us_id, tu_id, points)
+						VALUES(:userID, :turnID, :points)');
+	$query->execute(array('userID' => $userID,
+						'turnID' => $turnID,
+						'points' => $points));
+}
+
+function shiftPick($gameID) {
+	global $db;
+
+	$query = $db->prepare('SELECT ca_id
+						FROM pick
+						WHERE ga_id = ?
+						LIMIT 1');
+	$query->execute(array($gameID));
+	$results = $query->fetch(PDO::FETCH_ASSOC);
+
+	$query->closeCursor();
+
+	$query = $db->prepare('DELETE
+						FROM pick
+						WHERE ca_id = :cardID
+						AND ga_id = :gameID');
+	$query->execute(array('cardID' => $results['ca_id'],
+						'gameID' => $gameID));
+
+	return $results['ca_id'];
+}
+
+function addCardInHand($turnID, $cardID, $userID) {
+	global $db;
+
+	$query = $db->prepare('INSERT into hands(ca_id, us_id, tu_id)
+						VALUES(:cardID, :userID, :turnID)');
+	$query->execute(array('cardID' => $cardID,
+						'userID' => $userID,
 						'turnID' => $turnID));
 }

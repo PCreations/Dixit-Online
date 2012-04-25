@@ -114,7 +114,7 @@ function parseURL($url) {
  * \details Si le contrôleur existe bien (on teste ici l'existence du fichier) on returne le chemin vers celui-ci sinon on défini le chemin comme celui pointant vers le contrôleur qui gère les erreurs 404
  */
 function getControllerFilePath($controller) {
-	$file = 'controllers/' . $controller . 'Controller.php';
+	$file = 'controllers/' . $controller . '_controller.php';
 	if(is_file($file))
 		return $file;
 	else

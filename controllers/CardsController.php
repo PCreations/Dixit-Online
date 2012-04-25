@@ -69,7 +69,7 @@ function addStorytellerCard() {
 		if(!empty($_POST['comment']) && isset($_POST['cardID'])) {
 			extract($_POST);
 			addTurnComment($turnID, $comment);
-			changeHandCardStatus($cardID, $_SESSION[USER_MODEL][USER_PK], $turnID);
+			changeHandCardStatus($cardID, $_SESSION[USER_MODEL][USER_PK]);
 			addCardInBoard($cardID, $turnID);
 			setMessage('Votre carte a bien été ajoutée.', FLASH_SUCCESS);
 			redirect('games', 'play', array($_POST['gameID']));

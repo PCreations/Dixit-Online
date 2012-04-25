@@ -348,10 +348,25 @@ function _startNewTurn($currentTurn) {
 }
 
 function _pickCard($turnID, $gameID, $userID) {
+	var_dump(is_array(getPick($gameID)));
+
+	if(!is_array(getPick($gameID))) { //C'est que la pioche est vide
+		//On sélectionne toutes les cartes qui ont déjà été posé pour cette partie
+		$discardedCards = getSpecificArrayValues(getDiscardedCards(), 'ca_id');
+
+		//Réinsertion dans la pioche des cartes après les avoir mélangées
+		shuffle($discardedCards);
+
+		foreach($discardedCards as $cardID) {
+			savePick($gameID, $cardID);
+		}
+	}
+
 	//Défaussement de la pioche
+	echo "cardID = shiftPick($gameID)<br/>";
 	$cardID = shiftPick($gameID);
-	//echo "cardID = $cardID<br/>gameID = $gameID<br/>userID = $userID";
 	addCardInHand($turnID, $cardID, $userID);
+	echo "addCardInHand($turnID, $cardID, $userID)";
 }
 
 //Fonction permettant de tester si un utilisateur a joué ou pas dans une phase considérée.

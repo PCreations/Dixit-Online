@@ -286,23 +286,39 @@ function _dealPoints($turn) {
 		$cards[$cardID]['total'] = getOneRowResult(getTotalCardVoteInTurn($cardID, $turn['tu_id']), 'total');
 	}
 
-	$nbPlayers = count($cards);
+	$players = getSpecificArrayValues(getPlayersInGame($turn['ga_id']), 'us_id');
+	$playersPoints = array();
+	foreach($players as $player) {
+		$playersPoints[$player] = 0;
+	}
+	$nbPlayers = count($players);
+
+	debug($players);
+	debug($playersPoints);
+	echo 'storyteller card : ' . $storytellerCardID;
+	debug($cards);
 
 	if(($cards[$storytellerCardID]['total'] == ($nbPlayers -1)) || ($cards[$storytellerCardID]['total'] == 0)) { //Tout le monde a trouvé ou personne n'a trouvé la carte du conteur
 		unset($cards[$storytellerCardID]);
 		foreach($cards as $card) {
-			addPoints($card['us_id'], $turn['tu_id'], 2 + $card['total']); //On ajoute 2 points aux joueurs + 1 point par vote sur leur carte
+			$playersPoints[$card['us_id']] += 2 + $card['total']; //On ajoute 2 points aux joueurs + 1 point par vote sur leur carte
 		}
 	}
 	else {
-		$userVotesIDs = getCardVoteInTurn($storytellerCardID, $turn['tu_id']);
+		$userVotesIDs = getSpecificArrayValues(getCardVoteInTurn($storytellerCardID, $turn['tu_id']), 'us_id');
+		debug($userVotesIDs);
+		$playersPoints[$cards[$storytellerCardID]['us_id']] += 3; //Le conteur gagne 3 points
 		foreach($userVotesIDs as $userID) { //Tous les joueurs qui ont trouvé la carte du conteur gagnent 3 points
-			addPoints($userID, $turn['tu_id'], 3);
+			$playersPoints[$userID] += 3;
 		}
 		unset($cards[$storytellerCardID]);
 		foreach($cards as $card) {
-			addPoints($card['us_id'], $turn['tu_id'], $card['total']); //On ajoute 2 points aux joueurs + 1 point par vote sur leur carte
+			$playersPoints[$card['us_id']] += $card['total'];
 		}
+	}
+
+	foreach($playersPoints as $userID => $points) {
+		addPoints($userID, $turn['tu_id'], $points);
 	}
 }
 
@@ -322,19 +338,19 @@ function _startNewTurn($currentTurn) {
 
 	$nextStorytellerID = getOneRowResult(getUserByPosition($currentTurn['ga_id'], $nextStorytellerPosition), 'us_id');
 	
+	echo "nextStorytellerID = $nextStorytellerID";
 	$newTurnID = addTurn($currentTurn['ga_id'], $nextStorytellerID);
-
+	echo "<br />newTurnID = $newTurnID";
 	foreach($players as $playerID) {
 		_pickCard($newTurnID, $currentTurn['ga_id'], $playerID);
 	}
-
-	return $currentTurn;
 	//redirect('games', 'play', array($currentTurn['ga_id']));
 }
 
 function _pickCard($turnID, $gameID, $userID) {
 	//Défaussement de la pioche
 	$cardID = shiftPick($gameID);
+	//echo "cardID = $cardID<br/>gameID = $gameID<br/>userID = $userID";
 	addCardInHand($turnID, $cardID, $userID);
 }
 

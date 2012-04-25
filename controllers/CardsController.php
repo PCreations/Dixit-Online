@@ -47,7 +47,7 @@ function _isOwnedBy($cardID, $userID, $turnID) {
 }
 
 function _addCardInBoard($cardID, $turnID, $userID) {
-	if(changeHandCardStatus($cardID, $userID, $turnID)) {
+	if(changeHandCardStatus($cardID, $userID)) {
 		addCardInBoard($cardID, $turnID);
 	}
 	else {

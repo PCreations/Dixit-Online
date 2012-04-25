@@ -82,17 +82,16 @@ function isAlreadyInBoard($cardID, $turnID) {
 	return is_array($query->fetch(PDO::FETCH_ASSOC));
 }
 
-function changeHandCardStatus($cardID, $userID, $turnID) {
+function changeHandCardStatus($cardID, $userID) {
 	global $db;
 
 	$query = $db->prepare('UPDATE hands
 						SET ct_id = 2
 						WHERE ca_id = :cardID
 						AND us_id = :userID
-						AND tu_id = :turnID');
+						AND ct_id = 1');
 	return $query->execute(array('cardID' => $cardID,
-						'userID' => $userID,
-						'turnID' => $turnID));
+						'userID' => $userID));
 }
 
 function addCardInBoard($cardID, $turnID) {
@@ -164,16 +163,6 @@ function getTotalCardVoteInTurn($cardID, $turnID) {
 	$query->execute(array('cardID' => $cardID,
 						'turnID' => $turnID));
 	return $query->fetch(PDO::FETCH_ASSOC);
-}
-
-function addPoints($userID, $turnID, $points) {
-	global $db;
-
-	$query = $db->prepare('INSERT into earned_points(us_id, tu_id, points)
-						VALUES(:userID, :turnID, :points)');
-	$query->execute(array('userID' => $userID,
-						'turnID' => $turnID,
-						'points' => $points));
 }
 
 function shiftPick($gameID) {

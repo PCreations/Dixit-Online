@@ -249,3 +249,13 @@ function getTotalUserPointsInGame($gameID, $userID) {
 
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
+
+function addPoints($userID, $turnID, $points) {
+	global $db;
+
+	$query = $db->prepare('INSERT into earned_points(us_id, tu_id, points)
+						VALUES(:userID, :turnID, :points)');
+	$query->execute(array('userID' => $userID,
+						'turnID' => $turnID,
+						'points' => $points));
+}

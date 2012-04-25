@@ -6,7 +6,7 @@ require_once("core/dispatcher.php");
 require_once("core/database.config.php");
 
 /* Connexion à la base de données */
-/*try
+try
 {
 	$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
 	$pdo_options[1002] = 'SET NAMES utf8'; //1002 = PDO::MYSQL_ATTR_INIT_COMMAND qui peut ne pas être définie selon les serveurs
@@ -18,4 +18,3 @@ catch(Exception $e)
 {
     die('Erreur : ' . $e->getMessage());
 }
-*/

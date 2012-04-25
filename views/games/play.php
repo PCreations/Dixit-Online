@@ -21,6 +21,7 @@
 	<?php endforeach; ?>
 </table>
 <h3>Table</h3>
+
 <?php
 _displayBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn, $storyteller, $actionStatus);
 ?>

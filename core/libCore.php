@@ -57,6 +57,7 @@ function render($requestedView, $vars = array()) {
 	require_once("views/$currentController/$requestedView.php"); //on bufferise le contenu de la vue
 	$contentForLayout = ob_get_clean(); //qu'on stocke dans la variable $contentForLayout
 	require_once(THEME_PATH . DS . $finalLayout . '.php'); //au final le layout est affiché avec en son sein le contenu de la vue
+	exit(); //stoppe l'exécution du script après le rendu
 }
 
 /**

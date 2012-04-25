@@ -9,8 +9,8 @@ define('VOTE_PHASE', 2);
 define('POINTS_PHASE', 3);
 
 //constante de statut
-define('ACTION_IN_PROGRESS', 3);
-define('ACTION_DONE', 4);
+define('ACTION_IN_PROGRESS', 4);
+define('ACTION_DONE', 5);
 
 function index() {
 	$partiesEnAttente = getWaintingGames();
@@ -113,7 +113,7 @@ function _startGame($gameID) {
 	$i=0;
 	foreach($playersIDS as $player) {
 		foreach($hands[$i] as $hand) {
-			saveHand($turnID, $player['us_id'], $hand['ca_id']);
+			addCardInHand($turnID, $hand['ca_id'], $player['us_id']);
 		}
 		$i++;
 	}
@@ -143,6 +143,7 @@ function _dealCards(&$deck, $nbCards, $nbPlayers) {
 }
 
 function play($gameID) {
+
 	if(!isLogged()) {
 		setMessage('Vous devez être connecté pour rejoindre une partie', FLASH_ERROR);
 		redirect('users', 'login');
@@ -162,8 +163,13 @@ function play($gameID) {
 			$phase = _getActualGamePhase($gameID, $currentTurn['tu_id']);
 			
 			if($phase == POINTS_PHASE) {
-				_dealPoints($currentTurn);
-				_startNewTurn($currentTurn);
+				$isGameOver = _dealPoints($currentTurn);
+				if($isGameOver) {
+					render('game-over');
+				}
+				else {
+					_startNewTurn($currentTurn);
+				}
 			}
 
 			$storyteller = false; //permet de savoir si le joueur connecté est actuellement le conteur ou non
@@ -277,7 +283,11 @@ function _getActualGamePhase($gameID, $turnID) {
 		return VOTE_PHASE;
 }
 
+//Distribue les points et retourne true si un joueur a atteint la limite de point pour cette partie
 function _dealPoints($turn) {
+	$gameTypeID = getOneRowResult(getGameInfos($turn['ga_id'], array('gt_id')), 'gt_id');
+	$gameTypeInfos = getGameTypeInfos($gameTypeID);
+
 	$storytellerCardID = getOneRowResult(getPlayerCardInBoard($turn['tu_id'], $turn['us_id']), 'ca_id');
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();
@@ -319,7 +329,11 @@ function _dealPoints($turn) {
 
 	foreach($playersPoints as $userID => $points) {
 		addPoints($userID, $turn['tu_id'], $points);
+		if (getOneRowResult(getTotalUserPointsInGame($turn['ga_id'], $userID), 'nbPoints') >= $gameTypeInfos['gt_points_limit'])
+			return true; //fin du jeu
 	}
+
+	return false;
 }
 
 //Fonction démarrant un nouveau tour
@@ -348,9 +362,8 @@ function _startNewTurn($currentTurn) {
 }
 
 function _pickCard($turnID, $gameID, $userID) {
-	var_dump(is_array(getPick($gameID)));
-
-	if(!is_array(getPick($gameID))) { //C'est que la pioche est vide
+	$pick = getPick($gameID);
+	if(empty($pick)) {
 		//On sélectionne toutes les cartes qui ont déjà été posé pour cette partie
 		$discardedCards = getSpecificArrayValues(getDiscardedCards(), 'ca_id');
 

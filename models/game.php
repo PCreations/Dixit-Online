@@ -124,27 +124,6 @@ function definePlayPosition($gameID, $userID, $position) {
 	$query->closeCursor();
 }
 
-function saveHand($turnID, $userID, $cardID) {
-	global $db;
-
-	$query = $db->prepare('INSERT INTO hands(ca_id, us_id, tu_id)
-						VALUES(:cardID, :userID, :turnID)');
-	$query->execute(array('cardID' => $cardID,
-						'userID' => $userID,
-						'turnID' => $turnID));
-	$query->closeCursor();
-}
-
-function savePick($gameID, $cardID) {
-	global $db;
-
-	$query = $db->prepare('INSERT INTO pick(ga_id, ca_id)
-						VALUES(:gameID, :cardID)');
-	$query->execute(array('cardID' => $cardID,
-						'gameID' => $gameID));
-	$query->closeCursor();
-}
-
 function addTurn($gameID, $userID) {
 	global $db;
 

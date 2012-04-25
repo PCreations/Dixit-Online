@@ -365,7 +365,7 @@ function _pickCard($turnID, $gameID, $userID) {
 	$pick = getPick($gameID);
 	if(empty($pick)) {
 		//On sélectionne toutes les cartes qui ont déjà été posé pour cette partie
-		$discardedCards = getSpecificArrayValues(getDiscardedCards(), 'ca_id');
+		$discardedCards = getSpecificArrayValues(getDiscardedCards($gameID), 'ca_id');
 
 		//Réinsertion dans la pioche des cartes après les avoir mélangées
 		shuffle($discardedCards);
@@ -516,12 +516,10 @@ function _displayHand($phase, $userID, $gameID, $turnID, $storyteller, $actionSt
 			}
 			break;
 		case VOTE_PHASE:
+		case POINTS_PHASE:
 			foreach($hand as $card) {
 				echo '<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_name'] . '" />';
 			}
-			break;
-		case POINTS_PHASE:
-			echo 'test';
 			break;
 	}
 }

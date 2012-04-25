@@ -152,12 +152,18 @@ function getCardVoteInTurn($cardID, $turnID) {
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getDiscardedCards() {
+function getDiscardedCards($gameID) {
 	global $db;
 
-	$query = $db->query('SELECT DISTINCT(ca_id)
-			FROM hands
-			WHERE tu_played_id IS NOT NULL');
+	$query = $db->query('SELECT DISTINCT(h.ca_id)
+			FROM hands as h
+			INNER JOIN turns as t
+			ON t.tu_id = h.tu_id
+			INNER JOIN games as g
+			ON g.ga_id = t.ga_id
+			WHERE h.tu_played_id IS NOT NULL
+			AND g.ga_id = ?');
+	$query->execute(array($gameID));
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 

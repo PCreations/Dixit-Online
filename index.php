@@ -38,7 +38,9 @@ require_once('core/core.php');
 // INCLURE ICI TOUTES LES PROCEDURES A EFFECTUER AVANT LE ROUTING (Comme par exemple vérifier les droits d'acces et eventuellement rediriger vers la page de login)
 /**********************/
 
+phpinfo();
 
 //routing
 dispatch();
 
+?>

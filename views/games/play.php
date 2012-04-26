@@ -6,7 +6,7 @@
 </div>
 
 <h3>Conteur : <?php echo $turn['storyteller']['us_pseudo'];?></h3>
-<p><?php echo $turn['tu_comment'];?></p>
+<p id="turnComment"><?php echo $turn['tu_comment'];?></p>
 
 <div id="players">
 	<table>
@@ -52,27 +52,36 @@
 	BASE_URL = '<?php echo BASE_URL;?>';
 
 	function readyForNextTurn() {
-		console.log("STORYTELLER ID = "+storytellerID);
-		$.post(BASE_URL+"games/_setPlayerStatus/"+gameID+"/"+userID+"/1", function(data) {
-			//maj infos phase
-			$('#phaseInfos').load(BASE_URL+"games/_getPhaseInfos", { 'actionStatus': actionStatus, 'phaseID': phaseID, 'storyteller': storyteller},function() {
-		  		console.log('infos phase OK');
-			});
+		//récupération du tour actuel
+		$.post(BASE_URL+"games/_getCurrentGameTurn/"+gameID+"/tu_id", function(data) {
+	   		currentTurnID = data;
 
-			//maj infos joueurs
-			$('#players').load("<?php echo BASE_URL;?>games/_getPlayersInfos", { 'gameID': gameID, 'currentTurnID': currentTurnID, 'storytellerID': storytellerID, 'phase': phaseID } ,function() {
-			  console.log('OK');
-			});
+	   		//récupération du storyteller actuel
+		 	$.post(BASE_URL+"games/_getCurrentGameTurn/"+gameID+"/us_id", function(data) {
+		 		storytellerID = data;
+		 		console.log("STORYTELLER ID = "+storytellerID);
+				$.post(BASE_URL+"games/_setPlayerStatus/"+gameID+"/"+userID+"/1", function(data) {
+					//maj infos phase
+					$('#phaseInfos').load(BASE_URL+"games/_getPhaseInfos", { 'actionStatus': actionStatus, 'phaseID': phaseID, 'storyteller': storyteller},function() {
+				  		console.log('infos phase OK');
+					});
 
-			$('#readyForNextTurn').remove();
-			//On vérifie si les joueurs sont tous prêts
-			$.post(BASE_URL+"games/_checkIfPlayersAreReady/"+gameID, function(data) {
-				if(data == 'true') {
-					$.post(BASE_URL+"games/_startNewTurn/"+gameID+"/"+storytellerID); //possible pb ici avec l'id du storyteller non mis à jour
-					alert('Un nouveau tour commence');
-				}
-			});
-		});
+					//maj infos joueurs
+					$('#players').load(BASE_URL+"games/_getPlayersInfos", { 'gameID': gameID, 'currentTurnID': currentTurnID, 'storytellerID': storytellerID, 'phase': phaseID } ,function() {
+					  console.log('players infos OK');
+					});
+
+					//maj turn comment
+					$('#turnComment').load(BASE_URL+"games/_getTurnComment", {'turnID': currentTurnID}, function(){
+						console.log('turnComment OK');
+					});
+
+					$('#readyForNextTurn').remove();
+				});
+		 	});
+
+		 });
+
 	}
 	setInterval(function(){
 		//récupération du tour actuel
@@ -96,15 +105,34 @@
 			   		$.post(BASE_URL+"games/_checkAction/"+phaseID+"/"+userID+"/"+currentTurnID+"/false", function(data) {
 			   			actionStatus = data;
 
+			   			//Chargement du commentaire lié au tour
+						$('#turnComment').load(BASE_URL+"games/_getTurnComment", {'turnID': currentTurnID}, function(){
+							console.log('turnComment OK');
+						});
+
 			   			//Chargement des infos de la phase
 			   			$('#phaseInfos').load(BASE_URL+"games/_getPhaseInfos", { 'actionStatus': actionStatus, 'phaseID': phaseID, 'storyteller': storyteller},function() {
 					  		console.log('infos phase OK');
 						});
 
+						if(phaseID == '1') {
+							$('#table').load(BASE_URL+"games/_displayBoard", { 'phase': phaseID, 'gameID': gameID, 'turn': {'tu_id': currentTurnID, 'us_id': storytellerID}, 'storyteller': storyteller, 'actionStatus': actionStatus}, function() { 
+				   				console.log('display board ok');
+				   			});
+						}
+						if(phaseID == '3') {
+							//On vérifie si les joueurs sont tous prêts
+							$.post(BASE_URL+"games/_checkIfPlayersAreReady/"+gameID, function(data) {
+								if(data == 'true') {
+									$.post(BASE_URL+"games/_startNewTurn/"+gameID+"/"+storytellerID); //possible pb ici avec l'id du storyteller non mis à jour
+								}
+							});
+						}
+
 			   			if(phaseID != oldPhase) {
 				   			changePhaseNotification(phaseID);
 
-				   			$('#table').load(BASE_URL+"games/_displayBoard", { 'phase': phaseID, 'gameID': gameID, 'turn': {'tu_id': currentTurnID, 'us_id': userID}, 'storyteller': storyteller, 'actionStatus': actionStatus}, function() { 
+				   			$('#table').load(BASE_URL+"games/_displayBoard", { 'phase': phaseID, 'gameID': gameID, 'turn': {'tu_id': currentTurnID, 'us_id': storytellerID}, 'storyteller': storyteller, 'actionStatus': actionStatus}, function() { 
 				   				console.log('display board ok');
 				   			});
 				   			$('#hand').load(BASE_URL+"games/_displayHand", {'phase': phaseID, 'userID': userID, 'gameID': gameID, 'turnID': currentTurnID, 'storyteller': storyteller, 'actionStatus': actionStatus}, function() { 
@@ -122,7 +150,7 @@
 
 		 	});
 	 	});
-	}, 500);
+	}, 1000);
 
 	function changePhaseNotification(phaseID) {
 		var STORYTELLER_PHASE = '0';
@@ -134,7 +162,7 @@
 		console.log(phaseID);
 		switch(phaseID) {
 			case STORYTELLER_PHASE:
-				phase = 'Tour du conteur';
+				phase = 'Un nouveau tour commence : tour du conteur';
 				break;
 			case BOARD_PHASE:
 				phase = 'Tour des joueurs';

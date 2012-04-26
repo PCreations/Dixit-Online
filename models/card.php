@@ -1,5 +1,26 @@
 <?php
 
+function addCardIn($cardName, $cardImage) {
+	global $db;
+
+	$query = $db->prepare('INSERT INTO cards(ca_name, ca_image)
+					VALUES(:cardName, :cardImage)');
+	$query->execute(array('cardName' => $cardName,
+						'cardImage' => $cardImage));
+	$query->closeCursor();
+	return $db->lastInsertId();
+}
+
+function addCardInDeck($cardID, $gameTypeID) {
+	global $db;
+
+	$query = $db->prepare('INSERT INTO deck(gt_id, ca_id)
+					VALUES(:gameTypeID, :cardID)');
+	$query->execute(array('gameTypeID' => $gameTypeID,
+						'cardID' => $cardID));
+	$query->closeCursor();
+}
+
 function getCardInfos($cardID, $fields = array('*')) {
 	global $db;
 

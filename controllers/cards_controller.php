@@ -17,6 +17,14 @@ useModels(array('card'));
 	}
 }*/
 
+function generateDeck() {
+	for($i=1; $i<=31; $i++) {
+		$cardID = addCardIn($i, "$i.png");
+		addCardInDeck($cardID, 4);
+	}
+	echo 'ok';
+}
+
 function addCard($gameID, $turnID, $cardID) {
 	if(!isLogged()) {
 		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);
@@ -35,7 +43,7 @@ function addCard($gameID, $turnID, $cardID) {
 		}
 		else { //Sinon tout à l'air bon on peut ajouter la carte
 			_addCardInBoard($cardID, $turnID, $userID);
-			setMessage('Votre carte a bien été ajoutée', FLASH_SUCCESS);
+			//setMessage('Votre carte a bien été ajoutée', FLASH_SUCCESS);
 			redirect('games', 'play', array($gameID));
 		}
 	}
@@ -71,7 +79,7 @@ function addStorytellerCard() {
 			addTurnComment($turnID, $comment);
 			updatePlayedTurn($cardID, $_SESSION[USER_MODEL][USER_PK], $turnID);
 			addCardInBoard($cardID, $turnID);
-			setMessage('Votre carte a bien été ajoutée.', FLASH_SUCCESS);
+			//setMessage('Votre carte a bien été ajoutée.', FLASH_SUCCESS);
 			redirect('games', 'play', array($_POST['gameID']));
 		}
 		else {
@@ -106,7 +114,7 @@ function vote() {
 		}
 		else {
 			extract($_POST);
-			setMessage('Votre vote a bien été pris en compte', FLASH_SUCCESS);
+			//setMessage('Votre vote a bien été pris en compte', FLASH_SUCCESS);
 			addGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
 			redirect('games', 'play', array($_POST['gameID']));
 		}

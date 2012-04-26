@@ -29,8 +29,8 @@ function getWaintingGames() {
 function addPlayerInGame($gameID, $userID) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO plays(us_id, ga_id)
-						VALUES(:userID, :gameID)');
+	$query = $db->prepare('INSERT INTO plays(us_id, ga_id, pl_status)
+						VALUES(:userID, :gameID, "Attente")');
 	try {
 		$query->execute(array('userID' => $userID,
 						  	 'gameID' => $gameID));
@@ -40,6 +40,30 @@ function addPlayerInGame($gameID, $userID) {
 	}
 
 	return true;
+}
+
+function setPlayerStatus($gameID, $userID, $status) {
+	global $db;
+
+	$query = $db->prepare('UPDATE plays
+						SET pl_status = :status
+						WHERE ga_id = :gameID
+						AND us_id = :userID');
+	$query->execute(array('status' => $status,
+						'gameID' => $gameID,
+						'userID' => $userID));
+}
+
+function getPlayerStatus($gameID, $userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT pl_status
+						FROM plays
+						WHERE ga_id = :gameID
+						AND us_id = :userID');
+	$query->execute(array('gameID' => $gameID,
+						'userID' => $userID));
+	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
 function removePlayerFromGame($gameID, $userID) {
@@ -237,4 +261,15 @@ function addPoints($userID, $turnID, $points) {
 	$query->execute(array('userID' => $userID,
 						'turnID' => $turnID,
 						'points' => $points));
+}
+
+function getTotalDealedPointsInTurn($turnID) {
+	global $db;
+
+	$query = $db->prepare('SELECT SUM(points) as total
+						FROM earned_points
+						WHERE tu_id = ?');
+	$query->execute(array($turnID));
+
+	return $query->fetch(PDO::FETCH_ASSOC);
 }

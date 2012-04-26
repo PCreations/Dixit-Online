@@ -9,3 +9,9 @@ table {
 td, th {
 	border: 1px solid white;
 }
+
+img {
+	display: inline-block;
+	width: 80px;
+	height: 115px;
+}

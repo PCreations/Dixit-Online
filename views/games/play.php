@@ -123,7 +123,17 @@
 							//On vérifie si les joueurs sont tous prêts
 							$.post(BASE_URL+"games/_checkIfPlayersAreReady/"+gameID, function(data) {
 								if(data == 'true') {
-									$.post(BASE_URL+"games/_startNewTurn/"+gameID+"/"+storytellerID); //possible pb ici avec l'id du storyteller non mis à jour
+									//On vérifie si la partie n'est pas terminée
+									$.post(BASE_URL+"games/_isGameOver/"+gameID, function(data) {
+										//Si la partie est terminée on redirige vers la page de fin de partie
+										if(data == 'true') {
+											$(location).attr('href',BASE_URL+"games/gameOver/"+gameID);
+										}
+										else { //sinon on lance un nouveau tour
+											$.post(BASE_URL+"games/_startNewTurn/"+gameID+"/"+storytellerID);
+										}
+									});
+									
 								}
 							});
 						}
@@ -149,7 +159,7 @@
 
 		 	});
 	 	});
-	}, 1000);
+	}, 10000);
 
 	function changePhaseNotification(phaseID) {
 		var STORYTELLER_PHASE = '0';

@@ -164,14 +164,16 @@ function play($gameID) {
 			
 			if($phase == POINTS_PHASE) {
 				if(_notAlreadyDealsPoints($currentTurn['tu_id'])) {
-					$gameOver = _dealPoints($currentTurn);
-					if($gameOver) {
-						$playersPoints = _getPlayersPoints($gameID);
-						render('game-over', array($playersPoints));
-					}
+					_dealPoints($currentTurn);
+					
 				}
 				/*if(_checkIfPlayersAreReady($gameID))
 					_startNewTurn($currentTurn['ga_id'], $currentTurn['us_id']);*/
+				if(_checkIfPlayersAreReady($gameID)) {
+					if(_isGameOver($gameID)) {
+						redirect('games', 'gameOver', array($gameID));
+					}
+				}
 			}
 
 			$storyteller = ($_SESSION[USER_MODEL][USER_PK] == $currentTurn['us_id']); //permet de savoir si le joueur connecté est actuellement le conteur ou non
@@ -206,6 +208,49 @@ function play($gameID) {
 	}
 }
 
+function gameOver($gameID) {
+	if(!isLogged()) {
+		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);
+		redirect('games');
+	}
+	else if(!_isGameOver($gameID)) {
+		setMessage('Cette partie n\'est pas terminée', FLASH_ERROR);
+		redirect('games');
+	}
+	else {
+		$playersPoints = _getPlayersPoints($gameID);
+
+		foreach($playersPoints as &$player) {
+			$player['pseudo'] = getOneRowResult(getUserInfos($player['us_id'], array('us_pseudo')), 'us_pseudo');
+		}
+
+		$vars['playersPoints'] = $playersPoints;
+		render('game-over', $vars);
+	}
+}
+
+function _isGameOver($gameID = null) {
+	if(isPost())
+		extract($_POST);
+
+	$boolean = false;
+	$gameTypeID = getOneRowResult(getGameInfos($gameID, array('gt_id')), 'gt_id');
+	$gameTypeInfos = getGameTypeInfos($gameTypeID);
+
+	$playersIDs = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+	foreach($playersIDs as $playerID) {
+		if(getOneRowResult(getTotalUserPointsInGame($gameID, $playerID), 'nbPoints') >= $gameTypeInfos['gt_points_limit']) {
+			$boolean = true;
+		}
+	}
+	
+	if(isPost())
+		echo $boolean ? 'true' : 'false';
+	else
+		return $boolean;
+
+}
+
 function _getPlayersPoints($gameID) {
 	$players = getPlayersInGame($gameID);
 	foreach($players as &$player) {
@@ -219,7 +264,7 @@ function _notAlreadyDealsPoints($turnID) {
 	return $points == 0;
 }
 
-function _checkIfPlayersAreReady($gameID) {
+function _checkIfPlayersAreReady($gameID, $return = false) {
 	if(isPost())
 		extract($_POST);
 
@@ -442,11 +487,7 @@ function _dealPoints($turn) {
 	debug($playersPoints);
 	foreach($playersPoints as $userID => $points) {
 		addPoints($userID, $turn['tu_id'], $points);
-		if (getOneRowResult(getTotalUserPointsInGame($turn['ga_id'], $userID), 'nbPoints') >= $gameTypeInfos['gt_points_limit'])
-			return true; //fin du jeu
 	}
-
-	return false;
 }
 
 //Fonction démarrant un nouveau tour

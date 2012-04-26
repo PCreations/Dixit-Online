@@ -1,6 +1,9 @@
 <p>Vous êtes connecté en tant que : <?php echo $_SESSION[USER_MODEL]['us_pseudo'];?></p>
-<h1>Phase actuelle : <?php echo $turn['phase']['title'];?></h1>
-<h2><?php echo $turn['phase']['infos'];?></h2>
+
+<div id="phaseInfos">
+	<h1>Phase actuelle : <?php echo $turn['phase']['title'];?></h1>
+	<h2><?php echo $turn['phase']['infos'];?></h2>
+</div>
 
 <h3>Conteur : <?php echo $turn['storyteller']['us_pseudo'];?></h3>
 <p><?php echo $turn['tu_comment'];?></p>
@@ -23,45 +26,131 @@
 	</table>
 </div>
 <h3>Table</h3>
-<?php
-_displayBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn, $storyteller, $actionStatus);
-?>
+<div id="table">
+	<?php
+	_displayBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn, $storyteller, $actionStatus);
+	?>
+</div>
 
 <h3>Votre main</h3>
-<?php
-_displayHand($turn['phase']['id'], $_SESSION[USER_MODEL][USER_PK], $turn['game']['ga_id'], $turn['tu_id'], $storyteller, $actionStatus);
-?>
+<div id="hand">
+	<?php
+	_displayHand($turn['phase']['id'], $_SESSION[USER_MODEL][USER_PK], $turn['game']['ga_id'], $turn['tu_id'], $storyteller, $actionStatus);
+	?>
+</div>
 
 <script type="text/javascript">
-	setInterval(function(){
-		//Par défaut le tour courant et la phase courante sont ceux défini en PHP (i.e le premier tour et la première phase)
-		currentTurnID = <?php echo $turn['tu_id'];?>;
-		storytellerID = <?php echo $turn['us_id'];?>;
-		phaseID = <?php echo $turn['game']['ga_id'];?>;
-		gameID = <?php echo $turn['game']['ga_id'];?>;
 
+	//Par défaut le tour courant et la phase courante sont ceux défini en PHP (i.e le premier tour et la première phase)
+	currentTurnID = <?php echo $turn['tu_id'];?>;
+	storytellerID = <?php echo $turn['us_id'];?>;
+	phaseID = <?php echo $turn['phase']['id'];?>;
+	actionStatus = <?php echo $actionStatus;?>;
+	gameID = <?php echo $turn['game']['ga_id'];?>;
+	userID = <?php echo $_SESSION[USER_MODEL][USER_PK];?>;
+	storyteller = <?php echo ($storyteller) ? 'true' : 'false';?>;
+	BASE_URL = '<?php echo BASE_URL;?>';
+
+	function readyForNextTurn() {
+		console.log("STORYTELLER ID = "+storytellerID);
+		$.post(BASE_URL+"games/_setPlayerStatus/"+gameID+"/"+userID+"/1", function(data) {
+			//maj infos phase
+			$('#phaseInfos').load(BASE_URL+"games/_getPhaseInfos", { 'actionStatus': actionStatus, 'phaseID': phaseID, 'storyteller': storyteller},function() {
+		  		console.log('infos phase OK');
+			});
+
+			//maj infos joueurs
+			$('#players').load("<?php echo BASE_URL;?>games/_getPlayersInfos", { 'gameID': gameID, 'currentTurnID': currentTurnID, 'storytellerID': storytellerID, 'phase': phaseID } ,function() {
+			  console.log('OK');
+			});
+
+			$('#readyForNextTurn').remove();
+			//On vérifie si les joueurs sont tous prêts
+			$.post(BASE_URL+"games/_checkIfPlayersAreReady/"+gameID, function(data) {
+				if(data == 'true') {
+					$.post(BASE_URL+"games/_startNewTurn/"+gameID+"/"+storytellerID); //possible pb ici avec l'id du storyteller non mis à jour
+					alert('Un nouveau tour commence');
+				}
+			});
+		});
+	}
+	setInterval(function(){
 		//récupération du tour actuel
-		$.post("<?php echo BASE_URL;?>games/_getCurrentGameTurn/"+gameID+"/tu_id", function(data) {
+		$.post(BASE_URL+"games/_getCurrentGameTurn/"+gameID+"/tu_id", function(data) {
 	   		currentTurnID = data;
 	   		console.log("currentTurnID = "+currentTurnID);
 
 	   		//récupération du storyteller actuel
-		 	$.post("<?php echo BASE_URL;?>games/_getCurrentGameTurn/"+gameID+"/us_id", function(data) {
+		 	$.post(BASE_URL+"games/_getCurrentGameTurn/"+gameID+"/us_id", function(data) {
 		   		storytellerID = data;
 		   		console.log("storytellerID = "+storytellerID);
+		   		storyteller = (storytellerID == userID) ? true : false;
+		   		console.log("Storyteller = "+storyteller);
 
 		   		//récupération de la phase actuelle
-				$.post("<?php echo BASE_URL;?>games/_getActualGamePhase/"+gameID+"/"+currentTurnID, function(data) {
+				$.post(BASE_URL+"games/_getActualGamePhase/"+gameID+"/"+currentTurnID, function(data) {
+			   		oldPhase = phaseID;
 			   		phaseID = data;
-			   		console.log("data phaseID = "+phaseID);
 
-			   		$('#players').load("<?php echo BASE_URL;?>games/_getPlayersInfos", { 'gameID': gameID, 'currentTurnID': currentTurnID, 'storytellerID': storytellerID, 'phase': phaseID } ,function() {
-					  console.log('OK');
-					});
+			   		//récupération du status du joueur dans la phase actuelle
+			   		$.post(BASE_URL+"games/_checkAction/"+phaseID+"/"+userID+"/"+currentTurnID+"/false", function(data) {
+			   			actionStatus = data;
+
+			   			//Chargement des infos de la phase
+			   			$('#phaseInfos').load(BASE_URL+"games/_getPhaseInfos", { 'actionStatus': actionStatus, 'phaseID': phaseID, 'storyteller': storyteller},function() {
+					  		console.log('infos phase OK');
+						});
+
+			   			if(phaseID != oldPhase) {
+				   			changePhaseNotification(phaseID);
+
+				   			$('#table').load(BASE_URL+"games/_displayBoard", { 'phase': phaseID, 'gameID': gameID, 'turn': {'tu_id': currentTurnID, 'us_id': userID}, 'storyteller': storyteller, 'actionStatus': actionStatus}, function() { 
+				   				console.log('display board ok');
+				   			});
+				   			$('#hand').load(BASE_URL+"games/_displayHand", {'phase': phaseID, 'userID': userID, 'gameID': gameID, 'turnID': currentTurnID, 'storyteller': storyteller, 'actionStatus': actionStatus}, function() { 
+				   				console.log('display hand ok');
+				   			});
+				   		}
+				   		console.log("data phaseID = "+phaseID);
+				   		$('#players').load("<?php echo BASE_URL;?>games/_getPlayersInfos", { 'gameID': gameID, 'currentTurnID': currentTurnID, 'storytellerID': storytellerID, 'phase': phaseID } ,function() {
+						  console.log('OK');
+						});
+
+			   		});
+
 			 	});
 
 		 	});
 	 	});
-	}, 10000);
+	}, 500);
+
+	function changePhaseNotification(phaseID) {
+		var STORYTELLER_PHASE = '0';
+		var BOARD_PHASE = '1';
+		var VOTE_PHASE = '2';
+		var POINTS_PHASE = '3';
+		var phase;
+
+		console.log(phaseID);
+		switch(phaseID) {
+			case STORYTELLER_PHASE:
+				phase = 'Tour du conteur';
+				break;
+			case BOARD_PHASE:
+				phase = 'Tour des joueurs';
+				break;
+			case VOTE_PHASE:
+				phase = 'Phase de vote';
+				break;
+			case POINTS_PHASE:
+				phase = 'Décompte des points';
+				break;
+			default:
+				phase = 'Erreur';
+				break;
+		}
+
+		alert(phase);
+	}
 
 </script>

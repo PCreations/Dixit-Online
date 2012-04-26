@@ -164,9 +164,10 @@ function play($gameID) {
 			
 			if($phase == POINTS_PHASE) {
 				if(_notAlreadyDealsPoints($currentTurn['tu_id'])) {
-					$isGameOver = _dealPoints($currentTurn);
-					if($isGameOver) {
-						render('game-over');
+					$gameOver = _dealPoints($currentTurn);
+					if($gameOver) {
+						$playersPoints = _getPlayersPoints($gameID);
+						render('game-over', array($playersPoints));
 					}
 				}
 				/*if(_checkIfPlayersAreReady($gameID))
@@ -203,6 +204,14 @@ function play($gameID) {
 			render('play', $vars);
 		}
 	}
+}
+
+function _getPlayersPoints($gameID) {
+	$players = getPlayersInGame($gameID);
+	foreach($players as &$player) {
+		$player['points'] = getOneRowResult(getTotalUserPointsInGame($gameID, $player['us_id']), 'nbPoints');
+	}
+	return $players;
 }
 
 function _notAlreadyDealsPoints($turnID) {
@@ -393,6 +402,7 @@ function _dealPoints($turn) {
 	$storytellerCardID = getOneRowResult(getPlayerCardInBoard($turn['tu_id'], $turn['us_id']), 'ca_id');
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();
+
 	foreach($cardsIDs as $cardID) {
 		$cards[$cardID]['us_id'] = getOneRowResult(getCardOwner($cardID, $turn['tu_id']), 'us_id');
 		$cards[$cardID]['total'] = getOneRowResult(getTotalCardVoteInTurn($cardID, $turn['tu_id']), 'total');

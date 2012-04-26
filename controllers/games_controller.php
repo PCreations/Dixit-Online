@@ -107,6 +107,8 @@ function _startGame($gameID) {
 	//Récupération du deck associé au type de la partie
 	$deck = getDeck($gameID);
 
+	debug($deck);
+
 	//Distribution des cartes
 	$hands = _dealCards($deck, CARD_PER_PLAYER, count($playersIDS));
 
@@ -137,7 +139,7 @@ function _dealCards(&$deck, $nbCards, $nbPlayers) {
 		$hands[] = array_slice($deck, $i*$nbCards, $nbCards);
 	}
 
-	$deck = array_slice($deck, $nbPlayers*$nbCards, $nbPlayers*$nbCards);
+	$deck = array_slice($deck, $nbPlayers*$nbCards);
 
 	return $hands;
 }

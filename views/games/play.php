@@ -123,17 +123,18 @@
 							//On vérifie si les joueurs sont tous prêts
 							$.post(BASE_URL+"games/_checkIfPlayersAreReady/"+gameID, function(data) {
 								if(data == 'true') {
-									//On vérifie si la partie n'est pas terminée
+									//On vérifie si la partie est terminée
 									$.post(BASE_URL+"games/_isGameOver/"+gameID, function(data) {
 										//Si la partie est terminée on redirige vers la page de fin de partie
 										if(data == 'true') {
+											console.log("partie terminé");
 											$(location).attr('href',BASE_URL+"games/gameOver/"+gameID);
 										}
 										else { //sinon on lance un nouveau tour
+											console.log("Nouveau tour");
 											$.post(BASE_URL+"games/_startNewTurn/"+gameID+"/"+storytellerID);
 										}
 									});
-									
 								}
 							});
 						}

@@ -81,12 +81,11 @@ function getPlayersInGame($gameID) {
 
 	$query = $db->prepare('SELECT us_id
 						FROM plays
+						NATURAL JOIN users
 						WHERE ga_id = ?
 						ORDER BY pl_position');
 	$query->execute(array($gameID));
-	$result = $query->fetchAll(PDO::FETCH_ASSOC);
-	$result = (!$result) ? array() : $result;
-	return $result;
+	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function isInGame($gameID, $userID) {

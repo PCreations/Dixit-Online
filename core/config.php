@@ -6,7 +6,8 @@ define('GET_VAR_NAME', 'page');
 define('INDEX_ACTION', 'index');
 
 /**  Url de base du site */
-define('BASE_URL', 'http://tomduchene.fr/dixit/');
+//define('BASE_URL', 'http://tomduchene.fr/dixit/');
+define('BASE_URL', 'http://localhost/dixit/');
 
 /**  Alias de DIRECTORY_SEPARATOR */
 define('DS', DIRECTORY_SEPARATOR);
@@ -38,10 +39,10 @@ define('HTTP_ERR_CONTROLLER', 'errors');
 /** Défini le nom de l'action à déclencher en cas d'erreur 404 */
 define('HTTP_404_ACTION', 'notFound');
 
-/** Défini le nom de la constante de message flash d'erreur **/
+/** Défini le nom de la constante de message flash de succès **/
 define('FLASH_SUCCESS',  0);
 
-/** Défini le nom de la constante de message flash de succès **/
+/** Défini le nom de la constante de message flash d'erreur **/
 define('FLASH_ERROR',  1);
 
 /** Défini le nom de la constante de message flash  d'information **/

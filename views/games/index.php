@@ -1,3 +1,4 @@
+<?php debug($_SERVER);?>
 <h1>Parties</h1>
 <table>
 	<caption>Parties en attente</caption>

@@ -5,7 +5,7 @@ useModels(array('user'));
 function register() {
 	if(isset($_POST['register'])) {
 		extract($_POST);
-
+		
 		/* validation du formulaire */
 		if(encrypt($us_password) != encrypt($passConfirm)) {
 			setMessage('Les mots de passe ne coïncident pas', FLASH_ERROR);

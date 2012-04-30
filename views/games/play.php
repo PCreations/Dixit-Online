@@ -160,7 +160,7 @@
 
 		 	});
 	 	});
-	}, 1000);
+	}, 5000);
 
 	function changePhaseNotification(phaseID) {
 		var STORYTELLER_PHASE = '0';

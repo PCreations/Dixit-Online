@@ -17,7 +17,9 @@ function index() {
 	foreach($partiesEnAttente as &$partie) {
 		if(isLogged()) {
 			$userID = $_SESSION[USER_MODEL][USER_PK];
+
 			$playersInGame = getSpecificArrayValues(getPlayersInGame($partie['ga_id']), 'us_id');
+
 			if(!in_array($userID, $playersInGame)) {
 				$partie['action'] = createLink('rejoindre', 'games', 'joinGame', array($partie['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
 			}
@@ -107,7 +109,7 @@ function _startGame($gameID) {
 	//Récupération du deck associé au type de la partie
 	$deck = getDeck($gameID);
 
-	debug($deck);
+	//debug($deck);
 
 	//Distribution des cartes
 	$hands = _dealCards($deck, CARD_PER_PLAYER, count($playersIDS));

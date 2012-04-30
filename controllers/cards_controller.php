@@ -25,6 +25,30 @@ function generateDeck() {
 	echo 'ok';
 }
 
+function addCardInDB() {
+
+	//Vérification si l'utilisateur est admin
+
+	//Si le formulaire n'a pas été posté : afficher le formulaire
+
+	//Si le formulaire a été posté : on traite les données
+
+		//Vérifier l'intégrité des données (image non vide, etc.)
+
+			//Si intègre
+
+				//On demande au modèle d'enregistrer la carte
+				//On affiche un message de succès
+				//On redirige
+
+			//Si non
+
+				//On affiche un message d'erreur
+				//On réaffiche la vue en passant en paramètre les éventuels paramètres déjà indiqué dans le formulaire
+	
+
+}
+
 function addCard($gameID, $turnID, $cardID) {
 	if(!isLogged()) {
 		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);

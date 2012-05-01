@@ -1,0 +1,497 @@
+******************* PHASE : 0 ************
+userID = 3
+turnID = 11
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 2
+turnID = 11
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 4
+turnID = 11
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 3
+turnID = 11
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 2
+turnID = 11
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 1 ************
+userID = 4
+turnID = 11
+storytellerID = 2
+turnComment = escalier
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 1 ************
+userID = 3
+turnID = 11
+storytellerID = 2
+turnComment = escalier
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 2 ************
+userID = 2
+turnID = 11
+storytellerID = 2
+turnComment = escalier
+storyteller = Deltod
+actionStatus = 5
+
+
+******************* PHASE : 2 ************
+userID = 4
+turnID = 11
+storytellerID = 2
+turnComment = escalier
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 11
+storytellerID = 2
+turnComment = escalier
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 11
+storytellerID = 2
+turnComment = escalier
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 11
+storytellerID = 2
+turnComment = escalier
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 11
+storytellerID = 2
+turnComment = escalier
+storyteller = Deltod
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 11
+storytellerID = 2
+turnComment = escalier
+storyteller = Deltod
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 11
+storytellerID = 2
+turnComment = escalier
+storyteller = Deltod
+actionStatus = 5
+players ready : 1
+START NEW TURN
+
+
+******************* PHASE : 0 ************
+userID = 2
+turnID = 14
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 3
+turnID = 14
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 4
+turnID = 14
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 2
+turnID = 14
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 3
+turnID = 14
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 4
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 1 ************
+userID = 3
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 1 ************
+userID = 4
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 1 ************
+userID = 2
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 5
+
+
+******************* PHASE : 2 ************
+userID = 3
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 2 ************
+userID = 2
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 5
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 14
+storytellerID = 2
+turnComment = triste
+storyteller = Deltod
+actionStatus = 5
+players ready : 1
+START NEW TURN
+
+
+******************* PHASE : 0 ************
+userID = 3
+turnID = 17
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 3
+turnID = 17
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 3
+turnID = 17
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 4
+turnID = 17
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 2
+turnID = 17
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 3
+turnID = 17
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 4
+turnID = 17
+storytellerID = 2
+turnComment = 
+storyteller = Deltod
+actionStatus = 4
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 18
+storytellerID = 2
+turnComment = bulles
+storyteller = Deltod
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 18
+storytellerID = 2
+turnComment = bulles
+storyteller = Deltod
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 18
+storytellerID = 2
+turnComment = bulles
+storyteller = Deltod
+actionStatus = 5
+players ready : 1
+START NEW TURN
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 21
+storytellerID = 2
+turnComment = gvf
+storyteller = Deltod
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 21
+storytellerID = 2
+turnComment = gvf
+storyteller = Deltod
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 21
+storytellerID = 2
+turnComment = gvf
+storyteller = Deltod
+actionStatus = 5
+players ready : 1
+START NEW TURN
+
+

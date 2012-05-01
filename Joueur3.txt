@@ -1,0 +1,526 @@
+******************* PHASE : 2 ************
+userID = 2
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 5
+
+
+******************* PHASE : 2 ************
+userID = 3
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 2 ************
+userID = 2
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 5
+
+
+******************* PHASE : 2 ************
+userID = 3
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 2 ************
+userID = 4
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 5
+
+
+******************* PHASE : 2 ************
+userID = 2
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 5
+
+
+******************* PHASE : 2 ************
+userID = 4
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 5
+
+
+******************* PHASE : 2 ************
+userID = 3
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 9
+storytellerID = 4
+turnComment = pendule
+storyteller = Joueur3
+actionStatus = 5
+players ready : 1
+START NEW TURN
+
+
+******************* PHASE : 0 ************
+userID = 2
+turnID = 12
+storytellerID = 4
+turnComment = 
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 3
+turnID = 12
+storytellerID = 4
+turnComment = 
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 4
+turnID = 12
+storytellerID = 4
+turnComment = 
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 1 ************
+userID = 3
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 1 ************
+userID = 2
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 2 ************
+userID = 4
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 5
+
+
+******************* PHASE : 2 ************
+userID = 3
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 2 ************
+userID = 2
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 12
+storytellerID = 4
+turnComment = dés
+storyteller = Joueur3
+actionStatus = 5
+players ready : 1
+START NEW TURN
+
+
+******************* PHASE : 0 ************
+userID = 3
+turnID = 15
+storytellerID = 4
+turnComment = 
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 2
+turnID = 15
+storytellerID = 4
+turnComment = 
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 3
+turnID = 15
+storytellerID = 4
+turnComment = 
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 4
+turnID = 15
+storytellerID = 4
+turnComment = 
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 0 ************
+userID = 2
+turnID = 15
+storytellerID = 4
+turnComment = 
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 1 ************
+userID = 3
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 1 ************
+userID = 2
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 1 ************
+userID = 4
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 5
+
+
+******************* PHASE : 1 ************
+userID = 3
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 2 ************
+userID = 4
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 5
+
+
+******************* PHASE : 2 ************
+userID = 3
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 4
+
+
+******************* PHASE : 2 ************
+userID = 4
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 5
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 4
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 15
+storytellerID = 4
+turnComment = monster
+storyteller = Joueur3
+actionStatus = 5
+players ready : 1
+START NEW TURN
+
+
+******************* PHASE : 3 ************
+userID = 4
+turnID = 20
+storytellerID = 4
+turnComment = d
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 3
+turnID = 20
+storytellerID = 4
+turnComment = d
+storyteller = Joueur3
+actionStatus = 5
+players ready : 
+
+
+******************* PHASE : 3 ************
+userID = 2
+turnID = 20
+storytellerID = 4
+turnComment = d
+storyteller = Joueur3
+actionStatus = 5
+players ready : 1
+START NEW TURN
+
+

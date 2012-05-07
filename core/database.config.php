@@ -5,5 +5,5 @@ define('DB_PASSWORD', 'dixitdixit');
 define('DB_NAME', 'db355807268');*/
 define('DB_HOST', 'localhost');
 define('DB_LOGIN', 'root');
-define('DB_PASSWORD', '');
+define('DB_PASSWORD', 'flipos6929');
 define('DB_NAME', 'dixit');

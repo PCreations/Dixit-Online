@@ -28,7 +28,7 @@ $JS_FILES = array('jquery-1.7.2.min.js', 'script.js');
 /**
  * Tableau contenant la liste des fichiers .css à inclure
  */
-$CSS_FILES = array();
+$CSS_FILES = array('style.css', 'test.css');
 
 
 require_once('core/core.php');

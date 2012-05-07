@@ -22,7 +22,7 @@ function generateDeck() {
 		$cardID = addCardIn($i, "$i.png");
 		addCardInDeck($cardID, 4);
 	}
-	echo 'ok';
+	echo 'okok';
 }
 
 function addCardInDB() {

@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user', 'game', 'card', 'gameType'));
+useModels(array('user', 'game', 'card'));
 
 define('CARD_PER_PLAYER', 3); //pour tester
 define('STORYTELLER_PHASE', 0);
@@ -31,6 +31,7 @@ function index() {
 			$partie['action'] = 'Aucune action possible. ' . createLink('connectez-vous', 'users', 'login', null, array('title' => 'connectez-vous')) . ' pour rejoindre une partie';
 		}
 	}
+
 	$vars = array('partiesEnAttente' => $partiesEnAttente);
 	render('index', $vars);
 }
@@ -106,7 +107,7 @@ function _startGame($gameID) {
 	//Démarre le 1er tour
 	$turnID = addTurn($gameID, $playersIDS[0]['us_id']);
 
-	//Récupération du deck associé au type de la partie
+	//Récupération du deck associé au jeu
 	$deck = getDeck($gameID);
 
 	//debug($deck);

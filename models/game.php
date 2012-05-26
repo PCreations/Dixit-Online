@@ -16,30 +16,21 @@ function getGameInfos($gameID, $fields = array('*')) {
 function getWaintingGames() {
 	global $db;
 
-	$result = $db->query('SELECT ga.ga_id, ga.ga_name, gt.gt_name, gt.gt_nb_players, COUNT(pl.us_id) as nbPlayersInGame
+	$result = $db->query('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, COUNT(pl.us_id) as nbPlayersInGame
 						FROM games as ga
-						LEFT JOIN game_types as gt
-						ON gt.gt_id = ga.gt_id
 						LEFT JOIN plays as pl
 						ON pl.ga_id = ga.ga_id
-						HAVING (nbPlayersInGame < gt.gt_nb_players)');
+						HAVING (nbPlayersInGame < ga.ga_nb_players)');
 	return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function addPlayerInGame($gameID, $userID) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO plays(us_id, ga_id, pl_status)
-						VALUES(:userID, :gameID, "Attente")');
-	try {
-		$query->execute(array('userID' => $userID,
+	$query = $db->prepare('INSERT INTO plays(us_id, ga_id)
+						VALUES(:userID, :gameID)');
+	return $query->execute(array('userID' => $userID,
 						  	 'gameID' => $gameID));
-	}
-	catch(Exception $e) {
-		return false;
-	}
-
-	return true;
 }
 
 function setPlayerStatus($gameID, $userID, $status) {
@@ -106,12 +97,10 @@ function isInGame($gameID, $userID) {
 function checkPlayersInGame($gameID) {
 	global $db;
 
-	$query = $db->prepare('SELECT COUNT(plays.us_id) as nbPlayersInGame, game_types.gt_nb_players as nbPlayersMax
+	$query = $db->prepare('SELECT COUNT(plays.us_id) as nbPlayersInGame, games.ga_nb_players as nbPlayersMax
 						FROM plays
 						INNER JOIN games
 						ON games.ga_id = plays.ga_id
-						INNER JOIN game_types
-						ON games.gt_id = game_types.gt_id
 						WHERE games.ga_id = ?');
 	$query->execute(array($gameID));
 	$result = $query->fetch(PDO::FETCH_ASSOC);

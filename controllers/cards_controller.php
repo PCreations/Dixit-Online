@@ -19,8 +19,8 @@ useModels(array('card'));
 
 function generateDeck() {
 	for($i=1; $i<=31; $i++) {
-		$cardID = addCardIn($i, "$i.png");
-		addCardInDeck($cardID, 4);
+		$cardID = addCardIn(1, $i, "$i.png");
+		addCardInDeck($cardID, 1);
 	}
 	echo 'ok';
 }

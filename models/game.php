@@ -125,10 +125,8 @@ function getDeck($gameID) {
 						FROM cards
 						INNER JOIN deck
 						ON deck.ca_id = cards.ca_id
-						INNER JOIN game_types as gt
-						ON gt.gt_id = deck.gt_id
 						INNER JOIN games
-						ON games.gt_id = gt.gt_id 
+						ON games.de_id = deck.de_id
 						WHERE games.ga_id = ?');
 	$query->execute(array($gameID));
 	return $query->fetchAll(PDO::FETCH_ASSOC);

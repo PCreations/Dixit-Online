@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user', 'game', 'card', 'gameType'));
+useModels(array('user', 'game', 'card', 'gameType', 'deck'));
 
 define('CARD_PER_PLAYER', 3); //pour tester
 define('STORYTELLER_PHASE', 0);
@@ -13,16 +13,16 @@ define('ACTION_IN_PROGRESS', 4);
 define('ACTION_DONE', 5);
 
 function index() {
-	$deckInfos = getAllDecks(array(de_id, de_name));
+	$deckInfos = getAllDecks(array('de_id', 'de_name'));
 	debug($deckInfos);
 
 
-	if(!isPost) {
+	if(!isPost()) {
 		$partiesEnAttente = getWaintingGames();
 	}
 	else {
 		extract($_POST);
-		$partiesEnAttente = filterGames($name, $nbplayers, $deck);
+		$partiesEnAttente = filterGames('name', 'nbplayers', 'deck');
 	}
 	foreach($partiesEnAttente as &$partie) {
 			if(isLogged()) {
@@ -41,7 +41,7 @@ function index() {
 				$partie['action'] = 'Aucune action possible. ' . createLink('connectez-vous', 'users', 'login', null, array('title' => 'connectez-vous')) . ' pour rejoindre une partie';
 			}
 		}
-		$vars = array('partiesEnAttente' => $partiesEnAttente);
+		$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos);
 		render('index', $vars);
 }
 

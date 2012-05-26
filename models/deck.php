@@ -14,7 +14,8 @@ function getAllDecks($fields = array('*')) {
 	global $db;
 	$fields = implode(',', $fields);
 
-	$query = $db->prepare('SELECT '.$fields.' 
+	$query = $db->query('SELECT '.$fields.' 
 						FROM decks');
+										
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }

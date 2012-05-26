@@ -1,5 +1,17 @@
 <?php debug($_SERVER);?>
 <h1>Parties</h1>
+
+<form action="">
+	<input type="text" name="name">
+	<input type="text" name="nbplayers">
+	<select>
+<?php foreach($deckInfos as $deck): ?>
+		<option name='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
+<?php endforeach; ?>
+	</select>
+	<submit value='Trier'>
+</form>
+
 <table>
 	<caption>Parties en attente</caption>
 	<tr>

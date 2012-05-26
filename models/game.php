@@ -26,20 +26,18 @@ function getGameInfos($gameID, $fields = array('*')) {
 						FROM games
 						WHERE ga_id = ?');
 	$query->execute(array($gameID));
-
+	
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
 function getWaintingGames() {
 	global $db;
 
-	$result = $db->query('SELECT ga.ga_id, ga.ga_name, gt.gt_name, gt.gt_nb_players, COUNT(pl.us_id) as nbPlayersInGame
+	$result = $db->query('SELECT *, COUNT(pl.us_id) as nbPlayersInGame
 						FROM games as ga
-						LEFT JOIN game_types as gt
-						ON gt.gt_id = ga.gt_id
 						LEFT JOIN plays as pl
 						ON pl.ga_id = ga.ga_id
-						HAVING (nbPlayersInGame < gt.gt_nb_players)');
+						HAVING (nbPlayersInGame < ga_nb_players)');
 	return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 

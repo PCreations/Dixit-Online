@@ -1,23 +1,24 @@
 <?php
 
-function addCardIn($cardName, $cardImage) {
+function addCardIn($userID, $cardName, $cardImage) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO cards(ca_name, ca_image)
-					VALUES(:cardName, :cardImage)');
-	$query->execute(array('cardName' => $cardName,
+	$query = $db->prepare('INSERT INTO cards(us_id, ca_name, ca_image)
+					VALUES(:userID, :cardName, :cardImage)');
+	$query->execute(array('userID' => $userID,
+						'cardName' => $cardName,
 						'cardImage' => $cardImage));
 	$query->closeCursor();
 	return $db->lastInsertId();
 }
 
-function addCardInDeck($cardID, $gameTypeID) {
+function addCardInDeck($cardID, $deckID) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO deck(gt_id, ca_id)
-					VALUES(:gameTypeID, :cardID)');
-	$query->execute(array('gameTypeID' => $gameTypeID,
-						'cardID' => $cardID));
+	$query = $db->prepare('INSERT INTO cards_decks(ca_id, de_id)
+					VALUES(:cardID, :deckID)');
+	$query->execute(array('cardID' => $cardID,
+						'deckID' => $deckID));
 	$query->closeCursor();
 }
 

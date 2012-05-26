@@ -1,320 +1,262 @@
-/*==============================================================*/
-/* Nom de SGBD :  MySQL 5.0                                     */
-/* Date de création :  26/05/2012 16:00:32                      */
-/*==============================================================*/
-
-
-drop table if exists boards;
-
-drop table if exists cards;
-
-drop table if exists cards_decks;
-
-drop table if exists chats;
-
-drop table if exists decks;
-
-drop table if exists earned_points;
-
-drop table if exists games;
-
-drop table if exists hands;
-
-drop table if exists messages;
-
-drop table if exists pick;
-
-drop table if exists plays;
-
-drop table if exists turns;
-
-drop table if exists users;
-
-drop table if exists users_cards_votes;
-
-drop table if exists users_friends;
-
-drop table if exists votes;
-
-/*==============================================================*/
-/* Table : boards                                               */
-/*==============================================================*/
-create table boards
-(
-   tu_id                int not null,
-   ca_id                int not null,
-   primary key (tu_id, ca_id)
-);
-
-/*==============================================================*/
-/* Table : cards                                                */
-/*==============================================================*/
-create table cards
-(
-   ca_id                int not null,
-   us_id                int not null,
-   ca_name              char(255),
-   ca_image             char(255),
-   primary key (ca_id)
-);
-
-/*==============================================================*/
-/* Table : cards_decks                                          */
-/*==============================================================*/
-create table cards_decks
-(
-   ca_id                int not null,
-   de_id                int not null,
-   primary key (ca_id, de_id)
-);
-
-/*==============================================================*/
-/* Table : chats                                                */
-/*==============================================================*/
-create table chats
-(
-   us_id                int not null,
-   me_id                bigint not null,
-   ga_id                int not null,
-   primary key (us_id, me_id, ga_id)
-);
-
-/*==============================================================*/
-/* Table : decks                                                */
-/*==============================================================*/
-create table decks
-(
-   de_id                int not null,
-   us_id                int not null,
-   de_name              char(255) not null,
-   de_status            smallint not null,
-   primary key (de_id)
-);
-
-/*==============================================================*/
-/* Table : earned_points                                        */
-/*==============================================================*/
-create table earned_points
-(
-   us_id                int not null,
-   tu_id                int not null,
-   primary key (us_id, tu_id)
-);
-
-/*==============================================================*/
-/* Table : games                                                */
-/*==============================================================*/
-create table games
-(
-   ga_id                int not null,
-   de_id                int not null,
-   us_id                int not null,
-   ga_name              char(255),
-   ga_creation_date     datetime,
-   ga_password          char(255),
-   ga_nb_players        int,
-   primary key (ga_id)
-);
-
-/*==============================================================*/
-/* Table : hands                                                */
-/*==============================================================*/
-create table hands
-(
-   tur_tu_id            int not null,
-   tu_id                int not null,
-   ca_id                int not null,
-   us_id                int not null,
-   primary key (tur_tu_id, tu_id, ca_id, us_id)
-);
-
-/*==============================================================*/
-/* Table : messages                                             */
-/*==============================================================*/
-create table messages
-(
-   me_id                bigint not null,
-   me_text              char(255),
-   me_date              datetime,
-   primary key (me_id)
-);
-
-/*==============================================================*/
-/* Table : pick                                                 */
-/*==============================================================*/
-create table pick
-(
-   ga_id                int not null,
-   ca_id                int not null,
-   primary key (ga_id, ca_id)
-);
-
-/*==============================================================*/
-/* Table : plays                                                */
-/*==============================================================*/
-create table plays
-(
-   us_id                int not null,
-   ga_id                int not null,
-   pl_status            varchar(255),
-   primary key (us_id, ga_id)
-);
-
-/*==============================================================*/
-/* Table : turns                                                */
-/*==============================================================*/
-create table turns
-(
-   tu_id                int not null,
-   us_id                int not null,
-   ga_id                int not null,
-   tu_date_start        datetime,
-   tu_date_end          datetime,
-   di_comments          char(150) not null,
-   primary key (tu_id)
-);
-
-/*==============================================================*/
-/* Table : users                                                */
-/*==============================================================*/
-create table users
-(
-   us_id                int not null,
-   us_name              char(255),
-   us_lastname          char(255),
-   us_pseudo            char(255) not null,
-   us_password          char(255) not null,
-   us_avatar            char(255),
-   us_mail              char(255) not null,
-   us_birthdate         datetime,
-   us_signin_date       datetime,
-   us_last_connexion    datetime,
-   primary key (us_id)
-);
-
-/*==============================================================*/
-/* Table : users_cards_votes                                    */
-/*==============================================================*/
-create table users_cards_votes
-(
-   us_id                int not null,
-   ca_id                int not null,
-   primary key (us_id, ca_id)
-);
-
-alter table users_cards_votes comment 'Vote pour les cartes ajouté par les joueurs';
-
-/*==============================================================*/
-/* Table : users_friends                                        */
-/*==============================================================*/
-create table users_friends
-(
-   us_id                int not null,
-   use_us_id            int not null,
-   fr_date              datetime not null,
-   fr_status            int not null,
-   primary key (us_id, use_us_id)
-);
-
-/*==============================================================*/
-/* Table : votes                                                */
-/*==============================================================*/
-create table votes
-(
-   us_id                int not null,
-   ca_id                int not null,
-   tu_id                int not null,
-   vo_date              timestamp,
-   primary key (us_id, ca_id, tu_id)
-);
-
-alter table boards add constraint fk_boards foreign key (tu_id)
-      references turns (tu_id) on delete restrict on update restrict;
-
-alter table boards add constraint fk_boards2 foreign key (ca_id)
-      references cards (ca_id) on delete restrict on update restrict;
-
-alter table cards add constraint fk_to_create foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table cards_decks add constraint fk_cards_decks foreign key (ca_id)
-      references cards (ca_id) on delete restrict on update restrict;
-
-alter table cards_decks add constraint fk_cards_decks2 foreign key (de_id)
-      references decks (de_id) on delete restrict on update restrict;
-
-alter table chats add constraint fk_chats foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table chats add constraint fk_chats2 foreign key (me_id)
-      references messages (me_id) on delete restrict on update restrict;
-
-alter table chats add constraint fk_chats3 foreign key (ga_id)
-      references games (ga_id) on delete restrict on update restrict;
-
-alter table decks add constraint fk_decks_users foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table earned_points add constraint fk_earned_points foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table earned_points add constraint fk_earned_points2 foreign key (tu_id)
-      references turns (tu_id) on delete restrict on update restrict;
-
-alter table games add constraint fk_create foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table games add constraint fk_decks_games foreign key (de_id)
-      references decks (de_id) on delete restrict on update restrict;
-
-alter table hands add constraint fk_hands foreign key (tur_tu_id)
-      references turns (tu_id) on delete restrict on update restrict;
-
-alter table hands add constraint fk_hands2 foreign key (tu_id)
-      references turns (tu_id) on delete restrict on update restrict;
-
-alter table hands add constraint fk_hands3 foreign key (ca_id)
-      references cards (ca_id) on delete restrict on update restrict;
-
-alter table hands add constraint fk_hands4 foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table pick add constraint fk_pick foreign key (ga_id)
-      references games (ga_id) on delete restrict on update restrict;
-
-alter table pick add constraint fk_pick2 foreign key (ca_id)
-      references cards (ca_id) on delete restrict on update restrict;
-
-alter table plays add constraint fk_plays foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table plays add constraint fk_plays2 foreign key (ga_id)
-      references games (ga_id) on delete restrict on update restrict;
-
-alter table turns add constraint fk_conduct foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table turns add constraint fk_games_turns foreign key (ga_id)
-      references games (ga_id) on delete restrict on update restrict;
-
-alter table users_cards_votes add constraint fk_users_cards_votes foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table users_cards_votes add constraint fk_users_cards_votes2 foreign key (ca_id)
-      references cards (ca_id) on delete restrict on update restrict;
-
-alter table users_friends add constraint fk_users_friends foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table users_friends add constraint fk_users_friends2 foreign key (use_us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table votes add constraint fk_votes foreign key (us_id)
-      references users (us_id) on delete restrict on update restrict;
-
-alter table votes add constraint fk_votes2 foreign key (ca_id)
-      references cards (ca_id) on delete restrict on update restrict;
-
-alter table votes add constraint fk_votes3 foreign key (tu_id)
-      references turns (tu_id) on delete restrict on update restrict;
-
+-- phpMyAdmin SQL Dump
+-- version 3.3.9
+-- http://www.phpmyadmin.net
+--
+-- Serveur: localhost
+-- Généré le : Sam 26 Mai 2012 à 14:44
+-- Version du serveur: 5.1.53
+-- Version de PHP: 5.3.4
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de données: `dixit`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `boards`
+--
+
+CREATE TABLE IF NOT EXISTS `boards` (
+  `tu_id` int(11) NOT NULL,
+  `ca_id` int(11) NOT NULL,
+  PRIMARY KEY (`tu_id`,`ca_id`),
+  KEY `fk_boards2` (`ca_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cards`
+--
+
+CREATE TABLE IF NOT EXISTS `cards` (
+  `ca_id` int(11) NOT NULL AUTO_INCREMENT,
+  `us_id` int(11) NOT NULL,
+  `ca_name` char(255) DEFAULT NULL,
+  `ca_image` char(255) DEFAULT NULL,
+  PRIMARY KEY (`ca_id`),
+  KEY `fk_to_create` (`us_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cards_decks`
+--
+
+CREATE TABLE IF NOT EXISTS `cards_decks` (
+  `ca_id` int(11) NOT NULL,
+  `de_id` int(11) NOT NULL,
+  PRIMARY KEY (`ca_id`,`de_id`),
+  KEY `fk_cards_decks2` (`de_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `chats`
+--
+
+CREATE TABLE IF NOT EXISTS `chats` (
+  `us_id` int(11) NOT NULL,
+  `me_id` bigint(20) NOT NULL,
+  `ga_id` int(11) NOT NULL,
+  PRIMARY KEY (`us_id`,`me_id`,`ga_id`),
+  KEY `fk_chats2` (`me_id`),
+  KEY `fk_chats3` (`ga_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `decks`
+--
+
+CREATE TABLE IF NOT EXISTS `decks` (
+  `de_id` int(11) NOT NULL AUTO_INCREMENT,
+  `us_id` int(11) NOT NULL,
+  `de_name` char(255) NOT NULL,
+  `de_status` smallint(6) NOT NULL,
+  PRIMARY KEY (`de_id`),
+  KEY `fk_decks_users` (`us_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `earned_points`
+--
+
+CREATE TABLE IF NOT EXISTS `earned_points` (
+  `us_id` int(11) NOT NULL,
+  `tu_id` int(11) NOT NULL,
+  PRIMARY KEY (`us_id`,`tu_id`),
+  KEY `fk_earned_points2` (`tu_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `games`
+--
+
+CREATE TABLE IF NOT EXISTS `games` (
+  `ga_id` int(11) NOT NULL AUTO_INCREMENT,
+  `de_id` int(11) NOT NULL,
+  `us_id` int(11) NOT NULL,
+  `ga_name` char(255) DEFAULT NULL,
+  `ga_creation_date` datetime DEFAULT NULL,
+  `ga_password` char(255) DEFAULT NULL,
+  `ga_nb_players` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ga_id`),
+  KEY `fk_create` (`us_id`),
+  KEY `fk_decks_games` (`de_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `hands`
+--
+
+CREATE TABLE IF NOT EXISTS `hands` (
+  `tu_played_id` int(11) NOT NULL,
+  `tu_id` int(11) NOT NULL,
+  `ca_id` int(11) NOT NULL,
+  `us_id` int(11) NOT NULL,
+  PRIMARY KEY (`tu_played_id`,`tu_id`,`ca_id`,`us_id`),
+  KEY `fk_hands2` (`tu_id`),
+  KEY `fk_hands3` (`ca_id`),
+  KEY `fk_hands4` (`us_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messages`
+--
+
+CREATE TABLE IF NOT EXISTS `messages` (
+  `me_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `me_text` char(255) DEFAULT NULL,
+  `me_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`me_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pick`
+--
+
+CREATE TABLE IF NOT EXISTS `pick` (
+  `ga_id` int(11) NOT NULL,
+  `ca_id` int(11) NOT NULL,
+  PRIMARY KEY (`ga_id`,`ca_id`),
+  KEY `fk_pick2` (`ca_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `plays`
+--
+
+CREATE TABLE IF NOT EXISTS `plays` (
+  `us_id` int(11) NOT NULL,
+  `ga_id` int(11) NOT NULL,
+  `pl_status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`us_id`,`ga_id`),
+  KEY `fk_plays2` (`ga_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `turns`
+--
+
+CREATE TABLE IF NOT EXISTS `turns` (
+  `tu_id` int(11) NOT NULL AUTO_INCREMENT,
+  `us_id` int(11) NOT NULL,
+  `ga_id` int(11) NOT NULL,
+  `tu_date_start` datetime DEFAULT NULL,
+  `tu_date_end` datetime DEFAULT NULL,
+  `di_comments` char(150) NOT NULL,
+  PRIMARY KEY (`tu_id`),
+  KEY `fk_conduct` (`us_id`),
+  KEY `fk_games_turns` (`ga_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `us_id` int(11) NOT NULL,
+  `us_name` char(255) DEFAULT NULL,
+  `us_lastname` char(255) DEFAULT NULL,
+  `us_pseudo` char(255) NOT NULL,
+  `us_password` char(255) NOT NULL,
+  `us_avatar` char(255) DEFAULT NULL,
+  `us_mail` char(255) NOT NULL,
+  `us_birthdate` datetime DEFAULT NULL,
+  `us_signin_date` datetime DEFAULT NULL,
+  `us_last_connexion` datetime DEFAULT NULL,
+  PRIMARY KEY (`us_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users_cards_votes`
+--
+
+CREATE TABLE IF NOT EXISTS `users_cards_votes` (
+  `us_id` int(11) NOT NULL,
+  `ca_id` int(11) NOT NULL,
+  PRIMARY KEY (`us_id`,`ca_id`),
+  KEY `fk_users_cards_votes2` (`ca_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Vote pour les cartes ajouté par les joueurs';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users_friends`
+--
+
+CREATE TABLE IF NOT EXISTS `users_friends` (
+  `us_id` int(11) NOT NULL,
+  `us_friend_id` int(11) NOT NULL,
+  `fr_date` datetime NOT NULL,
+  `fr_status` int(11) NOT NULL,
+  PRIMARY KEY (`us_id`,`us_friend_id`),
+  KEY `fk_users_friends2` (`us_friend_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `votes`
+--
+
+CREATE TABLE IF NOT EXISTS `votes` (
+  `us_id` int(11) NOT NULL,
+  `ca_id` int(11) NOT NULL,
+  `tu_id` int(11) NOT NULL,
+  `vo_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`us_id`,`ca_id`,`tu_id`),
+  KEY `fk_votes2` (`ca_id`),
+  KEY `fk_votes3` (`tu_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

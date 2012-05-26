@@ -194,7 +194,6 @@ function play($gameID) {
 
 			unset($playersInfos['storyteller']);
 			unset($currentTurn['ga_id']);
-			unset($gameInfos['gt_id']);
 			unset($gameInfos['us_id']);
 
 			$gameInfos['host'] = $gameCreatorInfos['us_pseudo'];
@@ -238,7 +237,7 @@ function _isGameOver($gameID = null) {
 		extract($_POST);
 
 	$boolean = false;
-	$gamePointsLimit = getOneRowResult(getGameInfos($gameID, array('ga_points_limit')), 'nbPoints');
+	$gamePointsLimit = getOneRowResult(getGameInfos($gameID, array('ga_points_limit')), 'ga_points_limit');
 
 	$playersIDs = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
 	foreach($playersIDs as $playerID) {

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Sam 26 Mai 2012 à 20:45
+-- Généré le : Sam 26 Mai 2012 à 21:06
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -41,8 +41,8 @@ CREATE TABLE IF NOT EXISTS `boards` (
 CREATE TABLE IF NOT EXISTS `cards` (
   `ca_id` int(11) NOT NULL AUTO_INCREMENT,
   `us_id` int(11) NOT NULL,
-  `ca_name` char(255) DEFAULT NULL,
-  `ca_image` char(255) DEFAULT NULL,
+  `ca_name` varchar(255) DEFAULT NULL,
+  `ca_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ca_id`),
   KEY `us_id` (`us_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `chats` (
 CREATE TABLE IF NOT EXISTS `decks` (
   `de_id` int(11) NOT NULL AUTO_INCREMENT,
   `us_id` int(11) NOT NULL,
-  `de_name` char(255) NOT NULL,
+  `de_name` varchar(255) NOT NULL,
   `de_status` smallint(6) NOT NULL,
   PRIMARY KEY (`de_id`),
   KEY `us_id` (`us_id`)
@@ -114,9 +114,9 @@ CREATE TABLE IF NOT EXISTS `games` (
   `ga_id` int(11) NOT NULL AUTO_INCREMENT,
   `de_id` int(11) NOT NULL,
   `us_id` int(11) NOT NULL,
-  `ga_name` char(255) DEFAULT NULL,
+  `ga_name` varchar(255) DEFAULT NULL,
   `ga_creation_date` datetime DEFAULT NULL,
-  `ga_password` char(255) DEFAULT NULL,
+  `ga_password` varchar(255) DEFAULT NULL,
   `ga_nb_players` int(11) NOT NULL,
   `ga_points_limit` int(11) NOT NULL,
   PRIMARY KEY (`ga_id`),
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `hands` (
 
 CREATE TABLE IF NOT EXISTS `messages` (
   `me_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `me_text` char(255) DEFAULT NULL,
+  `me_text` varchar(255) DEFAULT NULL,
   `me_date` datetime DEFAULT NULL,
   PRIMARY KEY (`me_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `turns` (
   `us_id` int(11) NOT NULL,
   `tu_date_start` datetime DEFAULT NULL,
   `tu_date_end` datetime DEFAULT NULL,
-  `tu_comments` char(150) NOT NULL,
+  `tu_comment` varchar(150) NOT NULL,
   PRIMARY KEY (`tu_id`),
   KEY `ga_id` (`ga_id`),
   KEY `us_id` (`us_id`)
@@ -208,12 +208,12 @@ CREATE TABLE IF NOT EXISTS `turns` (
 
 CREATE TABLE IF NOT EXISTS `users` (
   `us_id` int(11) NOT NULL AUTO_INCREMENT,
-  `us_name` char(255) DEFAULT NULL,
-  `us_lastname` char(255) DEFAULT NULL,
-  `us_pseudo` char(255) NOT NULL,
-  `us_password` char(255) NOT NULL,
-  `us_avatar` char(255) DEFAULT NULL,
-  `us_mail` char(255) NOT NULL,
+  `us_name` varchar(255) DEFAULT NULL,
+  `us_lastname` varchar(255) DEFAULT NULL,
+  `us_pseudo` varchar(255) NOT NULL,
+  `us_password` varchar(255) NOT NULL,
+  `us_avatar` varchar(255) DEFAULT NULL,
+  `us_mail` varchar(255) NOT NULL,
   `us_birthdate` datetime DEFAULT NULL,
   `us_signin_date` datetime DEFAULT NULL,
   `us_last_connexion` datetime DEFAULT NULL,

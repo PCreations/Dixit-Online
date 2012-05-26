@@ -1,5 +1,22 @@
 <?php
 
+function filterGames($name, $nbplayers, $deck) {
+	global $db;
+
+	$query = $db->prepare('SELECT *
+						FROM games,deck
+						WHERE ga_name LIKE %:name%
+						WHERE ga_nb_players = :nbplayers
+						WHERE de_id=de_id
+						WHERE de_name = :deck
+						');
+	$query->execute(array('name' => $name,
+						':bplayers' => $nbplayers,
+						'deck' => $deck));
+						
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function getGameInfos($gameID, $fields = array('*')) {
 	global $db;
 

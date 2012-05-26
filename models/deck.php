@@ -10,7 +10,7 @@ function addDeck($userID, $deckName, $deckStatus) {
 						'deckStatus' => $deckStatus));
 }
 
-function getDecksInfos($fields = array('*')) {
+function getAllDecks($fields = array('*')) {
 	global $db;
 	$fields = implode(',', $fields);
 

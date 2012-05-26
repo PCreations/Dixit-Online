@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Sam 26 Mai 2012 à 20:37
+-- Généré le : Sam 26 Mai 2012 à 20:45
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `games` (
   `ga_creation_date` datetime DEFAULT NULL,
   `ga_password` char(255) DEFAULT NULL,
   `ga_nb_players` int(11) NOT NULL,
+  `ga_points_limit` int(11) NOT NULL,
   PRIMARY KEY (`ga_id`),
   KEY `de_id` (`de_id`),
   KEY `us_id` (`us_id`)
@@ -197,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `turns` (
   PRIMARY KEY (`tu_id`),
   KEY `ga_id` (`ga_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 

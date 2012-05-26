@@ -186,7 +186,6 @@ function play($gameID) {
 
 
 			$gameInfos = getGameInfos($gameID);
-			$gameTypeInfos = getGameTypeInfos($gameInfos['gt_id'], array('gt_name'));
 			$gameCreatorInfos = getUserInfos($gameInfos['us_id'], array('us_pseudo'));
 
 			$actionStatus = _checkAction($phase, $_SESSION[USER_MODEL][USER_PK], $currentTurn['tu_id']);
@@ -239,12 +238,11 @@ function _isGameOver($gameID = null) {
 		extract($_POST);
 
 	$boolean = false;
-	$gameTypeID = getOneRowResult(getGameInfos($gameID, array('gt_id')), 'gt_id');
-	$gameTypeInfos = getGameTypeInfos($gameTypeID);
+	$gamePointsLimit = getOneRowResult(getGameInfos($gameID, array('ga_points_limit')), 'nbPoints');
 
 	$playersIDs = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
 	foreach($playersIDs as $playerID) {
-		if(getOneRowResult(getTotalUserPointsInGame($gameID, $playerID), 'nbPoints') >= $gameTypeInfos['gt_points_limit']) {
+		if(getOneRowResult(getTotalUserPointsInGame($gameID, $playerID), 'nbPoints') >= $gamePointsLimit) {
 			$boolean = true;
 		}
 	}
@@ -387,9 +385,6 @@ function _getCurrentGameTurn($gameID, $field) {
 
 //Distribue les points et retourne true si un joueur a atteint la limite de point pour cette partie
 function _dealPoints($turn) {
-	$gameTypeID = getOneRowResult(getGameInfos($turn['ga_id'], array('gt_id')), 'gt_id');
-	$gameTypeInfos = getGameTypeInfos($gameTypeID);
-
 	$storytellerCardID = getOneRowResult(getPlayerCardInBoard($turn['tu_id'], $turn['us_id']), 'ca_id');
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();

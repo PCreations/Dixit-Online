@@ -16,7 +16,7 @@ function getGameInfos($gameID, $fields = array('*')) {
 function getWaintingGames() {
 	global $db;
 
-	$result = $db->query('SELECT ga.ga_id, ga.ga_name, gt.gt_name, gt.gt_nb_players, COUNT(pl.us_id) as nbPlayersInGame
+	$result = $db->query('SELECT ga.ga_id, ga.ga_name, gt.gt_name, gt.gt_nb_players, ga.us_id, gt.gt_points_limit, COUNT(pl.us_id) as nbPlayersInGame
 						FROM games as ga
 						LEFT JOIN game_types as gt
 						ON gt.gt_id = ga.gt_id

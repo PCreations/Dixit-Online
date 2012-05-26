@@ -1,1 +1,3 @@
-<h1>INFOS : <?php echo $messageFlash['msg']; ?></h1>
+<div id="flash">
+	<p>INFOS : <?php echo $messageFlash['msg']; ?></p>
+</div>

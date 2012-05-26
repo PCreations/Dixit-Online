@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user'));
+useModels(array('user', 'contact'));
 
 function register() {
 	if(isset($_POST['register'])) {
@@ -51,7 +51,7 @@ function login() {
 				redirect('users', 'account', array($_SESSION[USER_MODEL][USER_PK]));
 			}
 			else {
-				setMessage('Erreur d\'authentification. Le mot de passe et le pseudo ne coïncident pas', FLASH_ERROR);
+				setMessage('Erreur d\'authentification. Veuillez réessayer.', FLASH_ERROR);
 				render('login', $_POST);
 			}
 		}
@@ -66,8 +66,41 @@ function login() {
 }
 
 function account($id = null) {
-	render('account');
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	if(isset($_POST['popup'])){
+		contact();
+	}
+	
+	if(isset($_POST['update'])) { //Formulaire de changement de données
+			extract($_POST);
+			updateUser($id, $name, $lastname, $mail);
+	}
+	
+	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
+			extract($_POST);
+			$results = approchSearchUser($login);
+			$friend = getSpecificArrayValues(getFriends($userID), 'us_pseudo');
+			foreach($results as &$result){
+					if(!in_array($result['us_pseudo'], $friend)) {
+						$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo']));
+					}
+					else{
+						$result['action'] = 'Vous êtes déjà amis';
+					}
+				}
+			$vars = array('results' => $results,
+							'login' => $login);			
+			render('research', $vars);
+	}
+	$user = getUserInfos($id);
+	$friends = getFriends($id);
+	$nbFriends = countFriends($id);
+	$vars = array(	'user' => $user,
+					'friends' => $friends,
+					'nbFriends' => $nbFriends);
+	render('account', $vars);
 }
+
 
 function logout() {
 	if(isLogged()) {

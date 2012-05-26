@@ -1,0 +1,194 @@
+html
+{
+	background-color:black;
+	background: url('../img/bg.png') no-repeat center fixed; 
+	-webkit-background-size: cover; 
+	-moz-background-size: cover; 
+	-o-background-size: cover; 
+	background-size: cover; 
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+}
+
+/****************Header*********************/
+header
+{
+	top:0px;
+	width:490px;
+	margin : auto;
+}
+/****************Flash_success*********************/
+#flash
+{
+	position : absolute;
+	top : 0px;
+	left : 0px;
+	width : 100%;
+	background: url('../img/notification.png'); 
+	display : none;
+}
+
+#flash p
+{
+	text-align: center;
+	margin-top : 20px;
+	margin-bottom : 20px;
+	color : white;
+	letter-spacing : 1px;
+}
+/****************Search Result****************/
+#result
+{
+	position : absolute;
+	background: url('../img/table.png'); 
+}
+/****************Content*********************/
+section
+{
+	width:912px;
+	margin : auto;
+}
+/****************Article*********************/
+article
+{
+	width:630px;
+	height : 330px;
+	display:inline-block;
+	vertical-align: top;
+	padding : 10px;
+	background-image : url('../img/bg_main.png'); 
+	border-radius : 6px;
+}
+
+#welcome
+{
+	width : 43%;
+	margin : 20px;
+	display :inline-block;
+	vertical-align : top;
+}
+
+#welcome p
+{
+	text-align : justify;
+	margin : 0px;
+}
+
+#welcome .cartes
+{
+	margin-left : 25%;
+	width : 50%;
+	margin-top : 20px;
+}
+#welcome img
+{
+	margin : 10px 0px 15px 5px;
+}
+#welcome  img .cartes
+{
+	margin : auto;
+}
+
+#home_subcontent p
+{
+	margin-bottom : 15px;
+	text-align : justify;
+}
+#home_subcontent .ligne, #home_aside .ligne
+{
+	margin-top : 5px;
+	width : 99%;
+}
+
+#home_subcontent
+{
+	width : 42%;
+	margin : 20px 25px;
+	display :inline-block;
+}
+
+#home_subcontent .inscription
+{
+	margin-top : 20px;
+}
+/****************Aside*********************/
+aside
+{
+	width:203px;
+	margin-left:10px;
+	margin-top : 5%;
+	padding:20px;
+	display:inline-block;
+	vertical-align: top;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius : 6px;
+}
+#home_aside a, #home_subcontent a
+{
+	background-color: rgba(255, 255, 255, 0.5);
+	text-decoration : none;
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+	font-size : 1em;
+	color : black;
+	padding : 3px 6px;
+	margin-left : 30%;
+}
+/****************Pop-up*******************/
+#popupBack
+{  
+	display:none;  
+	position:fixed;  
+	_position:absolute; /* IE*/  
+	height:100%;  
+	width:100%;  
+	top:0;  
+	left:0;  
+	background:#000000;  
+	border:1px solid #cecece;  
+	z-index:1;  
+}
+#popup
+{  
+	display:none;  
+	position:fixed;  
+	_position:absolute; /* hack for internet explorer 6*/  
+	height:384px;  
+	width:408px;  
+	background:#FFFFFF;  
+	border:2px solid #cecece;  
+	z-index:2;  
+	padding:12px;  
+	font-size:13px;  
+}  
+#popup h1
+{  
+	text-align:left;  
+	color:#6FA5FD;  
+	font-size:22px;  
+	font-weight:700;  
+	border-bottom:1px dotted #D3D3D3;  
+	padding-bottom:2px;  
+	margin-bottom:20px;  
+}  
+#popupClose
+{  
+	font-size:14px;  
+	line-height:14px;  
+	right:6px;  
+	top:4px;  
+	position:absolute;  
+	color:#6fa5fd;  
+	font-weight:700;  
+	display:block;  
+}
+
+/****************Footer*********************/
+footer
+{
+	clear : both;
+	width : 20%;
+	font-size : 0.8em;
+	margin : auto;
+	margin-top : 25px;
+	text-align : center;
+	left : 43%;
+}

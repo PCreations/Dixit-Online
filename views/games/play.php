@@ -77,7 +77,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 300);
+	}, 5000);
 
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);

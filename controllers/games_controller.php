@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user', 'game', 'card'));
+useModels(array('user', 'game', 'card', 'chat'));
 
 define('CARD_PER_PLAYER', 3); //pour tester
 define('STORYTELLER_PHASE', 0);
@@ -690,6 +690,18 @@ function _getStatus($status, $phase, $role) {
 	}
 
 	return $statusTxt;
+}
+
+function _getGameMessages($gameID) {
+	$messages = getGameMessages($gameID);
+	$messagesTexts = '';
+	foreach($messages as &$message) {
+		$messagesTexts .= '<h4>' . $message['us_pseudo'] .'</h4><p>' . htmlspecialchars(htmlentities($message['ch_text'])) . '</p>';
+	}
+	if(isPost())
+		echo $messagesTexts;
+	else
+		return $messagesTexts;
 }
 
 function _ajaxData($gameID, $oldPhase, $oldTurnID) {

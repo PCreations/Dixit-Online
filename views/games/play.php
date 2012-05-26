@@ -38,6 +38,18 @@
 	?>
 </div>
 
+<h3>Chat</h3>
+<div id="chatMessages">
+	<?php 
+	echo _getGameMessages($turn['game']['ga_id']);
+	?>
+</div>
+<form id="gameChat" action="<?php echo BASE_URL;?>chats/addGameMessage" method="POST">
+	<textarea name="gameMsg" id="gameMsg">
+	</textarea>
+	<input type="submit" value="Envoyer" id="sendGameMsg"/>
+</form>
+
 <script type="text/javascript">
 
 	//Par défaut le tour courant et la phase courante sont ceux défini en PHP (i.e le premier tour et la première phase)
@@ -47,6 +59,17 @@
 	turnID = <?php echo $turn['tu_id'];?>;
 
 	BASE_URL = '<?php echo BASE_URL;?>';
+
+	$('#gameChat').submit(function() {
+		var message = $('#gameMsg').val();
+		$.post(BASE_URL+"chats/_addGameMessage",{gameID: gameID, userID: userID, message: message}, function(data) {
+			$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
+				$('#chatMessages').empty();
+				$('#chatMessages').html(data);
+			});
+		}, "json");
+		return false;
+	})
 
 	function readyForNextTurn() {
 		//$('#readyForNextTurn').click();
@@ -66,6 +89,12 @@
 	}
 
 	setInterval(function(){
+		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
+			$('#chatMessages').empty();
+			$('#chatMessages').html(data);
+		});
+	}, 500);
+	/*setInterval(function(){
 		$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
 			var oldPhase = phaseID;
 			var result = parseJSON(json);
@@ -77,7 +106,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 5000);
+	}, 5000);*/
 
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);

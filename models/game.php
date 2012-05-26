@@ -33,11 +33,12 @@ function getGameInfos($gameID, $fields = array('*')) {
 function getWaintingGames() {
 	global $db;
 
-	$result = $db->query('SELECT *, COUNT(pl.us_id) as nbPlayersInGame
+	$result = $db->query('SELECT ga.ga_nb_players, ga.ga_id, ga.ga_name, de.de_id, de.de_name, COUNT(pl.us_id) as nbPlayersInGame
 						FROM games as ga
+						INNER JOIN decks as de ON de.de_id = ga.de_id
 						LEFT JOIN plays as pl
 						ON pl.ga_id = ga.ga_id
-						HAVING (nbPlayersInGame < ga_nb_players)');
+						HAVING (nbPlayersInGame < ga.ga_nb_players)');
 	return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 

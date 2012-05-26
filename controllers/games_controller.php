@@ -13,6 +13,10 @@ define('ACTION_IN_PROGRESS', 4);
 define('ACTION_DONE', 5);
 
 function index() {
+	$deckInfos = getAllDecks(array(de_id, de_name));
+	debug($deckInfos);
+
+
 	if(!isPost) {
 		$partiesEnAttente = getWaintingGames();
 	}
@@ -40,6 +44,7 @@ function index() {
 		$vars = array('partiesEnAttente' => $partiesEnAttente);
 		render('index', $vars);
 }
+
 
 function joinGame($gameID, $userID) {
 	if(!isLogged()) {

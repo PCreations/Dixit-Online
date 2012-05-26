@@ -6,8 +6,9 @@ define('GET_VAR_NAME', 'page');
 define('INDEX_ACTION', 'index');
 
 /**  Url de base du site */
-//define('BASE_URL', 'http://tomduchene.fr/dixit/');
+
 define('BASE_URL', 'http://127.0.0.1/dixit/');
+
 
 /**  Alias de DIRECTORY_SEPARATOR */
 define('DS', DIRECTORY_SEPARATOR);

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Sam 26 Mai 2012 à 09:01
+-- Généré le : Sam 26 Mai 2012 à 20:37
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `ca_id` int(11) NOT NULL,
   PRIMARY KEY (`tu_id`,`ca_id`),
   KEY `ca_id` (`ca_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -40,23 +40,55 @@ CREATE TABLE IF NOT EXISTS `boards` (
 
 CREATE TABLE IF NOT EXISTS `cards` (
   `ca_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ca_name` char(255) CHARACTER SET latin1 DEFAULT NULL,
-  `ca_image` char(255) CHARACTER SET latin1 DEFAULT NULL,
-  PRIMARY KEY (`ca_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=53 ;
+  `us_id` int(11) NOT NULL,
+  `ca_name` char(255) DEFAULT NULL,
+  `ca_image` char(255) DEFAULT NULL,
+  PRIMARY KEY (`ca_id`),
+  KEY `us_id` (`us_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `deck`
+-- Structure de la table `cards_decks`
 --
 
-CREATE TABLE IF NOT EXISTS `deck` (
-  `gt_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `cards_decks` (
   `ca_id` int(11) NOT NULL,
-  PRIMARY KEY (`gt_id`,`ca_id`),
-  KEY `ca_id` (`ca_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `de_id` int(11) NOT NULL,
+  PRIMARY KEY (`ca_id`,`de_id`),
+  KEY `de_id` (`de_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `chats`
+--
+
+CREATE TABLE IF NOT EXISTS `chats` (
+  `us_id` int(11) NOT NULL,
+  `me_id` bigint(20) NOT NULL,
+  `ga_id` int(11) NOT NULL,
+  PRIMARY KEY (`us_id`,`me_id`,`ga_id`),
+  KEY `me_id` (`me_id`),
+  KEY `ga_id` (`ga_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `decks`
+--
+
+CREATE TABLE IF NOT EXISTS `decks` (
+  `de_id` int(11) NOT NULL AUTO_INCREMENT,
+  `us_id` int(11) NOT NULL,
+  `de_name` char(255) NOT NULL,
+  `de_status` smallint(6) NOT NULL,
+  PRIMARY KEY (`de_id`),
+  KEY `us_id` (`us_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -70,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `earned_points` (
   `points` int(11) NOT NULL,
   PRIMARY KEY (`us_id`,`tu_id`),
   KEY `tu_id` (`tu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -80,28 +112,16 @@ CREATE TABLE IF NOT EXISTS `earned_points` (
 
 CREATE TABLE IF NOT EXISTS `games` (
   `ga_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ga_name` varchar(255) NOT NULL,
-  `ga_creation_date` datetime NOT NULL,
-  `gt_id` int(11) NOT NULL,
+  `de_id` int(11) NOT NULL,
   `us_id` int(11) NOT NULL,
+  `ga_name` char(255) DEFAULT NULL,
+  `ga_creation_date` datetime DEFAULT NULL,
+  `ga_password` char(255) DEFAULT NULL,
+  `ga_nb_players` int(11) NOT NULL,
   PRIMARY KEY (`ga_id`),
-  KEY `gt_id` (`gt_id`),
+  KEY `de_id` (`de_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `game_types`
---
-
-CREATE TABLE IF NOT EXISTS `game_types` (
-  `gt_id` int(11) NOT NULL AUTO_INCREMENT,
-  `gt_name` char(255) CHARACTER SET latin1 NOT NULL,
-  `gt_nb_players` int(11) NOT NULL,
-  `gt_points_limit` int(11) NOT NULL,
-  PRIMARY KEY (`gt_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -118,7 +138,20 @@ CREATE TABLE IF NOT EXISTS `hands` (
   KEY `us_id` (`us_id`),
   KEY `tu_id` (`tu_id`),
   KEY `tu_played_id` (`tu_played_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messages`
+--
+
+CREATE TABLE IF NOT EXISTS `messages` (
+  `me_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `me_text` char(255) DEFAULT NULL,
+  `me_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`me_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -131,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `pick` (
   `ca_id` int(11) NOT NULL,
   PRIMARY KEY (`ga_id`,`ca_id`),
   KEY `ca_id` (`ca_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -146,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `plays` (
   `pl_status` enum('Attente','Prêt','Inactif') CHARACTER SET utf8 NOT NULL DEFAULT 'Attente',
   PRIMARY KEY (`us_id`,`ga_id`),
   KEY `ga_id` (`ga_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -160,11 +193,11 @@ CREATE TABLE IF NOT EXISTS `turns` (
   `us_id` int(11) NOT NULL,
   `tu_date_start` datetime DEFAULT NULL,
   `tu_date_end` datetime DEFAULT NULL,
-  `tu_comment` char(150) CHARACTER SET latin1 NOT NULL,
+  `tu_comments` char(150) NOT NULL,
   PRIMARY KEY (`tu_id`),
   KEY `ga_id` (`ga_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -174,16 +207,30 @@ CREATE TABLE IF NOT EXISTS `turns` (
 
 CREATE TABLE IF NOT EXISTS `users` (
   `us_id` int(11) NOT NULL AUTO_INCREMENT,
-  `us_name` char(255) CHARACTER SET latin1 DEFAULT NULL,
-  `us_lastname` char(255) CHARACTER SET latin1 DEFAULT NULL,
-  `us_pseudo` char(255) CHARACTER SET latin1 NOT NULL,
-  `us_password` char(255) CHARACTER SET latin1 NOT NULL,
-  `us_mail` char(255) CHARACTER SET latin1 NOT NULL,
+  `us_name` char(255) DEFAULT NULL,
+  `us_lastname` char(255) DEFAULT NULL,
+  `us_pseudo` char(255) NOT NULL,
+  `us_password` char(255) NOT NULL,
+  `us_avatar` char(255) DEFAULT NULL,
+  `us_mail` char(255) NOT NULL,
   `us_birthdate` datetime DEFAULT NULL,
   `us_signin_date` datetime DEFAULT NULL,
   `us_last_connexion` datetime DEFAULT NULL,
   PRIMARY KEY (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users_cards_votes`
+--
+
+CREATE TABLE IF NOT EXISTS `users_cards_votes` (
+  `us_id` int(11) NOT NULL,
+  `ca_id` int(11) NOT NULL,
+  PRIMARY KEY (`us_id`,`ca_id`),
+  KEY `ca_id` (`ca_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Vote pour les cartes ajouté par les joueurs';
 
 -- --------------------------------------------------------
 
@@ -193,12 +240,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 CREATE TABLE IF NOT EXISTS `users_friends` (
   `us_id` int(11) NOT NULL,
-  `use_us_id` int(11) NOT NULL,
-  `fr_date` datetime NOT NULL,
-  `fr_status` int(11) NOT NULL,
-  PRIMARY KEY (`us_id`,`use_us_id`),
-  KEY `use_us_id` (`use_us_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `us_friend_id` int(11) NOT NULL,
+  `uf_date` datetime NOT NULL,
+  `uf_status` int(11) NOT NULL,
+  PRIMARY KEY (`us_id`,`us_friend_id`),
+  KEY `us_friend_id` (`us_friend_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -214,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `votes` (
   PRIMARY KEY (`us_id`,`ca_id`,`tu_id`),
   KEY `ca_id` (`ca_id`),
   KEY `tu_id` (`tu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contraintes pour les tables exportées
@@ -224,15 +271,35 @@ CREATE TABLE IF NOT EXISTS `votes` (
 -- Contraintes pour la table `boards`
 --
 ALTER TABLE `boards`
-  ADD CONSTRAINT `boards_ibfk_1` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `boards_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `boards_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `boards_ibfk_1` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `deck`
+-- Contraintes pour la table `cards`
 --
-ALTER TABLE `deck`
-  ADD CONSTRAINT `deck_ibfk_1` FOREIGN KEY (`gt_id`) REFERENCES `game_types` (`gt_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `deck_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `cards`
+  ADD CONSTRAINT `cards_ibfk_2` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `cards_decks`
+--
+ALTER TABLE `cards_decks`
+  ADD CONSTRAINT `cards_decks_ibfk_2` FOREIGN KEY (`de_id`) REFERENCES `decks` (`de_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cards_decks_ibfk_1` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `chats`
+--
+ALTER TABLE `chats`
+  ADD CONSTRAINT `chats_ibfk_3` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chats_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chats_ibfk_2` FOREIGN KEY (`me_id`) REFERENCES `messages` (`me_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `decks`
+--
+ALTER TABLE `decks`
+  ADD CONSTRAINT `decks_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `earned_points`
@@ -245,24 +312,24 @@ ALTER TABLE `earned_points`
 -- Contraintes pour la table `games`
 --
 ALTER TABLE `games`
-  ADD CONSTRAINT `games_ibfk_2` FOREIGN KEY (`gt_id`) REFERENCES `game_types` (`gt_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `games_ibfk_3` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `games_ibfk_1` FOREIGN KEY (`de_id`) REFERENCES `decks` (`de_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `games_ibfk_2` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `hands`
 --
 ALTER TABLE `hands`
-  ADD CONSTRAINT `hands_ibfk_1` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `hands_ibfk_2` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `hands_ibfk_5` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `hands_ibfk_6` FOREIGN KEY (`tu_played_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `hands_ibfk_6` FOREIGN KEY (`tu_played_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hands_ibfk_3` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hands_ibfk_4` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hands_ibfk_5` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `pick`
 --
 ALTER TABLE `pick`
-  ADD CONSTRAINT `pick_ibfk_1` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pick_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `pick_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pick_ibfk_1` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `plays`
@@ -275,20 +342,27 @@ ALTER TABLE `plays`
 -- Contraintes pour la table `turns`
 --
 ALTER TABLE `turns`
-  ADD CONSTRAINT `turns_ibfk_1` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `turns_ibfk_2` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `turns_ibfk_3` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `turns_ibfk_4` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `users_cards_votes`
+--
+ALTER TABLE `users_cards_votes`
+  ADD CONSTRAINT `users_cards_votes_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_cards_votes_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `users_friends`
 --
 ALTER TABLE `users_friends`
   ADD CONSTRAINT `users_friends_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `users_friends_ibfk_2` FOREIGN KEY (`use_us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `users_friends_ibfk_2` FOREIGN KEY (`us_friend_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `votes`
 --
 ALTER TABLE `votes`
+  ADD CONSTRAINT `votes_ibfk_3` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `votes_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `votes_ibfk_3` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `votes_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE;

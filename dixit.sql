@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Sam 26 Mai 2012 à 21:06
+-- Généré le : Sam 26 Mai 2012 à 22:08
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `cards` (
   `ca_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ca_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
 
 -- --------------------------------------------------------
 
@@ -68,10 +68,10 @@ CREATE TABLE IF NOT EXISTS `cards_decks` (
 
 CREATE TABLE IF NOT EXISTS `chats` (
   `us_id` int(11) NOT NULL,
-  `me_id` bigint(20) NOT NULL,
   `ga_id` int(11) NOT NULL,
-  PRIMARY KEY (`us_id`,`me_id`,`ga_id`),
-  KEY `me_id` (`me_id`),
+  `ch_text` varchar(255) NOT NULL,
+  `ch_date` datetime NOT NULL,
+  PRIMARY KEY (`us_id`,`ga_id`),
   KEY `ga_id` (`ga_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `turns` (
   PRIMARY KEY (`tu_id`),
   KEY `ga_id` (`ga_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -292,9 +292,8 @@ ALTER TABLE `cards_decks`
 -- Contraintes pour la table `chats`
 --
 ALTER TABLE `chats`
-  ADD CONSTRAINT `chats_ibfk_3` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `chats_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `chats_ibfk_2` FOREIGN KEY (`me_id`) REFERENCES `messages` (`me_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `chats_ibfk_3` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `decks`

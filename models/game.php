@@ -16,10 +16,12 @@ function filterGames($name, $nbplayers, $deck) {
 
 	debug($prequery);
 	
-	$query = $db->prepare('SELECT ga.ga_points_limit,ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
+	$query = $db->prepare('SELECT us.us_name, ga.ga_points_limit,ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga
 						INNER JOIN decks as de
 						ON de.de_id = ga.de_id
+						INNER JOIN users as us
+						ON ga.us_id = us.us_id
 						LEFT JOIN total_players_in_game as total
 						ON total.ga_id = ga.ga_id
 						WHERE (total.nbTotalPlayer < ga.ga_nb_players)
@@ -59,10 +61,12 @@ function getGameInfos($gameID, $fields = array('*')) {
 function getWaitingGames() {
 	global $db;
 
-	$result = $db->query('SELECT  ga.ga_points_limit, ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
+	$result = $db->query('SELECT us.us_name, ga.ga_points_limit, ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga
 						INNER JOIN decks as de
 						ON de.de_id = ga.de_id
+						INNER JOIN users as us
+						ON ga.us_id = us.us_id
 						LEFT JOIN total_players_in_game as total
 						ON total.ga_id = ga.ga_id
 						WHERE total.nbTotalPlayer < ga.ga_nb_players');

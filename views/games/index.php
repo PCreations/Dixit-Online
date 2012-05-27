@@ -43,7 +43,7 @@
 								 <tr>
 									<td class="cadenas"><img src="<?php echo IMG_DIR;?>cadenas.png"></td>
 									<td class="nom"><?php echo $partie['ga_name'];?></td>
-									<td class="createur"><?php echo $partie['us_id'];?></td>
+									<td class="createur"><?php echo $partie['us_name'];?></td>
 									<td class="joueurs"><?php echo $partie['nbPlayersInGame'] . '/' . $partie['ga_nb_players'];?></td>
 									<td class="points"><?php echo $partie['ga_points_limit'];?></td>
 									<td class="cartes"><?php echo $partie['de_name'];?></td>

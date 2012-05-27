@@ -1,12 +1,12 @@
-<?php debug($_SERVER);?>
+<?php //debug($_SERVER);?>
 <h1>Parties</h1>
 
-<form action="">
+<form method="POST">
 	<input type="text" name="name">
 	<input type="text" name="nbplayers">
-	<select>
+	<select name="deck">
 <?php foreach($deckInfos as $deck): ?>
-		<option name='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
+		<option value='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
 <?php endforeach; ?>
 	</select>
 	<input type='submit' value='Trier'>

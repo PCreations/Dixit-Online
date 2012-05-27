@@ -2,17 +2,23 @@
 
 function filterGames($name, $nbplayers, $deck) {
 	global $db;
-
-	$query = $db->prepare('SELECT *
-						FROM games,deck
-						WHERE ga_name LIKE %:name%
-						WHERE ga_nb_players = :nbplayers
-						WHERE de_id=de_id
-						WHERE de_name = :deck
+	
+	$query = $db->prepare('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
+						FROM games as ga
+						INNER JOIN decks as de
+						ON de.de_id = ga.de_id
+						LEFT JOIN total_players_in_game as total
+						ON total.ga_id = ga.ga_id
+						WHERE (total.nbTotalPlayer < ga.ga_nb_players)
+						AND ga.ga_name LIKE :name
+						AND ga.ga_nb_players = :nbplayers
+						AND de.de_id = :deck
 						');
-	$query->execute(array('name' => $name,
-						':bplayers' => $nbplayers,
-						'deck' => $deck));
+	$name = '%'.$name.'%';
+	$query->bindParam(':name', $name, PDO::PARAM_STR);
+	$query->bindParam(':nbplayers', $nbplayers, PDO::PARAM_INT);
+	$query->bindParam(':deck', $deck, PDO::PARAM_INT);
+	$query->execute();
 						
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -33,12 +39,13 @@ function getGameInfos($gameID, $fields = array('*')) {
 function getWaintingGames() {
 	global $db;
 
-	$result = $db->query('SELECT ga.ga_nb_players, ga.ga_id, ga.ga_name, de.de_id, de.de_name, COUNT(pl.us_id) as nbPlayersInGame
+	$result = $db->query('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga
-						INNER JOIN decks as de ON de.de_id = ga.de_id
-						LEFT JOIN plays as pl
-						ON pl.ga_id = ga.ga_id
-						HAVING (nbPlayersInGame < ga.ga_nb_players)');
+						INNER JOIN decks as de
+						ON de.de_id = ga.de_id
+						LEFT JOIN total_players_in_game as total
+						ON total.ga_id = ga.ga_id
+						WHERE total.nbTotalPlayer < ga.ga_nb_players');
 	return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 

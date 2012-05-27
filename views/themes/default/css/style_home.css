@@ -14,6 +14,7 @@ header
 {
 	top:0px;
 	width:490px;
+	margin-right : 20px;
 	margin : auto;
 }
 /****************Notifications Flash*********************/
@@ -26,14 +27,21 @@ header
 	background: url('../img/notification.png'); 
 	display : none;
 }
+#flash img
+{
+	margin-right : 20px;
+	display : inline-block;
+	vertical-align : bottom;
+}
 
 #flash p
 {
 	text-align: center;
-	margin-top : 20px;
-	margin-bottom : 20px;
+	margin-top : 15px;
+	margin-bottom : 15px;
 	color : white;
 	letter-spacing : 1px;
+	
 }
 
 /***************Popup*******************/

@@ -1,3 +1,3 @@
 <div id="flash">
-	<p>Erreur : <?php echo $messageFlash['msg']; ?></p>
+	<p><img src="<?php echo IMG_DIR;?>notif_erreur.png"/>Erreur : <?php echo $messageFlash['msg']; ?></p>
 </div>

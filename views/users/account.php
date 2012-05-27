@@ -1,5 +1,5 @@
 <div id="profil">
-	<h1 id="1" onclick="changeOnglet('1');">Acceuil</h1>
+	<h1 id="1" onclick="changeOnglet('1');">Accueil</h1>
 	<h1 id="2" onclick="changeOnglet('2');">Votre Compte</h1>
 	<h1 id="3" onclick="changeOnglet('3');">Vos Amis</h1>
 	<h1 id="4" onclick="changeOnglet('4');">Vos Cartes</h1>
@@ -97,7 +97,7 @@
 					<p>
 						<input name="login" type="text" value="Login"/>
 						<input type="hidden" name="research" />
-						<input class="popup" border=0 src="<?php echo IMG_DIR;?>search_icone.png" type=image value=submit align="top" > 
+						<input border=0 src="<?php echo IMG_DIR;?>search_icone.png" type=image value=submit align="top" > 
 					</p>
 			</form>
 	</div>

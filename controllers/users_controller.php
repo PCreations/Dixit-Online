@@ -134,7 +134,7 @@ function account($id = null) {
 	$invitations = getFriendsWhoAskedMe($id);
 	if (is_array($invitations)){ //gérer les invitations venant d'autres utilisateurs
 		foreach($invitations as &$invitation){
-			setMessage('Vous avez reçu une demande d\'amis', FLASH_MESSAGE);
+			setMessage('Vous avez reçu une demande d\'amis', FLASH_INFOS);
 			$invitation['accept'] = createLink('Accepter', 'users', 'newFriend', array($invitation['us_id'], ACCEPT_INVITATION));
 			$invitation['refuse'] = createLink('Refuser', 'users', 'newFriend', array($invitation['us_id'], DECLINE_INVITATION));
 		}

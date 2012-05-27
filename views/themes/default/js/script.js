@@ -65,6 +65,8 @@ $(document).ready(function(){
 			$('#flash').slideUp(800);
 		}, 5000);
 	
+	
+	var  = "#etc"+i.toString()
 	//Pop-up
 	if(i=1){
 	$("#popupButton"+i).click(function(){  /*Show popup*/

@@ -1,9 +1,9 @@
 <div id="profil">
-	<img class="image_link" id="1" src="<?php echo IMG_DIR;?>compte_accueil.png" onclick="changeOnglet('1');">
-	<img class="lower_textimg image_link" id="2" src="<?php echo IMG_DIR;?>compte_compte.png" onclick="changeOnglet('2');">
-	<img class="image_link" id="3" src="<?php echo IMG_DIR;?>compte_amis.png" onclick="changeOnglet('3');">
-	<img class="image_link" id="4" src="<?php echo IMG_DIR;?>compte_cartes.png" onclick="changeOnglet('4');">
-
+	<h1 id="1" onclick="changeOnglet('1');">Acceuil</h1>
+	<h1 id="2" onclick="changeOnglet('2');">Votre Compte</h1>
+	<h1 id="3" onclick="changeOnglet('3');">Vos Amis</h1>
+	<h1 id="4" onclick="changeOnglet('4');">Vos Cartes</h1>
+	
 	<div id="account1">
 		<img class="avatar" src="<?php echo IMG_DIR;?>" alt=""/>
 		<p> Bienvenue <?php echo $user['us_lastname'] ; ?> <?php echo $user['us_name'] ; ?> </p>
@@ -37,10 +37,17 @@
 			<form method="POST">
 				<fieldset>
 					<legend>Modifier vos informations personnelles</legend>
+<<<<<<< HEAD
 						<p><label for="lastname">Prénom: </label><input name="lastname" type="text" value="<?php echo $user['us_lastname'] ; ?>"/></p>
 						<p><label for="name">Nom: </label><input name="name" type="text" value="<?php echo $user['us_name'] ; ?>"/></p>
 						<p><label for="birthdate">Date de naissance: </label><input name="birthdate" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
 						<p><label for="mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
+=======
+						<p><label for="us_name">Prénom: </label><input name="name" type="text" value="<?php echo $user['us_name'] ; ?>"/></p>
+						<p><label for="us_lastname">Nom: </label><input name="lastname" type="text" value="<?php echo $user['us_lastname'] ; ?>"/></p>
+						<p><label for="us_mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
+						<p><label for="us_name">Date de naissance: </label><input name="birthdate" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
+>>>>>>> 3fdb1e681522b2326785e8628cfaac01b9c5906b
 						<input type="hidden" name="update" />
 						<input  type="submit" value="Enregistrer"/>
 				</fieldset>

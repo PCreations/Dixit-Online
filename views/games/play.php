@@ -1,55 +1,49 @@
-<p>Vous êtes connecté en tant que : <?php echo $_SESSION[USER_MODEL]['us_pseudo'];?></p>
-
-<div id="phaseInfos">
-	<h1>Phase actuelle : <?php echo $turn['phase']['title'];?></h1>
-	<h2><?php echo $turn['phase']['infos'];?></h2>
+<div id="content">
+	<div id="left">
+		<div id="conteur">
+			<img id="profil_conteur" src="<?php echo IMG_DIR;?>profil.png">
+			<p id="turnComment"><?php echo $turn['storyteller']['us_pseudo'];?><br><?php echo $turn['tu_comment'];?></p>
+		</div>
+		<div id="table">
+			<?php
+			echo _getBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn, $storyteller, $actionStatus);
+			?>
+		</div>
+		<div id="main">
+			<img id="label_main" src="<?php echo IMG_DIR;?>votre_main.png">
+			<div id="hand">	
+				<?php
+				echo _getHand($turn['phase']['id'], $_SESSION[USER_MODEL][USER_PK], $turn['game']['ga_id'], $turn['tu_id'], $storyteller, $actionStatus);
+				?>
+			</div>
+			<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">
+			<p><?php echo $turn['phase']['infos'];?> Le prochain conteur est Thomas Demenat</p>
+		</div>
+	</div>
+	<div id="sidebar">
+		<div id="players">
+			<img id="label_joueurs" src="<?php echo IMG_DIR;?>joueurs.png">
+			<?php foreach($turn['players'] as $player): ?>
+			<div class="joueur">
+				<img class="profil_joueur" src="<?php echo IMG_DIR;?>profil.png">
+				<p class="infos_joueur"><?php echo $player['us_pseudo'] . (($player['role'] == 'conteur') ? ' : conteur' : '');?><br /><?php echo ($player['points'] != null) ? $player['points'] : '0';?> points<br /><?php echo $player['status'];?></p>
+			</div>
+			<?php endforeach; ?>
+		</div>
+		<div id="chat">
+			<img id="label_chat" src="<?php echo IMG_DIR;?>chat.png">
+			<div id="chatMessages">
+				<?php 
+				echo _getGameMessages($turn['game']['ga_id']);
+				?>
+			</div>
+			<form id="gameChat" action="<?php echo BASE_URL;?>chats/addGameMessage" method="POST">
+				<textarea name="gameMsg" id="gameMsg"></textarea>
+				<input type="submit" value="Envoyer" id="sendGameMsg"/>
+			</form>
+		</div>
+	</div>
 </div>
-
-<h3 id="storyteller">Conteur : <?php echo $turn['storyteller']['us_pseudo'];?></h3>
-<p id="turnComment"><?php echo $turn['tu_comment'];?></p>
-
-<div id="players">
-	<table>
-		<caption>Joueurs</caption>
-		<tr>
-			<th>Pseudo : </th>
-			<th>Points : </th>
-			<th>Statut : </th>
-		</tr>
-		<?php foreach($turn['players'] as $player): ?>
-		<tr>
-			<td><?php echo $player['us_pseudo'] . (($player['role'] == 'conteur') ? ' : conteur' : '');?></td>
-			<td><?php echo ($player['points'] != null) ? $player['points'] : '0';?></td>
-			<td><?php echo $player['status'];?></td>
-		</tr>
-		<?php endforeach; ?>
-	</table>
-</div>
-<h3>Table</h3>
-<div id="table">
-	<?php
-	echo _getBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn, $storyteller, $actionStatus);
-	?>
-</div>
-<h3>Votre main</h3>
-<div id="hand">
-	<?php
-	echo _getHand($turn['phase']['id'], $_SESSION[USER_MODEL][USER_PK], $turn['game']['ga_id'], $turn['tu_id'], $storyteller, $actionStatus);
-	?>
-</div>
-
-<h3>Chat</h3>
-<div id="chatMessages">
-	<?php 
-	echo _getGameMessages($turn['game']['ga_id']);
-	?>
-</div>
-<form id="gameChat" action="<?php echo BASE_URL;?>chats/addGameMessage" method="POST">
-	<textarea name="gameMsg" id="gameMsg">
-	</textarea>
-	<input type="submit" value="Envoyer" id="sendGameMsg"/>
-</form>
-
 <script type="text/javascript">
 
 	//Par défaut le tour courant et la phase courante sont ceux défini en PHP (i.e le premier tour et la première phase)
@@ -59,6 +53,7 @@
 	turnID = <?php echo $turn['tu_id'];?>;
 
 	BASE_URL = '<?php echo BASE_URL;?>';
+	IMG_DIR = '<?php echo IMG_DIR;?>';
 
 	$('#gameChat').submit(function() {
 		var message = $('#gameMsg').val();
@@ -88,6 +83,37 @@
 		});*/
 	}
 
+	$(document).ready(function() {
+		$('.handCardLabel').each(function(i) { 
+			$(this).click(function() {
+				chooseSTcard($(this).attr('for'));
+			});
+		});
+		$('.boardCardLabel').each(function(i) { 
+			$(this).click(function() {
+				voteForCard($(this).attr('for'));
+			});
+		});
+		$('#readyForNextTurn').click(function() {
+			console.log('ok');
+			readyForNextTurn();
+		})
+	});
+
+	function voteForCard(id) {
+		$('input[name=cardID]').val([id]);
+
+		var card = $('input[name="cardID"]:checked').val();
+		$('#boardForm').submit();
+	}
+
+	function chooseSTcard(id) {
+		// On coche Non
+		$('input[name=cardID]').val([id]);
+
+		var card = $('input[name="cardID"]:checked').val();
+		$('#handForm').submit();
+	}
 	setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			var $elem = $('#chatMessages');
@@ -96,7 +122,8 @@
 			$('html, body').animate({scrollTop: $elem.height()}, 500);
 		});
 	}, 2000);
-	/*setInterval(function(){
+
+	setInterval(function(){
 		$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
 			var oldPhase = phaseID;
 			var result = parseJSON(json);
@@ -108,7 +135,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 5000);*/
+	}, 5000);
 
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);
@@ -144,20 +171,14 @@
 			playersInfos.key = $.parseJSON(playersInfos.val);
 		});
 		
-		$("#players").html("<table>"
-							+"<caption>Joueurs</caption>"
-								+"<tr>"
-									+"<th>Pseudo : </th>"
-									+"<th>Points : </th>"
-									+"<th>Statut : </th>"
-								+"</tr>");
+		$("#players").html('<img id="label_joueurs" src="'+IMG_DIR+'joueurs.png">');
+
 		$.each(playersInfos, function(key, player) {
 			console.log(player);
-			$("#players table").append("<tr>"
-										+"<td>"+player.us_pseudo+((player.role == 'conteur') ? ' : conteur' : '')+"</td>"
-										+"<td>"+((player.points != null) ? player.points : '0')+"</td>"
-										+"<td>"+player.status+"</td>"
-									+"</tr>");
+			$("#players").append('<div class="joueur">'
+									+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
+									+'<p class="infos_joueur">'+player.us_pseudo+((player.role == 'conteur') ? ' : conteur' : '')+'<br />'+((player.points != null) ? player.points : '0')+'points<br />'+player.status+'</p>'
+								+'</div>');
 		});
 	}
 

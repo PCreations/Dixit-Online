@@ -1,0 +1,6 @@
+Joueur2
+turn comment = yo
+Joueur1
+turn comment = mamie
+admin
+turn comment = hihi

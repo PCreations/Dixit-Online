@@ -1,0 +1,27 @@
+turnID = 10
+userID = 1
+
+turnID = 10
+userID = 2
+
+turnID = 10
+userID = 5
+
+turnID = 11
+userID = 1
+
+turnID = 11
+userID = 2
+
+turnID = 11
+userID = 5
+
+turnID = 12
+userID = 1
+
+turnID = 12
+userID = 2
+
+turnID = 12
+userID = 5
+

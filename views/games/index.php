@@ -1,7 +1,19 @@
+<?php //debug($_SERVER);?>
+<h1>Parties</h1>
 	<div id="games">
 		<div id="left_side">
 			<div id="creer">
 				<img id="label_creer" src="<?php echo IMG_DIR;?>creer.png">
+				<form method="POST">
+					<input type="text" name="name">
+					<input type="text" name="nbplayers">
+					<select name="deck">
+				<?php foreach($deckInfos as $deck): ?>
+						<option value='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
+				<?php endforeach; ?>
+					</select>
+					<input type='submit' value='Trier'>
+				</form>
 					<form method="post" action="partie.html">
 						<figure><label for="nom">Nom</label> 			<input type="text" name="nom" size="20" required/> </figure>
 						<figure><label for="pwd">Mot de Passe</label> 	<input type="password" name="pwd"size="18" required/> </figure>
@@ -28,7 +40,6 @@
 					 <div class="scroll">
 						<table  id="waitingGames" cellspacing="0">
 						   <tbody>
-						   		<?php debug($partiesEnAttente, true);?>
 								<?php foreach($partiesEnAttente as $partie): ?>
 								 <tr>
 									<td class="cadenas"><img src="<?php echo IMG_DIR;?>cadenas.png"></td>
@@ -36,7 +47,7 @@
 									<td class="createur"><?php echo $partie['us_id'];?></td>
 									<td class="joueurs"><?php echo $partie['nbPlayersInGame'] . '/' . $partie['ga_nb_players'];?></td>
 									<td class="points"><?php echo $partie['ga_points_limit'];?></td>
-									<td class="cartes">Toutes</td>
+									<td class="cartes"><?php echo $partie['de_name'];?></td>
 							   </tr></a>
 								<?php endforeach; ?>
 						   </tbody>   

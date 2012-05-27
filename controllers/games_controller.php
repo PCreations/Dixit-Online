@@ -1,6 +1,7 @@
 <?php
 
-useModels(array('user', 'game', 'card', 'chat'));
+
+useModels(array('user', 'game', 'card', 'chat', 'deck'));
 
 define('CARD_PER_PLAYER', 3); //pour tester
 define('STORYTELLER_PHASE', 0);
@@ -13,28 +14,40 @@ define('ACTION_IN_PROGRESS', 4);
 define('ACTION_DONE', 5);
 
 function index() {
-	$partiesEnAttente = getWaitingGames();
-	foreach($partiesEnAttente as &$partie) {
-		if(isLogged()) {
-			$userID = $_SESSION[USER_MODEL][USER_PK];
+	$deckInfos = getAllDecks(array('de_id', 'de_name'));
+	
 
-			$playersInGame = getSpecificArrayValues(getPlayersInGame($partie['ga_id']), 'us_id');
-
-			if(!in_array($userID, $playersInGame)) {
-				$partie['action'] = createLink('rejoindre', 'games', 'joinGame', array($partie['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
-			}
-			else{
-				$partie['action'] = createLink('quitter', 'games', 'quiteGame', array($partie['ga_id'], $userID), array('title' => 'Quitter la partie'));
-			}
-		}
-		else {
-			$partie['action'] = 'Aucune action possible. ' . createLink('connectez-vous', 'users', 'login', null, array('title' => 'connectez-vous')) . ' pour rejoindre une partie';
-		}
+	if(!isPost()) {
+		$partiesEnAttente = getWaitingGames();
+	}
+	else {
+		extract($_POST);
+		$partiesEnAttente = filterGames($name, $nbplayers, $deck);
 	}
 
-	$vars = array('partiesEnAttente' => $partiesEnAttente);
-	render('index', $vars);
+	foreach($partiesEnAttente as &$partie) {
+			if(isLogged()) {
+				$userID = $_SESSION[USER_MODEL][USER_PK];
+
+				$playersInGame = getSpecificArrayValues(getPlayersInGame($partie['ga_id']), 'us_id');
+
+				if(!in_array($userID, $playersInGame)) {
+					$partie['action'] = createLink('rejoindre', 'games', 'joinGame', array($partie['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
+				}
+				else{
+					$partie['action'] = createLink('quitter', 'games', 'quiteGame', array($partie['ga_id'], $userID), array('title' => 'Quitter la partie'));
+				}
+			}
+			else {
+				$partie['action'] = 'Aucune action possible. ' . createLink('connectez-vous', 'users', 'login', null, array('title' => 'connectez-vous')) . ' pour rejoindre une partie';
+			}
+		}
+		
+		debug($partiesEnAttente);
+		$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos);
+		render('index', $vars);
 }
+
 
 function joinGame($gameID, $userID) {
 	if(!isLogged()) {

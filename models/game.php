@@ -1,5 +1,48 @@
 <?php
 
+function filterGames($name, $nbplayers, $deck) {
+	global $db;
+	
+	$prequery='';
+	if (!empty($name)){
+		$prequery.=' AND ga.ga_name LIKE :name';
+	}
+	if (!empty($nbplayers)){
+		$prequery.=' AND ga.ga_nb_players = :nbplayers';
+	}
+	if (!empty($deck)){
+		$prequery.=' AND de.de_id = :deck';
+	}
+
+	debug($prequery);
+	
+	$query = $db->prepare('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
+						FROM games as ga
+						INNER JOIN decks as de
+						ON de.de_id = ga.de_id
+						LEFT JOIN total_players_in_game as total
+						ON total.ga_id = ga.ga_id
+						WHERE (total.nbTotalPlayer < ga.ga_nb_players)
+						'.$prequery);
+						
+	
+	
+	if (!empty($name)){
+		$name = '%'.$name.'%';
+		$query->bindParam(':name', $name, PDO::PARAM_STR);
+	}
+	if (!empty($nbplayers)){
+		$query->bindParam(':nbplayers', $nbplayers, PDO::PARAM_INT);
+	}
+	if (!empty($deck)){
+		$query->bindParam(':deck', $deck, PDO::PARAM_INT);
+	}
+	
+	$query->execute();
+						
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function getGameInfos($gameID, $fields = array('*')) {
 	global $db;
 
@@ -9,15 +52,17 @@ function getGameInfos($gameID, $fields = array('*')) {
 						FROM games
 						WHERE ga_id = ?');
 	$query->execute(array($gameID));
-
+	
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
 function getWaitingGames() {
 	global $db;
 
-	$result = $db->query('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, ga.ga_points_limit, total.nbTotalPlayer as nbPlayersInGame
+	$result = $db->query('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, ga.ga_points_limit, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga
+						INNER JOIN decks as de
+						ON de.de_id = ga.de_id
 						LEFT JOIN total_players_in_game as total
 						ON total.ga_id = ga.ga_id
 						WHERE total.nbTotalPlayer < ga.ga_nb_players');

@@ -107,7 +107,7 @@ function addStorytellerCard() {
 			redirect('games', 'play', array($_POST['gameID']));
 		}
 		else {
-			$errors;
+			$errors = '';
 			if(empty($_POST['comment'])) $errors .= 'Le commentaire associé à la carte ne peut pas être vide !<br />';
 			if(!isset($_POST['cardID'])) $errors .= 'Vous devez sélectionner une carte';
 

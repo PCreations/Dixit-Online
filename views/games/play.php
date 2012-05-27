@@ -38,8 +38,7 @@
 				?>
 			</div>
 			<form id="gameChat" action="<?php echo BASE_URL;?>chats/addGameMessage" method="POST">
-				<textarea name="gameMsg" id="gameMsg">
-				</textarea>
+				<textarea name="gameMsg" id="gameMsg"></textarea>
 				<input type="submit" value="Envoyer" id="sendGameMsg"/>
 			</form>
 		</div>
@@ -84,12 +83,43 @@
 		});*/
 	}
 
-	/*setInterval(function(){
+	$(document).ready(function() {
+		$('.handCardLabel').each(function(i) { 
+			$(this).click(function() {
+				chooseSTcard($(this).attr('for'));
+			});
+		});
+		$('.boardCardLabel').each(function(i) { 
+			$(this).click(function() {
+				voteForCard($(this).attr('for'));
+			});
+		});
+		$('#readyForNextTurn').click(function() {
+			console.log('ok');
+			readyForNextTurn();
+		})
+	});
+
+	function voteForCard(id) {
+		$('input[name=cardID]').val([id]);
+
+		var card = $('input[name="cardID"]:checked').val();
+		$('#boardForm').submit();
+	}
+
+	/*function chooseSTcard(id) {
+		// On coche Non
+		$('input[name=cardID]').val([id]);
+
+		var card = $('input[name="cardID"]:checked').val();
+		$('#handForm').submit();
+	}
+	setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			$('#chatMessages').empty();
 			$('#chatMessages').html(data);
 		});
-	}, 2000);*/
+	}, 2000);
 
 	setInterval(function(){
 		$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
@@ -103,7 +133,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 5000);
+	}, 5000);*/
 
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);

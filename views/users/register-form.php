@@ -43,11 +43,7 @@
 					?>
 					</select>
 					</p>
-				
-				
-				
-				
-				
+
 				<input type="hidden" name="register" />
 				<input class="submit" type="submit" value="Inscription" />
 		</fieldset>

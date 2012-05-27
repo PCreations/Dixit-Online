@@ -1,10 +1,11 @@
 /****************Généralités*********************/
 #login, #register, #profil, #results
 {
-	width:630px;
+	width:660px;
+	height:336px;
 	margin : auto;
 	padding : 10px;
-	background : url('../img/bg_main.png') no-repeat center; 
+	background : url('../img/parchemin_compte.png') no-repeat center; 
 		-webkit-background-size: cover; 
 	-moz-background-size: cover; 
 	-o-background-size: cover; 

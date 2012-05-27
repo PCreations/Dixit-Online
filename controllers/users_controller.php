@@ -5,16 +5,16 @@ define('SEND_INVITATION', 2);
 define('ACCEPT_INVITATION', 1);
 define('DECLINE_INVITATION', 0);
 
-/*function check_date(){
-	switch ($_POST['mois']){
+function check_date(){
+	switch ($_POST['month']){
 		case 1: case 3: case 5: case 7: case 8: case 10: case 12:
-			return (0 < $_POST['jour'] && 0 < $_POST['annee']);
+			return (0 < $_POST['day'] && 0 < $_POST['year']);
 		case 4: case 6: case 9: case 11:
-			return(0 < $_POST['jour'] && $_POST['jour'] <= 30 && 0 < $_POST['annee']);
+			return(0 < $_POST['day'] && $_POST['day'] <= 30 && 0 < $_POST['year']);
 		case 2:
-			return(0 < $_POST['jour'] && 0 < $_POST['annee'] && ($_POST['jour'] <= 28 || ($_POST['jour'] == 29 && ((($_POST['annee'] % 4) == 0 && ($_POST['annee'] % 100) != 0) || ($_POST['annee'] % 400) == 0))));
+			return(0 < $_POST['day'] && 0 < $_POST['year'] && ($_POST['day'] <= 28 || ($_POST['year'] == 29 && ((($_POST['year'] % 4) == 0 && ($_POST['year'] % 100) != 0) || ($_POST['year'] % 400) == 0))));
 	}
-}*/
+}
 
 function register() {
 	if(isset($_POST['register'])) {
@@ -25,8 +25,14 @@ function register() {
 			setMessage('Les mots de passe ne coïncident pas', FLASH_ERROR);
 			render('register-form', $_POST);
 		}
+		else if (check_date()==0) {
+			setMessage("La date de naissance n'est pas valide", FLASH_ERROR);
+			render('register-form', $_POST);
+		}
 		else {
 			$us_password = encrypt($us_password);
+			
+			$us_birthdate=$_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
 			if(addUser($us_name,
 					   $us_lastname,
 					   $us_pseudo,

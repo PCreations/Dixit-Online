@@ -39,9 +39,8 @@
 					<legend>Modifier vos informations personnelles</legend>
 						<p><label for="us_name">Prénom: </label><input name="name" type="text" value="<?php echo $user['us_name'] ; ?>"/></p>
 						<p><label for="us_lastname">Nom: </label><input name="lastname" type="text" value="<?php echo $user['us_lastname'] ; ?>"/></p>
-						<p><label for="us_name">Pseudo: </label><input name="name" type="text" value="<?php echo $user['us_pseudo'] ; ?>"/></p>
 						<p><label for="us_mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
-						<p><label for="us_name">Date de naissance: </label><input name="name" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
+						<p><label for="us_name">Date de naissance: </label><input name="birthdate" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
 						<input type="hidden" name="update" />
 						<input  type="submit" value="Enregistrer"/>
 				</fieldset>

@@ -70,7 +70,7 @@ function account($id = null) {
 	
 	if(isset($_POST['update'])) { //Formulaire de changement de données
 			extract($_POST);
-			updateUser($id, $name, $lastname, $mail);
+			updateUser($id, $name, $lastname, $mail, $birthdate);
 	}
 	
 	if(isset($_POST['updatePwd'])) { //Formulaire de changement de mot de passe

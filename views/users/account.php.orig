@@ -55,7 +55,11 @@
 			<p> Vous avez <b><?php echo $nbFriends['nbFriends']?> </b>amis.</p>
 			<ul class="friends">
 				<?php foreach($reelFriends as $reelFriend): ?>
+<<<<<<< HEAD
 				<li> <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></br><?php echo createLink('Supprimer', 'users', 'newFriend', array($reelFriend['us_pseudo'], '0'));?></div></li>
+=======
+				<li> <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></div></li>
+>>>>>>> 0175fe9b0f7f7476848955b8e2f88e95474aa9a0
 				<?php endforeach; ?>
 			</ul>
 			</br>

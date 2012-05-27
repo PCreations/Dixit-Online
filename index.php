@@ -23,12 +23,12 @@ $pageTitle = 'Dixit Online';
 /**
  * Tableau contenant la liste des fichiers .js à inclure
  */
-$JS_FILES = array('jquery-1.7.2.min.js', 'script.js');
+$JS_FILES = array('jquery-1.7.2.min.js', 'script.js', 'contact.js');
 
 /**
  * Tableau contenant la liste des fichiers .css à inclure
  */
-$CSS_FILES = array('style.css', 'test.css');
+$CSS_FILES = array('style_contact.css', 'style_home.css', 'style_users.css', 'style_games.css');
 
 
 require_once('core/core.php');

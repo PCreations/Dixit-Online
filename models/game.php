@@ -56,7 +56,7 @@ function getGameInfos($gameID, $fields = array('*')) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
-function getWaintingGames() {
+function getWaitingGames() {
 	global $db;
 
 	$result = $db->query('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
@@ -72,17 +72,10 @@ function getWaintingGames() {
 function addPlayerInGame($gameID, $userID) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO plays(us_id, ga_id, pl_status)
-						VALUES(:userID, :gameID, "Attente")');
-	try {
-		$query->execute(array('userID' => $userID,
+	$query = $db->prepare('INSERT INTO plays(us_id, ga_id)
+						VALUES(:userID, :gameID)');
+	return $query->execute(array('userID' => $userID,
 						  	 'gameID' => $gameID));
-	}
-	catch(Exception $e) {
-		return false;
-	}
-
-	return true;
 }
 
 function setPlayerStatus($gameID, $userID, $status) {
@@ -149,12 +142,10 @@ function isInGame($gameID, $userID) {
 function checkPlayersInGame($gameID) {
 	global $db;
 
-	$query = $db->prepare('SELECT COUNT(plays.us_id) as nbPlayersInGame, game_types.gt_nb_players as nbPlayersMax
-						FROM plays
+	$query = $db->prepare('SELECT total.nbTotalPlayer as nbPlayersInGame, games.ga_nb_players as nbPlayersMax
+						FROM total_players_in_game as total
 						INNER JOIN games
-						ON games.ga_id = plays.ga_id
-						INNER JOIN game_types
-						ON games.gt_id = game_types.gt_id
+						ON games.ga_id = total.ga_id
 						WHERE games.ga_id = ?');
 	$query->execute(array($gameID));
 	$result = $query->fetch(PDO::FETCH_ASSOC);
@@ -166,12 +157,10 @@ function getDeck($gameID) {
 
 	$query = $db->prepare('SELECT cards.ca_id
 						FROM cards
-						INNER JOIN deck
-						ON deck.ca_id = cards.ca_id
-						INNER JOIN game_types as gt
-						ON gt.gt_id = deck.gt_id
+						INNER JOIN cards_decks
+						ON cards_decks.ca_id = cards.ca_id
 						INNER JOIN games
-						ON games.gt_id = gt.gt_id 
+						ON games.de_id = cards_decks.de_id
 						WHERE games.ga_id = ?');
 	$query->execute(array($gameID));
 	return $query->fetchAll(PDO::FETCH_ASSOC);

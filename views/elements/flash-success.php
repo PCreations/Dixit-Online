@@ -1,1 +1,4 @@
-<h1>OK : <?php echo $messageFlash['msg']; ?></h1>
+<div id="flash">
+	
+	<p><img src="<?php echo IMG_DIR;?>notif_success.png"/><?php echo $messageFlash['msg']; ?></p>
+</div>

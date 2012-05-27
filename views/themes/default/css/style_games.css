@@ -1,0 +1,268 @@
+/****************Article*********************/
+#games #left_side
+{
+	width:655px;
+	display:inline-block;
+	vertical-align: top;
+}
+
+/****************Créer*********************/
+#games #creer
+{
+	width:605px;
+	height:60px;
+	margin-bottom:15px;
+	padding-top:15px;
+	padding-left : 20px;
+	padding-right:290px;
+	padding-bottom:25px;
+	background-image:url("../img/bg_conteur.png");
+	background-repeat:no-repeat;
+}
+#games #creer img
+{
+	padding-left : 10px;
+}
+#games label
+{
+	display : block;
+}
+#games figure
+{
+	display : inline-block;
+	margin : 0px;
+}
+#games label
+{
+	font-size : 0.9em;
+}
+#games input, select
+{
+	border : none;
+	background-color: rgba(255, 255, 255, 0.5);
+	
+}
+#games select
+{
+	overflow: hidden;
+	color : #88816f;
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+#games .submit input
+{
+	font-weight : bold;
+}
+#games .button1 input
+{
+	text-align : center;
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+	font-size : 1em;
+}
+/****************Partie*********************/
+#games #parties
+{
+	width:615px;
+	height:239px;
+	margin-bottom:10px;
+	padding:20px;
+	background-image:url("../img/bg_table.png");
+}
+#games ul
+{
+	padding : 0px;
+	margin : 10px 0px 0px 70px;
+}
+#games ul li
+{
+	list-style : none;
+	display : inline-block;
+	vertical-align : top;
+}
+#games .head_nom
+{
+	padding-right : 90px;
+}
+#games .head_createur
+{
+	padding-right : 30px;
+}
+#games .head_joueurs
+{
+	padding-right : 10px;
+}
+#games .head_points
+{
+	padding-right : 30px;
+}
+
+#games #waitingGames {
+	border-collapse: collapse;
+	margin : auto;
+	margin-right : 20px;
+	width : 560px;
+}
+
+	#games #waitingGames tr{
+		background-color: rgba(255,255,255,0.5);
+		display: block;
+		margin-bottom: 5px;
+		height : 30px;
+	}
+	#games #waitingGames td{
+		padding-left: 10px;
+	}
+	#games #waitingGames  .cadenas
+	{
+		width :20px;
+	}	
+	#games #waitingGames .nom,  #games #waitingGames .createur
+	{
+		width : 120px;
+	}
+	#games #waitingGames  .joueurs
+	{
+		width : 80px;
+	}
+	#games #waitingGames .points
+	{
+		width : 60px;
+	}
+	#games #waitingGames .table_head 
+	{
+		text-align : left;
+		background : transparent;
+	}
+
+	#games #waitingGames a 
+	{
+		text-decoration : none;
+		color :black;
+	}
+
+#games .scroll
+{
+	height : 170px;
+	overflow-y : scroll;
+}
+
+/****************Nouvelles Cartes*********************/
+#games #nouvelles
+{
+	width:615px;
+	height:310px;
+	padding:20px;
+	padding-top : 30px;
+	padding-left : 25px;
+	background-image: url("../img/bg_main.png");
+	background-repeat : no-repeat;
+}
+
+#games #cartes
+{
+	height:153px;
+	display:block;
+	margin : 15px 0px;;
+}
+
+ #games .carte
+{
+	display:inline-block;
+	position:relative;
+	width:16%; /*dépend du nombre de cartes*/
+}
+ #games .carte img
+{
+	width:100%;
+}
+
+#games article .button2 input
+{
+	text-align : center;
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+	font-size : 1em;
+	height : 30px;
+	margin : 10px 10px 0px 60px;
+}
+
+/****************Aside*********************/
+#games #right_side
+{
+	width:203px;
+	height:715px;
+	margin-left:10px;
+	padding:20px;
+	display:inline-block;
+	vertical-align: top;
+	background-image:url("../img/bg_sidebar.png");
+}
+
+#games #right_side .button2
+{
+	text-align : center;
+	height : 20px;
+	background-color: rgba(255, 255, 255, 0.5);
+	margin : 20px 15px;
+}
+
+#games #right_side .button2 a
+{
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+	font-size : 0.9em;
+	text-decoration : none;
+	color: black;	
+	margin : 20px 15px;
+}
+
+/***************Chat*********************/
+#games #right_side .ami
+{
+		width:200px;
+		height : 60px;
+		margin-top: 10px;
+}
+#games #right_side .ami img
+{
+	display : inline-block;
+	width : 60px;
+	height : 60px;
+}
+
+#games #right_side .ami p
+{
+	position : absolute;
+	display:inline-block;
+	margin-top: 5px;
+	padding : 8px 0px 8px 5px;
+	width : 125px;
+	text-align:center;
+	font-size: 0.9em;
+	background-color: rgba(255, 255, 255, 0.5);
+	vertical-align : middle;
+}
+
+#games  #right_side .conversation
+{
+	background-color: rgba(255, 255, 255, 0.5);
+	padding : 10px 10px 5px 10px;
+	width:170px;
+}
+#games #right_side .conversation h1
+{
+	font-size : 0.9em;
+	margin : 0px;
+	font-weight : bold;
+}
+#games #right_side .conversation p
+{
+	font-size : 0.9em;
+	margin : 0px;
+	margin-bottom : 20px;
+}
+#games #right_side.conversation h2
+{
+	font-size : 0.9em;
+	margin : 0px;
+	padding-left : 5px;
+	background : white;
+}

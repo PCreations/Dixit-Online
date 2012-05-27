@@ -24,7 +24,7 @@
 		<div id="home_aside">
 			<img src="<?php echo IMG_DIR;?>compte.png"/>
 			<img class="ligne" src="<?php echo IMG_DIR;?>ligne.png"/>
-			<?php echo createLink('Connexion', 'users', 'login');?>
+			<?php echo $home?>
 		</div>
 	</aside>
 </div>

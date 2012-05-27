@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user'));
+useModels(array('user', 'contact'));
 
 function register() {
 	if(isset($_POST['register'])) {
@@ -81,7 +81,6 @@ function account($id = null) {
 	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
 			extract($_POST);
 			$results = approchSearchUser($login);
-			$user = getUserInfos($id);
 			$reelfriends = getSpecificArrayValues(getReelFriends($id), 'us_pseudo');
 			$askedfriends = getSpecificArrayValues(getAskedFriends($id), 'us_pseudo');
 			$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($id), 'us_pseudo');
@@ -89,13 +88,7 @@ function account($id = null) {
 				if(!in_array($result['us_pseudo'], $reelfriends)) {
 					if(!in_array($result['us_pseudo'], $askedfriends)) {
 						if(!in_array($result['us_pseudo'], $whoAskedMe)) {
-							if($result['us_pseudo'] != $user['us_pseudo']){
-							debug($result);
-								$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo'], '2'));
-							}
-							else{
-								$result['action'] = 'C\'est vous !';
-							}
+							$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo'], '2'));
 						}
 						else{
 							$result['action'] = 'Cette personne vous a demandé en amis';
@@ -153,13 +146,18 @@ function newFriend($pseudo, $action){
 		}
 		if($action == 0){
 			refuseFriend($fr_id, $userID);
+<<<<<<< HEAD
 			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
+=======
+			setMessage('Vous avez refusé l\'invitation', FLASH_SUCCESS);
+>>>>>>> 0175fe9b0f7f7476848955b8e2f88e95474aa9a0
 		}
 	}
 	else{
 		setMessage('Vous n\'êtes pas connecté !', FLASH_ERROR);
 	}
 	redirect('users', 'account', array( $userID));
+<<<<<<< HEAD
 }
 
 function sendInvitation($pseudo){
@@ -167,7 +165,42 @@ function sendInvitation($pseudo){
 	setMessage('Une invitation a été envoyée', FLASH_SUCCESS);
 	$vars = array($userID);
 	render('account', $vars);
+=======
+>>>>>>> 0175fe9b0f7f7476848955b8e2f88e95474aa9a0
 }
+
+function sendInvitation($pseudo){
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	setMessage('Une invitation a été envoyée', FLASH_SUCCESS);
+	$vars = array($userID);
+	render('account', $vars);
+	}
+	
+	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
+			extract($_POST);
+			$results = approchSearchUser($login);
+			$friend = getSpecificArrayValues(getFriends($userID), 'us_pseudo');
+			foreach($results as &$result){
+					if(!in_array($result['us_pseudo'], $friend)) {
+						$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo']));
+					}
+					else{
+						$result['action'] = 'Vous êtes déjà amis';
+					}
+				}
+			$vars = array('results' => $results,
+							'login' => $login);			
+			render('research', $vars);
+	}
+	$user = getUserInfos($id);
+	$friends = getFriends($id);
+	$nbFriends = countFriends($id);
+	$vars = array(	'user' => $user,
+					'friends' => $friends,
+					'nbFriends' => $nbFriends);
+	render('account', $vars);
+}
+
 
 function logout() {
 	if(isLogged()) {

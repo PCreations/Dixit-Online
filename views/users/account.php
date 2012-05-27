@@ -1,9 +1,9 @@
 <div id="profil">
-	<h1 id="1" onclick="changeOnglet('1');">Acceuil</h1>
-	<h1 id="2" onclick="changeOnglet('2');">Votre Compte</h1>
-	<h1 id="3" onclick="changeOnglet('3');">Vos Amis</h1>
-	<h1 id="4" onclick="changeOnglet('4');">Vos Cartes</h1>
-	
+	<img class="image_link" id="1" src="<?php echo IMG_DIR;?>compte_accueil.png" onclick="changeOnglet('1');">
+	<img class="lower_textimg image_link" id="2" src="<?php echo IMG_DIR;?>compte_compte.png" onclick="changeOnglet('2');">
+	<img class="image_link" id="3" src="<?php echo IMG_DIR;?>compte_amis.png" onclick="changeOnglet('3');">
+	<img class="image_link" id="4" src="<?php echo IMG_DIR;?>compte_cartes.png" onclick="changeOnglet('4');">
+
 	<div id="account1">
 		<img class="avatar" src="<?php echo IMG_DIR;?>" alt=""/>
 		<p> Bienvenue <?php echo $user['us_name'] ; ?> <?php echo $user['us_lastname'] ; ?> </p>

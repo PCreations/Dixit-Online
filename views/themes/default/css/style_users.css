@@ -6,12 +6,15 @@
 	margin : auto;
 	padding : 10px;
 	background : url('../img/parchemin_compte.png') no-repeat center; 
-		-webkit-background-size: cover; 
+	-webkit-background-size: cover; 
 	-moz-background-size: cover; 
 	-o-background-size: cover; 
 	background-size: cover;
 	border-radius : 6px;
 }
+
+
+
 #login form, #register form, #profil #account1 form
 {
 	width : 70%;
@@ -75,6 +78,21 @@
 }
 
 /****************Account*********************/
+
+.image_link
+{
+	cursor:pointer;
+	margin-top:10px;
+	margin-left:40px;
+	margin-bottom:20px;
+}
+
+.lower_textimg
+{
+	position:relative;
+	top:7px;
+}
+
 #profil p, #profil h1
 {
 	margin : 0px 20px;

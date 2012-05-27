@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Dim 27 Mai 2012 à 11:05
+-- Généré le : Dim 27 Mai 2012 à 21:10
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `cards` (
   `ca_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ca_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=105 ;
 
 -- --------------------------------------------------------
 
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `chats` (
 CREATE TABLE IF NOT EXISTS `decks` (
   `de_id` int(11) NOT NULL AUTO_INCREMENT,
   `us_id` int(11) NOT NULL,
-  `de_name` varchar(255) NOT NULL,
+  `de_name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `de_status` smallint(6) NOT NULL,
   PRIMARY KEY (`de_id`),
   KEY `us_id` (`us_id`)
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `games` (
   PRIMARY KEY (`ga_id`),
   KEY `de_id` (`de_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -207,7 +207,7 @@ CREATE TABLE IF NOT EXISTS `turns` (
   PRIMARY KEY (`tu_id`),
   KEY `ga_id` (`ga_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 -- --------------------------------------------------------
 
@@ -223,11 +223,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `us_password` varchar(255) NOT NULL,
   `us_avatar` varchar(255) DEFAULT NULL,
   `us_mail` varchar(255) NOT NULL,
-  `us_birthdate` datetime DEFAULT NULL,
+  `us_birthdate` date DEFAULT NULL,
   `us_signin_date` datetime DEFAULT NULL,
   `us_last_connexion` datetime DEFAULT NULL,
   PRIMARY KEY (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 

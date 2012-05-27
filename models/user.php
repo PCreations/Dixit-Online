@@ -48,18 +48,20 @@ function getUserInfos($id, $fields = array('*')) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
-function updateUser($id, $name, $lastname, $mail){
+function updateUser($id, $name, $lastname, $birthdate, $mail){
 	global $db;
-	$query = $db->prepare('UPDATE users 
+	$query = $db->prepare('UPDATE users
 						SET us_name = :name,
 						us_lastname =  :lastname,
-						us_mail = : mail
-						WHERE us_id = :id');
+						us_birthdate = :birthdate,
+						us_mail = :mail
+						WHERE us_id= :id');
 	$query->execute(array('id' => $id,
 						'name'=> $name,
 						'lastname' => $lastname,
+						'birthdate' => $birthdate,
 						'mail' => $mail));
-}
+}						
 function countFriends($id){
 	global $db;
 	$query = $db->prepare('	SELECT COUNT(us_friend_id) AS nbFriends 

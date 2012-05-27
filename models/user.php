@@ -61,7 +61,17 @@ function updateUser($id, $name, $lastname, $birthdate, $mail){
 						'lastname' => $lastname,
 						'birthdate' => $birthdate,
 						'mail' => $mail));
-}						
+}
+
+function updatePwd($id, $password){
+	global $db;
+	$query = $db->prepare('UPDATE users
+						SET us_password = :password
+						WHERE us_id= :id');
+	$query->execute(array('id' => $id,
+						'password' => $password));
+}
+						
 function countFriends($id){
 	global $db;
 	$query = $db->prepare('	SELECT COUNT(us_friend_id) AS nbFriends 

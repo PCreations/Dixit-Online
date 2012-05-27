@@ -28,12 +28,12 @@
 			<p><span><b>Pseudo : </b></span> 	<?php echo $user['us_pseudo'] ; ?> </p>
 			<p><span><b>Adresse mail: 	</b></span> <?php echo $user['us_mail'] ; ?> </p>
 			<p><span><b>Date de naissance: </b></span> 	<?php echo $user['us_birthdate'] ; ?> </p>
-			<div id="popupButton"><input type="submit" value="Modifier vos informations"/></div>
-			<div id="popupButton"><input type="submit" value="Changer de Mot de Passe"/></div>
+			<div id="popupButton1" class="popupButton"><input type="submit" value="Modifier vos informations"/></div>
+			<div id="popupButton2" class="popupButton"><input type="submit" value="Changer de Mot de Passe"/></div>
 		</div>
 		<img src="<?php echo IMG_DIR;?>" alt=""/>
-		<div id="popup">
-			<a id="popupClose">x</a>
+		<div id="popup1" class="popup">
+			<a id="popupClose1" class="popupClose">x</a>
 			<form method="POST">
 				<fieldset>
 					<legend>Modifier vos informations personnelles</legend>
@@ -46,7 +46,22 @@
 				</fieldset>
 			</form>
 		</div>
-		<div id="backgroundPopup"></div> 
+		<div id="backgroundPopup1" class="backgroundPopup"></div> 
+		<div id="popup2" class="popup">
+			<a id="popupClose2" class="popupClose">x</a>
+			<form method="POST">
+					<fieldset>
+						<legend>Modifier votre mot de passe</legend>
+							<p><label for="oldPass">Ancien mot de passe: </label><input name="oldPass" type="password" required/></p>
+							<p><label for="password">Nouveau mot de passe: </label><input name="password" type="password" required/></p>
+							<p><label for="passConfirm">Confirmer: </label><input name="passConfirm" type="password" required/></p>
+							<input type="hidden" name="pseudo" value="<?php echo $user['us_pseudo'] ; ?>" />
+							<input type="hidden" name="updatePwd" />
+							<input  type="submit" value="Enregistrer"/>
+					</fieldset>
+			</form>
+		</div>
+		<div id="backgroundPopup2" class="backgroundPopup"></div> 
 	</div>
 	
 	<div id="account3">

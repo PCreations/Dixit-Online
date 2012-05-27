@@ -5,6 +5,17 @@ define('SEND_INVITATION', 2);
 define('ACCEPT_INVITATION', 1);
 define('DECLINE_INVITATION', 0);
 
+/*function check_date(){
+	switch ($_POST['mois']){
+		case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+			return (0 < $_POST['jour'] && 0 < $_POST['annee']);
+		case 4: case 6: case 9: case 11:
+			return(0 < $_POST['jour'] && $_POST['jour'] <= 30 && 0 < $_POST['annee']);
+		case 2:
+			return(0 < $_POST['jour'] && 0 < $_POST['annee'] && ($_POST['jour'] <= 28 || ($_POST['jour'] == 29 && ((($_POST['annee'] % 4) == 0 && ($_POST['annee'] % 100) != 0) || ($_POST['annee'] % 400) == 0))));
+	}
+}*/
+
 function register() {
 	if(isset($_POST['register'])) {
 		extract($_POST);

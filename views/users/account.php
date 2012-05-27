@@ -28,12 +28,12 @@
 			<p><span><b>Pseudo : </b></span> 	<?php echo $user['us_pseudo'] ; ?> </p>
 			<p><span><b>Adresse mail: 	</b></span> <?php echo $user['us_mail'] ; ?> </p>
 			<p><span><b>Date de naissance: </b></span> 	<?php echo $user['us_birthdate'] ; ?> </p>
-			<div id="popupButton1" class="popupButton"><input type="submit" value="Modifier vos informations"/></div>
+			<div id="popupButton" class="popupButton"><input type="submit" value="Modifier vos informations"/></div>
 			<div id="popupButton2" class="popupButton"><input type="submit" value="Changer de Mot de Passe"/></div>
 		</div>
 		<img src="<?php echo IMG_DIR;?>" alt=""/>
-		<div id="popup1" class="popup">
-			<a id="popupClose1" class="popupClose">x</a>
+		<div id="popup" class="popup">
+			<a id="popupClose" class="popupClose">x</a>
 			<form method="POST">
 				<fieldset>
 					<legend>Modifier vos informations personnelles</legend>
@@ -46,7 +46,7 @@
 				</fieldset>
 			</form>
 		</div>
-		<div id="backgroundPopup1" class="backgroundPopup"></div> 
+		<div id="backgroundPopup" class="backgroundPopup"></div> 
 		<div id="popup2" class="popup">
 			<a id="popupClose2" class="popupClose">x</a>
 			<form method="POST">

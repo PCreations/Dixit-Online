@@ -16,43 +16,43 @@ function changeOnglet(i){
 }
 
 //Pop-up  
-var i;
-var popupStatus = new Array();
 
-function loadPopup(i){   
-	if(popupStatus[i]==0){  
+var popupStatus = 0;
+
+function loadPopup(){   
+	if(popupStatus==0){  
 		
-		$("#backgroundPopup"+i).css({  
+		$("#backgroundPopup").css({  
 				"opacity": "0.7"  
 		});  
-		$("#backgroundPopup"+i).fadeIn("slow");  
-		$("#popup"+i).fadeIn("slow");  
-		popupStatus[i] = 1;  
+		$("#backgroundPopup").fadeIn("slow");  
+		$("#popup").fadeIn("slow");  
+		popupStatus = 1;  
 	}  
 } 
 
-function disablePopup(i){  
-	if(popupStatus[i]==1){  
-		$("#backgroundPopup"+i).fadeOut("slow");  
-		$("#popup"+i).fadeOut("slow");  
-		popupStatus[i] = 0;  
+function disablePopup(){  
+	if(popupStatus==1){  
+		$("#backgroundPopup").fadeOut("slow");  
+		$("#popup").fadeOut("slow");  
+		popupStatus= 0;  
 	}  
 } 
 
-function centerPopup(i){ 
+function centerPopup(){ 
 	
 	var windowWidth = document.documentElement.clientWidth;  
 	var windowHeight = document.documentElement.clientHeight;  
-	var popupHeight = $("#popup"+i).height();  
-	var popupWidth = $("#popup"+i).width();  
+	var popupHeight = $("#popup").height();  
+	var popupWidth = $("#popup").width();  
 
-	$("#popup"+i).css({  
+	$("#popup").css({  
 			"position": "absolute",  
 			"top": windowHeight/2-popupHeight/2,  
 			"left": windowWidth/2-popupWidth/2  
 	});   
 	 
-	$("#backgroundPopup"+i).css({  	/*IE6*/
+	$("#backgroundPopup").css({  	/*IE6*/
 			"height": windowHeight  
 	});  
 } 
@@ -66,24 +66,22 @@ $(document).ready(function(){
 		}, 5000);
 	
 	
-	var  = "#etc"+i.toString()
+	// var  = "#etc"+i.toString()
 	//Pop-up
-	if(i=1){
-	$("#popupButton"+i).click(function(){  /*Show popup*/
-		alert('plop!');
-		centerPopup(i);    
-		loadPopup(i);   
+	$("#popupButton").click(function(){  /*Show popup*/
+		centerPopup();    
+		loadPopup();   
 	});
-};
-	$("#popupClose"+i).click(function(){  /*Click the x*/
-		disablePopup(i);  
+
+	$("#popupClose").click(function(){  /*Click the x*/
+		disablePopup();  
 	});  
-	$("#backgroundPopup"+i).click(function(){  /*Click out event*/
-		disablePopup(i);  
+	$("#backgroundPopup").click(function(){  /*Click out event*/
+		disablePopup();  
 	});  
 	$(document).keypress(function(e){  
-		if(e.keyCode==27 && popupStatus[i]==1){  /* Press escape event*/
-			disablePopup(i);  
+		if(e.keyCode==27 && popupStatus==1){  /* Press escape event*/
+			disablePopup();  
 		}  
 	});
 	//A laisser en tout dernier parce qu'empeche la suite du script je sais pas encore pourquoi --'

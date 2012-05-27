@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user', 'contact'));
+useModels(array('user'));
 
 function register() {
 	if(isset($_POST['register'])) {

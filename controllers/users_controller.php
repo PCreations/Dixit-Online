@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user'));
+useModels(array('user', 'contact'));
 
 function register() {
 	if(isset($_POST['register'])) {
@@ -51,7 +51,7 @@ function login() {
 				redirect('users', 'account', array($_SESSION[USER_MODEL][USER_PK]));
 			}
 			else {
-				setMessage('Erreur d\'authentification. Le mot de passe et le pseudo ne coïncident pas', FLASH_ERROR);
+				setMessage('Erreur d\'authentification. Veuillez réessayer.', FLASH_ERROR);
 				render('login', $_POST);
 			}
 		}
@@ -66,7 +66,100 @@ function login() {
 }
 
 function account($id = null) {
-	render('account');
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	
+	if(isset($_POST['update'])) { //Formulaire de changement de données
+			extract($_POST);
+			updateUser($id, $name, $lastname, $mail);
+	}
+	
+	if(isset($_POST['updatePwd'])) { //Formulaire de changement de mot de passe
+			extract($_POST);
+			updateUser($id, $pwd);
+	}
+	
+	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
+			extract($_POST);
+			$results = approchSearchUser($login);
+			$reelfriends = getSpecificArrayValues(getReelFriends($id), 'us_pseudo');
+			$askedfriends = getSpecificArrayValues(getAskedFriends($id), 'us_pseudo');
+			$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($id), 'us_pseudo');
+			foreach($results as &$result){
+				if(!in_array($result['us_pseudo'], $reelfriends)) {
+					if(!in_array($result['us_pseudo'], $askedfriends)) {
+						if(!in_array($result['us_pseudo'], $whoAskedMe)) {
+							$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo'], '2'));
+						}
+						else{
+							$result['action'] = 'Cette personne vous a demandé en amis';
+						}
+					}
+					else{
+						$result['action'] = 'Vous avez déjà invité cette personne';
+					}
+				}
+				else{
+					$result['action'] = 'Vous êtes déjà amis';
+				}
+			}
+		
+			$vars = array('results' => $results,
+							'login' => $login);			
+			render('research', $vars);
+	}
+	$user = getUserInfos($id);
+	$reelFriends = getReelFriends($id);
+	$askedFriends = getAskedFriends($id);
+	$invitations = getFriendsWhoAskedMe($id);
+	if (is_array($invitations)){ //gérer les invitations venant d'autres utilisateurs
+		foreach($invitations as &$invitation){
+			setMessage('Vous avez reçu une demande d\'amis', FLASH_MESSAGE);
+			$invitation['accept'] = createLink('Accepter', 'users', 'newFriend', array($invitation['us_pseudo'], '1'));
+			$invitation['refuse'] = createLink('Refuser', 'users', 'newFriend', array($invitation['us_pseudo'], '0'));
+		}
+	}
+	$nbFriends = countFriends($id);
+	$vars = array(	'user' => $user,
+					'reelFriends' => $reelFriends,
+					'askedFriends' => $askedFriends,
+					'invitations' => $invitations,
+					'nbFriends' => $nbFriends);
+	render('account', $vars);
+}
+function newFriend($pseudo, $action){
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	$friendID = exactSearchUser($pseudo);
+	$fr_id = $friendID['us_id'];
+	//$action=2 : envoyer une invitation
+	//$action=1 : accepter une invitation
+	//$action=0 : refuser une invitation
+	
+	if(isLogged()) {
+		if($action == 2){
+			invitFriend($fr_id, $userID);
+			setMessage('Votre invitation a bien été envoyée', FLASH_SUCCESS);
+			
+		}
+		if($action == 1){
+			acceptFriend($fr_id, $userID);
+			setMessage('Vous avez accepté l\'invitation', FLASH_SUCCESS);
+		}
+		if($action == 0){
+			refuseFriend($fr_id, $userID);
+			setMessage('Vous avez refusé l\'invitation', FLASH_SUCCESS);
+		}
+	}
+	else{
+		setMessage('Vous n\'êtes pas connecté !', FLASH_ERROR);
+	}
+	redirect('users', 'account', array( $userID));
+}
+
+function sendInvitation($pseudo){
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	setMessage('Une invitation a été envoyée', FLASH_SUCCESS);
+	$vars = array($userID);
+	render('account', $vars);
 }
 
 function logout() {
@@ -77,5 +170,6 @@ function logout() {
 	else {
 		setMessage('Vous n\'êtes pas connecté !', FLASH_ERROR);
 	}
+	
 	redirect('users', 'login');
 }

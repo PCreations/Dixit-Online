@@ -48,19 +48,35 @@ function getUserInfos($id, $fields = array('*')) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+<<<<<<< HEAD
 function updateUser($id, $name, $lastname, $birthdate, $mail){
+=======
+function updateUser($id, $name, $lastname, $mail, $birthdate){
+>>>>>>> 3fdb1e681522b2326785e8628cfaac01b9c5906b
 	global $db;
 	$query = $db->prepare('UPDATE users
 						SET us_name = :name,
-						us_lastname = :lastname,
+<<<<<<< HEAD
+						us_lastname =  :lastname,
 						us_birthdate = :birthdate,
 						us_mail = :mail
 						WHERE us_id= :id');
 	$query->execute(array('id' => $id,
 						'name'=> $name,
 						'lastname' => $lastname,
+						'birthdate' => $birthdate,
+						'mail' => $mail));
+=======
+						us_lastname = :lastname,
+						us_mail = :mail,
+						us_birthdate = :birthdate
+						WHERE us_id = :id');
+	$query->execute(array('id' => $id,
+						'name'=> $name,
+						'lastname' => $lastname,
 						'mail' => $mail,
 						'birthdate' => $birthdate));
+>>>>>>> 3fdb1e681522b2326785e8628cfaac01b9c5906b
 }
 
 function updatePwd($id, $password){

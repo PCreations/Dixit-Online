@@ -73,12 +73,23 @@ function account($id = null) {
 	
 	if(isset($_POST['update'])) { //Formulaire de changement de données
 			extract($_POST);
-			updateUser($id, $name, $lastname, $mail, $birthdate);
+			updateUser($userID, $name, $lastname, $birthdate, $mail);
+			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
+			redirect('users', 'account', array( $userID));
 	}
 	
 	if(isset($_POST['updatePwd'])) { //Formulaire de changement de mot de passe
 			extract($_POST);
-			updateUser($id, $pwd);
+			$userInfos = checkLogin($pseudo, encrypt($oldPass));
+			debug($userInfos);
+			if(encrypt($password) != encrypt($passConfirm)) {
+				setMessage('Les mots de passe ne coïncident pas', FLASH_ERROR);
+				render('account');
+			}
+			$password = encrypt($password);
+			updatePwd($id, $password);
+			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
+			redirect('users', 'account', array( $userID));
 	}
 	
 	if(isset($_POST['research'])) { //Formulaire de recherche d'ami

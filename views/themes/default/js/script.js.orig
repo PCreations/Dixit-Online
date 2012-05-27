@@ -14,6 +14,7 @@ function changeOnglet(i){
 	}
 	document.getElementById('account'+i).style.display = 'block';
 }
+<<<<<<< HEAD
 
 //Pop-up  
 var popupStatus = 0;
@@ -84,4 +85,19 @@ $(document).ready(function(){
 	changeOnglet('1');
 });
 
+=======
+ 
+
+$(document).ready(function(){ 
+	changeOnglet('1');
+
+	//Affichage des messages Flash dans la bannière rouge en haut de l'écran
+	$('#flash').slideDown(800);
+	setTimeout(function(){
+		$('#flash').slideUp(800);
+	}, 5000);
+
+
+});
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 

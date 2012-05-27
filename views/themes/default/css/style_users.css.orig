@@ -1,0 +1,305 @@
+<<<<<<< HEAD
+/****************Généralités*********************/
+=======
+/****************Généraités*********************/
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+#login, #register, #profil, #results
+{
+	width:630px;
+	margin : auto;
+	padding : 10px;
+	background : url('../img/bg_main.png') no-repeat center; 
+		-webkit-background-size: cover; 
+	-moz-background-size: cover; 
+	-o-background-size: cover; 
+	background-size: cover;
+	border-radius : 6px;
+}
+<<<<<<< HEAD
+#login form, #register form, #profil #account1 form
+=======
+#login form, #register form, #profil form
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+{
+	width : 70%;
+	margin : auto;
+}
+#login, #register, #profil
+{
+	margin-top : 40px;
+}
+
+#login form label, #register form label, #profil #account2 form label
+{
+	display: block;
+	width: 39%;
+	float: left;
+	padding-right: 5%;
+	text-align: right;
+	letter-spacing: 1px;
+}
+#login .submit input, #register .submit input, #profil #account2.submit input
+{
+	width: 70%;
+	border: #CCC 1px solid;
+	margin-top : 2%;
+	display : inline-block;
+}
+#login .submit, #register .submit, #profil #account2.submit
+{
+	margin-left : 45%;
+}
+
+#login form input, #register form input, #profil #account2 form input
+{
+	margin-left: 1%;
+	width: 38%;
+	border: #CCC 1px solid;
+	margin-bottom : 2%;
+	display : inline-block;
+}
+
+#login form input:hover, #login form input:focus,  #register form input:hover, #register form input:focus, #profil #account2 form input:hover, #profil #account2 form input:focus
+{
+	border: #999 1px solid;
+	background-color: #ccc;
+}
+
+#login form fieldset, #register form fieldset, #profil #account2 form fieldset
+{
+	margin-bottom: 10px;
+	border: black 1px solid;
+	font-size : 1em;
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+}
+
+#login form fieldset legend, #register form fieldset legend, #profil #account2 form fieldset legend
+{
+	padding: 0 10px;
+	border-left: black 1px solid;
+	border-right: black 1px solid;
+	font-size: 1.5em;
+}
+<<<<<<< HEAD
+=======
+/*Formulaire de recherche d'amis*/
+.research legend
+{
+	padding: 0 10px;
+	font-size: 1.2em;
+}
+
+.research img:hover
+{
+	cursor : pointer;
+}
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+
+/****************Account*********************/
+#profil p, #profil h1
+{
+	margin : 0px 20px;
+}
+#profil h1
+{
+	display : inline-block;
+	margin-bottom : 20px;
+}
+
+#profil h1:hover
+{
+	cursor : pointer;
+}
+
+#profil  #account1, #profil  #account2, #profil  #account3, #profil  #account4
+{
+	display : none;
+}
+
+#profil #account1 a, #results .link a
+{
+<<<<<<< HEAD
+	
+=======
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+	background-color: rgba(255, 255, 255, 0.5);
+	text-decoration : none;
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+	font-size : 1em;
+	color : black;
+	padding : 3px 6px;
+	margin-left : 20%;
+	margin-top : 5%;
+	display : inline-block;
+}
+<<<<<<< HEAD
+#profil #account1 p, #profil #account2 .left
+=======
+#profil #account1 p
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+{
+	display : inline-block;
+	vertical-align : top;
+}
+
+<<<<<<< HEAD
+#profil #account1 img.avatar, #profil #account2 img
+=======
+#profil #account1 img
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+{
+	display : inline-block;
+	margin-left : 20px;
+	background-color: rgba(255, 255, 255, 0.5);
+	box-shadow: 2px 2px 4px black;
+	width : 100px;
+	height : 120px;
+	background : url('../img/unknown.jpg') center;
+}
+<<<<<<< HEAD
+#profil #account1 img .message
+{
+	vertical-align : bottom;
+}
+
+/*******Display Friends**********/
+#profil #account3 .friends ul, #profil #account3 ul, #profil #account1  ul
+{
+	list-style : none;
+}
+#profil #account3 .friends li, #profil #account3 li
+=======
+
+/*Affichage des Amis*/
+#profil #account3 ul 
+{
+	list-style : none;
+}
+#profil #account3 li
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+{
+	display : inline-block;
+	margin : 5px;
+	background-color: rgba(255, 255, 255, 0.5);
+	box-shadow: 2px 2px 4px black;
+<<<<<<< HEAD
+}
+#profil #account3 li
+{
+	width : 70px;
+	height :70px;
+}
+#profil #account3 .friends li
+{
+=======
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+	width : 100px;
+	height : 120px;
+	background : url('../img/unknown.jpg') center;
+}
+<<<<<<< HEAD
+#profil #account3.invitations li
+{
+	margin-left : 120px;
+}
+#profil #account3 ul li .invitation
+{
+	width : 100px;
+	height : 120px;
+	display : inline-block;
+	margin-left : 90px;
+}
+#profil #account3 .friends .hidden
+=======
+#profil #account3 .hidden
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+{
+	padding : 5px;
+	position : relative;
+	color : white;
+	visibility : hidden;
+}
+<<<<<<< HEAD
+#profil #account3 .friends form
+=======
+#profil #account3 form
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+{
+	margin-left : 10px;
+	display : inline-block;
+}
+<<<<<<< HEAD
+#account2 span, #account3 span
+=======
+#account2 span
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+{
+	margin : 5px 10px;
+	display : inline-block;
+}
+<<<<<<< HEAD
+#profil #account3 .friends li:hover
+{
+	opacity : 0.7;
+}
+#profil #account3 .friends li:hover .hidden
+=======
+#profil #account3 li:hover
+{
+	opacity : 0.7;
+}
+#profil #account3 li:hover .hidden
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+{
+	opacity : 0.7;
+	visibility : visible;
+}
+<<<<<<< HEAD
+/*********Search Friends*************/
+.research legend
+{
+	padding: 0 10px;
+	font-size: 1.2em;
+}
+
+.research img:hover
+{
+	cursor : pointer;
+}
+
+/*************Search Results************/
+=======
+
+/*************Results************/
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+#results table
+{
+	border-collapse: collapse;
+	margin : auto;
+	margin-right : 20px;
+	width : 560px;
+}
+#results tr
+{
+	background-color: rgba(255,255,255,0.5);
+	display: block;
+	margin-bottom: 5px;
+	height : 25px;
+}
+#results td, #results th
+{
+	text-align : center;
+<<<<<<< HEAD
+	width : 60px;
+}
+#results .action
+{
+	width : 300px
+=======
+	width : 120px;
+}
+#results .action
+{
+	width : 200px
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+}

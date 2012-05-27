@@ -67,12 +67,19 @@ function login() {
 
 function account($id = null) {
 	$userID = $_SESSION[USER_MODEL][USER_PK];
+<<<<<<< HEAD
+=======
+	if(isset($_POST['popup'])){
+		contact();
+	}
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 	
 	if(isset($_POST['update'])) { //Formulaire de changement de données
 			extract($_POST);
 			updateUser($id, $name, $lastname, $mail);
 	}
 	
+<<<<<<< HEAD
 	if(isset($_POST['updatePwd'])) { //Formulaire de changement de mot de passe
 			extract($_POST);
 			updateUser($id, $pwd);
@@ -103,11 +110,26 @@ function account($id = null) {
 				}
 			}
 		
+=======
+	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
+			extract($_POST);
+			$results = approchSearchUser($login);
+			$friend = getSpecificArrayValues(getFriends($userID), 'us_pseudo');
+			foreach($results as &$result){
+					if(!in_array($result['us_pseudo'], $friend)) {
+						$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo']));
+					}
+					else{
+						$result['action'] = 'Vous êtes déjà amis';
+					}
+				}
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 			$vars = array('results' => $results,
 							'login' => $login);			
 			render('research', $vars);
 	}
 	$user = getUserInfos($id);
+<<<<<<< HEAD
 	$reelFriends = getReelFriends($id);
 	$askedFriends = getAskedFriends($id);
 	$invitations = getFriendsWhoAskedMe($id);
@@ -146,7 +168,7 @@ function newFriend($pseudo, $action){
 		}
 		if($action == 0){
 			refuseFriend($fr_id, $userID);
-			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
+			setMessage('Vous avez refusé l\'invitation', FLASH_SUCCESS);
 		}
 	}
 	else{
@@ -160,7 +182,16 @@ function sendInvitation($pseudo){
 	setMessage('Une invitation a été envoyée', FLASH_SUCCESS);
 	$vars = array($userID);
 	render('account', $vars);
+=======
+	$friends = getFriends($id);
+	$nbFriends = countFriends($id);
+	$vars = array(	'user' => $user,
+					'friends' => $friends,
+					'nbFriends' => $nbFriends);
+	render('account', $vars);
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 }
+
 
 function logout() {
 	if(isLogged()) {

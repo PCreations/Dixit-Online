@@ -5,6 +5,7 @@
 	<h1 id="4" onclick="changeOnglet('4');">Vos Cartes</h1>
 	
 	<div id="account1">
+<<<<<<< HEAD
 		<img class="avatar" src="<?php echo IMG_DIR;?>" alt=""/>
 		<p> Bienvenue <?php echo $user['us_name'] ; ?> <?php echo $user['us_lastname'] ; ?> </p>
 		</br>
@@ -15,30 +16,46 @@
 				</li>
 				<?php endforeach; ?>
 			</ul></br>
+=======
+		<img src="<?php echo IMG_DIR;?>" alt=""/>
+		<p> Bienvenue <?php echo $user['us_name'] ; ?> <?php echo $user['us_lastname'] ; ?> </p>
+		</br></br>
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 		<?php echo createLink('Jouer', 'games', 'index');?>
 		<?php echo createLink('Déconnexion', 'users', 'logout');?>
 		<p></br></br></p>
 	</div>
 	
 	<div id="account2">
+<<<<<<< HEAD
 		
 		<div class="left">
+=======
+		<div id="contact-form">
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 			<p><span><b>Nom :</b></span> 	<?php echo $user['us_name'] ; ?> </p>
 			<p><span><b>Prénom : </b></span> 	<?php echo $user['us_lastname'] ; ?> </p>
 			<p><span><b>Pseudo : </b></span> 	<?php echo $user['us_pseudo'] ; ?> </p>
 			<p><span><b>Adresse mail: 	</b></span> <?php echo $user['us_mail'] ; ?> </p>
 			<p><span><b>Date de naissance: </b></span> 	<?php echo $user['us_birthdate'] ; ?> </p>
+<<<<<<< HEAD
 			<div id="popupButton"><input type="submit" value="Modifier vos informations"/></div>
 			<div id="popupButton"><input type="submit" value="Changer de Mot de Passe"/></div>
 		</div>
 		<img src="<?php echo IMG_DIR;?>" alt=""/>
 		<div id="popup">
 			<a id="popupClose">x</a>
+=======
+			<form method='POST'><input type="hidden" name="popup" />
+			<input class="submit" type="submit" value="Modifier"/></form>
+		</div>
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 			<form method="POST">
 				<fieldset>
 					<legend>Modifier vos informations personnelles</legend>
 						<p><label for="us_name">Prénom: </label><input name="name" type="text" value="<?php echo $user['us_name'] ; ?>"/></p>
 						<p><label for="us_lastname">Nom: </label><input name="lastname" type="text" value="<?php echo $user['us_lastname'] ; ?>"/></p>
+<<<<<<< HEAD
 						<p><label for="us_name">Pseudo: </label><input name="name" type="text" value="<?php echo $user['us_pseudo'] ; ?>"/></p>
 						<p><label for="us_mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
 						<p><label for="us_name">Date de naissance: </label><input name="name" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
@@ -48,14 +65,22 @@
 			</form>
 		</div>
 		<div id="backgroundPopup"></div> 
+=======
+						<p><label for="us_mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
+						<input type="hidden" name="update" />
+						<input class="submit" type="submit" value="Enregistrer"/>
+				</fieldset>
+			</form>
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 	</div>
 	
 	<div id="account3">
 		
+<<<<<<< HEAD
 			<p> Vous avez <b><?php echo $nbFriends['nbFriends']?> </b>amis.</p>
 			<ul class="friends">
 				<?php foreach($reelFriends as $reelFriend): ?>
-				<li> <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></br><?php echo createLink('Supprimer', 'users', 'newFriend', array($reelFriend['us_pseudo'], '0'));?></div></li>
+				<li> <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></div></li>
 				<?php endforeach; ?>
 			</ul>
 			</br>
@@ -75,6 +100,12 @@
 						<?php echo $invitation['refuse'];?>
 					</div>
 				</li>
+=======
+			<p> Vous avez <?php echo $nbFriends['nbFriends']?> amis.</p>
+			<ul>
+				<?php foreach($friends as $friend): ?>
+				<li> <div class="hidden"><?php echo $friend['us_pseudo'];?></div></li>
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 				<?php endforeach; ?>
 			</ul>
 			</br>
@@ -89,7 +120,11 @@
 	</div>
 	
 	<div id="account4">
+<<<<<<< HEAD
 		<p>En construction</p>
+=======
+		<p>Je sais pas trop</p>
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 	</div>
 	
 </div>

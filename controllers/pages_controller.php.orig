@@ -1,0 +1,9 @@
+<?php
+
+function index() {
+	render('home');
+}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684

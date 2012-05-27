@@ -62,14 +62,21 @@ function updateUser($id, $name, $lastname, $mail){
 }
 function countFriends($id){
 	global $db;
+<<<<<<< HEAD
 	$query = $db->prepare('	SELECT COUNT(us_friend_id) AS nbFriends 
 							FROM users_friends 
 							WHERE (us_id = :id OR us_friend_id = :id) 
 							AND uf_status = 1');
+=======
+	$query = $db->prepare('	SELECT COUNT(*) AS nbFriends
+							FROM users_friends
+							WHERE us_id = :id');
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 	$query->execute(array('id' => $id));
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+<<<<<<< HEAD
 function getReelFriends($id){
 	global $db;
 	$query = $db->prepare('	SELECT us_pseudo FROM users_friends, users
@@ -120,11 +127,28 @@ function refuseFriend($fr_id, $us_id){
 	$query = $db->prepare('DELETE FROM users_friends WHERE us_id = :fr_id AND us_friend_id = :us_id');
 	$query->execute(array('fr_id' => $fr_id,
 							'us_id' => $us_id));
+=======
+function getFriends($id){
+	global $db;
+	$query = $db->prepare('	SELECT us_pseudo 
+							FROM users, users_friends 
+							WHERE users_friends.use_us_id = users.us_id AND users_friends.us_id = :id');
+	$query->execute(array('id' => $id));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+function addFriend($fr_id, $us_id){
+	global $db;
+	$query = $db->query('INSERT INTO users_friends VALUES ( \'$us_id\', \'$fr_id\', CURRENT_DATE() , \'0\')');
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 }
 
 function approchSearchUser($login){
 	global $db;
+<<<<<<< HEAD
 	$query = $db->prepare("	SELECT us_id, us_pseudo, us_name, us_lastname
+=======
+	$query = $db->prepare("	SELECT us_pseudo, us_name, us_lastname
+>>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 							FROM users 
 							WHERE us_pseudo 
 							LIKE '%$login%' ");				

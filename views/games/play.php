@@ -90,8 +90,10 @@
 
 	setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
+			var $elem = $('#chatMessages');
 			$('#chatMessages').empty();
 			$('#chatMessages').html(data);
+			$('html, body').animate({scrollTop: $elem.height()}, 500);
 		});
 	}, 2000);
 	/*setInterval(function(){

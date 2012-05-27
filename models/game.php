@@ -13,10 +13,10 @@ function getGameInfos($gameID, $fields = array('*')) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
-function getWaintingGames() {
+function getWaitingGames() {
 	global $db;
 
-	$result = $db->query('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, total.nbTotalPlayer as nbPlayersInGame
+	$result = $db->query('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, ga.ga_points_limit, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga
 						LEFT JOIN total_players_in_game as total
 						ON total.ga_id = ga.ga_id

@@ -28,13 +28,14 @@
 					 <div class="scroll">
 						<table  id="waitingGames" cellspacing="0">
 						   <tbody>
+						   		<?php debug($partiesEnAttente, true);?>
 								<?php foreach($partiesEnAttente as $partie): ?>
 								 <tr>
 									<td class="cadenas"><img src="<?php echo IMG_DIR;?>cadenas.png"></td>
 									<td class="nom"><?php echo $partie['ga_name'];?></td>
 									<td class="createur"><?php echo $partie['us_id'];?></td>
-									<td class="joueurs"><?php echo $partie['nbPlayersInGame'] . '/' . $partie['gt_nb_players'];?></td>
-									<td class="points"><?php echo $partie['gt_points_limit'];?></td>
+									<td class="joueurs"><?php echo $partie['nbPlayersInGame'] . '/' . $partie['ga_nb_players'];?></td>
+									<td class="points"><?php echo $partie['ga_points_limit'];?></td>
 									<td class="cartes">Toutes</td>
 							   </tr></a>
 								<?php endforeach; ?>

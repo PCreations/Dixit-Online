@@ -13,7 +13,7 @@ define('ACTION_IN_PROGRESS', 4);
 define('ACTION_DONE', 5);
 
 function index() {
-	$partiesEnAttente = getWaintingGames();
+	$partiesEnAttente = getWaitingGames();
 	foreach($partiesEnAttente as &$partie) {
 		if(isLogged()) {
 			$userID = $_SESSION[USER_MODEL][USER_PK];

@@ -162,39 +162,6 @@ function sendInvitation($pseudo){
 	render('account', $vars);
 }
 
-function sendInvitation($pseudo){
-	$userID = $_SESSION[USER_MODEL][USER_PK];
-	setMessage('Une invitation a été envoyée', FLASH_SUCCESS);
-	$vars = array($userID);
-	render('account', $vars);
-	}
-	
-	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
-			extract($_POST);
-			$results = approchSearchUser($login);
-			$friend = getSpecificArrayValues(getFriends($userID), 'us_pseudo');
-			foreach($results as &$result){
-					if(!in_array($result['us_pseudo'], $friend)) {
-						$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo']));
-					}
-					else{
-						$result['action'] = 'Vous êtes déjà amis';
-					}
-				}
-			$vars = array('results' => $results,
-							'login' => $login);			
-			render('research', $vars);
-	}
-	$user = getUserInfos($id);
-	$friends = getFriends($id);
-	$nbFriends = countFriends($id);
-	$vars = array(	'user' => $user,
-					'friends' => $friends,
-					'nbFriends' => $nbFriends);
-	render('account', $vars);
-}
-
-
 function logout() {
 	if(isLogged()) {
 		unset($_SESSION[USER_MODEL]);

@@ -3,6 +3,19 @@
 function filterGames($name, $nbplayers, $deck) {
 	global $db;
 	
+	$prequery='';
+	if (!empty($name)){
+		$prequery.=' AND ga.ga_name LIKE :name';
+	}
+	if (!empty($nbplayers)){
+		$prequery.=' AND ga.ga_nb_players = :nbplayers';
+	}
+	if (!empty($deck)){
+		$prequery.=' AND de.de_id = :deck';
+	}
+
+	debug($prequery);
+	
 	$query = $db->prepare('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga
 						INNER JOIN decks as de
@@ -10,14 +23,21 @@ function filterGames($name, $nbplayers, $deck) {
 						LEFT JOIN total_players_in_game as total
 						ON total.ga_id = ga.ga_id
 						WHERE (total.nbTotalPlayer < ga.ga_nb_players)
-						AND ga.ga_name LIKE :name
-						AND ga.ga_nb_players = :nbplayers
-						AND de.de_id = :deck
-						');
-	$name = '%'.$name.'%';
-	$query->bindParam(':name', $name, PDO::PARAM_STR);
-	$query->bindParam(':nbplayers', $nbplayers, PDO::PARAM_INT);
-	$query->bindParam(':deck', $deck, PDO::PARAM_INT);
+						'.$prequery);
+						
+	
+	
+	if (!empty($name)){
+		$name = '%'.$name.'%';
+		$query->bindParam(':name', $name, PDO::PARAM_STR);
+	}
+	if (!empty($nbplayers)){
+		$query->bindParam(':nbplayers', $nbplayers, PDO::PARAM_INT);
+	}
+	if (!empty($deck)){
+		$query->bindParam(':deck', $deck, PDO::PARAM_INT);
+	}
+	
 	$query->execute();
 						
 	return $query->fetchAll(PDO::FETCH_ASSOC);

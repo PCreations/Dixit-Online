@@ -21,9 +21,7 @@ function index() {
 		$partiesEnAttente = getWaintingGames();
 	}
 	else {
-		extract($_POST);debug(array('name1' => $name,
-						'nbplayers1' => $nbplayers,
-						'deck1' => $deck));
+		extract($_POST);
 		$partiesEnAttente = filterGames($name, $nbplayers, $deck);
 	}
 	foreach($partiesEnAttente as &$partie) {

@@ -6,5 +6,3 @@ function postAjax(url) {
     );
 }
 
-
-

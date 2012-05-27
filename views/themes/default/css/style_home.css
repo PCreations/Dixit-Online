@@ -45,7 +45,7 @@ header
 }
 
 /***************Popup*******************/
-#popup
+.popup
 {
 	display:none;  
 	position:fixed;  
@@ -57,11 +57,11 @@ header
 	padding:12px;  
 	font-size:13px;
 }
-#popup form
+.popup form
 {
 	margin : 10px;
 }
-#popupClose
+.popupClose
 {  
 	font-size:14px;  
 	line-height:14px;  
@@ -74,7 +74,7 @@ header
 	cursor : pointer;
 } 
 
-#backgroundPopup
+.backgroundPopup
 {  
 	display:none;  
 	position:fixed;  
@@ -87,17 +87,17 @@ header
 	border:1px solid #cecece;  
 	z-index:1;  
 }
-#popupButton
+.popupButton
 {
 	display : inline-block;
 }
-#popupButton input
+.popupButton input
 {
 	margin : 20px 0px 20px 50px;
 	border: #CCC 1px solid;
 	display : inline-block;
 }
-#popupButton input:hover
+.popupButton input:hover
 {
 	border: #999 1px solid;
 	background-color: #ccc;

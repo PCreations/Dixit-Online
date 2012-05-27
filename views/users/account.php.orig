@@ -37,10 +37,17 @@
 			<form method="POST">
 				<fieldset>
 					<legend>Modifier vos informations personnelles</legend>
+<<<<<<< HEAD
 						<p><label for="lastname">Prénom: </label><input name="lastname" type="text" value="<?php echo $user['us_lastname'] ; ?>"/></p>
 						<p><label for="name">Nom: </label><input name="name" type="text" value="<?php echo $user['us_name'] ; ?>"/></p>
 						<p><label for="birthdate">Date de naissance: </label><input name="birthdate" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
 						<p><label for="mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
+=======
+						<p><label for="us_name">Prénom: </label><input name="name" type="text" value="<?php echo $user['us_name'] ; ?>"/></p>
+						<p><label for="us_lastname">Nom: </label><input name="lastname" type="text" value="<?php echo $user['us_lastname'] ; ?>"/></p>
+						<p><label for="us_mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
+						<p><label for="us_name">Date de naissance: </label><input name="birthdate" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
+>>>>>>> 3fdb1e681522b2326785e8628cfaac01b9c5906b
 						<input type="hidden" name="update" />
 						<input  type="submit" value="Enregistrer"/>
 				</fieldset>

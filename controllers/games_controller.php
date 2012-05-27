@@ -16,6 +16,7 @@ define('ACTION_DONE', 5);
 function index() {
 	$deckInfos = getAllDecks(array('de_id', 'de_name'));
 	
+	$vars_filtrage=$_POST;
 
 	if(!isPost()) {
 		$partiesEnAttente = getWaitingGames();
@@ -47,7 +48,7 @@ function index() {
 		}
 		
 		debug($partiesEnAttente);
-		$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos);
+		$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos, 'vars_filtrage' => $vars_filtrage);
 		render('index', $vars);
 }
 

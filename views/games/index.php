@@ -4,16 +4,28 @@
 			<div id="creer">
 				<img id="label_creer" src="<?php echo IMG_DIR;?>creer.png">
 				<form method="POST">
-					<figure><label for="name">Nom</label><input type="text" name="name" size="10"></figure>
-					<figure><label for="nbplayers">Nombre de joueurs</label><input type="text" name="nbplayers" size="15"></figure>
-					<figure><label for="nbpoints">Points max.</label><input type="text" name="nbpoints" size="10"></figure>
+					<figure><label for="name">Nom</label><input type="text" name="name" size="10" value='<?php echo $vars_filtrage['name'];?>'></figure>
+					<figure><label for="nbplayers">Nombre de joueurs</label><input type="text" name="nbplayers" size="15" value='<?php echo $vars_filtrage['nbplayers'];?>'></figure>
+					<figure><label for="nbpoints">Points max.</label><input type="text" name="nbpoints" size="10" value='<?php echo $vars_filtrage['nbpoints'];?>'></figure>
 					<figure><label for="deck">Cartes</label><select name="deck">
 							<option value="-1">Toutes</option>
 						<?php foreach($deckInfos as $deck): ?>
-							<option value='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
+							<option value='
+							<?php
+								echo $deck['de_id'];
+								if ($deck['de_id']==$vars_filtrage['deck']){
+									echo(" 'selected='selected");
+								}
+							?>
+							'><?php echo $deck['de_name'];?></option>
 						<?php endforeach; ?>
 					</select></figure>
-					<input type='checkbox' name='public'><font size="1">Publiques seulement</font>
+					<input type='checkbox' name='public' <?php
+															if ($vars_filtrage['public']=='on'){
+																echo(" checked='checked'");
+															}
+					?>
+					><font size="1">Publiques seulement</font>
 					<input type='submit' value='Trier'>
 				</form>
 					<form method="post" action="partie.html">

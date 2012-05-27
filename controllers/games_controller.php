@@ -99,7 +99,7 @@ function room($gameID) {
 	unset($gameInfos['us_id']);
 	debug($gameInfos);
 	$vars = array('gameInfos' => $gameInfos);
-	render('room', $gameInfos);
+	render('room', $vars);
 }
 
 function quiteGame($gameID, $userID) {

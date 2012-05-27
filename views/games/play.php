@@ -1,3 +1,13 @@
+<style>
+#table img, #hand img {
+	width: 20%;
+	height: 20%;
+}
+
+body {
+	color: white;
+}
+</style>
 <p>Vous êtes connecté en tant que : <?php echo $_SESSION[USER_MODEL]['us_pseudo'];?></p>
 
 <div id="phaseInfos">
@@ -94,7 +104,8 @@
 			$('#chatMessages').html(data);
 		});
 	}, 2000);
-	/*setInterval(function(){
+
+	setInterval(function(){
 		$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
 			var oldPhase = phaseID;
 			var result = parseJSON(json);
@@ -106,7 +117,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 5000);*/
+	}, 5000);
 
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);

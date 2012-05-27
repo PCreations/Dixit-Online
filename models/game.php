@@ -16,7 +16,7 @@ function filterGames($name, $nbplayers, $deck) {
 
 	debug($prequery);
 	
-	$query = $db->prepare('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
+	$query = $db->prepare('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, ga.ga_points_limit, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga
 						INNER JOIN decks as de
 						ON de.de_id = ga.de_id

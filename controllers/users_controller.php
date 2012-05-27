@@ -81,6 +81,7 @@ function account($id = null) {
 	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
 			extract($_POST);
 			$results = approchSearchUser($login);
+			$user = getUserInfos($id);
 			$reelfriends = getSpecificArrayValues(getReelFriends($id), 'us_pseudo');
 			$askedfriends = getSpecificArrayValues(getAskedFriends($id), 'us_pseudo');
 			$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($id), 'us_pseudo');
@@ -88,7 +89,13 @@ function account($id = null) {
 				if(!in_array($result['us_pseudo'], $reelfriends)) {
 					if(!in_array($result['us_pseudo'], $askedfriends)) {
 						if(!in_array($result['us_pseudo'], $whoAskedMe)) {
-							$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo'], '2'));
+							if($result['us_pseudo'] != $user['us_pseudo']){
+							debug($result);
+								$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo'], '2'));
+							}
+							else{
+								$result['action'] = 'C\'est vous !';
+							}
 						}
 						else{
 							$result['action'] = 'Cette personne vous a demandé en amis';

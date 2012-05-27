@@ -95,7 +95,7 @@ function getAskedFriends($id){
 
 function getFriendsWhoAskedMe($id){
 	global $db;
-	$query = $db->prepare('	SELECT us_pseudo FROM users_friends, users
+	$query = $db->prepare('	SELECT users.us_id, users.us_pseudo FROM users_friends, users
 							WHERE users_friends.us_id = users.us_id AND us_friend_id = :id AND uf_status = 0');
 	$query->execute(array('id' => $id));
 	return $query->fetchAll(PDO::FETCH_ASSOC);

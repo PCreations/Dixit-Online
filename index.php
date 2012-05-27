@@ -23,7 +23,7 @@ $pageTitle = 'Dixit Online';
 /**
  * Tableau contenant la liste des fichiers .js à inclure
  */
-$JS_FILES = array('jquery-1.7.2.min.js', 'script.js');
+$JS_FILES = array('jquery-1.7.2.min.js', 'script.js', 'contact.js');
 
 /**
  * Tableau contenant la liste des fichiers .css à inclure

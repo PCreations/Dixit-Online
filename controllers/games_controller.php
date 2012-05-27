@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user', 'game', 'card', 'gameType'));
+useModels(array('user', 'game', 'card', 'chat'));
 
 define('CARD_PER_PLAYER', 3); //pour tester
 define('STORYTELLER_PHASE', 0);
@@ -13,7 +13,7 @@ define('ACTION_IN_PROGRESS', 4);
 define('ACTION_DONE', 5);
 
 function index() {
-	$partiesEnAttente = getWaintingGames();
+	$partiesEnAttente = getWaitingGames();
 	foreach($partiesEnAttente as &$partie) {
 		if(isLogged()) {
 			$userID = $_SESSION[USER_MODEL][USER_PK];
@@ -31,6 +31,7 @@ function index() {
 			$partie['action'] = 'Aucune action possible. ' . createLink('connectez-vous', 'users', 'login', null, array('title' => 'connectez-vous')) . ' pour rejoindre une partie';
 		}
 	}
+
 	$vars = array('partiesEnAttente' => $partiesEnAttente);
 	render('index', $vars);
 }
@@ -42,7 +43,8 @@ function joinGame($gameID, $userID) {
 	}
 	else {
 		if(checkPlayersInGame($gameID)) {
-			if(in_array($userID, getPlayersInGame($gameID))) {
+			$playersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+			if(in_array($userID, $playersInGame)) {
 				setMessage('Vous êtes déjà dans cette partie', FLASH_ERROR);
 				redirect('games');
 			}
@@ -55,7 +57,7 @@ function joinGame($gameID, $userID) {
 					_startGame($gameID);
 				}
 				setMessage('Vous avez rejoint la partie', FLASH_SUCCESS);
-				redirect('users', 'account');
+				redirect('games', 'room', array($gameID));
 			}
 		}
 		else {
@@ -63,6 +65,28 @@ function joinGame($gameID, $userID) {
 			redirect('games');
 		}
 	}
+}
+
+function room($gameID) {
+	if(!isLogged()) {
+		setMessage('Vous devez être connecté pour accéder à cette page', FLASH_ERROR);
+		redirect('users', 'login');
+	}
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+
+	$playersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+	if(!in_array($userID, $playersInGame)) {
+		setMessage('Vous ne jouez pas dans cette partie', FLASH_ERROR);
+		redirect('games');
+	}
+	$gameInfos = getGameInfos($gameID, array('ga_name', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
+	$gameInfos['host'] = getOneRowResult(getUserInfos($gameInfos['us_id']), 'us_pseudo');
+	$gameInfos['ready'] = checkPlayersInGame($gameID);
+
+	unset($gameInfos['us_id']);
+	debug($gameInfos);
+	$vars = array('gameInfos' => $gameInfos);
+	render('room', $gameInfos);
 }
 
 function quiteGame($gameID, $userID) {
@@ -106,7 +130,7 @@ function _startGame($gameID) {
 	//Démarre le 1er tour
 	$turnID = addTurn($gameID, $playersIDS[0]['us_id']);
 
-	//Récupération du deck associé au type de la partie
+	//Récupération du deck associé au jeu
 	$deck = getDeck($gameID);
 
 	//debug($deck);
@@ -185,7 +209,6 @@ function play($gameID) {
 
 
 			$gameInfos = getGameInfos($gameID);
-			$gameTypeInfos = getGameTypeInfos($gameInfos['gt_id'], array('gt_name'));
 			$gameCreatorInfos = getUserInfos($gameInfos['us_id'], array('us_pseudo'));
 
 			$actionStatus = _checkAction($phase, $_SESSION[USER_MODEL][USER_PK], $currentTurn['tu_id']);
@@ -194,7 +217,6 @@ function play($gameID) {
 
 			unset($playersInfos['storyteller']);
 			unset($currentTurn['ga_id']);
-			unset($gameInfos['gt_id']);
 			unset($gameInfos['us_id']);
 
 			$gameInfos['host'] = $gameCreatorInfos['us_pseudo'];
@@ -238,12 +260,11 @@ function _isGameOver($gameID = null) {
 		extract($_POST);
 
 	$boolean = false;
-	$gameTypeID = getOneRowResult(getGameInfos($gameID, array('gt_id')), 'gt_id');
-	$gameTypeInfos = getGameTypeInfos($gameTypeID);
+	$gamePointsLimit = getOneRowResult(getGameInfos($gameID, array('ga_points_limit')), 'ga_points_limit');
 
 	$playersIDs = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
 	foreach($playersIDs as $playerID) {
-		if(getOneRowResult(getTotalUserPointsInGame($gameID, $playerID), 'nbPoints') >= $gameTypeInfos['gt_points_limit']) {
+		if(getOneRowResult(getTotalUserPointsInGame($gameID, $playerID), 'nbPoints') >= $gamePointsLimit) {
 			$boolean = true;
 		}
 	}
@@ -386,9 +407,6 @@ function _getCurrentGameTurn($gameID, $field) {
 
 //Distribue les points et retourne true si un joueur a atteint la limite de point pour cette partie
 function _dealPoints($turn) {
-	$gameTypeID = getOneRowResult(getGameInfos($turn['ga_id'], array('gt_id')), 'gt_id');
-	$gameTypeInfos = getGameTypeInfos($gameTypeID);
-
 	$storytellerCardID = getOneRowResult(getPlayerCardInBoard($turn['tu_id'], $turn['us_id']), 'ca_id');
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();
@@ -695,6 +713,18 @@ function _getStatus($status, $phase, $role) {
 	}
 
 	return $statusTxt;
+}
+
+function _getGameMessages($gameID) {
+	$messages = getGameMessages($gameID);
+	$messagesTexts = '';
+	foreach($messages as &$message) {
+		$messagesTexts .= '<h4>' . $message['us_pseudo'] .'</h4><p>' . htmlspecialchars(htmlentities($message['ch_text'])) . '</p>';
+	}
+	if(isPost())
+		echo $messagesTexts;
+	else
+		return $messagesTexts;
 }
 
 function _ajaxData($gameID, $oldPhase, $oldTurnID) {

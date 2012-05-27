@@ -120,6 +120,7 @@
 	position:relative;
 	width:16%; /*dépend du nombre de cartes*/
 	margin-right: 2px;
+	box-shadow: 6px 6px 6px #352d23;
 }
 
 

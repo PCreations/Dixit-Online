@@ -21,8 +21,8 @@
 		</div>
 	</div>
 	<div id="sidebar">
-		<img id="label_joueurs" src="<?php echo IMG_DIR;?>joueurs.png">
 		<div id="players">
+			<img id="label_joueurs" src="<?php echo IMG_DIR;?>joueurs.png">
 			<?php foreach($turn['players'] as $player): ?>
 			<div class="joueur">
 				<img class="profil_joueur" src="<?php echo IMG_DIR;?>profil.png">
@@ -54,6 +54,7 @@
 	turnID = <?php echo $turn['tu_id'];?>;
 
 	BASE_URL = '<?php echo BASE_URL;?>';
+	IMG_DIR = '<?php echo IMG_DIR;?>';
 
 	$('#gameChat').submit(function() {
 		var message = $('#gameMsg').val();
@@ -88,7 +89,7 @@
 			$('#chatMessages').empty();
 			$('#chatMessages').html(data);
 		});
-	}, 2000);
+	}, 2000);*/
 
 	setInterval(function(){
 		$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
@@ -102,7 +103,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 5000);*/
+	}, 5000);
 
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);
@@ -138,20 +139,14 @@
 			playersInfos.key = $.parseJSON(playersInfos.val);
 		});
 		
-		$("#players").html("<table>"
-							+"<caption>Joueurs</caption>"
-								+"<tr>"
-									+"<th>Pseudo : </th>"
-									+"<th>Points : </th>"
-									+"<th>Statut : </th>"
-								+"</tr>");
+		$("#players").html('<img id="label_joueurs" src="'+IMG_DIR+'joueurs.png">');
+
 		$.each(playersInfos, function(key, player) {
 			console.log(player);
-			$("#players table").append("<tr>"
-										+"<td>"+player.us_pseudo+((player.role == 'conteur') ? ' : conteur' : '')+"</td>"
-										+"<td>"+((player.points != null) ? player.points : '0')+"</td>"
-										+"<td>"+player.status+"</td>"
-									+"</tr>");
+			$("#players").append('<div class="joueur">'
+									+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
+									+'<p class="infos_joueur">'+player.us_pseudo+((player.role == 'conteur') ? ' : conteur' : '')+'<br />'+((player.points != null) ? player.points : '0')+'points<br />'+player.status+'</p>'
+								+'</div>');
 		});
 	}
 

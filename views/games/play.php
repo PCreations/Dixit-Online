@@ -107,7 +107,7 @@
 		$('#boardForm').submit();
 	}
 
-	/*function chooseSTcard(id) {
+	function chooseSTcard(id) {
 		// On coche Non
 		$('input[name=cardID]').val([id]);
 
@@ -133,7 +133,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 5000);*/
+	}, 5000);
 
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);

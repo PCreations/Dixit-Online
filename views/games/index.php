@@ -21,7 +21,7 @@
 						<?php endforeach; ?>
 					</select></figure>
 					<input type='checkbox' name='public' <?php
-															if ($vars_filtrage['public']=='on'){
+															if (isset($vars_filtrage['public'])){
 																echo(" checked='checked'");
 															}
 					?>

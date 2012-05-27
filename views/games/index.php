@@ -4,13 +4,16 @@
 			<div id="creer">
 				<img id="label_creer" src="<?php echo IMG_DIR;?>creer.png">
 				<form method="POST">
-					<input type="text" name="name">
-					<input type="text" name="nbplayers">
-					<select name="deck">
-				<?php foreach($deckInfos as $deck): ?>
-						<option value='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
-				<?php endforeach; ?>
-					</select>
+					<figure><label for="name">Nom</label><input type="text" name="name" size="10"></figure>
+					<figure><label for="nbplayers">Nombre de joueurs</label><input type="text" name="nbplayers" size="15"></figure>
+					<figure><label for="nbpoints">Points max.</label><input type="text" name="nbpoints" size="10"></figure>
+					<figure><label for="deck">Cartes</label><select name="deck">
+							<option value="-1">Toutes</option>
+						<?php foreach($deckInfos as $deck): ?>
+							<option value='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
+						<?php endforeach; ?>
+					</select></figure>
+					<input type='checkbox' name='public'><font size="1">Publiques seulement</font>
 					<input type='submit' value='Trier'>
 				</form>
 					<form method="post" action="partie.html">

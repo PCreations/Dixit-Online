@@ -22,7 +22,10 @@ function index() {
 	}
 	else {
 		extract($_POST);
-		$partiesEnAttente = filterGames($name, $nbplayers, $deck);
+		if(!isset($public)){
+			$public='off';
+		}
+		$partiesEnAttente = filterGames($name, $nbplayers, $nbpoints, $deck, $public);
 	}
 
 	foreach($partiesEnAttente as &$partie) {

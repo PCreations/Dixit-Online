@@ -1,6 +1,6 @@
 <?php
 
-function filterGames($name, $nbplayers, $deck) {
+function filterGames($name, $nbplayers, $nbpoints, $deck, $public) {
 	global $db;
 	
 	$prequery='';
@@ -10,8 +10,14 @@ function filterGames($name, $nbplayers, $deck) {
 	if (!empty($nbplayers)){
 		$prequery.=' AND ga.ga_nb_players = :nbplayers';
 	}
-	if (!empty($deck)){
+	if (!empty($nbpoints)){
+		$prequery.=' AND ga.ga_points_limit <= :nbpoints';
+	}
+	if ($deck!=-1){
 		$prequery.=' AND de.de_id = :deck';
+	}
+	if ($public=='on'){
+		$prequery.=' AND ga.ga_password IS NULL';
 	}
 
 	debug($prequery);
@@ -36,9 +42,13 @@ function filterGames($name, $nbplayers, $deck) {
 	if (!empty($nbplayers)){
 		$query->bindParam(':nbplayers', $nbplayers, PDO::PARAM_INT);
 	}
-	if (!empty($deck)){
+	if (!empty($nbpoints)){
+		$query->bindParam(':nbpoints', $nbpoints, PDO::PARAM_INT);
+	}
+	if ($deck!=-1){
 		$query->bindParam(':deck', $deck, PDO::PARAM_INT);
 	}
+
 	
 	$query->execute();
 						

@@ -100,6 +100,23 @@
 		})
 	});
 
+	function selectCard(inputName, divID, cardID) {
+		console.log($('#'+divID+' input[name='+inputName+']').val());
+
+		/* Parcours des cartes pour replacer le bouton rouge normal */
+		$('#'+divID+' .bouton').each(function(i) { 
+			$(this).attr('src', IMG_DIR+'bouton.png');
+		});
+
+		/* Bouton doré pour la carte sélectionnée */
+		$('#'+divID+' #btnCardID'+cardID).attr('src', IMG_DIR+'bouton_dore.png');
+
+		/* Modification de la valeur du champ hidden cardID en conséquence */
+		$('#'+divID+' input[name='+inputName+']').val(cardID);
+
+		console.log($('#'+divID+' input[name='+inputName+']').val());
+	}
+
 	function voteForCard(id) {
 		$('input[name=cardID]').val([id]);
 
@@ -114,7 +131,8 @@
 		var card = $('input[name="cardID"]:checked').val();
 		$('#handForm').submit();
 	}
-	setInterval(function(){
+	
+	/*setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			$('#chatMessages').empty();
 			$('#chatMessages').html(data);
@@ -133,7 +151,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 5000);
+	}, 5000);*/
 
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);

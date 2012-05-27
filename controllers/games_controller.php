@@ -641,21 +641,23 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 
 function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus) {
 	$hand = getCardsInHand($userID, $turnID);
-	$handDisplay = '<form id="handForm" method="post" action="' . BASE_URL . 'cards/addStorytellerCard">';
-	$handDisplay .= '<div id="cartes">';
+	$handDisplay = '<div id="cartes">';
 	switch($phase) {
 		case STORYTELLER_PHASE:
+			$handDisplay .= '<form method="post" action="' . BASE_URL . 'cards/addStorytellerCard">';
 			if($storyteller) {
 				foreach($hand as $card) {
-					$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /><label class="handCardLabel" for="' . $card['ca_id'] .'"><img class="bouton" src="' . IMG_DIR . 'bouton.png" /></label></div>';
+					$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /><img id="btnCardID'. $card['ca_id'] .'" onclick="selectCard(\'cardID\', \'main\','. $card['ca_id'] .');" class="bouton" src="' . IMG_DIR . 'bouton.png" /></div>';
 				}
-				$handDisplay .= '<div id="stIndice"><label id="commentLabel" for="comment">Indice : </label><input type="text" name="comment" id="comment" /></div>';
-					foreach($hand as $card) {
-						$handDisplay .= '<input style="display: none"; type="radio" id="' . $card['ca_id'] .'" name="cardID" value="' . $card['ca_id'] . '" />';
-					}
+				
+					$handDisplay .= '<input type="hidden" name="cardID" value="-1" />';
 					$handDisplay .= '<input type="hidden" name="gameID" value="' . $gameID . '" />';
 					$handDisplay .= '<input type="hidden" name="turnID" value="' . $turnID . '" />';
-				
+					$handDisplay .= '<div id="stIndice">
+										<label id="commentLabel" for="comment">Indice : </label><input type="text" name="comment" id="comment" />
+										<input type="submit" value="Valider" />
+									</div>';
+				$handDisplay .= '</form>';
 			}
 			else {
 				foreach($hand as $card) {
@@ -686,7 +688,6 @@ function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus
 	}
 
 	$handDisplay .= '</div>';
-	$handDisplay .= '</form>';
 	return $handDisplay;
 }
 

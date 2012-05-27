@@ -1,4 +1,3 @@
-<?php //debug($_SERVER);?>
 <h1>Parties</h1>
 	<div id="games">
 		<div id="left_side">

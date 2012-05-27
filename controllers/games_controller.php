@@ -184,7 +184,9 @@ function _dealCards(&$deck, $nbCards, $nbPlayers) {
 }
 
 function play($gameID) {
-
+	global $CSS_FILES;
+	$CSS_FILES[] = 'style_partie.css';
+	debug($CSS_FILES);
 	if(!isLogged()) {
 		setMessage('Vous devez être connecté pour rejoindre une partie', FLASH_ERROR);
 		redirect('users', 'login');
@@ -245,6 +247,7 @@ function play($gameID) {
 			render('play', $vars);
 		}
 	}
+	$CSS_FILES = array_pop($CSS_FILES);
 }
 
 function gameOver($gameID) {
@@ -468,10 +471,6 @@ function _dealPoints($turn) {
 
 //Fonction démarrant un nouveau tour
 function _startNewTurn($gameID, $storytellerID) {
-	$file = fopen('newturn.txt', 'a+');
-	fwrite($file, $_SESSION[USER_MODEL]['us_pseudo']."\n");
-	fwrite($file, "turn comment = "._getCurrentGameTurn($gameID, 'tu_comment')."\n");
-	fclose($file);
 	//maj date fin tour
 
 	//Joueurs en jeu :
@@ -494,9 +493,6 @@ function _startNewTurn($gameID, $storytellerID) {
 }
 
 function _pickCard($turnID, $gameID, $userID) {
-	$file = fopen('pickcard.txt', 'a+');
-	fwrite($file, "turnID = $turnID\nuserID = $userID\n\n");
-	fclose($file);
 	$pick = getPick($gameID);
 	if(empty($pick)) {
 		//On sélectionne toutes les cartes qui ont déjà été posé pour cette partie
@@ -570,18 +566,17 @@ function _setPlayerStatus($gameID, $userID, $status) {
 }
 //Permet d'afficher le tableau des cartes en fonction de la phase. Si la phase est BOARD_PHASE alors les cartes apparaissent face cachées et si c'est la VOTE_PHASE elles apparaissent face visible avec la possibilité de voter
 function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
-	$board = '';
+	$board = '<div id="cartes">';
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();
 
 	foreach($cardsIDs as $cardID) {
 		$cards[] = getCardInfos($cardID);
 	}
-
 	if($phase == BOARD_PHASE) {
 		//récupération de la carte du joueur
 		foreach($cards as $card) {
-			$board .= '<img src="' . IMG_DIR . 'cards/back.jpg" alt="card back" title="Carte face cachée"/>';
+			$board .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/back.jpg" alt="card back" title="Carte face cachée"/></div>';
 			$board .= "\n";
 		}
 	}
@@ -589,18 +584,21 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 		//$userCardID = getOneRowResult(getPlayerCardInBoard($gameID, $_SESSION[USER_MODEL][USER_PK]), 'ca_id');
 		shuffle($cards);
 		if($actionStatus == ACTION_IN_PROGRESS && !$storyteller) {
-			$board .= '<form method="post" action="' . BASE_URL . 'cards/vote">';
+			/*$board .= '<form method="post" action="' . BASE_URL . 'cards/vote">';
 			foreach($cards as $card) {
 				$board .= '<label for="' . $card['ca_id'] . '"><img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></label><input type="radio" id="' . $card['ca_id'] .'" name="cardID" value="' . $card['ca_id'] . '" />';
 			}
 				$board .= '<input type="hidden" name="gameID" value="' . $gameID . '" />';
 				$board .= '<input type="hidden" name="turnID" value="' . $turn['tu_id'] . '" />';
 				$board .= '<input type="submit" value="voter" />';
-			$board .= '</form>';
+			$board .= '</form>';*/
+			foreach($cards as $card) {
+				$board .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /><img class="bouton" src="' . IMG_DIR . 'bouton.png" /></div>';
+			}
 		}
 		else {
 			foreach($cards as $card) {
-				$board .= '<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" />';
+				$board .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
 			}
 		}
 	}
@@ -634,28 +632,30 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 		$board .= '<input type="button" id="readyForNextTurn" name="readyForNextTurn" value="Prêt pour le prochain tour" onclick="readyForNextTurn();" />';
 	}
 
+	$board .= "</div>";
 	return $board;
 }
 
 function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus) {
 	$hand = getCardsInHand($userID, $turnID);
-	$handDisplay = '';
+	$handDisplay = '<div id="cartes">';
 	switch($phase) {
 		case STORYTELLER_PHASE:
 			if($storyteller) {
-				$handDisplay .= '<form method="post" action="' . BASE_URL . 'cards/addStorytellerCard">';
-				$handDisplay .= '<label for="comment">Indice : </label><input type="text" name="comment" id="comment" />';
+				/*$handDisplay .= '<form method="post" action="' . BASE_URL . 'cards/addStorytellerCard">';
+				$handDisplay .= '<label for="comment">Indice : </label><input type="text" name="comment" id="comment" />';*/
 				foreach($hand as $card) {
-					$handDisplay .= '<label for="' . $card['ca_id'] . '"><img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></label><input type="radio" id="' . $card['ca_id'] .'" name="cardID" value="' . $card['ca_id'] . '" />';
+					/*$handDisplay .= '<label for="' . $card['ca_id'] . '"><img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></label><input type="radio" id="' . $card['ca_id'] .'" name="cardID" value="' . $card['ca_id'] . '" />';*/
+					$hdanDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /><img class="bouton" src="' . IMG_DIR . 'bouton.png" /></div>';
 				}	
-					$handDisplay .= '<input type="hidden" name="gameID" value="' . $gameID . '" />';
+					/*$handDisplay .= '<input type="hidden" name="gameID" value="' . $gameID . '" />';
 					$handDisplay .= '<input type="hidden" name="turnID" value="' . $turnID . '" />';
 					$handDisplay .= '<input type="submit" value="Valider" />';
-				$handDisplay .= '</form>';
+				$handDisplay .= '</form>';*/
 			}
 			else {
 				foreach($hand as $card) {
-					$handDisplay .= '<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" />';
+					$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
 				}		
 			}
 			break;
@@ -664,23 +664,24 @@ function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus
 				if(!$storyteller) {
 					//die(var_dump($actionStatus));
 					if($actionStatus == ACTION_IN_PROGRESS)
-						$handDisplay .= l('<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" />', 'cards', 'addCard', array($gameID, $turnID, $card['ca_id']));
+						$handDisplay .= '<div class="carte">' . l('<img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" />', 'cards', 'addCard', array($gameID, $turnID, $card['ca_id'])) . '</div>';
 					else
-						$handDisplay .= '<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" />';
+						$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
 				}
 				else {
-					$handDisplay .= '<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" />';
+					$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
 				}
 			}
 			break;
 		case VOTE_PHASE:
 		case POINTS_PHASE:
 			foreach($hand as $card) {
-				$handDisplay .= '<img src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" />';
+				$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
 			}
 			break;
 	}
 
+	$handDisplay .= '</div>';
 	return $handDisplay;
 }
 

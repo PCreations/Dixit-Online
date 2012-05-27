@@ -71,7 +71,6 @@ function login() {
 function account($id = null) {
 	global $JS_FILES;
 	$JS_FILES[] = 'script_users.js';
-	debug($JS_FILES);
 	$userID = $_SESSION[USER_MODEL][USER_PK];
 	
 	if(isset($_POST['update'])) { //Formulaire de changement de données

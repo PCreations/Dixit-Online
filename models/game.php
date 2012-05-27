@@ -16,11 +16,11 @@ function getGameInfos($gameID, $fields = array('*')) {
 function getWaintingGames() {
 	global $db;
 
-	$result = $db->query('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, COUNT(pl.us_id) as nbPlayersInGame
+	$result = $db->query('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga
-						LEFT JOIN plays as pl
-						ON pl.ga_id = ga.ga_id
-						HAVING (nbPlayersInGame < ga.ga_nb_players)');
+						LEFT JOIN total_players_in_game as total
+						ON total.ga_id = ga.ga_id
+						WHERE total.nbTotalPlayer < ga.ga_nb_players');
 	return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -97,10 +97,10 @@ function isInGame($gameID, $userID) {
 function checkPlayersInGame($gameID) {
 	global $db;
 
-	$query = $db->prepare('SELECT COUNT(plays.us_id) as nbPlayersInGame, games.ga_nb_players as nbPlayersMax
-						FROM plays
+	$query = $db->prepare('SELECT total.nbTotalPlayer as nbPlayersInGame, games.ga_nb_players as nbPlayersMax
+						FROM total_players_in_game as total
 						INNER JOIN games
-						ON games.ga_id = plays.ga_id
+						ON games.ga_id = total.ga_id
 						WHERE games.ga_id = ?');
 	$query->execute(array($gameID));
 	$result = $query->fetch(PDO::FETCH_ASSOC);

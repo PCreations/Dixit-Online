@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Sam 26 Mai 2012 à 22:08
+-- Généré le : Dim 27 Mai 2012 à 11:05
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `chats` (
   `ga_id` int(11) NOT NULL,
   `ch_text` varchar(255) NOT NULL,
   `ch_date` datetime NOT NULL,
-  PRIMARY KEY (`us_id`,`ga_id`),
+  KEY `us_id` (`us_id`),
   KEY `ga_id` (`ga_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `games` (
   PRIMARY KEY (`ga_id`),
   KEY `de_id` (`de_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -182,6 +182,15 @@ CREATE TABLE IF NOT EXISTS `plays` (
   KEY `ga_id` (`ga_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `total_players_in_game`
+--
+CREATE TABLE IF NOT EXISTS `total_players_in_game` (
+`ga_id` int(11)
+,`nbTotalPlayer` bigint(21)
+);
 -- --------------------------------------------------------
 
 --
@@ -264,6 +273,15 @@ CREATE TABLE IF NOT EXISTS `votes` (
   KEY `tu_id` (`tu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `total_players_in_game`
+--
+DROP TABLE IF EXISTS `total_players_in_game`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `total_players_in_game` AS select `ga`.`ga_id` AS `ga_id`,(select count(`plays`.`ga_id`) from `plays` where (`plays`.`ga_id` = `ga`.`ga_id`)) AS `nbTotalPlayer` from `games` `ga`;
+
 --
 -- Contraintes pour les tables exportées
 --
@@ -272,8 +290,8 @@ CREATE TABLE IF NOT EXISTS `votes` (
 -- Contraintes pour la table `boards`
 --
 ALTER TABLE `boards`
-  ADD CONSTRAINT `boards_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `boards_ibfk_1` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `boards_ibfk_1` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `boards_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `cards`
@@ -285,15 +303,15 @@ ALTER TABLE `cards`
 -- Contraintes pour la table `cards_decks`
 --
 ALTER TABLE `cards_decks`
-  ADD CONSTRAINT `cards_decks_ibfk_2` FOREIGN KEY (`de_id`) REFERENCES `decks` (`de_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `cards_decks_ibfk_1` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `cards_decks_ibfk_1` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cards_decks_ibfk_2` FOREIGN KEY (`de_id`) REFERENCES `decks` (`de_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `chats`
 --
 ALTER TABLE `chats`
   ADD CONSTRAINT `chats_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `chats_ibfk_3` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `chats_ibfk_2` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `decks`
@@ -319,17 +337,17 @@ ALTER TABLE `games`
 -- Contraintes pour la table `hands`
 --
 ALTER TABLE `hands`
-  ADD CONSTRAINT `hands_ibfk_6` FOREIGN KEY (`tu_played_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `hands_ibfk_3` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `hands_ibfk_4` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `hands_ibfk_5` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `hands_ibfk_5` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hands_ibfk_6` FOREIGN KEY (`tu_played_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `pick`
 --
 ALTER TABLE `pick`
-  ADD CONSTRAINT `pick_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pick_ibfk_1` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `pick_ibfk_1` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pick_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `plays`
@@ -349,8 +367,8 @@ ALTER TABLE `turns`
 -- Contraintes pour la table `users_cards_votes`
 --
 ALTER TABLE `users_cards_votes`
-  ADD CONSTRAINT `users_cards_votes_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `users_cards_votes_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `users_cards_votes_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_cards_votes_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `users_friends`
@@ -363,6 +381,6 @@ ALTER TABLE `users_friends`
 -- Contraintes pour la table `votes`
 --
 ALTER TABLE `votes`
-  ADD CONSTRAINT `votes_ibfk_3` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `votes_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `votes_ibfk_2` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `votes_ibfk_3` FOREIGN KEY (`tu_id`) REFERENCES `turns` (`tu_id`) ON DELETE CASCADE ON UPDATE CASCADE;

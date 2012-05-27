@@ -93,7 +93,7 @@
 			$('#chatMessages').empty();
 			$('#chatMessages').html(data);
 		});
-	}, 500);
+	}, 2000);
 	/*setInterval(function(){
 		$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
 			var oldPhase = phaseID;

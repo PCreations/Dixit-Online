@@ -43,7 +43,8 @@ function joinGame($gameID, $userID) {
 	}
 	else {
 		if(checkPlayersInGame($gameID)) {
-			if(in_array($userID, getPlayersInGame($gameID))) {
+			$playersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+			if(in_array($userID, $playersInGame)) {
 				setMessage('Vous êtes déjà dans cette partie', FLASH_ERROR);
 				redirect('games');
 			}
@@ -56,7 +57,7 @@ function joinGame($gameID, $userID) {
 					_startGame($gameID);
 				}
 				setMessage('Vous avez rejoint la partie', FLASH_SUCCESS);
-				redirect('users', 'account');
+				redirect('games', 'room', array($gameID));
 			}
 		}
 		else {
@@ -64,6 +65,28 @@ function joinGame($gameID, $userID) {
 			redirect('games');
 		}
 	}
+}
+
+function room($gameID) {
+	if(!isLogged()) {
+		setMessage('Vous devez être connecté pour accéder à cette page', FLASH_ERROR);
+		redirect('users', 'login');
+	}
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+
+	$playersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+	if(!in_array($userID, $playersInGame)) {
+		setMessage('Vous ne jouez pas dans cette partie', FLASH_ERROR);
+		redirect('games');
+	}
+	$gameInfos = getGameInfos($gameID, array('ga_name', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
+	$gameInfos['host'] = getOneRowResult(getUserInfos($gameInfos['us_id']), 'us_pseudo');
+	$gameInfos['ready'] = checkPlayersInGame($gameID);
+
+	unset($gameInfos['us_id']);
+	debug($gameInfos);
+	$vars = array('gameInfos' => $gameInfos);
+	render('room', $gameInfos);
 }
 
 function quiteGame($gameID, $userID) {

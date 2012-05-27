@@ -1,10 +1,7 @@
 <?php
 
-<<<<<<< HEAD
-useModels(array('user', 'game', 'card', 'gameType', 'deck'));
-=======
-useModels(array('user', 'game', 'card', 'chat'));
->>>>>>> 522dfd81cccfa83c62b5c24f563d99aa5340a4ca
+
+useModels(array('user', 'game', 'card', 'chat', 'deck'));
 
 define('CARD_PER_PLAYER', 3); //pour tester
 define('STORYTELLER_PHASE', 0);
@@ -20,15 +17,13 @@ function index() {
 	$deckInfos = getAllDecks(array('de_id', 'de_name'));
 	
 
-
 	if(!isPost()) {
-		$partiesEnAttente = getWaintingGames();
+		$partiesEnAttente = getWaitingGames();
 	}
 	else {
 		extract($_POST);
 		$partiesEnAttente = filterGames($name, $nbplayers, $deck);
 	}
-	$partiesEnAttente = getWaitingGames();
 
 	foreach($partiesEnAttente as &$partie) {
 			if(isLogged()) {

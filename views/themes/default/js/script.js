@@ -6,7 +6,7 @@ function postAjax(url) {
     );
 }
 
-//Système d'onglet pour le profil Joueur
+//SystÃ¨me d'onglet pour le profil Joueur
 function changeOnglet(i){
 	var j;
 	for (j=1; j<5; j++){
@@ -59,7 +59,7 @@ function centerPopup(i){
 
 $(document).ready(function(){ 
 	
-	//Affichage des messages Flash dans la bannière rouge en haut de l'écran
+	//Affichage des messages Flash dans la banniÃ¨re rouge en haut de l'Ã©cran
 	$('#flash').slideDown(800);
 		setTimeout(function(){
 			$('#flash').slideUp(800);

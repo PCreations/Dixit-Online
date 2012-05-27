@@ -52,8 +52,8 @@ function updateUser($id, $name, $lastname, $mail){
 	global $db;
 	$query = $db->prepare('UPDATE users 
 						SET us_name = :name,
-						us_lastname =  :lastname,
-						us_mail = : mail
+						us_lastname = :lastname,
+						us_mail = :mail
 						WHERE us_id = :id');
 	$query->execute(array('id' => $id,
 						'name'=> $name,

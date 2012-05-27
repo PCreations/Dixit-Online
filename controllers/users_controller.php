@@ -160,7 +160,6 @@ function sendInvitation($pseudo){
 	setMessage('Une invitation a été envoyée', FLASH_SUCCESS);
 	$vars = array($userID);
 	render('account', $vars);
-	}
 	
 	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
 			extract($_POST);

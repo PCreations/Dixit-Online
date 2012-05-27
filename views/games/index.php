@@ -28,7 +28,6 @@
 					 <div class="scroll">
 						<table  id="waitingGames" cellspacing="0">
 						   <tbody>
-						   		<?php debug($partiesEnAttente, true);?>
 								<?php foreach($partiesEnAttente as $partie): ?>
 								 <tr>
 									<td class="cadenas"><img src="<?php echo IMG_DIR;?>cadenas.png"></td>

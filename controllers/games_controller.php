@@ -238,8 +238,9 @@ function play($gameID) {
 
 			$storyteller = ($_SESSION[USER_MODEL][USER_PK] == $currentTurn['us_id']); //permet de savoir si le joueur connecté est actuellement le conteur ou non
 			
-
-
+			$nextStorytellerID = _getNextStorytellerID($gameID, $currentTurn['us_id']);
+			$nextStoryteller = getOneRowResult(getUserInfos($nextStorytellerID, array('us_pseudo')), 'us_pseudo');
+			
 			$gameInfos = getGameInfos($gameID);
 			$gameCreatorInfos = getUserInfos($gameInfos['us_id'], array('us_pseudo'));
 
@@ -260,6 +261,7 @@ function play($gameID) {
 			$vars['turn']['phase'] = _getPhaseInfos($storyteller, $phase, $actionStatus);
 			$vars['actionStatus'] = $actionStatus;
 			$vars['storyteller'] = $storyteller;
+			$vars['nextStoryteller'] = $nextStoryteller;
 			//debug($vars);
 			render('play', $vars);
 		}
@@ -498,7 +500,18 @@ function _startNewTurn($gameID, $storytellerID) {
 
 	//Joueurs en jeu :
 	$players = getSpecificArrayValues(getOrderUserInfos($gameID, array('u.us_id')), 'us_id');
+	
+	$nextStorytellerID = _getNextStorytellerID($gameID, $storytellerID);
+	
+	$newTurnID = addTurn($gameID, $nextStorytellerID);
+	foreach($players as $playerID) {
+		_setPlayerStatus($gameID, $playerID, 0);
+		_pickCard($newTurnID, $gameID, $playerID);
+	}
+}
+function _getNextStorytellerID($gameID, $storytellerID){
 
+	$players = getSpecificArrayValues(getOrderUserInfos($gameID, array('u.us_id')), 'us_id');
 	$storytellerPosition = getOneRowResult(getGameUserPosition($gameID, $storytellerID), 'pl_position');
 
 	if($storytellerPosition < count($players))
@@ -506,13 +519,7 @@ function _startNewTurn($gameID, $storytellerID) {
 	else
 		$nextStorytellerPosition = 1;
 
-	$nextStorytellerID = getOneRowResult(getUserByPosition($gameID, $nextStorytellerPosition), 'us_id');
-	
-	$newTurnID = addTurn($gameID, $nextStorytellerID);
-	foreach($players as $playerID) {
-		_setPlayerStatus($gameID, $playerID, 0);
-		_pickCard($newTurnID, $gameID, $playerID);
-	}
+	return getOneRowResult(getUserByPosition($gameID, $nextStorytellerPosition), 'us_id');
 }
 
 function _pickCard($turnID, $gameID, $userID) {
@@ -798,7 +805,7 @@ function _ajaxData($gameID, $oldPhase, $oldTurnID) {
 	$storytellerID = _getCurrentGameTurn($gameID, 'us_id');
 	$turnComment = _getCurrentGameTurn($gameID, 'tu_comment');
 	$storyteller = getOneRowResult(getUserInfos($storytellerID, array('us_pseudo')), 'us_pseudo');
-	$turnComment = $storyteller." ".$turnComment;
+	$nextStoryteller = getOneRowResult(getUserInfos($nextStorytellerID, array('us_pseudo')), 'us_pseudo');
 	$phase = _getActualGamePhase($gameID, $turnID);
 	$actionStatus = _checkAction($phase, $userID, $turnID);
 	$phaseInfos = json_encode(_getPhaseInfos($userID == $storytellerID, $phase, $actionStatus));

@@ -8,13 +8,10 @@
 
 #conteur
 {
-	width:605px;
-	height:60px;
+
 	margin-bottom:15px;
-	padding-top:20px;
-	padding-left:30px;
-	padding-right:310px;
-	padding-bottom:20px;
+	padding : 25px;
+	padding-left : 40px;
 	background-image:url("../img/bg_conteur.png");
 	background-repeat:no-repeat;
 }
@@ -22,13 +19,31 @@
 #profil_conteur
 {
 	display:inline-block;
+	border-radius : 4px;
+	vertical-align : top;
+	
 }
-
+#conteur .conteur_info
+{
+	display:inline-block;
+	margin-left : 15px;
+}
+#conteur p
+{
+	margin-top : 0px;
+	margin-bottom : 0px;
+}
 #turnComment
 {
-	margin-left:10px;
-	display:inline-block;
-	vertical-align:top;
+	text-shadow: 2px 2px 4px #333;
+	font-style : italic;
+	letter-spacing : 1.5px;
+	margin-left : 10px;
+}
+#storyteller
+{
+	font-size : 1.2em;
+	padding-bottom : 10px;
 }
 
 #table
@@ -66,6 +81,7 @@
 	position:relative;
 	width:100%;
 	margin:0px;
+	border-radius : 8px;
 	z-index:1;
 	box-shadow: 6px 6px 6px #352d23;
 	cursor: url("../img/zoom.cur"), default;
@@ -81,7 +97,7 @@
 	width:22px;
 	position:relative;
 	z-index:10;
-	top:-40px;
+	
 	margin-left:auto;
 	margin-right:auto;
 	cursor: pointer;
@@ -93,7 +109,7 @@
 	width:25px;
 	position:relative;
 	z-index:10;
-	top:-42px;
+	
 	margin-left:auto;
 	margin-right:auto;
 }
@@ -101,7 +117,7 @@
 #main
 {
 	width:615px;
-	height:310px;
+	
 	padding:20px;
 	background-image:url("../img/bg_main.png");
 	background-repeat:no-repeat;
@@ -126,6 +142,7 @@
 	position:relative;
 	width:14.8%; /*dépend du nombre de cartes*/
 	margin-right: 10px;
+	padding-bottom : 0px;
 }
 
 #main #stIndice {
@@ -138,51 +155,41 @@
 	display: inline;
 }
 
-#main .image_carte
+#main  .image_carte 
 {
-	position:relative;
 	width:100%;
 	margin:0px;
 	z-index:1;
+	border-radius : 8px;
 	box-shadow: 6px 6px 6px #352d23;
 	cursor: url("../img/zoom.cur"), default;
 
 }
 
-#main .bouton
+#main .bouton 
 {
-	display:block;
+	position : absolute;
+	top : 75%;
+	left :38%;
 	width:22px;
-	position:relative;
 	z-index:10;
-	top:-40px;
-	margin-left:auto;
-	margin-right:auto;
 	cursor: pointer;
 }
 
 #main .bouton:hover
 {
-	display:block;
 	width:25px;
-	position:relative;
-	z-index:10;
-	top:-42px;
-	margin-left:auto;
-	margin-right:auto;
 }
 
 #label_tour
 {
 	margin-left:10px;
-	margin-top:40px;
+	margin-top:30px;
 }
 
 #main p
 {
-	margin:10px;
-	margin-left:30px;
-	margin-right:30px;
+	margin:5px 30px;
 }
 
 /****************Aside*********************/

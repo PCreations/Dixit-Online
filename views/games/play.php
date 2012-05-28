@@ -1,8 +1,11 @@
 <div id="content">
 	<div id="left">
 		<div id="conteur">
-			<img id="profil_conteur" src="<?php echo IMG_DIR;?>profil.png">
-			<p id="turnComment"><?php echo $turn['storyteller']['us_pseudo'];?><br><?php echo $turn['tu_comment'];?></p>
+			<img id="profil_conteur" src="<?php echo IMG_DIR;?>profil.png"/>
+			<div class="conteur_info">
+				<p id="storyteller" ><b><?php echo $turn['storyteller']['us_pseudo'];?></b></p>
+				<p id="turnComment"><b>«&nbsp;&nbsp;</b><?php echo $turn['tu_comment'];?><b>&nbsp;&nbsp;»</b></p>
+			</div>
 		</div>
 		<div id="table">
 			<?php
@@ -17,7 +20,8 @@
 				?>
 			</div>
 			<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">
-			<p><?php echo $turn['phase']['infos'];?> Le prochain conteur est Thomas Demenat</p>
+			<p><?php echo $turn['phase']['infos'];?></br>
+			Le prochain conteur est <?php echo $nextStoryteller;?></p>
 		</div>
 	</div>
 	<div id="sidebar">
@@ -214,8 +218,8 @@
 			text +=key + '>' + val + '\n';
 		});
 		displayPhaseInfos($.parseJSON(obj.phaseInfos));
-		$("#storyteller").html("Conteur : "+obj.storyteller);
-		$("#turnComment").html(obj.turnComment);
+		$("#storyteller").html("<b>"+obj.storyteller+"</b>");
+		$("#turnComment").html("<b>«&nbsp;&nbsp;</b>"+obj.turnComment+"<b>&nbsp;&nbsp;»</b>");
 		displayPlayersInfos($.parseJSON(obj.playersInfos));
 		if(obj.board != '') {
 			$("#table").html(obj.board);

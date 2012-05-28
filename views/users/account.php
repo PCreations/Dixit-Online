@@ -1,8 +1,10 @@
+
 <div id="profil">
-	<img class="image_link" id="1" src="<?php echo IMG_DIR;?>compte_accueil.png" onclick="changeOnglet('1');">
-	<img class="lower_textimg image_link" id="2" src="<?php echo IMG_DIR;?>compte_compte.png" onclick="changeOnglet('2');">
-	<img class="image_link" id="3" src="<?php echo IMG_DIR;?>compte_amis.png" onclick="changeOnglet('3');">
-	<img class="image_link" id="4" src="<?php echo IMG_DIR;?>compte_cartes.png" onclick="changeOnglet('4');">
+
+<img class="image_link" id="1" src="<?php echo IMG_DIR;?>compte_accueil.png" onclick="changeOnglet('1');">
+<img class="lower_textimg image_link" id="2" src="<?php echo IMG_DIR;?>compte_compte.png" onclick="changeOnglet('2');">
+<img class="image_link" id="3" src="<?php echo IMG_DIR;?>compte_amis.png" onclick="changeOnglet('3');">
+<img class="image_link" id="4" src="<?php echo IMG_DIR;?>compte_cartes.png" onclick="changeOnglet('4');">
 
 	<div id="account1">
 		<img class="avatar" src="<?php echo IMG_DIR;?>" alt=""/>

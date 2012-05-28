@@ -16,14 +16,13 @@
 {
 	margin : auto;
 	width : 640px;
-	height : 400px;
+	padding : 50px 0px;
 	background-position : relative;
-	background : url('../img/parchemin_compte.png') no-repeat center; 
+	background : url('../img/bg_square.png') no-repeat center; 
 	-webkit-background-size: cover; 
 	-moz-background-size: cover; 
 	-o-background-size: cover; 
 	z-index : 2;
-		border-radius : 20px;
 }
 #login
 {
@@ -55,7 +54,7 @@
 	top : 44%;
 	width : 60px;
 	height :43px;
-	left : 22%;
+	left : 29%;
 	z-index : 1;
 }
 #login .oups
@@ -91,7 +90,6 @@
 	width : 70%;
 	margin : auto;
 }
-
 #login, #profil
 {
 	margin-top : 40px;
@@ -164,7 +162,7 @@
 	position:relative;
 	top:7px;
 }
-
+                  
 #profil p, #profil h1
 {
 	margin : 0px 20px;

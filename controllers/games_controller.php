@@ -53,6 +53,23 @@ function index() {
 }
 
 
+function newGame() {
+	if(!isPost()) {
+		setMessage('Vous ne pouvez pas accéder à cette page, créez une partie avec le formulaire.', FLASH_ERROR);
+		redirect('games');
+	}
+	else {
+		extract($_POST);
+		$deck_mini=$joueurs*((int)($points/10))*3;
+		if ($deck_mini > nbCartes($deck))
+		{
+			setMessage('Pas assez de cartes dans ce deck', FLASH_ERROR);
+			redirect('games');
+		}
+	}
+	render('index');
+}
+
 function joinGame($gameID, $userID) {
 	if(!isLogged()) {
 		setMessage('Vous devez être connecté pour rejoindre une partie', FLASH_ERROR);

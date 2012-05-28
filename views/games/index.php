@@ -1,27 +1,22 @@
-<?php debug($vars_filtrage); ?>
+<?php
+
+ ?>
 
 <h1>Parties</h1>
 	<div id="games">
 		<div id="left_side">
 			<div id="creer">
 				<img id="label_creer" src="<?php echo IMG_DIR;?>creer.png">
-				
-					<form method="post" action="partie.html">
-						<figure><label for="nom">Nom</label> 			<input type="text" name="nom" size="20" required/> </figure>
-						<figure><label for="pwd">Mot de Passe</label> 	<input type="password" name="pwd"size="18" required/> </figure>
-						<figure><label for="joueurs">Joueurs</label> 	<input type="text" name="joueurs" size="10"required/> </figure>
-						<figure><label for="points">Points</label> 		<input type="text" name="points" size="8"required/> </figure>
+				<!-- Création de partie -->
+					<form action="<?php echo BASE_URL;?>games/newGame" method="POST">
+						<figure><label for="nom">Nom</label> 			<input type="text" name="nom" size="18" required/> </figure>
+						<figure><label for="pwd">Mot de Passe</label> 	<input type="password" name="pwd"size="15" > </figure>
+						<figure><label for="joueurs">Joueurs</label> 	<input type="text" name="joueurs" size="5"required/> </figure>
+						<figure><label for="points">Points</label> 		<input type="text" name="points" size="5"required/> </figure>
 						<figure><label for="deck">Cartes</label><select name="deck">
-							<option value="-1">Toutes</option>
 						<?php foreach($deckInfos as $deck): ?>
-							<option value='
-							<?php
-								echo $deck['de_id'];
-								if ($deck['de_id']==$vars_filtrage['deck']){
-									echo(" 'selected='selected");
-								}
-							?>
-							'><?php echo $deck['de_name'];?></option>
+							<option value='<?php echo $deck['de_id'];?>'>
+							<?php echo $deck['de_name'];?></option>
 						<?php endforeach; ?>
 					</select></figure>
 						<figure class="button1"><input type="submit" value="Lancer"/> </figure>

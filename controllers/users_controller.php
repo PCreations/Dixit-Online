@@ -94,7 +94,7 @@ function account($id = null) {
 	$userDecks = _getUserDecks($userID);
 
 	/* Récupération des cartes ajoutées par l'utilisateur */
-	$userCards = getUserCards($userID);
+	// $userCards = getUserCards($userID);
 
 	if(isset($_POST['update'])) { //Formulaire de changement de données
 			extract($_POST);

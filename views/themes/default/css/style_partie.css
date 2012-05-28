@@ -8,13 +8,10 @@
 
 #conteur
 {
-	width:605px;
-	height:60px;
+
 	margin-bottom:15px;
-	padding-top:20px;
-	padding-left:30px;
-	padding-right:310px;
-	padding-bottom:20px;
+	padding : 25px;
+	padding-left : 40px;
 	background-image:url("../img/bg_conteur.png");
 	background-repeat:no-repeat;
 }
@@ -22,13 +19,31 @@
 #profil_conteur
 {
 	display:inline-block;
+	border-radius : 4px;
+	vertical-align : top;
+	
 }
-
+#conteur .conteur_info
+{
+	display:inline-block;
+	margin-left : 15px;
+}
+#conteur p
+{
+	margin-top : 0px;
+	margin-bottom : 0px;
+}
 #turnComment
 {
-	margin-left:10px;
-	display:inline-block;
-	vertical-align:top;
+	text-shadow: 2px 2px 4px #333;
+	font-style : italic;
+	letter-spacing : 1.5px;
+	margin-left : 10px;
+}
+#storyteller
+{
+	font-size : 1.2em;
+	padding-bottom : 10px;
 }
 
 #table

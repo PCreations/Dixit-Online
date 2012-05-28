@@ -779,7 +779,6 @@ function _ajaxData($gameID, $oldPhase, $oldTurnID) {
 	$storytellerID = _getCurrentGameTurn($gameID, 'us_id');
 	$turnComment = _getCurrentGameTurn($gameID, 'tu_comment');
 	$storyteller = getOneRowResult(getUserInfos($storytellerID, array('us_pseudo')), 'us_pseudo');
-	$turnComment = $storyteller." ".$turnComment;
 	$phase = _getActualGamePhase($gameID, $turnID);
 	$actionStatus = _checkAction($phase, $userID, $turnID);
 	$phaseInfos = json_encode(_getPhaseInfos($userID == $storytellerID, $phase, $actionStatus));

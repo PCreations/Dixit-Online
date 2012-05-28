@@ -114,8 +114,18 @@
 		<div id="gallery_conteneur">
 			<div id="gallery" class="flexcroll">
 				<?php if ($cardsInDeck != -1){foreach($cardsInDeck as $card): ?>
-					<div class="carte"><img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/></div>
+					<div class="carte"><img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
+					<img class="bouton" id="btnCardID<?php echo $card['ca_id'] ;?>" src="<?php echo IMG_DIR;?>bouton.png" /></div>
 				<?php endforeach; }else{ echo('<div class="link">'.createLink('Creez votre premier deck personnel', 'users', '').'</div>');};?>
-			</div>
 		</div>
+		
 	</div>
+	<p class="link"><?php echo createLink('supprimer', 'users', ''); ?></p>
+	<p>Ajouter dans le groupe :</p> 
+		<select name="deck">
+			<option value="-1">Toutes</option>
+				<?php foreach($userDecks as $deck): ?>
+					<option value='<?php echo $deck['de_id'];if ($deck['de_id']==$vars_filtrage['deck']){echo(" 'selected='selected");}?>'><?php echo $deck['de_name'];?></option>
+				<?php endforeach; ?>
+		</select>
+</div>

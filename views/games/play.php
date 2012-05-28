@@ -20,7 +20,8 @@
 				?>
 			</div>
 			<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">
-			<p><?php echo $turn['phase']['infos'];?> Le prochain conteur est Thomas Demenat</p>
+			<p><?php echo $turn['phase']['infos'];?></br>
+			Le prochain conteur est <?php echo $nextStoryteller;?></p>
 		</div>
 	</div>
 	<div id="sidebar">

@@ -114,12 +114,13 @@
 		var card = $('input[name="cardID"]:checked').val();
 		$('#handForm').submit();
 	}
-	setInterval(function(){
+	/*setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			var $elem = $('#chatMessages');
 			$('#chatMessages').empty();
 			$('#chatMessages').html(data);
-			$('html, body').animate({scrollTop: $elem.height()}, 500);
+			// $('#chatMessages').scrollTop($('#chatMessages').prop('scrollHeight'));
+			$('#chatMessages').animate({scrollTop: $('#chatMessages').prop('scrollHeight')}, 500);
 		});
 	}, 2000);
 
@@ -136,7 +137,7 @@
 			}
 		});
 	}, 5000);
-
+*/
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);
 		text = '';

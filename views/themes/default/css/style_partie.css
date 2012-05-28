@@ -243,7 +243,7 @@
 #chatMessages p {
 	border-bottom: 1px solid #eeeeee;
     font-size: 14px;
-    margin: 5px 0 15px;
+    margin: 5px 0 5px;
     padding-bottom: 5px;
     padding-left: 20px;
 }

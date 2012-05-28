@@ -742,7 +742,7 @@ function _getGameMessages($gameID) {
 	$messages = getGameMessages($gameID);
 	$messagesTexts = '';
 	foreach($messages as &$message) {
-		$messagesTexts .= '<h4>' . $message['us_pseudo'] .'</h4><p>' . htmlspecialchars(htmlentities($message['ch_text'])) . '</p>';
+		$messagesTexts .= '<h4>' . $message['us_pseudo'] .'</h4><p>' . /*htmlspecialchars(htmlentities(*/$message['ch_text']/*))*/ . '</p>';
 	}
 	if(isPost())
 		echo $messagesTexts;

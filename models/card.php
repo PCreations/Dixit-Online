@@ -34,6 +34,17 @@ function getCardInfos($cardID, $fields = array('*')) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+function getUserCards($userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT *
+						FROM cards
+						WHERE us_id = ?');
+	$query->execute(array($userID));
+
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 //Permet de savoir à qui appartient une carte du tableau pour un tour donné
 function getCardOwner($cardID, $turnID) {
 	global $db;

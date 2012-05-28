@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user'));
+useModels(array('user', 'deck'));
 define('SEND_INVITATION', 2);
 define('ACCEPT_INVITATION', 1);
 define('DECLINE_INVITATION', 0);
@@ -90,6 +90,12 @@ function account($id = null) {
 	$JS_FILES[] = 'script_users.js';
 	$userID = $_SESSION[USER_MODEL][USER_PK];
 	
+	/* Récupération des decks de l'utilisateur */
+	$userDecks = _getUserDecks($userID);
+
+	/* Récupération des cartes ajoutées par l'utilisateur */
+	$userCards = getUserCards($userID);
+
 	if(isset($_POST['update'])) { //Formulaire de changement de données
 			extract($_POST);
 			updateUser($userID, $name, $lastname, $birthdate, $mail);
@@ -163,7 +169,8 @@ function account($id = null) {
 					'reelFriends' => $reelFriends,
 					'askedFriends' => $askedFriends,
 					'invitations' => $invitations,
-					'nbFriends' => $nbFriends);
+					'nbFriends' => $nbFriends,
+					'userCards' => $userCards);
 	render('account', $vars);
 	$JS_FILES = array_pop($JS_FILES);
 }
@@ -203,4 +210,15 @@ function logout() {
 	}
 	
 	redirect('users', 'login');
+}
+
+function _getUserDecks($userID) {
+	$userDecks = getUserDecks($userID);
+
+	/* Pour chaque deck récupérer les cartes */
+	foreach($userDecks as &$deck) {
+		$deck['cards'] = getSpecificArrayValues(getCardsInDeck($deck['de_id']), 'ca_id');
+	}
+
+	return $userDecks;
 }

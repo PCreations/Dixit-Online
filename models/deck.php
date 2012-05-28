@@ -16,6 +16,47 @@ function getAllDecks($fields = array('*')) {
 
 	$query = $db->query('SELECT '.$fields.' 
 						FROM decks');
-										
+
 	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getUserDecks($userID, $fields = array('*')) {
+	global $db;
+	$fields = implode(',', $fields);
+	$query = $db->prepare('SELECT '.$fields.' 
+						FROM decks
+						WHERE us_id = ?');
+	$query->execute(array($userID));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// A tester
+function getDeckInfos($id, $fields = array('*')) {
+	global $db;
+	$fields = implode(',', $fields);
+
+	$query = $db->prepare('SELECT '.$fields.' 
+						FROM decks
+						WHERE decks.de_id=?');
+	$query->execute(array($id));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function getCardsInDeck($deckID) {
+	global $db;
+
+	$query = $db->prepare('SELECT ca_id 
+						FROM cards_decks
+						WHERE de_id = ?');
+	$query->execute(array($deckID));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function nbCartes($id)
+{
+	global $db;
+	$query = $db->prepare('SELECT COUNT(ca_id) as nbCartes FROM cards_decks WHERE cards_decks.de_id=?');
+	$query->execute(array($id));
+	debug($query->fetch(PDO::FETCH_ASSOC), true);
+	return $query->fetch(PDO::FETCH_ASSOC);
 }

@@ -162,6 +162,29 @@ function addGameVote($userID, $cardID, $turnID) {
 						'turnID' => $turnID));
 }
 
+function updateGameVote($userID, $cardID, $turnID) {
+	global $db;
+
+	$query = $db->prepare('UPDATE votes
+							SET ca_id = :cardID
+							WHERE us_id = :userID
+							AND tu_id = :turnID');
+	$query->execute(array('userID' => $userID,
+						'cardID' => $cardID,
+						'turnID' => $turnID));
+}
+
+function getUserVotedCardInTurn($turnID, $userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT ca_id FROM votes
+						WHERE us_id = :userID
+						AND tu_id = :turnID');
+	$query->execute(array('userID' => $userID,
+						'turnID' => $turnID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
 function getCardVoteInTurn($cardID, $turnID) {
 	global $db;
 

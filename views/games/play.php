@@ -115,6 +115,35 @@
 		$('#'+divID+' input[name='+inputName+']').val(cardID);
 
 		console.log($('#'+divID+' input[name='+inputName+']').val());
+
+		if(divID == 'table') {
+			/* Ajout de la carte */
+			$.post(BASE_URL+"cards/vote/", {cardID: cardID, turnID: turnID}, function(data) {
+				/* Redirection vers la bonne page */
+				$(location).attr('href',BASE_URL+'games/play/'+gameID);
+			});
+		}
+	}
+
+	function updateCard(inputName, divID, cardID) {
+
+		/* Parcours des cartes pour replacer le bouton rouge normal */
+		$('#'+divID+' .bouton').each(function(i) { 
+			$(this).attr('src', IMG_DIR+'bouton.png');
+		});
+
+		/* Bouton doré pour la carte sélectionnée */
+		$('#'+divID+' #btnCardID'+cardID).attr('src', IMG_DIR+'bouton_dore.png');
+
+		/* Modification de la valeur du champ hidden cardID en conséquence */
+		$('#'+divID+' input[name='+inputName+']').val(cardID);
+
+		console.log("updateCard");
+		/* Update de la carte */
+		$.post(BASE_URL+"cards/updateVote/", {cardID: cardID, turnID: turnID}, function(data) {
+			/* Redirection vers la bonne page */
+			$(location).attr('href',BASE_URL+'games/play/'+gameID);
+		});
 	}
 
 	function voteForCard(id) {

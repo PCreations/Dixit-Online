@@ -566,8 +566,8 @@ function _setPlayerStatus($gameID, $userID, $status) {
 }
 //Permet d'afficher le tableau des cartes en fonction de la phase. Si la phase est BOARD_PHASE alors les cartes apparaissent face cachées et si c'est la VOTE_PHASE elles apparaissent face visible avec la possibilité de voter
 function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
-	$board = '<form id="boardForm" method="post" action="' . BASE_URL . 'cards/vote">';
-	$board .= '<div id="cartes">';
+	
+	$board = '<div id="cartes">';
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();
 
@@ -582,19 +582,30 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 		}
 	}
 	else if($phase == VOTE_PHASE) {
-		//$userCardID = getOneRowResult(getPlayerCardInBoard($gameID, $_SESSION[USER_MODEL][USER_PK]), 'ca_id');
+		$userCardID = getOneRowResult(getPlayerCardInBoard($turn['tu_id'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id');
 		shuffle($cards);
-		if($actionStatus == ACTION_IN_PROGRESS && !$storyteller) {
-			
+		if(!$storyteller) {
+			$votedCardId = _getUserVotedCardInTurn($turn['tu_id'], $_SESSION[USER_MODEL][USER_PK]);
+			$board .= '<form id="boardForm" method="post" action="' . BASE_URL . 'cards/vote">';
 			foreach($cards as $card) {
-				$board .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /><label class="boardCardLabel" for="' . $card['ca_id'] . '"><img class="bouton" src="' . IMG_DIR . 'bouton.png" /></label></div>';
+				$buttonImg = '';
+				if($userCardID != $card['ca_id']) {
+					if($votedCardId != -1) {//i.e si le joueur a déjà voté
+						$buttonImg = '<img class="bouton" id="btnCardID'. $card['ca_id'] .'" onclick="updateCard(\'cardID\', \'table\','. $card['ca_id'] .');" src="' . IMG_DIR . 'bouton.png" />';
+					}
+					else {
+						$buttonImg = '<img class="bouton" id="btnCardID'. $card['ca_id'] .'" onclick="selectCard(\'cardID\', \'table\','. $card['ca_id'] .');" src="' . IMG_DIR . 'bouton.png" />';
+					}
+				}
+				if($votedCardId == $card['ca_id']) {
+					$buttonImg = '<img class="bouton" id="btnCardID'. $card['ca_id'] .'" src="' . IMG_DIR . 'bouton_dore.png" />';
+				}
+				$board .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" />'. $buttonImg .'</div>';
 			}
+				$board .= '<input type="hidden" name="cardID" value="-1" />';
 				$board .= '<input type="hidden" name="gameID" value="' . $gameID . '" />';
 				$board .= '<input type="hidden" name="turnID" value="' . $turn['tu_id'] . '" />';
-				foreach($cards as $card) {
-					$board .= '<input style="display: none;" type="radio" id="' . $card['ca_id'] .'" name="cardID" value="' . $card['ca_id'] . '" />';
-				}
-			
+			$board .= '</form>';
 		}
 		else {
 			foreach($cards as $card) {
@@ -689,6 +700,16 @@ function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus
 
 	$handDisplay .= '</div>';
 	return $handDisplay;
+}
+
+
+function _getUserVotedCardInTurn($turnID, $userID) {
+	$result = getUserVotedCardInTurn($turnID, $userID);
+	if(!empty($result)) {
+		return $result['ca_id'];
+	}
+	else
+		return -1;
 }
 
 function _getStatus($status, $phase, $role) {

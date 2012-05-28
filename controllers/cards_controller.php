@@ -67,7 +67,6 @@ function addCard($gameID, $turnID, $cardID) {
 		}
 		else { //Sinon tout à l'air bon on peut ajouter la carte
 			_addCardInBoard($cardID, $turnID, $userID);
-			//setMessage('Votre carte a bien été ajoutée', FLASH_SUCCESS);
 			redirect('games', 'play', array($gameID));
 		}
 	}
@@ -130,17 +129,39 @@ function vote() {
 	else {
 		if(!isset($_POST['cardID'])) {
 			setMessage('Vous devez sélectionner une carte', FLASH_ERROR);
-			redirect('games', 'play', array($_POST['gameID']));
 		}
 		else if($_POST['cardID'] == getOneRowResult(getPlayerCardInBoard($_POST['turnID'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id')) {
-			setMessage('Vous ne pouvez pas voter pour votre propre carte (cardID = '.$_POST['cardID'].'<br /> Carte choisie id = ' . getOneRowResult(getPlayerCardInBoard($_POST['turnID'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id'), FLASH_ERROR);
-			redirect('games', 'play', array($_POST['gameID']));
+			setMessage('Vous ne pouvez pas voter pour votre propre carte', FLASH_ERROR);
 		}
 		else {
 			extract($_POST);
-			//setMessage('Votre vote a bien été pris en compte', FLASH_SUCCESS);
+			setMessage('Votre vote a été pris en compte. Vous pouvez le modifier tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);
 			addGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
-			redirect('games', 'play', array($_POST['gameID']));
+		}
+	}
+
+}
+
+function updateVote() {
+	if(!isPost()) {
+		trigger_error('Vous n\'avez pas accès à cette page');
+		die();
+	}
+	if(!isLogged()) {
+		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);
+		redirect('users', 'login');
+	}
+	else {
+		if(!isset($_POST['cardID'])) {
+			setMessage('Vous devez sélectionner une carte', FLASH_ERROR);
+		}
+		else if($_POST['cardID'] == getOneRowResult(getPlayerCardInBoard($_POST['turnID'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id')) {
+			setMessage('Vous ne pouvez pas voter pour votre propre carte', FLASH_ERROR);
+		}
+		else {
+			extract($_POST);
+			setMessage('Votre vote a été pris en compte. Vous pouvez le modifier à nouveau tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);
+			updateGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
 		}
 	}
 

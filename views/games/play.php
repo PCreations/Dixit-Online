@@ -58,8 +58,26 @@
 
 	BASE_URL = '<?php echo BASE_URL;?>';
 	IMG_DIR = '<?php echo IMG_DIR;?>';
+	FLASH_SUCCESS = '<?php echo FLASH_SUCCESS;?>';
+	FLASH_ERROR = '<?php echo FLASH_ERROR;?>';
+	FLASH_INFOS = '<?php echo FLASH_INFOS;?>';
+	FLASH_MESSAGE = '<?php echo FLASH_MESSAGE;?>';
 	
-	$('#gameChat').submit(function envoiMessage() {
+	$('#gameChat').submit(function() {
+		sendMsg();
+		return false;
+	})
+
+	
+	$('#gameMsg').keyup(function(e) { //remplacez {id_img} par l'id de votre image
+      if(e.keyCode == 13) {
+        sendMsg();
+		return false;
+       }
+	});
+	
+
+	function sendMsg() {
 		var message = $('#gameMsg').val();
 		$.post(BASE_URL+"chats/_addGameMessage",{gameID: gameID, userID: userID, message: message}, function(data) {
 			$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
@@ -69,25 +87,8 @@
 				$('#chatMessages').animate({scrollTop: $('#chatMessages').prop('scrollHeight')}, 500);
 			});
 		}, "json");
-		return false;
-	})
+	}
 
-	
-	$('#gameMsg').keyup(function(e) { //remplacez {id_img} par l'id de votre image
-      if(e.keyCode == 13) {
-            var message = $('#gameMsg').val();
-		$.post(BASE_URL+"chats/_addGameMessage",{gameID: gameID, userID: userID, message: message}, function(data) {
-			$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
-				$('#chatMessages').empty();
-				$('#chatMessages').html(data);
-				$('#gameMsg').val('');
-				$('#chatMessages').animate({scrollTop: $('#chatMessages').prop('scrollHeight')}, 500);
-			});
-		}, "json");
-		return false;
-       }
-	});
-	
 	function readyForNextTurn() {
 		//$('#readyForNextTurn').click();
 		$.ajax({
@@ -116,6 +117,7 @@
 				voteForCard($(this).attr('for'));
 			});
 		});
+		$(".fancybox").fancybox();
 	});
 
 	function selectCard(inputName, divID, cardID) {
@@ -280,7 +282,9 @@
 				break;
 		}
 
-		alert(phase);
+		setMessage(phase, FLASH_INFOS);
+		/*alert(phase);*/
+
 	}
 
 </script>

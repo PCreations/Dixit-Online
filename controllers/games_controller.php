@@ -189,7 +189,20 @@ function _dealCards(&$deck, $nbCards, $nbPlayers) {
 
 function play($gameID) {
 	global $CSS_FILES;
+	global $JS_FILES;
+
+	$JS_FILES[] = 'fancybox2/source/jquery.fancybox.pack.js';
+	$JS_FILES[] = 'fancybox2/source/helpers/jquery.fancybox-buttons.js';
+	$JS_FILES[] = 'fancybox2/source/helpers/jquery.fancybox-thumbs.js';
+	$JS_FILES[] = 'fancybox2/source/helpers/jquery.fancybox-media.js';
+	$JS_FILES[] = 'jquery.blockUI.js';
+
+
 	$CSS_FILES[] = 'style_partie.css';
+	$CSS_FILES[] = 'jquery.fancybox.css';
+	$CSS_FILES[] = 'jquery.fancybox-buttons.css';
+	$CSS_FILES[] = 'jquery.fancybox-thumbs.css';
+
 
 	if(!isLogged()) {
 		setMessage('Vous devez être connecté pour rejoindre une partie', FLASH_ERROR);
@@ -253,7 +266,13 @@ function play($gameID) {
 			render('play', $vars);
 		}
 	}
-	$CSS_FILES = array_pop($CSS_FILES);
+	
+	for($i=0; $i<4; $i++) {
+		$CSS_FILES = array_pop($CSS_FILES);
+		$JS_FILES = array_pop($JS_FILES);
+	}
+	$JS_FILES = array_pop($JS_FILES);
+	
 }
 
 function gameOver($gameID) {
@@ -588,7 +607,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	if($phase == BOARD_PHASE) {
 		//récupération de la carte du joueur
 		foreach($cards as $card) {
-			$board .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/back.jpg" alt="card back" title="Carte face cachée"/></div>';
+			$board .= '<div class="carte"><img class="image_carte hidden_fance" src="' . IMG_DIR . 'cards/back.jpg" alt="card back" title="Carte face cachée"/></div>';
 			$board .= "\n";
 		}
 	}
@@ -611,7 +630,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 				if($votedCardId == $card['ca_id']) {
 					$buttonImg = '<img class="bouton" id="btnCardID'. $card['ca_id'] .'" src="' . IMG_DIR . 'bouton_dore.png" />';
 				}
-				$board .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" />'. $buttonImg .'</div>';
+				$board .= '<div class="carte"><a class="fancybox" rel="board" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="zoom" /></a>'. $buttonImg .'</div>';
 			}
 				$board .= '<input type="hidden" name="cardID" value="-1" />';
 				$board .= '<input type="hidden" name="gameID" value="' . $gameID . '" />';
@@ -620,7 +639,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 		}
 		else {
 			foreach($cards as $card) {
-				$board .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
+				$board .= '<div class="carte"><a class="fancybox" rel="board" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="zoom" /></a></div>';
 			}
 		}
 	}
@@ -651,7 +670,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 				$board .= '</tr>';
 			$board .= '</table>';*/
 			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid red;"' : '';
-			$board .= '<div class="carte"><img '.$style.' class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
+			$board .= '<div class="carte"><a class="fancybox" rel="board" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img '.$style.' class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="zoom" /></a></div>';
 		}
 		$board .= '<div id="stIndice"><input type="button" id="readyForNextTurn" onclick="readyForNextTurn();" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
 	}
@@ -669,7 +688,7 @@ function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus
 			$handDisplay .= '<form method="post" action="' . BASE_URL . 'cards/addStorytellerCard">';
 			if($storyteller) {
 				foreach($hand as $card) {
-					$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /><img id="btnCardID'. $card['ca_id'] .'" onclick="selectCard(\'cardID\', \'main\','. $card['ca_id'] .');" class="bouton" src="' . IMG_DIR . 'bouton.png" /></div>';
+					$handDisplay .= '<div class="carte"><a class="fancybox" rel="hand" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></a><img id="btnCardID'. $card['ca_id'] .'" onclick="selectCard(\'cardID\', \'main\','. $card['ca_id'] .');" class="bouton" src="' . IMG_DIR . 'bouton.png" /></div>';
 				}
 				
 					$handDisplay .= '<input type="hidden" name="cardID" value="-1" />';
@@ -683,7 +702,7 @@ function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus
 			}
 			else {
 				foreach($hand as $card) {
-					$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
+					$handDisplay .= '<div class="carte"><a class="fancybox" rel="hand" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="zoom" /></a></div>';
 				}		
 			}
 			break;
@@ -692,19 +711,19 @@ function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus
 				if(!$storyteller) {
 					//die(var_dump($actionStatus));
 					if($actionStatus == ACTION_IN_PROGRESS)
-						$handDisplay .= '<div class="carte">' . l('<img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" />', 'cards', 'addCard', array($gameID, $turnID, $card['ca_id'])) . '</div>';
+						$handDisplay .= '<div class="carte"><a class="fancybox" rel="hand" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="zoom" /></a>' . l('<img id="btnCardID'. $card['ca_id'] .'" class="bouton" src="' . IMG_DIR . 'bouton.png" />', 'cards', 'addCard', array($gameID, $turnID, $card['ca_id'])) . '</div>';
 					else
-						$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
+						$handDisplay .= '<div class="carte"><a class="fancybox" rel="hand" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="zoom" /></a></div>';
 				}
 				else {
-					$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
+					$handDisplay .= '<div class="carte"><a class="fancybox" rel="hand" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="zoom" /></a></div>';
 				}
 			}
 			break;
 		case VOTE_PHASE:
 		case POINTS_PHASE:
 			foreach($hand as $card) {
-				$handDisplay .= '<div class="carte"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
+				$handDisplay .= '<div class="carte"><a class="fancybox" rel="hand" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="zoom" /></a></div>';
 			}
 			break;
 	}

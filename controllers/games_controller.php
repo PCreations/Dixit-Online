@@ -3,7 +3,7 @@
 
 useModels(array('user', 'game', 'card', 'chat', 'deck'));
 
-define('CARD_PER_PLAYER', 3); //pour tester
+define('CARD_PER_PLAYER', 6);
 define('STORYTELLER_PHASE', 0);
 define('BOARD_PHASE', 1);
 define('VOTE_PHASE', 2);
@@ -74,7 +74,7 @@ function joinGame($gameID, $userID) {
 			}
 		}
 		else {
-			setMessage('Impossible de rejoindre la partie, le nombre maximum de joueurs à été atteint.', FLASH_ERROR);
+			setMessage('Impossible de rejoindre la partie, le nombre maximum de joueurs a été atteint.', FLASH_ERROR);
 			redirect('games');
 		}
 	}
@@ -591,7 +591,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 				$buttonImg = '';
 				if($userCardID != $card['ca_id']) {
 					if($votedCardId != -1) {//i.e si le joueur a déjà voté
-						$buttonImg = '<img class="bouton" id="btnCardID'. $card['ca_id'] .'" onclick="updateCard(\'cardID\', \'table\','. $card['ca_id'] .');" src="' . IMG_DIR . 'bouton.png" />';
+						$buttonImg = '<img class="bouton" id="btnCardID'. $card['ca_id'] .'" onclick="updateCard(\'cardID\', \'table\','. $card['ca_id'] .');alert(\'test\');" src="' . IMG_DIR . 'bouton.png" />';
 					}
 					else {
 						$buttonImg = '<img class="bouton" id="btnCardID'. $card['ca_id'] .'" onclick="selectCard(\'cardID\', \'table\','. $card['ca_id'] .');" src="' . IMG_DIR . 'bouton.png" />';
@@ -642,7 +642,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid red;"' : '';
 			$board .= '<div class="carte"><img '.$style.' class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
 		}
-		$board .= '<div id="stIndice"><input type="button" id="readyForNextTurn" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
+		$board .= '<div id="stIndice"><input type="button" id="readyForNextTurn" onclick="readyForNextTurn();" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
 	}
 
 	$board .= "</div>";

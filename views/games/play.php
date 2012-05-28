@@ -94,10 +94,6 @@
 				voteForCard($(this).attr('for'));
 			});
 		});
-		$('#readyForNextTurn').click(function() {
-			console.log('ok');
-			readyForNextTurn();
-		})
 	});
 
 	function selectCard(inputName, divID, cardID) {
@@ -130,10 +126,15 @@
 		/* Parcours des cartes pour replacer le bouton rouge normal */
 		$('#'+divID+' .bouton').each(function(i) { 
 			$(this).attr('src', IMG_DIR+'bouton.png');
+				buttonID = $(this).attr('id');
+				currentCardID = buttonID.substring(9);
+				console.log("ID carte bouton : "+currentCardID);
+			$(this).attr('onclick', 'updateCard("'+inputName+'", "'+divID+'", '+currentCardID+')');
 		});
 
 		/* Bouton doré pour la carte sélectionnée */
 		$('#'+divID+' #btnCardID'+cardID).attr('src', IMG_DIR+'bouton_dore.png');
+		$('#'+divID+' #btnCardID'+cardID).attr('onclick', '');
 
 		/* Modification de la valeur du champ hidden cardID en conséquence */
 		$('#'+divID+' input[name='+inputName+']').val(cardID);
@@ -141,8 +142,9 @@
 		console.log("updateCard");
 		/* Update de la carte */
 		$.post(BASE_URL+"cards/updateVote/", {cardID: cardID, turnID: turnID}, function(data) {
-			/* Redirection vers la bonne page */
-			$(location).attr('href',BASE_URL+'games/play/'+gameID);
+			/* Update boutons */
+			
+			/*$(location).attr('href',BASE_URL+'games/play/'+gameID);*/
 		});
 	}
 

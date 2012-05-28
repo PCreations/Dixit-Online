@@ -102,8 +102,8 @@ function addStorytellerCard() {
 			addTurnComment($turnID, $comment);
 			updatePlayedTurn($cardID, $_SESSION[USER_MODEL][USER_PK], $turnID);
 			addCardInBoard($cardID, $turnID);
-			//setMessage('Votre carte a bien été ajoutée.', FLASH_SUCCESS);
-			//redirect('games', 'play', array($_POST['gameID']));
+			setMessage('Votre carte a bien été ajoutée.', FLASH_SUCCESS);
+			redirect('games', 'play', array($_POST['gameID']));
 		}
 		else {
 			$errors = '';
@@ -111,8 +111,7 @@ function addStorytellerCard() {
 			if(!isset($_POST['cardID']) || $_POST['cardID'] == -1) $errors .= 'Vous devez sélectionner une carte';
 
 			setMessage($errors, FLASH_ERROR);
-			debug($errors);
-			//redirect('games', 'play', array($_POST['gameID']));
+			redirect('games', 'play', array($_POST['gameID']));
 		}
 	}
 }

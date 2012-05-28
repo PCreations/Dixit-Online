@@ -1,6 +1,6 @@
 <?php
 
-function filterGames($name, $nbplayers, $deck) {
+function filterGames($name, $nbplayers, $nbpoints, $deck, $public) {
 	global $db;
 	
 	$prequery='';
@@ -10,16 +10,25 @@ function filterGames($name, $nbplayers, $deck) {
 	if (!empty($nbplayers)){
 		$prequery.=' AND ga.ga_nb_players = :nbplayers';
 	}
-	if (!empty($deck)){
+	if (!empty($nbpoints)){
+		$prequery.=' AND ga.ga_points_limit <= :nbpoints';
+	}
+	if ($deck!=-1){
 		$prequery.=' AND de.de_id = :deck';
+	}
+	if ($public=='on'){
+		$prequery.=' AND ga.ga_password IS NULL';
 	}
 
 	debug($prequery);
 	
-	$query = $db->prepare('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
+
+	$query = $db->prepare('SELECT us.us_name, ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, ga.ga_points_limit, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga
 						INNER JOIN decks as de
 						ON de.de_id = ga.de_id
+						INNER JOIN users as us
+						ON ga.us_id = us.us_id
 						LEFT JOIN total_players_in_game as total
 						ON total.ga_id = ga.ga_id
 						WHERE (total.nbTotalPlayer < ga.ga_nb_players)
@@ -34,9 +43,13 @@ function filterGames($name, $nbplayers, $deck) {
 	if (!empty($nbplayers)){
 		$query->bindParam(':nbplayers', $nbplayers, PDO::PARAM_INT);
 	}
-	if (!empty($deck)){
+	if (!empty($nbpoints)){
+		$query->bindParam(':nbpoints', $nbpoints, PDO::PARAM_INT);
+	}
+	if ($deck!=-1){
 		$query->bindParam(':deck', $deck, PDO::PARAM_INT);
 	}
+
 	
 	$query->execute();
 						
@@ -59,10 +72,14 @@ function getGameInfos($gameID, $fields = array('*')) {
 function getWaitingGames() {
 	global $db;
 
-	$result = $db->query('SELECT ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, ga.ga_points_limit, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
+
+	$result = $db->query('SELECT us.us_name, ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, ga.ga_points_limit, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
+
 						FROM games as ga
 						INNER JOIN decks as de
 						ON de.de_id = ga.de_id
+						INNER JOIN users as us
+						ON ga.us_id = us.us_id
 						LEFT JOIN total_players_in_game as total
 						ON total.ga_id = ga.ga_id
 						WHERE total.nbTotalPlayer < ga.ga_nb_players');

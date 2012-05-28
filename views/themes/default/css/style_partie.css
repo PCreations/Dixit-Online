@@ -241,15 +241,30 @@
 
 #chatMessages h4 {
 	font-size: 15px;
-    margin: 0;
+    margin-left: 5px;
+	margin-top:0px;
+	margin-right:0px;
+	margin-bottom:0px;
 }
 
 #chatMessages p {
 	border-bottom: 1px solid #eeeeee;
     font-size: 14px;
-    margin: 5px 0 15px;
+    margin: 5px 0 5px;
     padding-bottom: 5px;
     padding-left: 20px;
+}
+
+#gameMsg
+{
+	background-color: rgba(255, 255, 255, 0.7);
+	border-color:white;
+	width:197px;
+}
+
+#sendGameMsg
+{
+	float:right;
 }
 
 /****************Footer*********************/

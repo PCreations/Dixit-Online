@@ -1,17 +1,31 @@
-<?php //debug($_SERVER);?>
 <h1>Parties</h1>
 	<div id="games">
 		<div id="left_side">
 			<div id="creer">
 				<img id="label_creer" src="<?php echo IMG_DIR;?>creer.png">
 				<form method="POST">
-					<input type="text" name="name">
-					<input type="text" name="nbplayers">
-					<select name="deck">
-				<?php foreach($deckInfos as $deck): ?>
-						<option value='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
-				<?php endforeach; ?>
-					</select>
+					<figure><label for="name">Nom</label><input type="text" name="name" size="10" value='<?php echo $vars_filtrage['name'];?>'></figure>
+					<figure><label for="nbplayers">Nombre de joueurs</label><input type="text" name="nbplayers" size="15" value='<?php echo $vars_filtrage['nbplayers'];?>'></figure>
+					<figure><label for="nbpoints">Points max.</label><input type="text" name="nbpoints" size="10" value='<?php echo $vars_filtrage['nbpoints'];?>'></figure>
+					<figure><label for="deck">Cartes</label><select name="deck">
+							<option value="-1">Toutes</option>
+						<?php foreach($deckInfos as $deck): ?>
+							<option value='
+							<?php
+								echo $deck['de_id'];
+								if ($deck['de_id']==$vars_filtrage['deck']){
+									echo(" 'selected='selected");
+								}
+							?>
+							'><?php echo $deck['de_name'];?></option>
+						<?php endforeach; ?>
+					</select></figure>
+					<input type='checkbox' name='public' <?php
+															if (isset($vars_filtrage['public'])){
+																echo(" checked='checked'");
+															}
+					?>
+					><font size="1">Publiques seulement</font>
 					<input type='submit' value='Trier'>
 				</form>
 					<form method="post" action="partie.html">
@@ -44,7 +58,7 @@
 								 <tr>
 									<td class="cadenas"><img src="<?php echo IMG_DIR;?>cadenas.png"></td>
 									<td class="nom"><?php echo $partie['ga_name'];?></td>
-									<td class="createur"><?php echo $partie['us_id'];?></td>
+									<td class="createur"><?php echo $partie['us_name'];?></td>
 									<td class="joueurs"><?php echo $partie['nbPlayersInGame'] . '/' . $partie['ga_nb_players'];?></td>
 									<td class="points"><?php echo $partie['ga_points_limit'];?></td>
 									<td class="cartes"><?php echo $partie['de_name'];?></td>

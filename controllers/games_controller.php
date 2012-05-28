@@ -16,13 +16,17 @@ define('ACTION_DONE', 5);
 function index() {
 	$deckInfos = getAllDecks(array('de_id', 'de_name'));
 	
+	$vars_filtrage=$_POST;
 
 	if(!isPost()) {
 		$partiesEnAttente = getWaitingGames();
 	}
 	else {
 		extract($_POST);
-		$partiesEnAttente = filterGames($name, $nbplayers, $deck);
+		if(!isset($public)){
+			$public='off';
+		}
+		$partiesEnAttente = filterGames($name, $nbplayers, $nbpoints, $deck, $public);
 	}
 
 	foreach($partiesEnAttente as &$partie) {
@@ -44,7 +48,7 @@ function index() {
 		}
 		
 		debug($partiesEnAttente);
-		$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos);
+		$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos, 'vars_filtrage' => $vars_filtrage);
 		render('index', $vars);
 }
 
@@ -760,7 +764,7 @@ function _getGameMessages($gameID) {
 	$messages = getGameMessages($gameID);
 	$messagesTexts = '';
 	foreach($messages as &$message) {
-		$messagesTexts .= '<h4>' . $message['us_pseudo'] .'</h4><p>' . htmlspecialchars(htmlentities($message['ch_text'])) . '</p>';
+		$messagesTexts .= '<h4>' . $message['us_pseudo'] .'</h4><p>' . /*htmlspecialchars(htmlentities(*/$message['ch_text']/*))*/ . '</p>';
 	}
 	if(isPost())
 		echo $messagesTexts;

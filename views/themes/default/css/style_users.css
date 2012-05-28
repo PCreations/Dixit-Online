@@ -1,5 +1,5 @@
 /****************Généralités*********************/
-#login, #register, #profil, #results
+#profil, #results
 {
 	width:660px;
 	height:336px;
@@ -10,17 +10,89 @@
 	-moz-background-size: cover; 
 	-o-background-size: cover; 
 	background-size: cover;
+
+}
+#register
+{
+	margin : auto;
+	width : 640px;
+	height : 400px;
+	background-position : relative;
+	background : url('../img/parchemin_compte.png') no-repeat center; 
+	-webkit-background-size: cover; 
+	-moz-background-size: cover; 
+	-o-background-size: cover; 
+	z-index : 2;
+		border-radius : 20px;
+}
+#login
+{
+	width : 50%;
+	margin : auto;
+	padding : 30px 0px;
+	background-position : relative;
+	background : url('../img/bg_main.png') no-repeat center; 
+	-webkit-background-size: cover; 
+	-moz-background-size: cover; 
+	-o-background-size: cover; 
+	background-size: cover;
 	border-radius : 6px;
+	z-index : 2;
+}
+
+#login .retour
+{
+	position : absolute;
+	top : 44%;
+	width : 60px;
+	height :43px;
+	left : 32%;
+	z-index : 1;
+}
+#register .retour
+{
+	position : absolute;
+	top : 44%;
+	width : 60px;
+	height :43px;
+	left : 22%;
+	z-index : 1;
+}
+#login .oups
+{
+	position : absolute;
+		top : 50%;
+	width : 60px;
+	height :43px;
+	left : 32%;
+	z-index : 1;
+	cursor : pointer;
+}
+
+#login .retour, #login .oups, #register .retour
+{
+	-moz-transition-duration: 0.5s;-moz-transition-property:-moz-transform;-moz-transition-timing-function: ease;
+	-webkit-transition-duration: 0.5s;-webkit-transition-property:-webkit-transform;-webkit-transition-timing-function: ease;
+	-o-transition-duration: 0.5s;-o-transition-property:-o-transform;-o-transition-timing-function: ease;
+	transition-duration: 0.5s;transition-property:transform;transition-timing-function: ease;
+}
+
+#login .retour:hover, #login .oups:hover, #register .retour:hover
+{
+	-webkit-transform: translateX(-10px);
+	-moz-transform: translateX(-10px);
+	-o-transform: translateX(-10px);
+	transform: translateX(-10px);
 }
 
 
-
-#login form, #register form, #profil #account1 form
+#login form, #profil #account1 form, #register form
 {
 	width : 70%;
 	margin : auto;
 }
-#login, #register, #profil
+
+#login, #profil
 {
 	margin-top : 40px;
 }

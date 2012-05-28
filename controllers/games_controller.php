@@ -63,11 +63,23 @@ function newGame() {
 		$deck_mini=$joueurs*((int)($points/10))*3;
 		if ($deck_mini > nbCartes($deck))
 		{
-			setMessage('Pas assez de cartes dans ce deck', FLASH_ERROR);
-			redirect('games');
+				//erreur, pas assez de cartes
+		}
+		else if ($joueurs<3 || $joueurs>10)
+		{
+			//erreur, mauvais nb de joueurs
+		}
+		else
+		{
+			if (!empty($pwd))
+			{
+				$_POST['pwd']=encrypt($_POST['pwd']);
+			}
+			extract($_POST);
+			insertNewGame($deck, $_SESSION[USER_MODEL][USER_PK], $nom, $pwd, $joueurs, $points);
+			joinGame(getLastGameID(),$_SESSION[USER_MODEL][USER_PK]);
 		}
 	}
-	render('index');
 }
 
 function joinGame($gameID, $userID) {

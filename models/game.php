@@ -1,5 +1,20 @@
 <?php
 
+function insertNewGame($deck, $userID, $nom, $pwd, $joueurs, $points)
+{
+	global $db;
+
+	$query = $db->prepare('INSERT INTO games(de_id, us_id, ga_name, ga_creation_date, ga_password, ga_nb_players, ga_points_limit)
+						VALUES(:de_id, :us_id, :ga_name, NOW(), :ga_password, :ga_nb_players, :ga_points_limit)');
+	return $query->execute(array('de_id'=>$deck, 'us_id'=>$userID, 'ga_name'=>$nom, 'ga_password'=>$pwd, 'ga_nb_players'=>$joueurs, 
+'ga_points_limit'=>$points));
+}
+
+function getLastGameID() {
+	global $db;
+	return $db->lastInsertId();
+}
+
 function filterGames($name, $nbplayers, $nbpoints, $deck, $public) {
 	global $db;
 	
@@ -55,6 +70,7 @@ function filterGames($name, $nbplayers, $nbpoints, $deck, $public) {
 						
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 function getGameInfos($gameID, $fields = array('*')) {
 	global $db;

@@ -54,8 +54,8 @@
 
 	BASE_URL = '<?php echo BASE_URL;?>';
 	IMG_DIR = '<?php echo IMG_DIR;?>';
-
-	$('#gameChat').submit(function() {
+	
+	$('#gameChat').submit(function envoiMessage() {
 		var message = $('#gameMsg').val();
 		$.post(BASE_URL+"chats/_addGameMessage",{gameID: gameID, userID: userID, message: message}, function(data) {
 			$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
@@ -68,6 +68,22 @@
 		return false;
 	})
 
+	
+	$('#gameMsg').keyup(function(e) { //remplacez {id_img} par l'id de votre image
+      if(e.keyCode == 13) {
+            var message = $('#gameMsg').val();
+		$.post(BASE_URL+"chats/_addGameMessage",{gameID: gameID, userID: userID, message: message}, function(data) {
+			$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
+				$('#chatMessages').empty();
+				$('#chatMessages').html(data);
+				$('#gameMsg').val('');
+				$('#chatMessages').animate({scrollTop: $('#chatMessages').prop('scrollHeight')}, 500);
+			});
+		}, "json");
+		return false;
+       }
+	});
+	
 	function readyForNextTurn() {
 		//$('#readyForNextTurn').click();
 		$.ajax({

@@ -15,13 +15,13 @@ define('ACTION_DONE', 5);
 
 function index() {
 	$deckInfos = getAllDecks(array('de_id', 'de_name'));
-	
-	$vars_filtrage=$_POST;
 
 	if(!isPost()) {
 		$partiesEnAttente = getWaitingGames();
+		$vars_filtrage=array('name'=>'','nbpoints'=>'','deck'=>'','nbplayers'=>'');
 	}
 	else {
+		$vars_filtrage=$_POST;
 		extract($_POST);
 		if(!isset($public)){
 			$public='off';

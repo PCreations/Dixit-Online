@@ -68,7 +68,11 @@
 	margin:0px;
 	z-index:1;
 	box-shadow: 6px 6px 6px #352d23;
+	cursor: url("../img/zoom.cur"), default;
+}
 
+#table .hidden_fance {
+	cursor: default;
 }
 
 #table .bouton
@@ -120,7 +124,7 @@
 {
 	display:inline-block;
 	position:relative;
-	width:16%; /*dépend du nombre de cartes*/
+	width:14.8%; /*dépend du nombre de cartes*/
 	margin-right: 10px;
 }
 
@@ -141,6 +145,7 @@
 	margin:0px;
 	z-index:1;
 	box-shadow: 6px 6px 6px #352d23;
+	cursor: url("../img/zoom.cur"), default;
 
 }
 

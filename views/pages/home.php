@@ -27,4 +27,6 @@
 			<?php echo $home?>
 		</div>
 	</aside>
+	<div id="alertPanel" style="color: white;">
+    </div>
 </div>

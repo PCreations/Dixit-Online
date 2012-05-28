@@ -31,7 +31,7 @@ function getCardInfos($cardID, $fields = array('*')) {
 						FROM cards
 						WHERE ca_id = ?');
 	$query->execute(array($cardID));
-	return $query->fetch(PDO::FETCH_ASSOC);
+	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function getUserCards($userID) {

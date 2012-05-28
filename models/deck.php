@@ -52,6 +52,16 @@ function getCardsInDeck($deckID) {
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getCardsInDeckInfo($deckID) {
+	global $db;
+
+	$query = $db->prepare('SELECT cards_decks.ca_id, ca_name, ca_image 
+						FROM cards_decks, cards
+						WHERE cards_decks.ca_id = cards.ca_id AND de_id = ?');
+	$query->execute(array($deckID));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function nbCartes($id)
 {
 	global $db;

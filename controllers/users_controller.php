@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user', 'deck'));
+useModels(array('user', 'card', 'deck'));
 define('SEND_INVITATION', 2);
 define('ACCEPT_INVITATION', 1);
 define('DECLINE_INVITATION', 0);
@@ -87,14 +87,24 @@ function login() {
 
 function account($id = null) {
 	global $JS_FILES;
+	global $CSS_FILES;
 	$JS_FILES[] = 'script_users.js';
+	$JS_FILES[] = 'flexscroll.js';
+	$CSSS_FILES[] = 'flexcrollstyles.css';
 	$userID = $_SESSION[USER_MODEL][USER_PK];
 	
 	/* Récupération des decks de l'utilisateur */
-	$userDecks = _getUserDecks($userID);
-
+	$userDecks = getUserDecks($userID, array('de_id'));
+	if(!empty($userDecks)) {
+		foreach($userDecks as $deck){
+			$cardsInDeck = getCardsInDeckInfo($deck['de_id']);
+		}
+	}else{
+		$cardsInDeck = -1;
+	}
+	
 	/* Récupération des cartes ajoutées par l'utilisateur */
-	// $userCards = getUserCards($userID);
+	$userCards = getUserCards($userID);
 
 	if(isset($_POST['update'])) { //Formulaire de changement de données
 			extract($_POST);
@@ -170,7 +180,7 @@ function account($id = null) {
 					'askedFriends' => $askedFriends,
 					'invitations' => $invitations,
 					'nbFriends' => $nbFriends,
-					'userCards' => $userCards);
+					'cardsInDeck' => $cardsInDeck);
 	render('account', $vars);
 	$JS_FILES = array_pop($JS_FILES);
 }

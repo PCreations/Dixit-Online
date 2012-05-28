@@ -1,5 +1,5 @@
 /****************Généralités*********************/
-#profil, #results
+#results
 {
 	width:660px;
 	height:336px;
@@ -14,7 +14,17 @@
 }
 #profil
 {
+	width : 708px;
 	margin-top : 20px;
+	margin-left : auto;
+	margin-right: auto;
+	padding : 10px;
+	background : url('../img/bg_square2.png') no-repeat top; 
+	-webkit-background-size: cover; 
+	-moz-background-size: cover; 
+	-o-background-size: cover; 
+	background-size: cover;
+
 }
 #register
 {
@@ -94,7 +104,7 @@
 	width : 70%;
 	margin : auto;
 }
-#login, #profil
+#login
 {
 	margin-top : 40px;
 }
@@ -187,7 +197,7 @@
 	display : none;
 }
 
-#profil #account1 a, #results .link a
+#profil #account1 a, #results .link a, #account4 .link a
 {
 	
 	background-color: rgba(255, 255, 255, 0.5);
@@ -316,4 +326,51 @@
 #results .action
 {
 	width : 300px
+}
+/************Decks***************/
+#account4
+{
+	padding : 0px 60px 20px 80px;
+	height : 460px;
+}
+#account4 select, #account4 p
+{
+	display : inline-block;
+}
+#account4 #gallery
+{
+	margin : auto ;
+	height : 360px;
+	overflow : auto;
+}
+
+#account4 #gallery_conteneur
+{
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius : 6px;
+	padding : 15px 5px 15px 15px;
+	margin-top : 15px;
+}
+
+#account4 .carte
+{
+	display:inline-block;
+	position:relative;
+	width:15%; /*dépend du nombre de cartes*/
+	margin-right: 5px;
+}
+
+#account4 .image_carte img
+{
+	width:100%; /*dépend du nombre de cartes*/
+}
+
+#account4 .image_carte
+{
+	position:relative;
+	width:100%;
+	margin:0px;
+	border-radius : 8px;
+	z-index:1;
+	cursor: url("../img/zoom.cur"), default;
 }

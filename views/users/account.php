@@ -1,4 +1,3 @@
-
 <div id="profil">
 
 <img class="image_link" id="1" src="<?php echo IMG_DIR;?>compte_accueil.png" onclick="changeOnglet('1');">
@@ -105,7 +104,18 @@
 	</div>
 	
 	<div id="account4">
-		<p>En construction</p>
+		<p>Afficher le groupe de carte :</p> 
+		<select name="deck">
+			<option value="-1">Toutes</option>
+				<?php foreach($userDecks as $deck): ?>
+					<option value='<?php echo $deck['de_id'];if ($deck['de_id']==$vars_filtrage['deck']){echo(" 'selected='selected");}?>'><?php echo $deck['de_name'];?></option>
+				<?php endforeach; ?>
+		</select>
+		<div id="gallery_conteneur">
+			<div id="gallery" class="flexcroll">
+				<?php if ($cardsInDeck != -1){foreach($cardsInDeck as $card): ?>
+					<div class="carte"><img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/></div>
+				<?php endforeach; }else{ echo('<div class="link">'.createLink('Creez votre premier deck personnel', 'users', '').'</div>');};?>
+			</div>
+		</div>
 	</div>
-	
-</div>

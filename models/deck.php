@@ -35,7 +35,7 @@ function getDeckInfos($id, $fields = array('*')) {
 function nbCartes($id)
 {
 	global $db;
-	var_dump($id);
+	var_dump($id); voilà le pb ? hum
 	$query = $db->prepare('SELECT COUNT(ca_id) as nbCartes FROM cards_decks WHERE cards_decks.de_id=?');
 	$query->execute(array($id));
 	debug($query->fetch(PDO::FETCH_ASSOC), true);

@@ -1,4 +1,3 @@
-<h1>Parties</h1>
 	<div id="games">
 		<div id="left_side">
 			<div id="creer">
@@ -28,7 +27,7 @@
 					><font size="1">Publiques seulement</font>
 					<input type='submit' value='Trier'>
 				</form>
-					<form method="post" action="partie.html">
+					<form method="post">
 						<figure><label for="nom">Nom</label> 			<input type="text" name="nom" size="20" required/> </figure>
 						<figure><label for="pwd">Mot de Passe</label> 	<input type="password" name="pwd"size="18" required/> </figure>
 						<figure><label for="joueurs">Joueurs</label> 	<input type="text" name="joueurs" size="10"required/> </figure>

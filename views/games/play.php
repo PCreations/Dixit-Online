@@ -181,7 +181,7 @@
 		$('#handForm').submit();
 	}
 	
-	/*setInterval(function(){
+	setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			var $elem = $('#chatMessages');
 			$('#chatMessages').empty();
@@ -203,7 +203,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 5000);*/
+	}, 5000);
 
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);

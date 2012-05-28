@@ -237,7 +237,10 @@
 
 #chatMessages h4 {
 	font-size: 15px;
-    margin: 0;
+    margin-left: 5px;
+	margin-top:0px;
+	margin-right:0px;
+	margin-bottom:0px;
 }
 
 #chatMessages p {

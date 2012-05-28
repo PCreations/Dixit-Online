@@ -61,6 +61,8 @@
 			$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 				$('#chatMessages').empty();
 				$('#chatMessages').html(data);
+				$('#gameMsg').val('');
+				$('#chatMessages').animate({scrollTop: $('#chatMessages').prop('scrollHeight')}, 500);
 			});
 		}, "json");
 		return false;
@@ -114,7 +116,7 @@
 		var card = $('input[name="cardID"]:checked').val();
 		$('#handForm').submit();
 	}
-	/*setInterval(function(){
+	setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			var $elem = $('#chatMessages');
 			$('#chatMessages').empty();
@@ -137,7 +139,7 @@
 			}
 		});
 	}, 5000);
-*/
+
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);
 		text = '';

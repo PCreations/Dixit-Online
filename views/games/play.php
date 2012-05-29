@@ -69,7 +69,7 @@
 	})
 
 	
-	$('#gameMsg').keyup(function(e) { //remplacez {id_img} par l'id de votre image
+	$('#gameMsg').keyup(function(e) {
       if(e.keyCode == 13) {
             var message = $('#gameMsg').val();
 		$.post(BASE_URL+"chats/_addGameMessage",{gameID: gameID, userID: userID, message: message}, function(data) {
@@ -132,7 +132,7 @@
 		var card = $('input[name="cardID"]:checked').val();
 		$('#handForm').submit();
 	}
-	setInterval(function(){
+/*	setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			var $elem = $('#chatMessages');
 			$('#chatMessages').empty();
@@ -155,7 +155,7 @@
 			}
 		});
 	}, 5000);
-
+*/
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);
 		text = '';
@@ -223,11 +223,18 @@
 				phase = 'Décompte des points';
 				break;
 			default:
-				phase = 'Erreur';
+				phase = '      Erreur';
 				break;
 		}
 
 		alert(phase);
 	}
+	
+	$(".carte").hover(function(){
+		$(this).children().css('-webkit-transform','rotateY(180deg)');
+	}, 
+	  function () {
+		$(this).children().css('-webkit-transform','rotateY(0deg)');
+	  });
 
 </script>

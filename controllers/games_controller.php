@@ -638,7 +638,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	else if($phase == STORYTELLER_PHASE){
 		$board .= 'Le conteur n\'a pas encore choisi sa carte';
 	}
-	else {
+	else { //fin de tour
 		$storytellerCardID = getOneRowResult(getPlayerCardInBoard($turn['tu_id'], $turn['us_id']), 'ca_id');
 
 		foreach($cards as $card) {
@@ -661,8 +661,8 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 					$board .= '<td><img '. $style .' src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></td>';
 				$board .= '</tr>';
 			$board .= '</table>';*/
-			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid red;"' : '';
-			$board .= '<div class="carte"><img '.$style.' class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
+			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid white;border-radius: 5px;"' : '';
+			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><img '.$style.' class="image_carte" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
 		}
 		$board .= '<div id="stIndice"><input type="button" id="readyForNextTurn" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
 	}

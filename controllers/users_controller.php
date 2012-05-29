@@ -89,12 +89,12 @@ function account($id = null) {
 	global $JS_FILES;
 	global $CSS_FILES;
 	$JS_FILES[] = 'script_users.js';
-	$JS_FILES[] = 'flexscroll.js';
-	$CSSS_FILES[] = 'flexcrollstyles.css';
+	$JS_FILES[] = 'flexcroll.js';
+	$CSS_FILES[] = 'flexcrollstyles.css';
 	$userID = $_SESSION[USER_MODEL][USER_PK];
 	
 	/* Récupération des decks de l'utilisateur */
-	$userDecks = getUserDecks($userID, array('de_id'));
+	$userDecks = getUserDecks($userID, array('de_id', 'de_name'));
 	if(!empty($userDecks)) {
 		foreach($userDecks as $deck){
 			$cardsInDeck = getCardsInDeckInfo($deck['de_id']);
@@ -180,6 +180,7 @@ function account($id = null) {
 					'askedFriends' => $askedFriends,
 					'invitations' => $invitations,
 					'nbFriends' => $nbFriends,
+					'userDecks' => $userDecks,
 					'cardsInDeck' => $cardsInDeck);
 	render('account', $vars);
 	$JS_FILES = array_pop($JS_FILES);

@@ -14,7 +14,7 @@
 								echo $deck['de_id'];
 								if ($deck['de_id']==$vars_filtrage['deck']){
 									echo(" 'selected='selected");
-								}
+								};
 							?>
 							'><?php echo $deck['de_name'];?></option>
 						<?php endforeach; ?>

@@ -1,0 +1,761 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"array_key",
+				"array_key_exists"
+			],
+			[
+				"html",
+				"htmlspecialchars"
+			],
+			[
+				"adre",
+				"addresses"
+			],
+			[
+				"th",
+				"thead"
+			],
+			[
+				"list-style",
+				"list-style-type"
+			],
+			[
+				"WEB",
+				"WEBROOT_DIR"
+			],
+			[
+				"addVar",
+				"addVars"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 40,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": ".htaccess",
+			"settings":
+			{
+				"buffer_size": 227,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php\n/** Nom de la variable qui contient l'url */\ndefine('GET_VAR_NAME', 'page');\n\n/** Nom de l'action d'index des contrôleurs. C'est vers cette action que sera redirigé l'internaute si aucune action n'est spécifiée */\ndefine('INDEX_ACTION', 'index');\n\n/**  Url de base du site */\ndefine('BASE_URL', 'http://localhost/dixit/');\n\n/**  Alias de DIRECTORY_SEPARATOR */\ndefine('DS', DIRECTORY_SEPARATOR);\n\n/**  Défini la racine du projet */\ndefine('ROOT', dirname(dirname(__FILE__))); \n\n/**  Défini le nom du répertoire où peut être stocké le dossier uploads/ par exemple ou les différentes ressources externes (non utilisé dans cette version) */\ndefine('WEBROOT_DIR', 'www');\n\n/**  Défini le chemin vers ce dossier */\ndefine('WWW_ROOT', ROOT . DS . WEBROOT_DIR);\n\n/**  Défini le chemin vers le dossier du thème */\ndefine('THEME_PATH', ROOT . DS . 'views' . DS . 'themes' . DS . $theme);\n\n/**  Défini le chemin vers le dossier css/ du thème */\ndefine('CSS_DIR', BASE_URL . 'views/themes/' . $theme . '/css/');\n\n/**  Défini le chemin vers le dossier img/ du thème */\ndefine('IMG_DIR', BASE_URL . 'views/themes/' . $theme . '/img/');\n\n/**  Défini le chemin vers le dossier js/ du thème */\ndefine('JS_DIR', BASE_URL . 'views/themes/' . $theme . '/js/');\n\n/** Défini le nom du contrôleur qui gerera les erreurs HTTP (comme l'erreur 404 par exemple) */\ndefine('HTTP_ERR_CONTROLLER', 'errors');\n\n/** Défini le nom de l'action à déclencher en cas d'erreur 404 */\ndefine('HTTP_404_ACTION', 'notFound');\n\n/** Défini le nom de la constante de message flash de succès **/\ndefine('FLASH_SUCCESS',  0);\n\n/** Défini le nom de la constante de message flash d'erreur **/\ndefine('FLASH_ERROR',  1);\n\n/** Défini le nom de la constante de message flash  d'information **/\ndefine('FLASH_INFOS', 2);\n\n/** Défini le nom de la constante de message flash  de message **/\ndefine('FLASH_MESSAGE', 3);\n\n/** Défini la clé de sécurité utilisé pour hasher les chaînes de caractères **/\ndefine('SECURITY_KEY', '5465qs6d564qs5§ù*qs$ù');\n\n/** Défini le nom du model utilisé pour gérer les utilisateurs **/\ndefine('USER_MODEL', 'user');\n\n/** Défini le nom du champ utilisé pour la clé primaire de la table représentant les utilisateurs **/\ndefine('USER_PK', 'us_id');",
+			"file": "core/config.php",
+			"file_size": 2337,
+			"file_write_time": 129827131764064855,
+			"settings":
+			{
+				"buffer_size": 2230,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "core/database.config.php",
+			"settings":
+			{
+				"buffer_size": 121,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "controllers/cards_controller.php",
+			"settings":
+			{
+				"buffer_size": 4833,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "views/pages/home.php",
+			"settings":
+			{
+				"buffer_size": 1218,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": ".git/hooks/pre-commit.sample",
+			"settings":
+			{
+				"buffer_size": 1578,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".git/hooks/pre-commit",
+			"settings":
+			{
+				"buffer_size": 155,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "views/themes/default/layout.php",
+			"settings":
+			{
+				"buffer_size": 399,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "index.php",
+			"settings":
+			{
+				"buffer_size": 902,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 380.0,
+		"selected_items":
+		[
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"push",
+				"Git: Push"
+			],
+			[
+				"git b",
+				"Git: New Branch"
+			],
+			[
+				"git st",
+				"Git: Status"
+			],
+			[
+				"git add",
+				"Git: Add..."
+			],
+			[
+				"git co",
+				"Git: Commit"
+			],
+			[
+				"git",
+				"Package Control: Install Package"
+			],
+			[
+				"Packa",
+				"Package Control: Install Package"
+			],
+			[
+				"Git",
+				"GitHub: Open Gist in Editor"
+			],
+			[
+				"Insta",
+				"GitHub: Open Starred Gist in Editor"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"pl",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 512.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/wamp/www/dixit/dixit.sql",
+		"/D/Pro/Web/ressources/Logiciels/mysqldiff-1.5.0/mysqldiff-1.5.0/library/values.lib.php",
+		"/D/Pro/Web/ressources/Logiciels/mysqldiff-1.5.0/mysqldiff-1.5.0/library/generator.lib.php",
+		"/D/Pro/Web/ressources/Logiciels/mysqldiff-1.5.0/mysqldiff-1.5.0/library/url.lib.php",
+		"/D/Pro/Web/ressources/Logiciels/mysqldiff-1.5.0/mysqldiff-1.5.0/library/resources.lib.php",
+		"/D/Pro/Web/ressources/Logiciels/mysqldiff-1.5.0/mysqldiff-1.5.0/library/global.inc.php",
+		"/D/Pro/Web/ressources/Logiciels/mysqldiff-1.5.0/mysqldiff-1.5.0/library/database.lib.php",
+		"/D/wamp/www/dixit/mvc.sublime-project",
+		"/D/wamp/www/lg-online/controllers/errorsController.php",
+		"/D/wamp/www/mvc/views/themes/default/layout2.php",
+		"/D/wamp/www/mvc/core/config.php",
+		"/D/wamp/www/mvc/core/libCore.php",
+		"/D/wamp/www/mvc/controllers/blogController.php",
+		"/D/wamp/www/mvc/README",
+		"/D/wamp/www/mvc/views/pages/home.php",
+		"/D/wamp/www/mvc/controllers/pagesController.php",
+		"/D/wamp/www/lsbox/cake/libs/controller/controller.php",
+		"/D/wamp/www/mvc/views/themes/default/css/test.css",
+		"/D/wamp/www/mvc/views/themes/default/layout.php",
+		"/D/wamp/www/mvc/views/errors/404.php",
+		"/D/wamp/www/mvc/core/http_errors.config.php",
+		"/D/wamp/www/lsbox/cake/dispatcher.php",
+		"/D/wamp/www/mvc/core/core.php",
+		"/D/wamp/www/mvc/index.php",
+		"/D/wamp/www/mvc/.htaccess",
+		"/D/wamp/www/mvc/views/blog/home.php",
+		"/D/wamp/www/mvc/views/blog/article.php",
+		"/D/wamp/www/lsbox/cake/basics.php",
+		"/D/wamp/www/mvc/core/database.config.php",
+		"/D/wamp/www/mvc/models/quizz.php",
+		"/D/wamp/www/mvc/views/quizz/index.php",
+		"/D/wamp/www/mvc/views/quizz/view.php",
+		"/D/wamp/www/mvc/controllers/quizzController.php",
+		"/D/wamp/www/lsbox/app/config/database.php.default",
+		"/D/wamp/www/mvc/views/blog/listeArticles.php",
+		"/D/wamp/www/mvc/controllers/test.php",
+		"/D/wamp/www/mvc/controllers/.htaccess",
+		"/D/wamp/www/lsbox/app/webroot/index.php",
+		"/D/wamp/www/croogo-test/index.php",
+		"/D/wamp/www/croogo-test/app/webroot/index.php",
+		"/D/wamp/www/croogo-test/app/index.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/default/css/test.css",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/controllers/quizzController.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/default/css/style.css",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/default/css/quizz.css",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/default/css/blog.css",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/blue/css/style.css",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/default/layout.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/quizz/metAuCarre.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/models/blog.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/core/constants.php",
+		"/D/wamp/www/croogo-test/app/controllers/regions_controller.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/default/top.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/quizz/form.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/quizz/resultForm.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/blog/listeArticles.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/controllers/blogController.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/index.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/blog/blog.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/blue/top.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/blue/bottom.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/default/bottom.php",
+		"/C/Users/Pierre/Downloads/larbre-a-bijoux-v0.9c/larbre-a-bijoux-save/index.php",
+		"/C/Users/Pierre/Dropbox/perso/web/mymvcProject.sublime-project",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/models/quizz.php",
+		"/C/Users/Pierre/Downloads/larbre-a-bijoux-v0.9c/larbre-a-bijoux-save/vues/conditions-vente.php",
+		"/C/Users/Pierre/Dropbox/IMAC/IMAC 1/PHP/mvc/views/themes/default.php",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/prestashop/product.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/modules/loyalty/product.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/products-comparison.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/product.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/address.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/addresses.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/authentication.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/category.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/order-follow.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/order-payment.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/order-slip.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/shopping-cart.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/order-opc-new-account.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/order-detail.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/order-confirmation.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/order-carrier.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/order-address.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/address-cart.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/modules/blocksearch/blocksearch.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/modules/blockpermanentlinks/blockpermanentlinks.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/css/global.css",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/modules/blocklayered/blocklayered.php",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/modules/blocklayered/blocklayered.js",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/modules/o2climtheme/o2climtheme.php",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/discount.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/myaccount-steps.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/css/tunnel-achat.css",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/my-account.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/identity.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/history.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/prestashop/history.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/prestashop/order-steps.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/prestashop/my-account.tpl",
+		"/D/Pro/Web/clients/HappyGonogo/Clim-prestashop/dev/o2clim/themes/O2clim/order-steps.tpl",
+		"/C/Users/Pierre/Dropbox/post-checkout",
+		"/C/Users/Pierre/Dropbox/pre-commit",
+		"/C/Users/Pierre/Dropbox/perso/web/MyMVC/core/classes/App.class.php",
+		"/C/Users/Pierre/AppData/Roaming/Sublime Text 2/Packages/Git/Git.sublime-settings",
+		"/C/Users/Pierre/AppData/Roaming/Sublime Text 2/Packages/sublime-github/GitHub.sublime-settings",
+		"/C/Users/Pierre/AppData/Roaming/Sublime Text 2/Packages/SideBarGit/SideBarGit.sublime-settings",
+		"/D/wamp/www/lsbox/index.php",
+		"/D/wamp/www/lsbox/app/index.php"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"die",
+			"header",
+			"\\def",
+			"/');",
+			"call_user_fu",
+			");",
+			"addVar"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": ".gitignore",
+					"settings":
+					{
+						"buffer_size": 40,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": ".htaccess",
+					"settings":
+					{
+						"buffer_size": 227,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "core/config.php",
+					"settings":
+					{
+						"buffer_size": 2230,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								402,
+								402
+							]
+						],
+						"settings":
+						{
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "core/database.config.php",
+					"settings":
+					{
+						"buffer_size": 121,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "controllers/cards_controller.php",
+					"settings":
+					{
+						"buffer_size": 4833,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "views/pages/home.php",
+					"settings":
+					{
+						"buffer_size": 1218,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": ".git/hooks/pre-commit.sample",
+					"settings":
+					{
+						"buffer_size": 1578,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9,
+								0
+							]
+						],
+						"settings":
+						{
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": ".git/hooks/pre-commit",
+					"settings":
+					{
+						"buffer_size": 155,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								154,
+								154
+							]
+						],
+						"settings":
+						{
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "views/themes/default/layout.php",
+					"settings":
+					{
+						"buffer_size": 399,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "index.php",
+					"settings":
+					{
+						"buffer_size": 902,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 135.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 56.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.sftp":
+	{
+		"height": 0.0
+	},
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"product.tpl",
+				"themes/prestashop/product.tpl"
+			],
+			[
+				"produ",
+				"modules/loyalty/product.tpl"
+			],
+			[
+				"blockse",
+				"themes/O2clim/modules/blocksearch/blocksearch.tpl"
+			],
+			[
+				"discou",
+				"themes/prestashop/discount.tpl"
+			],
+			[
+				"identi",
+				"themes/prestashop/identity.tpl"
+			],
+			[
+				"address",
+				"themes/O2clim/address.tpl"
+			],
+			[
+				"order-fol",
+				"themes/O2clim/order-follow.tpl"
+			],
+			[
+				"history",
+				"themes/prestashop/history.tpl"
+			],
+			[
+				"myaccount-s",
+				"themes/O2clim/myaccount-steps.tpl"
+			],
+			[
+				"generiqu",
+				"themes/O2clim/css/generique.css"
+			],
+			[
+				"tunne",
+				"themes/O2clim/css/tunnel-achat.css"
+			],
+			[
+				"blocksear",
+				"themes/O2clim/modules/blocksearch/blocksearch.tpl"
+			],
+			[
+				"blocklaye",
+				"modules/blocklayered/blocklayered.php"
+			],
+			[
+				"dis",
+				"core/classes/Dispatcher.class.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 170.0,
+	"status_bar_visible": true
+}

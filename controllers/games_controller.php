@@ -662,7 +662,17 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 				$board .= '</tr>';
 			$board .= '</table>';*/
 			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid white;border-radius: 5px;"' : '';
-			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><div class="back_carte">blablabla</div><img '.$style.' class="image_carte" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
+			
+			$owner=getCardOwner($card['ca_id'], $turn['tu_id']);
+			$back_content="Carte de<br>".$pseudo = getOneRowResult(getUserInfos($owner['us_id']), 'us_pseudo')."<br><br>Votée par <br>";
+			
+			$voters=getCardVoteInTurn($card['ca_id'], $turn['tu_id']);
+			foreach($voters as $voter) {
+				$pseudo=getOneRowResult(getUserInfos($voter['us_id']), 'us_pseudo');
+				$back_content.=$pseudo."<br>";
+			}
+			
+			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><div class="back_carte"><img class="image_back_carte" src="' . IMG_DIR . 'cards/back_empty.jpg"/><p>'.$back_content.'</p></div><img '.$style.' class="image_carte" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" /></div>';
 		}
 		$board .= '<div id="stIndice"><input type="button" id="readyForNextTurn" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
 	}

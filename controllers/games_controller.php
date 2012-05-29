@@ -662,7 +662,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 				$board .= '</tr>';
 			$board .= '</table>';*/
 			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid white;border-radius: 5px;"' : '';
-			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><img '.$style.' class="image_carte" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
+			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><div class="back_carte">blablabla</div><img '.$style.' class="image_carte" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></div>';
 		}
 		$board .= '<div id="stIndice"><input type="button" id="readyForNextTurn" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
 	}

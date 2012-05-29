@@ -230,11 +230,14 @@
 		alert(phase);
 	}
 	
-	$(".carte").hover(function(){
-		$(this).children().css('-webkit-transform','rotateY(180deg)');
+	// FlipCards
+	$("#table .carte").hover(function(){
+		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
+		$(this).children('.image_carte').css('-webkit-transform','rotateY(180deg)');
 	}, 
 	  function () {
-		$(this).children().css('-webkit-transform','rotateY(0deg)');
+		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
+		$(this).children('.image_carte').css('-webkit-transform','rotateY(0deg)');
 	  });
 
 </script>

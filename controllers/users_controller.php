@@ -184,6 +184,8 @@ function account($id = null) {
 					'cardsInDeck' => $cardsInDeck);
 	render('account', $vars);
 	$JS_FILES = array_pop($JS_FILES);
+	$JS_FILES = array_pop($JS_FILES);
+	$CSS_FILES = array_pop($CSS_FILES);
 }
 
 function newFriend($fr_id, $action){

@@ -98,31 +98,54 @@ function room($gameID) {
 		setMessage('Vous ne jouez pas dans cette partie', FLASH_ERROR);
 		redirect('games');
 	}
-
-	if(checkPlayersInGame($gameID)) {
+	if(!checkPlayersInGame($gameID)) {
 		setMessage('La partie commence !', FLASH_INFOS);
 		redirect('games', 'play', $gameID);
 	}
-	$gameInfos = getGameInfos($gameID, array('ga_name', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
+	$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
 	$gameInfos['host'] = getOneRowResult(getUserInfos($gameInfos['us_id']), 'us_pseudo');
 	$gameInfos['ready'] = checkPlayersInGame($gameID);
+	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
 
 	unset($gameInfos['us_id']);
 	debug($gameInfos);
-	$vars = array('gameInfos' => $gameInfos);
+	$vars = array('gameInfos' => $gameInfos,
+				'usersInGame' => json_encode($usersInGame));
 	render('room', $vars);
 	$JS_FILES = array_pop($JS_FILES);
 }
 
+function test() {
+	$a = array(1,2,3);
+	$b = array(1,3);
+	debug($a);
+	debug($b);
+	debug(array_diff($a,$b));
+	debug(array_diff($b,$a));
+}
+
 function _roomAjax() {
 	$gameID = $_POST['gameID'];
-	$oldUsersID = $_POST['oldUsersID'];*/
-	$oldUsersID = array();
+	$oldUsersInGame = $_POST['usersInGame'];
 	$gameID = 1;
-	$startGame = (boolean)checkPlayersInGame($gameID);
-	$newUsersID = array_diff(getSpecificArrayValues(getPlayersInGame($gameID), 'us_id'), $oldUsersID);
+	$startGame = (boolean)!checkPlayersInGame($gameID);
+	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+	$joinGame = true;
+	$diff = array();
+	if(count($usersInGame) > count($oldUsersInGame)) { //Un ou plusieurs joueurs sont rentrés en jeu
+		$joinGame = true;
+		$diff = array_diff($usersInGame, $oldUsersInGame);
+	}
+	else if(count($oldUsersInGame) > count($usersInGame)) {
+		$joinGame = false;
+		$diff = array_diff($oldUsersInGame, $usersInGame);
+	}
+	$usersNames = (!empty($diff)) ? array() : -1;
+	foreach($diff as $userID) {
+		$usersNames[] = getOneRowResult(getUserInfos($userID), 'us_pseudo');
+	}
 	$gameMessages = _getGameMessages($gameID, true);
-	echo json_encode(compact("startGame", "gameMessages"));
+	echo json_encode(compact("oldUsersInGame", "startGame", "gameMessages", "usersNames", "joinGame", "usersInGame"));
 }
 
 function quiteGame($gameID, $userID) {
@@ -805,14 +828,17 @@ function _getStatus($status, $phase, $role) {
 	return $statusTxt;
 }
 
-function _getGameMessages($gameID, $forceReturn = false) {
+function _getGameMessages($gameID, $json = false) {
 	$messages = getGameMessages($gameID);
 	$messagesTexts = '';
 	foreach($messages as &$message) {
 		$messagesTexts .= '<h4>' . $message['us_pseudo'] .'</h4><p>' . stripslashes($message['ch_text']) . '</p>';
 	}
-	if(isPost() || !$forceReturn)
-		echo $messagesTexts;
+	if(isPost())
+		if($json)
+			return json_encode($messages);
+		else
+			echo $messagesTexts;
 	else
 		return $messagesTexts;
 }

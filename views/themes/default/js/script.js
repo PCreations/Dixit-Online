@@ -1,8 +1,43 @@
-var IMG_DIR = 'http://localhost/dixit/views/themes/default/img/';
-var FLASH_SUCCESS = 0;
-var FLASH_ERROR = 1;
-var FLASH_INFOS = 2;
-var FLASH_MESSAGE = 3;
+var Dixit = function() {
+}
+
+Dixit.BASE_URL = 'http://localhost/dixit/';
+Dixit.IMG_DIR = 'http://localhost/dixit/views/themes/default/img/';
+Dixit.FLASH_SUCCESS = 0;
+Dixit.FLASH_INFOS = 2;
+Dixit.FLASH_MESSAGE = 3;
+Dixit.alert = function setMessage(message, type) {
+	var flash;
+	$('#flash').remove();
+	console.log("setMessage");
+	switch(type) {
+		case Dixit.FLASH_SUCCESS:
+			flash = '<div id="flash">'
+						+'<p><img src="'+Dixit.IMG_DIR+'notif_success.png"/>'+message+'</p>'
+					+'</div>';
+			break;
+		case Dixit.FLASH_ERROR:
+			flash = '<div id="flash">'
+						+'<p><img src="'+Dixit.IMG_DIR+'notif_erreur.png"/>'+message+'</p>'
+					+'</div>';
+			break;
+		case Dixit.FLASH_INFOS:
+			flash = '<div id="flash">'
+						+'<p><img src="'+Dixit.IMG_DIR+'notif_info.png"/>'+message+'</p>'
+					+'</div>';
+			break;
+		case Dixit.FLASH_MESSAGE:
+		default:
+			flash = '<div id="flash" class="message">'
+						+'<p><img src="'+Dixit.IMG_DIR+'notif_info.png"/>'+message+'</p>'
+					+'</div>';
+			break;
+	}
+	$("body").append(flash);
+	slideNotifications();
+};
+
+
 
 function postAjax(url) {
 	$.post(url,
@@ -10,37 +45,6 @@ function postAjax(url) {
      		console.log(data);
     	}
     );
-}
-
-function setMessage(message, type) {
-	var flash;
-	$('#flash').remove();
-	console.log("setMessage");
-	switch(type) {
-		case FLASH_SUCCESS:
-			flash = '<div id="flash">'
-						+'<p><img src="'+IMG_DIR+'notif_success.png"/>'+message+'</p>'
-					+'</div>';
-			break;
-		case FLASH_ERROR:
-			flash = '<div id="flash">'
-						+'<p><img src="'+IMG_DIR+'notif_erreur.png"/>'+message+'</p>'
-					+'</div>';
-			break;
-		case FLASH_INFOS:
-			flash = '<div id="flash">'
-						+'<p><img src="'+IMG_DIR+'notif_info.png"/>'+message+'</p>'
-					+'</div>';
-			break;
-		case FLASH_MESSAGE:
-		default:
-			flash = '<div id="flash" class="message">'
-						+'<p><img src="'+IMG_DIR+'notif_info.png"/>'+message+'</p>'
-					+'</div>';
-			break;
-	}
-	$("body").append(flash);
-	slideNotifications();
 }
 
 $(document).ready(function(){ 
@@ -71,6 +75,12 @@ function slideNotifications() {
 	setTimeout(function(){
 		$('#flash').slideUp(800);
 	}, 5000);
+}
+
+function rtrim(str, charlist) {
+    charlist = !charlist ? ' \\s\u00A0' : (charlist + '').replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '\\$1');
+    var re = new RegExp('[' + charlist + ']+$', 'g');
+    return (str + '').replace(re, '');
 }
 
 /*window.alert = function(alertMessage) {

@@ -85,6 +85,8 @@ function joinGame($gameID, $userID) {
 }
 
 function room($gameID) {
+	global $JS_FILES;
+	$JS_FILES[] = 'room.js';
 	if(!isLogged()) {
 		setMessage('Vous devez être connecté pour accéder à cette page', FLASH_ERROR);
 		redirect('users', 'login');
@@ -96,6 +98,11 @@ function room($gameID) {
 		setMessage('Vous ne jouez pas dans cette partie', FLASH_ERROR);
 		redirect('games');
 	}
+
+	if(checkPlayersInGame($gameID)) {
+		setMessage('La partie commence !', FLASH_INFOS);
+		redirect('games', 'play', $gameID);
+	}
 	$gameInfos = getGameInfos($gameID, array('ga_name', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
 	$gameInfos['host'] = getOneRowResult(getUserInfos($gameInfos['us_id']), 'us_pseudo');
 	$gameInfos['ready'] = checkPlayersInGame($gameID);
@@ -104,6 +111,18 @@ function room($gameID) {
 	debug($gameInfos);
 	$vars = array('gameInfos' => $gameInfos);
 	render('room', $vars);
+	$JS_FILES = array_pop($JS_FILES);
+}
+
+function _roomAjax() {
+	$gameID = $_POST['gameID'];
+	$oldUsersID = $_POST['oldUsersID'];*/
+	$oldUsersID = array();
+	$gameID = 1;
+	$startGame = (boolean)checkPlayersInGame($gameID);
+	$newUsersID = array_diff(getSpecificArrayValues(getPlayersInGame($gameID), 'us_id'), $oldUsersID);
+	$gameMessages = _getGameMessages($gameID, true);
+	echo json_encode(compact("startGame", "gameMessages"));
 }
 
 function quiteGame($gameID, $userID) {
@@ -786,13 +805,13 @@ function _getStatus($status, $phase, $role) {
 	return $statusTxt;
 }
 
-function _getGameMessages($gameID) {
+function _getGameMessages($gameID, $forceReturn = false) {
 	$messages = getGameMessages($gameID);
 	$messagesTexts = '';
 	foreach($messages as &$message) {
-		$messagesTexts .= '<h4>' . $message['us_pseudo'] .'</h4><p>' . /*htmlspecialchars(htmlentities(*/$message['ch_text']/*))*/ . '</p>';
+		$messagesTexts .= '<h4>' . $message['us_pseudo'] .'</h4><p>' . stripslashes($message['ch_text']) . '</p>';
 	}
-	if(isPost())
+	if(isPost() || !$forceReturn)
 		echo $messagesTexts;
 	else
 		return $messagesTexts;

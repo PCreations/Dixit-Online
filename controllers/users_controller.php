@@ -12,7 +12,7 @@ function check_date(){
 		case 4: case 6: case 9: case 11:
 			return(0 < $_POST['day'] && $_POST['day'] <= 30 && 0 < $_POST['year']);
 		case 2:
-			return(0 < $_POST['day'] && 0 < $_POST['year'] && ($_POST['day'] <= 28 || ($_POST['year'] == 29 && ((($_POST['year'] % 4) == 0 && ($_POST['year'] % 100) != 0) || ($_POST['year'] % 400) == 0))));
+			return(0 < $_POST['day'] && 0 < $_POST['year'] && ($_POST['day'] <= 28 || ($_POST['day'] == 29 && ((($_POST['year'] % 4) == 0 && ($_POST['year'] % 100) != 0) || ($_POST['year'] % 400) == 0))));
 	}
 }
 

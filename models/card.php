@@ -1,23 +1,24 @@
 <?php
 
-function addCardIn($cardName, $cardImage) {
+function addCardIn($userID, $cardName, $cardImage) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO cards(ca_name, ca_image)
-					VALUES(:cardName, :cardImage)');
-	$query->execute(array('cardName' => $cardName,
+	$query = $db->prepare('INSERT INTO cards(us_id, ca_name, ca_image)
+					VALUES(:userID, :cardName, :cardImage)');
+	$query->execute(array('userID' => $userID,
+						'cardName' => $cardName,
 						'cardImage' => $cardImage));
 	$query->closeCursor();
 	return $db->lastInsertId();
 }
 
-function addCardInDeck($cardID, $gameTypeID) {
+function addCardInDeck($cardID, $deckID) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO deck(gt_id, ca_id)
-					VALUES(:gameTypeID, :cardID)');
-	$query->execute(array('gameTypeID' => $gameTypeID,
-						'cardID' => $cardID));
+	$query = $db->prepare('INSERT INTO cards_decks(ca_id, de_id)
+					VALUES(:cardID, :deckID)');
+	$query->execute(array('cardID' => $cardID,
+						'deckID' => $deckID));
 	$query->closeCursor();
 }
 
@@ -31,6 +32,17 @@ function getCardInfos($cardID, $fields = array('*')) {
 						WHERE ca_id = ?');
 	$query->execute(array($cardID));
 	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function getUserCards($userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT *
+						FROM cards
+						WHERE us_id = ?');
+	$query->execute(array($userID));
+
+	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 //Permet de savoir à qui appartient une carte du tableau pour un tour donné
@@ -159,6 +171,29 @@ function addGameVote($userID, $cardID, $turnID) {
 	$query->execute(array('userID' => $userID,
 						'cardID' => $cardID,
 						'turnID' => $turnID));
+}
+
+function updateGameVote($userID, $cardID, $turnID) {
+	global $db;
+
+	$query = $db->prepare('UPDATE votes
+							SET ca_id = :cardID
+							WHERE us_id = :userID
+							AND tu_id = :turnID');
+	$query->execute(array('userID' => $userID,
+						'cardID' => $cardID,
+						'turnID' => $turnID));
+}
+
+function getUserVotedCardInTurn($turnID, $userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT ca_id FROM votes
+						WHERE us_id = :userID
+						AND tu_id = :turnID');
+	$query->execute(array('userID' => $userID,
+						'turnID' => $turnID));
+	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
 function getCardVoteInTurn($cardID, $turnID) {

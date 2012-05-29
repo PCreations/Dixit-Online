@@ -1,6 +1,9 @@
 <?php
 
-useModels(array('user', 'contact'));
+useModels(array('user'));
+define('SEND_INVITATION', 2);
+define('ACCEPT_INVITATION', 1);
+define('DECLINE_INVITATION', 0);
 
 function register() {
 	if(isset($_POST['register'])) {
@@ -67,27 +70,36 @@ function login() {
 
 function account($id = null) {
 	$userID = $_SESSION[USER_MODEL][USER_PK];
-<<<<<<< HEAD
-=======
-	if(isset($_POST['popup'])){
-		contact();
-	}
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 	
 	if(isset($_POST['update'])) { //Formulaire de changement de données
 			extract($_POST);
-			updateUser($id, $name, $lastname, $mail);
+<<<<<<< HEAD
+			updateUser($userID, $name, $lastname, $birthdate, $mail);
+			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
+			redirect('users', 'account', array( $userID));
+=======
+			updateUser($id, $name, $lastname, $mail, $birthdate);
+>>>>>>> 3fdb1e681522b2326785e8628cfaac01b9c5906b
 	}
 	
-<<<<<<< HEAD
 	if(isset($_POST['updatePwd'])) { //Formulaire de changement de mot de passe
 			extract($_POST);
-			updateUser($id, $pwd);
+			$userInfos = checkLogin($pseudo, encrypt($oldPass));
+			debug($userInfos);
+			if(encrypt($password) != encrypt($passConfirm)) {
+				setMessage('Les mots de passe ne coïncident pas', FLASH_ERROR);
+				render('account');
+			}
+			$password = encrypt($password);
+			updatePwd($id, $password);
+			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
+			redirect('users', 'account', array( $userID));
 	}
 	
 	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
 			extract($_POST);
 			$results = approchSearchUser($login);
+			$user = getUserInfos($id);
 			$reelfriends = getSpecificArrayValues(getReelFriends($id), 'us_pseudo');
 			$askedfriends = getSpecificArrayValues(getAskedFriends($id), 'us_pseudo');
 			$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($id), 'us_pseudo');
@@ -95,7 +107,13 @@ function account($id = null) {
 				if(!in_array($result['us_pseudo'], $reelfriends)) {
 					if(!in_array($result['us_pseudo'], $askedfriends)) {
 						if(!in_array($result['us_pseudo'], $whoAskedMe)) {
-							$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo'], '2'));
+							if($result['us_pseudo'] != $user['us_pseudo']){
+							debug($result);
+								$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2'));
+							}
+							else{
+								$result['action'] = 'C\'est vous !';
+							}
 						}
 						else{
 							$result['action'] = 'Cette personne vous a demandé en amis';
@@ -110,34 +128,19 @@ function account($id = null) {
 				}
 			}
 		
-=======
-	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
-			extract($_POST);
-			$results = approchSearchUser($login);
-			$friend = getSpecificArrayValues(getFriends($userID), 'us_pseudo');
-			foreach($results as &$result){
-					if(!in_array($result['us_pseudo'], $friend)) {
-						$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo']));
-					}
-					else{
-						$result['action'] = 'Vous êtes déjà amis';
-					}
-				}
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 			$vars = array('results' => $results,
 							'login' => $login);			
 			render('research', $vars);
 	}
 	$user = getUserInfos($id);
-<<<<<<< HEAD
 	$reelFriends = getReelFriends($id);
 	$askedFriends = getAskedFriends($id);
 	$invitations = getFriendsWhoAskedMe($id);
 	if (is_array($invitations)){ //gérer les invitations venant d'autres utilisateurs
 		foreach($invitations as &$invitation){
 			setMessage('Vous avez reçu une demande d\'amis', FLASH_MESSAGE);
-			$invitation['accept'] = createLink('Accepter', 'users', 'newFriend', array($invitation['us_pseudo'], '1'));
-			$invitation['refuse'] = createLink('Refuser', 'users', 'newFriend', array($invitation['us_pseudo'], '0'));
+			$invitation['accept'] = createLink('Accepter', 'users', 'newFriend', array($invitation['us_id'], ACCEPT_INVITATION));
+			$invitation['refuse'] = createLink('Refuser', 'users', 'newFriend', array($invitation['us_id'], DECLINE_INVITATION));
 		}
 	}
 	$nbFriends = countFriends($id);
@@ -148,50 +151,31 @@ function account($id = null) {
 					'nbFriends' => $nbFriends);
 	render('account', $vars);
 }
-function newFriend($pseudo, $action){
+
+function newFriend($fr_id, $action){
 	$userID = $_SESSION[USER_MODEL][USER_PK];
-	$friendID = exactSearchUser($pseudo);
-	$fr_id = $friendID['us_id'];
-	//$action=2 : envoyer une invitation
-	//$action=1 : accepter une invitation
-	//$action=0 : refuser une invitation
 	
 	if(isLogged()) {
-		if($action == 2){
-			invitFriend($fr_id, $userID);
-			setMessage('Votre invitation a bien été envoyée', FLASH_SUCCESS);
-			
-		}
-		if($action == 1){
-			acceptFriend($fr_id, $userID);
-			setMessage('Vous avez accepté l\'invitation', FLASH_SUCCESS);
-		}
-		if($action == 0){
-			refuseFriend($fr_id, $userID);
-			setMessage('Vous avez refusé l\'invitation', FLASH_SUCCESS);
+		switch($action) {
+			case SEND_INVITATION:
+				invitFriend($fr_id, $userID);
+				setMessage('Votre invitation a bien été envoyée', FLASH_SUCCESS);
+				break;
+			case ACCEPT_INVITATION:
+				acceptFriend($fr_id, $userID);
+				setMessage('Vous avez accepté l\'invitation', FLASH_SUCCESS);
+				break;
+			case DECLINE_INVITATION:
+				refuseFriend($fr_id, $userID);
+				setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
+				break;
 		}
 	}
 	else{
 		setMessage('Vous n\'êtes pas connecté !', FLASH_ERROR);
 	}
-	redirect('users', 'account', array( $userID));
+	redirect('users', 'account', array($userID));
 }
-
-function sendInvitation($pseudo){
-	$userID = $_SESSION[USER_MODEL][USER_PK];
-	setMessage('Une invitation a été envoyée', FLASH_SUCCESS);
-	$vars = array($userID);
-	render('account', $vars);
-=======
-	$friends = getFriends($id);
-	$nbFriends = countFriends($id);
-	$vars = array(	'user' => $user,
-					'friends' => $friends,
-					'nbFriends' => $nbFriends);
-	render('account', $vars);
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
-}
-
 
 function logout() {
 	if(isLogged()) {

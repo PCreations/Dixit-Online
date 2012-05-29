@@ -1,4 +1,5 @@
 <div id="register">
+	<a href="../../dixit"><img class="retour" src="<?php echo IMG_DIR;?>retour.png"></a>
 	<form method="post">
 		<fieldset>
 		<legend>S'inscrire sur Dixit</legend>
@@ -14,8 +15,36 @@
 					<input value="<?php echo isset($passConfirm) ? $passConfirm : '';?>" type="password" name="passConfirm" id="passConfirm" required/></p>
 				<p><label for="us_mail">Adresse e-mail : </label>
 					<input value="<?php echo isset($us_mail) ? $us_mail : '';?>" type="text" name="us_mail" id="us_mail" required/></p>
+				
 				<p><label for="us_birthdate">Date de naissance : </label>
-					<input value="<?php echo isset($us_birthdate) ? $us_birthdate : '';?>" type="date" name="us_birthdate" id="us_birthdate" /></p>
+					<select name='day'>
+					<?php for($i=1;$i<=31;$i++){
+							echo "<option value=".$i.">".$i."</option>";
+						}
+					?>
+					</select>
+					<select name='month'>
+						<option value=1>Janvier</option>
+						<option value=2>Février</option>
+						<option value=3>Mars</option>
+						<option value=4>Avril</option>
+						<option value=5>Mai</option>
+						<option value=6>Juin</option>
+						<option value=7>Juillet</option>
+						<option value=8>Août</option>
+						<option value=9>Septembre</option>
+						<option value=10>Octobre</option>
+						<option value=11>Novembre</option>
+						<option value=12>Décembre</option>
+					</select>
+					<select name='year'>
+					<?php for($i=2012;$i>=1900;$i--){
+							echo "<option value=".$i.">".$i."</option>";
+						}
+					?>
+					</select>
+					</p>
+
 				<input type="hidden" name="register" />
 				<input class="submit" type="submit" value="Inscription" />
 		</fieldset>

@@ -6,7 +6,7 @@
 	vertical-align: top;
 }
 
-/****************Créer*********************/
+/****************CrÃ©er*********************/
 #games #creer
 {
 	width:605px;
@@ -169,7 +169,7 @@
 {
 	display:inline-block;
 	position:relative;
-	width:16%; /*dépend du nombre de cartes*/
+	width:16%; /*dÃ©pend du nombre de cartes*/
 }
  #games .carte img
 {
@@ -215,6 +215,7 @@
 }
 
 /***************Chat*********************/
+
 #games #right_side .ami
 {
 		width:200px;

@@ -14,30 +14,38 @@ header
 {
 	top:0px;
 	width:490px;
+	margin-right : 20px;
 	margin : auto;
 }
 /****************Notifications Flash*********************/
 #flash
 {
-	position : absolute;
+	position : fixed;
 	top : 0px;
 	left : 0px;
 	width : 100%;
 	background: url('../img/notification.png'); 
 	display : none;
 }
+#flash img
+{
+	margin-right : 20px;
+	display : inline-block;
+	vertical-align : bottom;
+}
 
 #flash p
 {
 	text-align: center;
-	margin-top : 20px;
-	margin-bottom : 20px;
+	margin-top : 15px;
+	margin-bottom : 15px;
 	color : white;
 	letter-spacing : 1px;
+	
 }
 
 /***************Popup*******************/
-#popup
+.popup
 {
 	display:none;  
 	position:fixed;  
@@ -49,11 +57,11 @@ header
 	padding:12px;  
 	font-size:13px;
 }
-#popup form
+.popup form
 {
 	margin : 10px;
 }
-#popupClose
+.popupClose
 {  
 	font-size:14px;  
 	line-height:14px;  
@@ -66,7 +74,7 @@ header
 	cursor : pointer;
 } 
 
-#backgroundPopup
+.backgroundPopup
 {  
 	display:none;  
 	position:fixed;  
@@ -79,17 +87,17 @@ header
 	border:1px solid #cecece;  
 	z-index:1;  
 }
-#popupButton
+.popupButton
 {
 	display : inline-block;
 }
-#popupButton input
+.popupButton input
 {
 	margin : 20px 0px 20px 50px;
 	border: #CCC 1px solid;
 	display : inline-block;
 }
-#popupButton input:hover
+.popupButton input:hover
 {
 	border: #999 1px solid;
 	background-color: #ccc;
@@ -181,7 +189,7 @@ aside
 	background-color: rgba(255, 255, 255, 0.5);
 	border-radius : 6px;
 }
-#home_aside a, #home_subcontent a
+#home_aside .lien a, #home_subcontent a
 {
 	background-color: rgba(255, 255, 255, 0.5);
 	text-decoration : none;
@@ -191,7 +199,22 @@ aside
 	padding : 3px 6px;
 	margin-left : 30%;
 }
-
+#home_aside .lien a
+{
+	margin-left : 20%;
+}
+#home_aside  a
+{
+	text-decoration : none;
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+	font-size : 1em;
+	color : black;
+	margin : 0% 5%;
+}
+#home_aside  p
+{
+	margin : 0px 20px 20px 30px;
+}
 /****************Footer*********************/
 footer
 {

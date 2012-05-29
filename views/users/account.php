@@ -1,12 +1,14 @@
+
 <div id="profil">
-	<h1 id="1" onclick="changeOnglet('1');">Acceuil</h1>
-	<h1 id="2" onclick="changeOnglet('2');">Votre Compte</h1>
-	<h1 id="3" onclick="changeOnglet('3');">Vos Amis</h1>
-	<h1 id="4" onclick="changeOnglet('4');">Vos Cartes</h1>
-	
+
+<img class="image_link" id="1" src="<?php echo IMG_DIR;?>compte_accueil.png" onclick="changeOnglet('1');">
+<img class="lower_textimg image_link" id="2" src="<?php echo IMG_DIR;?>compte_compte.png" onclick="changeOnglet('2');">
+<img class="image_link" id="3" src="<?php echo IMG_DIR;?>compte_amis.png" onclick="changeOnglet('3');">
+<img class="image_link" id="4" src="<?php echo IMG_DIR;?>compte_cartes.png" onclick="changeOnglet('4');">
+
 	<div id="account1">
 		<img class="avatar" src="<?php echo IMG_DIR;?>" alt=""/>
-		<p> Bienvenue <?php echo $user['us_name'] ; ?> <?php echo $user['us_lastname'] ; ?> </p>
+		<p> Bienvenue <?php echo $user['us_lastname'] ; ?> <?php echo $user['us_name'] ; ?> </p>
 		</br>
 			<ul>
 				<?php foreach($invitations as $invitation): ?>
@@ -28,26 +30,40 @@
 			<p><span><b>Pseudo : </b></span> 	<?php echo $user['us_pseudo'] ; ?> </p>
 			<p><span><b>Adresse mail: 	</b></span> <?php echo $user['us_mail'] ; ?> </p>
 			<p><span><b>Date de naissance: </b></span> 	<?php echo $user['us_birthdate'] ; ?> </p>
-			<div id="popupButton"><input type="submit" value="Modifier vos informations"/></div>
-			<div id="popupButton"><input type="submit" value="Changer de Mot de Passe"/></div>
+			<div id="popupButton1" class="popupButton"><input type="submit" value="Modifier vos informations"/></div>
+			<div id="popupButton2" class="popupButton"><input type="submit" value="Changer de Mot de Passe"/></div>
 		</div>
 		<img src="<?php echo IMG_DIR;?>" alt=""/>
-		<div id="popup">
-			<a id="popupClose">x</a>
+		<div id="popup1" class="popup">
+			<a id="popupClose1" class="popupClose">x</a>
 			<form method="POST">
 				<fieldset>
 					<legend>Modifier vos informations personnelles</legend>
-						<p><label for="us_name">Prénom: </label><input name="name" type="text" value="<?php echo $user['us_name'] ; ?>"/></p>
-						<p><label for="us_lastname">Nom: </label><input name="lastname" type="text" value="<?php echo $user['us_lastname'] ; ?>"/></p>
-						<p><label for="us_name">Pseudo: </label><input name="name" type="text" value="<?php echo $user['us_pseudo'] ; ?>"/></p>
-						<p><label for="us_mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
-						<p><label for="us_name">Date de naissance: </label><input name="name" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
+						<p><label for="lastname">Prénom: </label><input name="lastname" type="text" value="<?php echo $user['us_lastname'] ; ?>"/></p>
+						<p><label for="name">Nom: </label><input name="name" type="text" value="<?php echo $user['us_name'] ; ?>"/></p>
+						<p><label for="birthdate">Date de naissance: </label><input name="birthdate" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
+						<p><label for="mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
 						<input type="hidden" name="update" />
 						<input  type="submit" value="Enregistrer"/>
 				</fieldset>
 			</form>
 		</div>
-		<div id="backgroundPopup"></div> 
+		<div id="backgroundPopup1" class="backgroundPopup"></div> 
+		<div id="popup2" class="popup">
+			<a id="popupClose2" class="popupClose">x</a>
+			<form method="POST">
+					<fieldset>
+						<legend>Modifier votre mot de passe</legend>
+							<p><label for="oldPass">Ancien mot de passe: </label><input name="oldPass" type="password" required/></p>
+							<p><label for="password">Nouveau mot de passe: </label><input name="password" type="password" required/></p>
+							<p><label for="passConfirm">Confirmer: </label><input name="passConfirm" type="password" required/></p>
+							<input type="hidden" name="pseudo" value="<?php echo $user['us_pseudo'] ; ?>" />
+							<input type="hidden" name="updatePwd" />
+							<input  type="submit" value="Enregistrer"/>
+					</fieldset>
+			</form>
+		</div>
+		<div id="backgroundPopup2" class="backgroundPopup"></div> 
 	</div>
 	
 	<div id="account3">

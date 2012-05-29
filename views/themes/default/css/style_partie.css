@@ -1,0 +1,288 @@
+/****************Left*********************/
+#left
+{
+	width:655px;
+	display:inline-block;
+	vertical-align: top;
+}
+
+#conteur
+{
+
+	margin-bottom:15px;
+	padding : 25px;
+	padding-left : 40px;
+	background-image:url("../img/bg_conteur.png");
+	background-repeat:no-repeat;
+}
+
+#profil_conteur
+{
+	display:inline-block;
+	border-radius : 4px;
+	vertical-align : top;
+	
+}
+#conteur .conteur_info
+{
+	display:inline-block;
+	margin-left : 15px;
+}
+#conteur p
+{
+	margin-top : 0px;
+	margin-bottom : 0px;
+}
+#turnComment
+{
+	text-shadow: 2px 2px 4px #333;
+	font-style : italic;
+	letter-spacing : 1.5px;
+	margin-left : 10px;
+}
+#storyteller
+{
+	font-size : 1.2em;
+	padding-bottom : 10px;
+}
+
+#table
+{
+	width:615px;
+	height:239px;
+	margin-bottom:10px;
+	padding:20px;
+	background-image:url("../img/bg_table.png");
+}
+
+#table #cartes
+{
+	margin-top:20px;
+	margin-left:auto;
+	margin-right:auto;
+	display:block;
+}
+
+#table .carte
+{
+	display:inline-block;
+	position:relative;
+	width:19%; /*dépend du nombre de cartes*/
+	margin-right: 10px;
+}
+
+#table .image_carte img
+{
+	width:100%; /*dépend du nombre de cartes*/
+}
+
+#table .image_carte
+{
+	position:relative;
+	width:100%;
+	margin:0px;
+	border-radius : 8px;
+	z-index:1;
+	box-shadow: 6px 6px 6px #352d23;
+	cursor: url("../img/zoom.cur"), default;
+}
+
+#table .hidden_fance {
+	cursor: default;
+}
+
+#table .bouton
+{
+	display:block;
+	width:22px;
+	position:relative;
+	z-index:10;
+	
+	margin-left:auto;
+	margin-right:auto;
+	cursor: pointer;
+}
+
+#table .bouton:hover
+{
+	display:block;
+	width:25px;
+	position:relative;
+	z-index:10;
+	
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#main
+{
+	width:615px;
+	
+	padding:20px;
+	background-image:url("../img/bg_main.png");
+	background-repeat:no-repeat;
+}
+
+#label_main
+{
+	margin:10px;
+}
+
+#main #cartes
+{
+	margin-left:auto;
+	margin-right:auto;
+	height:153px;
+	display:block;
+}
+
+#main .carte
+{
+	display:inline-block;
+	position:relative;
+	width:14.8%; /*dépend du nombre de cartes*/
+	margin-right: 10px;
+	padding-bottom : 0px;
+}
+
+#main #stIndice {
+	position: relative;
+	top: -10px;
+	text-align: center;
+}
+
+#main #stIndice input {
+	display: inline;
+}
+
+#main  .image_carte 
+{
+	width:100%;
+	margin:0px;
+	z-index:1;
+	border-radius : 8px;
+	box-shadow: 6px 6px 6px #352d23;
+	cursor: url("../img/zoom.cur"), default;
+
+}
+
+#main .bouton 
+{
+	position : absolute;
+	top : 75%;
+	left :38%;
+	width:22px;
+	z-index:10;
+	cursor: pointer;
+}
+
+#main .bouton:hover
+{
+	width:25px;
+}
+
+#label_tour
+{
+	margin-left:10px;
+	margin-top:30px;
+}
+
+#main p
+{
+	margin:5px 30px;
+}
+
+/****************Aside*********************/
+#sidebar
+{
+	width:203px;
+	height:715px;
+	margin-left:10px;
+	padding:20px;
+	padding-left:15px;
+	display:inline-block;
+	vertical-align: top;
+	background-image:url("../img/bg_sidebar.png");
+}
+
+#label_joueurs
+{
+	margin-top:2px;
+	margin-left:10px;
+	margin-bottom:7px;
+}
+
+.joueur
+{
+	background-color: rgba(255, 255, 255, 0.5);
+	padding:3px;
+	min-height:48px;
+	height: auto;
+	margin-bottom:5px;
+}
+
+.profil_joueur
+{
+	display:inline-block;
+	width:48px;
+}
+
+.infos_joueur
+{
+	display:inline-block;
+	margin:0px;
+	width:132px;
+	vertical-align: top;
+	text-align:center;
+	font-size: 13px;
+}
+
+#label_chat
+{
+	margin-top:10px;
+	margin-left:10px;
+	margin-bottom:7px;
+}
+
+#chatMessages {
+	background-color: rgba(255, 255, 255, 0.5);
+	height: 335px;
+	padding: 5px;
+	overflow: auto;
+}
+
+#chatMessages h4 {
+	font-size: 15px;
+    margin-left: 5px;
+	margin-top:0px;
+	margin-right:0px;
+	margin-bottom:0px;
+}
+
+#chatMessages p {
+	border-bottom: 1px solid #eeeeee;
+    font-size: 14px;
+    margin: 5px 0 5px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+}
+
+#gameMsg
+{
+	background-color: rgba(255, 255, 255, 0.7);
+	border-color:white;
+	width:197px;
+}
+
+#sendGameMsg
+{
+	float:right;
+}
+
+/****************Footer*********************/
+footer
+{
+	position : absolute;
+	font-size : 0.8em;
+	left : 43%;
+}

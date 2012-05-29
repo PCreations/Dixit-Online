@@ -48,18 +48,30 @@ function getUserInfos($id, $fields = array('*')) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
-function updateUser($id, $name, $lastname, $mail){
+function updateUser($id, $name, $lastname, $birthdate, $mail){
 	global $db;
-	$query = $db->prepare('UPDATE users 
+	$query = $db->prepare('UPDATE users
 						SET us_name = :name,
-						us_lastname =  :lastname,
-						us_mail = : mail
-						WHERE us_id = :id');
+						us_lastname = :lastname,
+						us_birthdate = :birthdate,
+						us_mail = :mail
+						WHERE us_id= :id');
 	$query->execute(array('id' => $id,
 						'name'=> $name,
 						'lastname' => $lastname,
-						'mail' => $mail));
+						'mail' => $mail,
+						'birthdate' => $birthdate));
 }
+
+function updatePwd($id, $password){
+	global $db;
+	$query = $db->prepare('UPDATE users
+						SET us_password = :password
+						WHERE us_id= :id');
+	$query->execute(array('id' => $id,
+						'password' => $password));
+}
+						
 function countFriends($id){
 	global $db;
 	$query = $db->prepare('	SELECT COUNT(us_friend_id) AS nbFriends 
@@ -93,7 +105,7 @@ function getAskedFriends($id){
 
 function getFriendsWhoAskedMe($id){
 	global $db;
-	$query = $db->prepare('	SELECT us_pseudo FROM users_friends, users
+	$query = $db->prepare('	SELECT users.us_id, users.us_pseudo FROM users_friends, users
 							WHERE users_friends.us_id = users.us_id AND us_friend_id = :id AND uf_status = 0');
 	$query->execute(array('id' => $id));
 	return $query->fetchAll(PDO::FETCH_ASSOC);

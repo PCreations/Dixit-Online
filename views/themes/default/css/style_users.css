@@ -331,7 +331,63 @@
 /************Decks***************/
 #account4
 {
-	padding : 0px 60px 20px 80px;
+	padding : 0px 60px 0px 80px;
+}
+#account4 #side1, #account4 #side2, #account4 #side3
+{
+	display : inline-block;
+	width : 600px;
+	height : 450px;
+	vertical-align : top;
+	
+}
+#account4 #sides
+{
+	position : relative;
+	top : -60px;
+	display : inline-block;
+	left : -625px;
+	height : 450px;
+	width : 1810px;
+}
+/*#account4 #sides
+{
+	-moz-transition-duration: 0.5s;-moz-transition-property:-moz-transform;-moz-transition-timing-function: ease;
+	-webkit-transition-duration: 0.5s;-webkit-transition-property:-webkit-transform;-webkit-transition-timing-function: ease;
+	-o-transition-duration: 0.5s;-o-transition-property:-o-transform;-o-transition-timing-function: ease;
+	transition-duration: 0.5s;transition-property:transform;transition-timing-function: ease;
+}*/
+#account4 #side2
+{
+	background-color :blue;
+}
+#account4 #side1
+{
+	background-color :pink;
+}
+#account4 #side3
+{
+	background-color :yellow;
+}
+#account4 .fleche-droite
+{
+	position : relative;
+	top : 160px;
+	left : 520px;
+	display : inline-block;
+	width : 50px;
+	z-index : 20;
+	cursor : pointer;
+}
+#account4 .fleche-gauche
+{
+	position : relative;
+	top : 160px;
+	left : -80px;
+	display : inline-block;
+	width : 50px;
+	z-index : 20;
+	cursor : pointer;
 }
 #account4 select, #account4 p
 {
@@ -374,7 +430,7 @@
 	z-index:1;
 	cursor: url("../img/zoom.cur"), default;
 }
-#account4 .bouton 
+#selectable .ui-state-default, #selectable .bouton
 {
 	position : absolute;
 	top : 75%;
@@ -382,9 +438,17 @@
 	width:22px;
 	z-index:10;
 	cursor: pointer;
+	background-image: url('../img/bouton_dore.png');
+}
+.bouton  .ui-selecting, .bouton .ui-selected 
+{
+	visibility : visible;
 }
 
-#account4 .bouton:hover
-{
-	width:25px;
+#selectable  .ui-selecting ,#selectable .ui-selected 
+{ 
+	visibility : hidden;
 }
+
+
+

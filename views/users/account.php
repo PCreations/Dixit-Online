@@ -104,33 +104,49 @@
 	</div>
 	
 	<div id="account4">
-		<p>Afficher le groupe de carte :</p> 
-		<select name="deck">
-			<option value="-1">Toutes</option>
-						<?php foreach($userDecks as $deck): ?>
-							<option value='
-							<?php echo $deck['de_id'];?>
-							<option value='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
-						<?php endforeach; ?>
-		</select>
-		<div id="gallery_conteneur">
-			<div id="gallery" class="flexcroll">
-				<?php foreach($cardsInDeck as $card): ?>
-					<div class="carte"><img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
-					<img class="bouton" id="btnCardID<?php echo $card['ca_id'] ;?>" src="<?php echo IMG_DIR;?>bouton.png" /></div>
-				<?php endforeach;?>
+			<img  class="fleche-gauche" onclick="displaySide('gauche');" src="<?php echo IMG_DIR;?>fleche-gauche.png" />
+			<img  class="fleche-droite" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite.png" />
+		<div id="sides">
+			<div id="side1">
+				<h1> YES !!!</h1>
+			</div>
+			<div id="side2">
+				<h1> YES 2 !!!</h1>
+			</div>
+			<div id="side3">
+				<p>Afficher le groupe de carte :</p> 
+				<select name="deck">
+					<option value="-1">Toutes</option>
+								<?php foreach($userDecks as $deck): ?>
+									<?php echo $deck['de_id'];?>
+									<option value='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
+								<?php endforeach; ?>
+				</select>
+				<div id="gallery_conteneur">
+					<div id="gallery" class="flexcroll">
+						<?php foreach($cardsInDeck as $card): ?>
+							<div class="carte">
+								<img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
+								<div id="selectable" >
+									<img  class="bouton" src="<?php echo IMG_DIR;?>bouton_dore.png" />
+									<img class="ui-state-default" id="btnCardID<?php echo $card['ca_id'] ;?>" src="<?php echo IMG_DIR;?>bouton.png" />
+								</div>
+							</div>
+						<?php endforeach;?>
+				</div>
+				
+			</div>
+			<p class="link"><?php echo createLink('supprimer', 'users', ''); ?></p>
+			<p>Ajouter dans le groupe :</p> 
+				<select name="deck">
+					<option value="-1">Toutes</option>
+								<?php foreach($userDecks as $deck): ?>
+									<option value='
+									<?php echo $deck['de_id'];?>
+									'><?php echo $deck['de_name'];?></option>
+									<?php endforeach; ?>
+				</select>
+			</div>
 		</div>
-		
-	</div>
-	<p class="link"><?php echo createLink('supprimer', 'users', ''); ?></p>
-	<p>Ajouter dans le groupe :</p> 
-		<select name="deck">
-			<option value="-1">Toutes</option>
-						<?php foreach($userDecks as $deck): ?>
-							<option value='
-							<?php echo $deck['de_id'];?>
-							'><?php echo $deck['de_name'];?></option>
-							<?php endforeach; ?>
-		</select>
 	</div>
 </div>

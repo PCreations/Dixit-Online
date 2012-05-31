@@ -69,7 +69,7 @@
 	})
 
 	
-	$('#gameMsg').keyup(function(e) { //remplacez {id_img} par l'id de votre image
+	$('#gameMsg').keyup(function(e) {
       if(e.keyCode == 13) {
         sendMsg();
 		return false;
@@ -186,7 +186,7 @@
 		var card = $('input[name="cardID"]:checked').val();
 		$('#handForm').submit();
 	}
-	
+
 	setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			var $elem = $('#chatMessages');
@@ -210,7 +210,7 @@
 			}
 		});
 	}, 5000);
-
+	
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);
 		text = '';
@@ -278,7 +278,7 @@
 				phase = 'Décompte des points';
 				break;
 			default:
-				phase = 'Erreur';
+				phase = '      Erreur';
 				break;
 		}
 
@@ -286,5 +286,15 @@
 		/*alert(phase);*/
 
 	}
+	
+	// FlipCards
+	$("#table .carte").hover(function(){
+		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
+		$(this).children('.image_carte').css('-webkit-transform','rotateY(180deg)');
+	}, 
+	  function () {
+		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
+		$(this).children('.image_carte').css('-webkit-transform','rotateY(0deg)');
+	  });
 
 </script>

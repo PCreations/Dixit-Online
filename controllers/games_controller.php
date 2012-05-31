@@ -15,13 +15,13 @@ define('ACTION_DONE', 5);
 
 function index() {
 	$deckInfos = getAllDecks(array('de_id', 'de_name'));
-	
-	$vars_filtrage=$_POST;
 
 	if(!isPost()) {
 		$partiesEnAttente = getWaitingGames();
+		$vars_filtrage=array('name'=>'','nbpoints'=>'','deck'=>'','nbplayers'=>'');
 	}
 	else {
+		$vars_filtrage=$_POST;
 		extract($_POST);
 		if(!isset($public)){
 			$public='off';
@@ -52,6 +52,35 @@ function index() {
 		render('index', $vars);
 }
 
+
+function newGame() {
+	if(!isPost()) {
+		setMessage('Vous ne pouvez pas accéder à cette page, créez une partie avec le formulaire.', FLASH_ERROR);
+		redirect('games');
+	}
+	else {
+		extract($_POST);
+		$deck_mini=$joueurs*((int)($points/10))*3;
+		if ($deck_mini > nbCartes($deck))
+		{
+				//erreur, pas assez de cartes
+		}
+		else if ($joueurs<3 || $joueurs>10)
+		{
+			//erreur, mauvais nb de joueurs
+		}
+		else
+		{
+			if (!empty($pwd))
+			{
+				$_POST['pwd']=encrypt($_POST['pwd']);
+			}
+			extract($_POST);
+			insertNewGame($deck, $_SESSION[USER_MODEL][USER_PK], $nom, $pwd, $joueurs, $points);
+			joinGame(getLastGameID(),$_SESSION[USER_MODEL][USER_PK]);
+		}
+	}
+}
 
 function joinGame($gameID, $userID) {
 	if(!isLogged()) {
@@ -688,7 +717,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	else if($phase == STORYTELLER_PHASE){
 		$board .= 'Le conteur n\'a pas encore choisi sa carte';
 	}
-	else {
+	else { //fin de tour
 		$storytellerCardID = getOneRowResult(getPlayerCardInBoard($turn['tu_id'], $turn['us_id']), 'ca_id');
 
 		foreach($cards as $card) {
@@ -711,8 +740,18 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 					$board .= '<td><img '. $style .' src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></td>';
 				$board .= '</tr>';
 			$board .= '</table>';*/
-			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid red;"' : '';
-			$board .= '<div class="carte"><a class="fancybox" rel="board" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img '.$style.' class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="zoom" /></a></div>';
+			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid white;border-radius: 5px;"' : '';
+			
+			$owner=getCardOwner($card['ca_id'], $turn['tu_id']);
+			$back_content="Carte de<br>".$pseudo = getOneRowResult(getUserInfos($owner['us_id']), 'us_pseudo')."<br><br>Votée par <br>";
+			
+			$voters=getCardVoteInTurn($card['ca_id'], $turn['tu_id']);
+			foreach($voters as $voter) {
+				$pseudo=getOneRowResult(getUserInfos($voter['us_id']), 'us_pseudo');
+				$back_content.=$pseudo."<br>";
+			}
+			
+			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><div class="back_carte"><img class="image_back_carte" src="' . IMG_DIR . 'cards/back_empty.jpg"/><p>'.$back_content.'</p></div><img '.$style.' class="image_carte" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" /></div>';
 		}
 		$board .= '<div id="stIndice"><input type="button" id="readyForNextTurn" onclick="readyForNextTurn();" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
 	}

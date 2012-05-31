@@ -153,30 +153,6 @@ function test() {
 	debug(array_diff($b,$a));
 }
 
-function _roomAjax() {
-	$gameID = $_POST['gameID'];
-	$oldUsersInGame = $_POST['usersInGame'];
-	$gameID = 1;
-	$startGame = (boolean)!checkPlayersInGame($gameID);
-	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
-	$joinGame = true;
-	$diff = array();
-	if(count($usersInGame) > count($oldUsersInGame)) { //Un ou plusieurs joueurs sont rentrés en jeu
-		$joinGame = true;
-		$diff = array_diff($usersInGame, $oldUsersInGame);
-	}
-	else if(count($oldUsersInGame) > count($usersInGame)) {
-		$joinGame = false;
-		$diff = array_diff($oldUsersInGame, $usersInGame);
-	}
-	$usersNames = (!empty($diff)) ? array() : -1;
-	foreach($diff as $userID) {
-		$usersNames[] = getOneRowResult(getUserInfos($userID), 'us_pseudo');
-	}
-	$gameMessages = _getGameMessages($gameID, true);
-	echo json_encode(compact("oldUsersInGame", "startGame", "gameMessages", "usersNames", "joinGame", "usersInGame"));
-}
-
 function quiteGame($gameID, $userID) {
 	if(!isLogged()) {
 		setMessage('Vous devez être connecté pour quitter une partie', FLASH_ERROR);
@@ -880,6 +856,29 @@ function _getGameMessages($gameID, $json = false) {
 			echo $messagesTexts;
 	else
 		return $messagesTexts;
+}
+
+function _roomAjax() {
+	$gameID = $_POST['gameID'];
+	$oldUsersInGame = $_POST['usersInGame'];
+	$startGame = (boolean)!checkPlayersInGame($gameID);
+	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+	$joinGame = true;
+	$diff = array();
+	if(count($usersInGame) > count($oldUsersInGame)) { //Un ou plusieurs joueurs sont rentrés en jeu
+		$joinGame = true;
+		$diff = array_diff($usersInGame, $oldUsersInGame);
+	}
+	else if(count($oldUsersInGame) > count($usersInGame)) {
+		$joinGame = false;
+		$diff = array_diff($oldUsersInGame, $usersInGame);
+	}
+	$usersNames = (!empty($diff)) ? array() : -1;
+	foreach($diff as $userID) {
+		$usersNames[] = getOneRowResult(getUserInfos($userID), 'us_pseudo');
+	}
+	$gameMessages = _getGameMessages($gameID, true);
+	echo json_encode(compact("oldUsersInGame", "startGame", "gameMessages", "usersNames", "joinGame", "usersInGame"));
 }
 
 function _ajaxData($gameID, $oldPhase, $oldTurnID) {

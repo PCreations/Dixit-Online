@@ -111,7 +111,17 @@
 		</div>
 		<div id = "right_side">
 			<img id="label_compte" src="<?php echo IMG_DIR;?>compte.png">
-			<figure class="button2"><?php echo createLink('Accéder à mon compte', 'users', 'account',  array($_SESSION[USER_MODEL][USER_PK]));?></figure>
+				<?php
+				if(isLogged()) {
+					echo '<figure class="button2">';
+						echo createLink('Accéder à mon compte', 'users', 'account',  array($_SESSION[USER_MODEL][USER_PK]));
+					echo '</figure>';
+				}
+				else {
+					echo "<p>".createLink('Se connecter', 'users', 'login')."</p>";
+					echo "<p>".createLink('S\'enregister', 'users', 'register')."</p>";
+				}
+				?>
 			<div id="en_ligne">
 				<img src="<?php echo IMG_DIR;?>amis.png">
 				<div class="ami">

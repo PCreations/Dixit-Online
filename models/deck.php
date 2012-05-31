@@ -62,18 +62,6 @@ function getCardsInDeckInfo($deckID) {
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// A tester
-function getDeckInfos($id, $fields = array('*')) {
-	global $db;
-	$fields = implode(',', $fields);
-
-	$query = $db->query('SELECT '.$fields.' 
-						FROM decks
-						WHERE decks.de_id='.$id);
-										
-	return $query->fetch(PDO::FETCH_ASSOC);
-}
-
 function nbCartes($id)
 {
 	global $db;

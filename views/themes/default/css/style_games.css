@@ -7,7 +7,7 @@
 }
 
 /****************Créer*********************/
-#games #creer
+#games #creer, #games #filtrer
 {
 	width:605px;
 	height:60px;
@@ -19,7 +19,7 @@
 	background-image:url("../img/bg_conteur.png");
 	background-repeat:no-repeat;
 }
-#games #creer img
+#games #creer img, #games #filtrer img
 {
 	padding-left : 10px;
 }

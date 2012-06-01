@@ -63,11 +63,13 @@ function newGame() {
 		$deck_mini=$joueurs*((int)($points/10))*3;
 		if ($deck_mini > nbCartes($deck))
 		{
-				//erreur, pas assez de cartes
+			setMessage('Le deck que vous avez sélectionné ne comporte pas assez de carte pour les paramètres choisi', FLASH_ERROR);
+			redirect('games');
 		}
 		else if ($joueurs<3 || $joueurs>10)
 		{
-			//erreur, mauvais nb de joueurs
+			setMessage('Le nombre de joueurs doit être compris entre 3 et 10', FLASH_ERROR);
+			redirect('games');
 		}
 		else
 		{

@@ -1,8 +1,5 @@
 <<<<<<< HEAD
 /****************Généralités*********************/
-=======
-/****************Généraités*********************/
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 #login, #register, #profil, #results
 {
 	width:630px;
@@ -10,21 +7,110 @@
 	padding : 10px;
 	background : url('../img/bg_main.png') no-repeat center; 
 		-webkit-background-size: cover; 
+=======
+/****************GÃ©nÃ©ralitÃ©s*********************/
+#profil, #results
+{
+	width:660px;
+	height:336px;
+	margin : auto;
+	padding : 10px;
+	background : url('../img/parchemin_compte.png') no-repeat center; 
+	-webkit-background-size: cover; 
+	-moz-background-size: cover; 
+	-o-background-size: cover; 
+	background-size: cover;
+
+}
+#register
+{
+	margin : auto;
+	width : 640px;
+	padding : 50px 0px;
+	background-position : relative;
+	background : url('../img/bg_square.png') no-repeat center; 
+	-webkit-background-size: cover; 
+	-moz-background-size: cover; 
+	-o-background-size: cover; 
+	z-index : 2;
+}
+#login
+{
+	width : 50%;
+	margin : auto;
+	padding : 30px 0px;
+	background-position : relative;
+	background : url('../img/bg_main.png') no-repeat center; 
+	-webkit-background-size: cover; 
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 	-moz-background-size: cover; 
 	-o-background-size: cover; 
 	background-size: cover;
 	border-radius : 6px;
-}
 <<<<<<< HEAD
+}
 #login form, #register form, #profil #account1 form
 =======
-#login form, #register form, #profil form
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
+	z-index : 2;
+}
+
+#login .retour
+{
+	position : absolute;
+	top : 44%;
+	width : 60px;
+	height :43px;
+	left : 32%;
+	z-index : 1;
+}
+#register .retour
+{
+	position : absolute;
+	top : 44%;
+	width : 60px;
+	height :43px;
+	left : 29%;
+	z-index : 1;
+}
+#login .oups
+{
+	position : absolute;
+		top : 50%;
+	width : 60px;
+	height :43px;
+	left : 32%;
+	z-index : 1;
+	cursor : pointer;
+}
+
+#login .retour, #login .oups, #register .retour
+{
+	-moz-transition-duration: 0.5s;-moz-transition-property:-moz-transform;-moz-transition-timing-function: ease;
+	-webkit-transition-duration: 0.5s;-webkit-transition-property:-webkit-transform;-webkit-transition-timing-function: ease;
+	-o-transition-duration: 0.5s;-o-transition-property:-o-transform;-o-transition-timing-function: ease;
+	transition-duration: 0.5s;transition-property:transform;transition-timing-function: ease;
+}
+
+#login .retour:hover, #login .oups:hover, #register .retour:hover
+{
+	-webkit-transform: translateX(-10px);
+	-moz-transform: translateX(-10px);
+	-o-transform: translateX(-10px);
+	transform: translateX(-10px);
+}
+
+
+#login form, #profil #account1 form, #register form
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 {
 	width : 70%;
 	margin : auto;
 }
+<<<<<<< HEAD
 #login, #register, #profil
+=======
+#login, #profil
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 {
 	margin-top : 40px;
 }
@@ -80,22 +166,26 @@
 	border-right: black 1px solid;
 	font-size: 1.5em;
 }
-<<<<<<< HEAD
-=======
-/*Formulaire de recherche d'amis*/
-.research legend
-{
-	padding: 0 10px;
-	font-size: 1.2em;
-}
-
-.research img:hover
-{
-	cursor : pointer;
-}
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 
 /****************Account*********************/
+<<<<<<< HEAD
+=======
+
+.image_link
+{
+	cursor:pointer;
+	margin-top:10px;
+	margin-left:40px;
+	margin-bottom:20px;
+}
+
+.lower_textimg
+{
+	position:relative;
+	top:7px;
+}
+                  
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 #profil p, #profil h1
 {
 	margin : 0px 20px;
@@ -118,10 +208,7 @@
 
 #profil #account1 a, #results .link a
 {
-<<<<<<< HEAD
 	
-=======
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 	background-color: rgba(255, 255, 255, 0.5);
 	text-decoration : none;
 	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
@@ -132,21 +219,13 @@
 	margin-top : 5%;
 	display : inline-block;
 }
-<<<<<<< HEAD
 #profil #account1 p, #profil #account2 .left
-=======
-#profil #account1 p
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 {
 	display : inline-block;
 	vertical-align : top;
 }
 
-<<<<<<< HEAD
 #profil #account1 img.avatar, #profil #account2 img
-=======
-#profil #account1 img
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 {
 	display : inline-block;
 	margin-left : 20px;
@@ -156,7 +235,6 @@
 	height : 120px;
 	background : url('../img/unknown.jpg') center;
 }
-<<<<<<< HEAD
 #profil #account1 img .message
 {
 	vertical-align : bottom;
@@ -168,21 +246,11 @@
 	list-style : none;
 }
 #profil #account3 .friends li, #profil #account3 li
-=======
-
-/*Affichage des Amis*/
-#profil #account3 ul 
-{
-	list-style : none;
-}
-#profil #account3 li
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 {
 	display : inline-block;
 	margin : 5px;
 	background-color: rgba(255, 255, 255, 0.5);
 	box-shadow: 2px 2px 4px black;
-<<<<<<< HEAD
 }
 #profil #account3 li
 {
@@ -191,13 +259,10 @@
 }
 #profil #account3 .friends li
 {
-=======
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 	width : 100px;
 	height : 120px;
 	background : url('../img/unknown.jpg') center;
 }
-<<<<<<< HEAD
 #profil #account3.invitations li
 {
 	margin-left : 120px;
@@ -210,51 +275,31 @@
 	margin-left : 90px;
 }
 #profil #account3 .friends .hidden
-=======
-#profil #account3 .hidden
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 {
 	padding : 5px;
 	position : relative;
 	color : white;
 	visibility : hidden;
 }
-<<<<<<< HEAD
 #profil #account3 .friends form
-=======
-#profil #account3 form
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 {
 	margin-left : 10px;
 	display : inline-block;
 }
-<<<<<<< HEAD
 #account2 span, #account3 span
-=======
-#account2 span
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 {
 	margin : 5px 10px;
 	display : inline-block;
 }
-<<<<<<< HEAD
 #profil #account3 .friends li:hover
 {
 	opacity : 0.7;
 }
 #profil #account3 .friends li:hover .hidden
-=======
-#profil #account3 li:hover
-{
-	opacity : 0.7;
-}
-#profil #account3 li:hover .hidden
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 {
 	opacity : 0.7;
 	visibility : visible;
 }
-<<<<<<< HEAD
 /*********Search Friends*************/
 .research legend
 {
@@ -268,10 +313,6 @@
 }
 
 /*************Search Results************/
-=======
-
-/*************Results************/
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 #results table
 {
 	border-collapse: collapse;
@@ -289,17 +330,9 @@
 #results td, #results th
 {
 	text-align : center;
-<<<<<<< HEAD
 	width : 60px;
 }
 #results .action
 {
 	width : 300px
-=======
-	width : 120px;
-}
-#results .action
-{
-	width : 200px
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 }

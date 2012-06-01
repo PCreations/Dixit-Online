@@ -14,35 +14,59 @@ header
 {
 	top:0px;
 	width:490px;
+<<<<<<< HEAD
+=======
+	margin-right : 20px;
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 	margin : auto;
 }
-<<<<<<< HEAD
 /****************Notifications Flash*********************/
-=======
-/****************Flash_success*********************/
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 #flash
 {
+<<<<<<< HEAD
 	position : absolute;
+=======
+	position : fixed;
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 	top : 0px;
 	left : 0px;
 	width : 100%;
 	background: url('../img/notification.png'); 
 	display : none;
 }
+<<<<<<< HEAD
+=======
+#flash img
+{
+	margin-right : 20px;
+	display : inline-block;
+	vertical-align : bottom;
+}
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 
 #flash p
 {
 	text-align: center;
+<<<<<<< HEAD
 	margin-top : 20px;
 	margin-bottom : 20px;
 	color : white;
 	letter-spacing : 1px;
 }
-<<<<<<< HEAD
 
 /***************Popup*******************/
 #popup
+=======
+	margin-top : 15px;
+	margin-bottom : 15px;
+	color : white;
+	letter-spacing : 1px;
+	
+}
+
+/***************Popup*******************/
+.popup
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 {
 	display:none;  
 	position:fixed;  
@@ -54,11 +78,19 @@ header
 	padding:12px;  
 	font-size:13px;
 }
+<<<<<<< HEAD
 #popup form
 {
 	margin : 10px;
 }
 #popupClose
+=======
+.popup form
+{
+	margin : 10px;
+}
+.popupClose
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 {  
 	font-size:14px;  
 	line-height:14px;  
@@ -71,7 +103,11 @@ header
 	cursor : pointer;
 } 
 
+<<<<<<< HEAD
 #backgroundPopup
+=======
+.backgroundPopup
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 {  
 	display:none;  
 	position:fixed;  
@@ -84,23 +120,33 @@ header
 	border:1px solid #cecece;  
 	z-index:1;  
 }
+<<<<<<< HEAD
 #popupButton
 {
 	display : inline-block;
 }
 #popupButton input
+=======
+.popupButton
+{
+	display : inline-block;
+}
+.popupButton input
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 {
 	margin : 20px 0px 20px 50px;
 	border: #CCC 1px solid;
 	display : inline-block;
 }
+<<<<<<< HEAD
 #popupButton input:hover
+=======
+.popupButton input:hover
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 {
 	border: #999 1px solid;
 	background-color: #ccc;
 }
-=======
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 /****************Search Result****************/
 #result
 {
@@ -188,7 +234,11 @@ aside
 	background-color: rgba(255, 255, 255, 0.5);
 	border-radius : 6px;
 }
+<<<<<<< HEAD
 #home_aside a, #home_subcontent a
+=======
+#home_aside .lien a, #home_subcontent a
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 {
 	background-color: rgba(255, 255, 255, 0.5);
 	text-decoration : none;
@@ -199,57 +249,25 @@ aside
 	margin-left : 30%;
 }
 <<<<<<< HEAD
-=======
-/****************Pop-up*******************/
-#popupBack
-{  
-	display:none;  
-	position:fixed;  
-	_position:absolute; /* IE*/  
-	height:100%;  
-	width:100%;  
-	top:0;  
-	left:0;  
-	background:#000000;  
-	border:1px solid #cecece;  
-	z-index:1;  
-}
-#popup
-{  
-	display:none;  
-	position:fixed;  
-	_position:absolute; /* hack for internet explorer 6*/  
-	height:384px;  
-	width:408px;  
-	background:#FFFFFF;  
-	border:2px solid #cecece;  
-	z-index:2;  
-	padding:12px;  
-	font-size:13px;  
-}  
-#popup h1
-{  
-	text-align:left;  
-	color:#6FA5FD;  
-	font-size:22px;  
-	font-weight:700;  
-	border-bottom:1px dotted #D3D3D3;  
-	padding-bottom:2px;  
-	margin-bottom:20px;  
-}  
-#popupClose
-{  
-	font-size:14px;  
-	line-height:14px;  
-	right:6px;  
-	top:4px;  
-	position:absolute;  
-	color:#6fa5fd;  
-	font-weight:700;  
-	display:block;  
-}
->>>>>>> 97a1e9ca2bd50688247d4c034aef206cee162684
 
+=======
+#home_aside .lien a
+{
+	margin-left : 20%;
+}
+#home_aside  a
+{
+	text-decoration : none;
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+	font-size : 1em;
+	color : black;
+	margin : 0% 5%;
+}
+#home_aside  p
+{
+	margin : 0px 20px 20px 30px;
+}
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 /****************Footer*********************/
 footer
 {

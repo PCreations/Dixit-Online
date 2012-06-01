@@ -19,10 +19,6 @@ function filterGames($name, $nbplayers, $nbpoints, $deck, $public) {
 	if ($public=='on'){
 		$prequery.=' AND ga.ga_password IS NULL';
 	}
-
-	debug($prequery);
-	
-
 	$query = $db->prepare('SELECT us.us_name, ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, ga.ga_points_limit, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga
 						INNER JOIN decks as de
@@ -33,9 +29,6 @@ function filterGames($name, $nbplayers, $nbpoints, $deck, $public) {
 						ON total.ga_id = ga.ga_id
 						WHERE (total.nbTotalPlayer < ga.ga_nb_players)
 						'.$prequery);
-						
-	
-	
 	if (!empty($name)){
 		$name = '%'.$name.'%';
 		$query->bindParam(':name', $name, PDO::PARAM_STR);
@@ -50,7 +43,6 @@ function filterGames($name, $nbplayers, $nbpoints, $deck, $public) {
 		$query->bindParam(':deck', $deck, PDO::PARAM_INT);
 	}
 
-	
 	$query->execute();
 						
 	return $query->fetchAll(PDO::FETCH_ASSOC);

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html>
     <head>
 		<meta charset="UTF-8"/>
@@ -8,7 +8,7 @@
     </head>
 	<body>
 		<header>
-			<img src="<?php echo IMG_DIR;?>titre.png">
+			<img src="<?php echo IMG_DIR;?>titre.png"/>
 		</header>
 		<section>
 			<?php echo $contentForLayout;?>

@@ -348,38 +348,38 @@
 	display : inline-block;
 	left : -625px;
 	height : 450px;
-	width : 1810px;
+	width : 2200px;
 }
-/*#account4 #sides
+#account4 #sides
 {
-	-moz-transition-duration: 0.5s;-moz-transition-property:-moz-transform;-moz-transition-timing-function: ease;
-	-webkit-transition-duration: 0.5s;-webkit-transition-property:-webkit-transform;-webkit-transition-timing-function: ease;
-	-o-transition-duration: 0.5s;-o-transition-property:-o-transform;-o-transition-timing-function: ease;
-	transition-duration: 0.5s;transition-property:transform;transition-timing-function: ease;
-}*/
+
+}
 #account4 #side2
 {
 	background-color :blue;
+	margin-right : 40px;
 }
 #account4 #side1
 {
 	background-color :pink;
+	margin-right : 40px;
 }
 #account4 #side3
 {
 	background-color :yellow;
 }
-#account4 .fleche-droite
+#account4 #fleche-droite
 {
 	position : relative;
 	top : 160px;
 	left : 520px;
 	display : inline-block;
+	visibility : visible;
 	width : 50px;
 	z-index : 20;
 	cursor : pointer;
 }
-#account4 .fleche-gauche
+#account4 #fleche-gauche
 {
 	position : relative;
 	top : 160px;
@@ -388,6 +388,7 @@
 	width : 50px;
 	z-index : 20;
 	cursor : pointer;
+	visibility : visible;
 }
 #account4 select, #account4 p
 {
@@ -403,6 +404,7 @@
 #account4 #gallery_conteneur
 {
 	background-color: rgba(255, 255, 255, 0.5);
+	display : inline-block;
 	border-radius : 6px;
 	padding : 10px 5px 10px 10px;
 	margin : 10px 0px;

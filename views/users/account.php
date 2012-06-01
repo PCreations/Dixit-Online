@@ -104,8 +104,8 @@
 	</div>
 	
 	<div id="account4">
-			<img  class="fleche-gauche" onclick="displaySide('gauche');" src="<?php echo IMG_DIR;?>fleche-gauche.png" />
-			<img  class="fleche-droite" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite.png" />
+			<img  id="fleche-gauche" onclick="displaySide('gauche');" src="<?php echo IMG_DIR;?>fleche-gauche.png" />
+			<img  id="fleche-droite" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite.png" />
 		<div id="sides">
 			<div id="side1">
 				<h1> YES !!!</h1>

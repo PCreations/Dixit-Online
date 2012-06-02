@@ -187,7 +187,7 @@
 		$('#handForm').submit();
 	}
 
-	setInterval(function(){
+	/*setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			var $elem = $('#chatMessages');
 			$('#chatMessages').empty();
@@ -209,7 +209,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 5000);
+	}, 5000);*/
 	
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);
@@ -290,11 +290,11 @@
 	// FlipCards
 	$("#table .carte").hover(function(){
 		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
-		$(this).children('.image_carte').css('-webkit-transform','rotateY(180deg)');
+		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(180deg)');
 	}, 
 	  function () {
 		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
-		$(this).children('.image_carte').css('-webkit-transform','rotateY(0deg)');
+		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(0deg)');
 	  });
 
 </script>

@@ -31,7 +31,7 @@ function getCardInfos($cardID, $fields = array('*')) {
 						FROM cards
 						WHERE ca_id = ?');
 	$query->execute(array($cardID));
-	return $query->fetchAll(PDO::FETCH_ASSOC);
+	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
 function getUserCards($userID) {
@@ -84,18 +84,24 @@ function getStorytellerCardInBoard($turnID) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
-function getCardsInHand($userID, $turnID) {
+function getCardsInHand($userID, $turnID, $gameID) {
 	global $db;
 
 	$query = $db->prepare('SELECT c.ca_id, c.ca_name, c.ca_image
 						FROM cards as c
 						INNER JOIN hands as h
 						ON h.ca_id = c.ca_id
+						INNER JOIN turns as t
+						ON t.tu_id = h.tu_id
+						INNER JOIN games as g
+						ON g.ga_id = t.ga_id
 						WHERE h.us_id = :userID
 						AND h.tu_id <= :turnID
-						AND h.tu_played_id IS NULL');
+						AND h.tu_played_id IS NULL
+						AND g.ga_id = :gameID');
 	$query->execute(array('userID' => $userID,
-						'turnID' => $turnID));
+						'turnID' => $turnID,
+						'gameID' => $gameID));
 
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }

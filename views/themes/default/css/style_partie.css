@@ -90,6 +90,7 @@
 	-webkit-backface-visibility: hidden;
 }
 
+
 #table .image_carte
 {
 	position:relative;
@@ -99,6 +100,18 @@
 	z-index:1;
 	box-shadow: 6px 6px 6px #352d23;
 	cursor: url("../img/zoom.cur"), default;
+}
+
+#table .image_carte_flip {
+	position:relative;
+	width:100%;
+	margin:0px;
+	top:-90px;
+	box-shadow: 6px 6px 6px #352d23;
+	-webkit-transform: rotateY(000deg);
+    -webkit-transition: -webkit-transform 1500ms ease;
+    -webit-transform-style: preserve-3d;
+	-webkit-backface-visibility: hidden;
 }
 
 #table .hidden_fance {

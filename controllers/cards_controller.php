@@ -57,7 +57,7 @@ function addCard($gameID, $turnID, $cardID) {
 	else {
 		$userID = $_SESSION[USER_MODEL][USER_PK];
 
-		if(!_isOwnedBy($cardID, $userID, $turnID)) { //Vérification si la carte appartient bien au joueur
+		if(!_isOwnedBy($cardID, $userID, $turnID, $gameID)) { //Vérification si la carte appartient bien au joueur
 			setMessage('Vous essayer d\'ajouter une carte qui ne vous appartient pas', FLASH_ERROR);
 			redirect('games', 'play', array($gameID));
 		}
@@ -72,8 +72,8 @@ function addCard($gameID, $turnID, $cardID) {
 	}
 }
 
-function _isOwnedBy($cardID, $userID, $turnID) {
-	$cardsIDs = getSpecificArrayValues(getCardsInHand($userID, $turnID), 'ca_id');
+function _isOwnedBy($cardID, $userID, $turnID, $gameID) {
+	$cardsIDs = getSpecificArrayValues(getCardsInHand($userID, $turnID, $gameID), 'ca_id');
 	return in_array($cardID, $cardsIDs);
 }
 

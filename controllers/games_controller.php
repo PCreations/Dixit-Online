@@ -244,7 +244,6 @@ function play($gameID) {
 	$JS_FILES[] = 'fancybox2/source/helpers/jquery.fancybox-buttons.js';
 	$JS_FILES[] = 'fancybox2/source/helpers/jquery.fancybox-thumbs.js';
 	$JS_FILES[] = 'fancybox2/source/helpers/jquery.fancybox-media.js';
-	$JS_FILES[] = 'jquery.blockUI.js';
 
 
 	$CSS_FILES[] = 'style_partie.css';
@@ -320,7 +319,6 @@ function play($gameID) {
 		$CSS_FILES = array_pop($CSS_FILES);
 		$JS_FILES = array_pop($JS_FILES);
 	}
-	$JS_FILES = array_pop($JS_FILES);
 	
 }
 
@@ -413,7 +411,7 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 
 		//Alors on va récupérer sa main et son statut
 		if($playerID == $_SESSION[USER_MODEL][USER_PK]) {
-			$playersInfos[$i]['hand'] = getCardsInHand($_SESSION[USER_MODEL][USER_PK], $currentTurnID);
+			$playersInfos[$i]['hand'] = getCardsInHand($_SESSION[USER_MODEL][USER_PK], $currentTurnID, $gameID);
 		}
 
 		$i++;
@@ -653,6 +651,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	foreach($cardsIDs as $cardID) {
 		$cards[] = getCardInfos($cardID);
 	}
+
 	if($phase == BOARD_PHASE) {
 		//récupération de la carte du joueur
 		foreach($cards as $card) {
@@ -700,24 +699,6 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 
 		foreach($cards as $card) {
 			$userVotesIDs = getCardVoteInTurn($card['ca_id'], $turn['tu_id']);
-			/*$board .= '<table>';
-				$board .= '<caption>Votes</caption>';
-				$board .= '<tr>';
-					$board .= '<td>';
-					foreach($userVotesIDs as $user) {
-						$userVoteInfos = getUserInfos($user['us_id'], array('us_id', 'us_pseudo'));
-						$board .= $userVoteInfos['us_pseudo'] .'<br />';
-					}
-					$board .= '</td>';
-				$board .= '</tr>';
-				$board .= '<tr>';
-					$board .= '<td>TOTAL : '. count($userVotesIDs) .'</td>';
-				$board .= '</tr>';
-				$board .= '<tr>';
-					
-					$board .= '<td><img '. $style .' src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></td>';
-				$board .= '</tr>';
-			$board .= '</table>';*/
 			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid white;border-radius: 5px;"' : '';
 			
 			$owner=getCardOwner($card['ca_id'], $turn['tu_id']);
@@ -729,7 +710,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 				$back_content.=$pseudo."<br>";
 			}
 			
-			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><div class="back_carte"><img class="image_back_carte" src="' . IMG_DIR . 'cards/back_empty.jpg"/><p>'.$back_content.'</p></div><img '.$style.' class="image_carte" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" /></div>';
+			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><div class="back_carte"><img class="image_back_carte" src="' . IMG_DIR . 'cards/back_empty.jpg"/><p>'.$back_content.'</p></div><img '.$style.' class="image_carte_flip" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" /></div>';
 		}
 		$board .= '<div id="stIndice"><input type="button" id="readyForNextTurn" onclick="readyForNextTurn();" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
 	}
@@ -740,7 +721,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 }
 
 function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus) {
-	$hand = getCardsInHand($userID, $turnID);
+	$hand = getCardsInHand($userID, $turnID, $gameID);
 	$handDisplay = '<div id="cartes">';
 	switch($phase) {
 		case STORYTELLER_PHASE:
@@ -890,7 +871,7 @@ function _ajaxData($gameID, $oldPhase, $oldTurnID) {
 	$storytellerID = _getCurrentGameTurn($gameID, 'us_id');
 	$turnComment = _getCurrentGameTurn($gameID, 'tu_comment');
 	$storyteller = getOneRowResult(getUserInfos($storytellerID, array('us_pseudo')), 'us_pseudo');
-	$nextStoryteller = getOneRowResult(getUserInfos($nextStorytellerID, array('us_pseudo')), 'us_pseudo');
+	$nextStoryteller = getOneRowResult(getUserInfos($storytellerID, array('us_pseudo')), 'us_pseudo');
 	$phase = _getActualGamePhase($gameID, $turnID);
 	$actionStatus = _checkAction($phase, $userID, $turnID);
 	$phaseInfos = json_encode(_getPhaseInfos($userID == $storytellerID, $phase, $actionStatus));

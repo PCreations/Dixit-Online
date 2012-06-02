@@ -1,26 +1,21 @@
+<<<<<<< HEAD
+/****************GÈnÈralitÈs*********************/
+#login, #register, #profil, #results
+{
+	width:630px;
+	margin : auto;
+	padding : 10px;
+	background : url('../img/bg_main.png') no-repeat center; 
+		-webkit-background-size: cover; 
+=======
 /****************G√©n√©ralit√©s*********************/
-#results
+#profil, #results
 {
 	width:660px;
 	height:336px;
 	margin : auto;
 	padding : 10px;
 	background : url('../img/parchemin_compte.png') no-repeat center; 
-	-webkit-background-size: cover; 
-	-moz-background-size: cover; 
-	-o-background-size: cover; 
-	background-size: cover;
-
-}
-#profil
-{
-	width : 708px;
-	height : 520px;
-	margin-top : 20px;
-	margin-left : auto;
-	margin-right: auto;
-	padding : 10px;
-	background : url('../img/bg_square2.png') no-repeat top; 
 	-webkit-background-size: cover; 
 	-moz-background-size: cover; 
 	-o-background-size: cover; 
@@ -47,19 +42,75 @@
 	background-position : relative;
 	background : url('../img/bg_main.png') no-repeat center; 
 	-webkit-background-size: cover; 
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 	-moz-background-size: cover; 
 	-o-background-size: cover; 
 	background-size: cover;
 	border-radius : 6px;
+<<<<<<< HEAD
+}
+#login form, #register form, #profil #account1 form
+=======
 	z-index : 2;
 }
 
+#login .retour
+{
+	position : absolute;
+	top : 44%;
+	width : 60px;
+	height :43px;
+	left : 32%;
+	z-index : 1;
+}
+#register .retour
+{
+	position : absolute;
+	top : 44%;
+	width : 60px;
+	height :43px;
+	left : 29%;
+	z-index : 1;
+}
+#login .oups
+{
+	position : absolute;
+		top : 50%;
+	width : 60px;
+	height :43px;
+	left : 32%;
+	z-index : 1;
+	cursor : pointer;
+}
+
+#login .retour, #login .oups, #register .retour
+{
+	-moz-transition-duration: 0.5s;-moz-transition-property:-moz-transform;-moz-transition-timing-function: ease;
+	-webkit-transition-duration: 0.5s;-webkit-transition-property:-webkit-transform;-webkit-transition-timing-function: ease;
+	-o-transition-duration: 0.5s;-o-transition-property:-o-transform;-o-transition-timing-function: ease;
+	transition-duration: 0.5s;transition-property:transform;transition-timing-function: ease;
+}
+
+#login .retour:hover, #login .oups:hover, #register .retour:hover
+{
+	-webkit-transform: translateX(-10px);
+	-moz-transform: translateX(-10px);
+	-o-transform: translateX(-10px);
+	transform: translateX(-10px);
+}
+
+
 #login form, #profil #account1 form, #register form
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 {
 	width : 70%;
 	margin : auto;
 }
-#login
+<<<<<<< HEAD
+#login, #register, #profil
+=======
+#login, #profil
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 {
 	margin-top : 40px;
 }
@@ -117,13 +168,15 @@
 }
 
 /****************Account*********************/
+<<<<<<< HEAD
+=======
 
 .image_link
 {
 	cursor:pointer;
 	margin-top:10px;
 	margin-left:40px;
-	margin-bottom:15px;
+	margin-bottom:20px;
 }
 
 .lower_textimg
@@ -132,6 +185,7 @@
 	top:7px;
 }
                   
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 #profil p, #profil h1
 {
 	margin : 0px 20px;
@@ -152,7 +206,7 @@
 	display : none;
 }
 
-#profil #account1 a, #results .link a, #account4 .link a
+#profil #account1 a, #results .link a
 {
 	
 	background-color: rgba(255, 255, 255, 0.5);
@@ -282,136 +336,3 @@
 {
 	width : 300px
 }
-/************Decks***************/
-#account4
-{
-	padding : 0px 60px 0px 80px;
-	overflow :hidden;
-}
-#account4 #side1, #account4 #side2, #account4 #side3
-{
-	display : inline-block;
-	width : 600px;
-	height : 450px;
-	vertical-align : top;
-}
-#account4 #sides
-{
-	position : relative;
-	top : -45px;
-	display : inline-block;
-	left : -710px;
-	height : 450px;
-	width : 2000px;
-}
-
-#account4 #side2
-{
-	margin-right : 80px;
-}
-#account4 #side1
-{
-	margin-right : 80px;
-}
-#account4 #fleche-droite-vide
-{
-	position : relative;
-	top : 160px;
-	left : 520px;
-	display : inline-block;
-	visibility : visible;
-	width : 50px;
-	z-index : 20;
-	cursor : pointer;
-}
-#account4 #fleche-gauche-vide
-{
-	position : relative;
-	top : 160px;
-	left : -80px;
-	display : inline-block;
-	width : 50px;
-	z-index : 20;
-	cursor : pointer;
-	visibility : visible;
-}
-#profil #account4 #side3 form
-{
-	width : 20%;
-	display : inline-block;
-}
-#profil #account4  form input
-{
-	border: #CCC 1px solid;
-	display : inline-block;
-}
-#profil #account4  form input:hover 
-{
-	border: #999 1px solid;
-	background-color: #ccc;
-}
-#account4 select, #account4 p
-{
-	display : inline-block;
-}
-#account4 #gallery
-{
-	margin : auto ;
-	height : 360px;
-	width : 583px;
-	overflow : auto;
-}
-
-#account4 #gallery_conteneur
-{
-	background-color: rgba(255, 255, 255, 0.5);
-	display : inline-block;
-	border-radius : 6px;
-	padding : 10px 5px 10px 10px;
-	margin : 10px 0px;
-}
-
-#account4 .carte
-{
-	display:inline-block;
-	position:relative;
-	width:15%; /*d√©pend du nombre de cartes*/
-	margin-right: 5px;
-}
-
-#account4 .image_carte img
-{
-	width:100%; /*d√©pend du nombre de cartes*/
-}
-
-#account4 .image_carte
-{
-	position:relative;
-	width:100%;
-	margin:0px;
-	border-radius : 8px;
-	z-index:1;
-	cursor: url("../img/zoom.cur"), default;
-}
-#selectable .ui-state-default, #selectable .bouton
-{
-	position : absolute;
-	top : 75%;
-	left :38%;
-	width:22px;
-	z-index:10;
-	cursor: pointer;
-	background-image: url('../img/bouton_dore.png');
-}
-.bouton  .ui-selecting, .bouton .ui-selected 
-{
-	visibility : visible;
-}
-
-#selectable  .ui-selecting ,#selectable .ui-selected 
-{ 
-	visibility : hidden;
-}
-
-
-

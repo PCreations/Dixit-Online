@@ -1,8 +1,11 @@
 <?php
+<<<<<<< HEAD
 /*define('DB_HOST', 'db3030.1and1.fr');
 define('DB_LOGIN', 'dbo355807268');
 define('DB_PASSWORD', 'dixitdixit');
 define('DB_NAME', 'db355807268');*/
+=======
+>>>>>>> 6e9c1a8098e6a05157966a17f97aed104c68f451
 define('DB_HOST', '127.0.0.1');
 define('DB_LOGIN', 'user');
 define('DB_PASSWORD', '');

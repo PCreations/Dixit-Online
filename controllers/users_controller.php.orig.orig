@@ -1,6 +1,9 @@
 <?php
 
-useModels(array('user', 'card', 'deck'));
+<<<<<<< HEAD
+useModels(array('user', 'contact'));
+=======
+useModels(array('user', 'deck'));
 define('SEND_INVITATION', 2);
 define('ACCEPT_INVITATION', 1);
 define('DECLINE_INVITATION', 0);
@@ -12,9 +15,10 @@ function check_date(){
 		case 4: case 6: case 9: case 11:
 			return(0 < $_POST['day'] && $_POST['day'] <= 30 && 0 < $_POST['year']);
 		case 2:
-			return(0 < $_POST['day'] && 0 < $_POST['year'] && ($_POST['day'] <= 28 || ($_POST['day'] == 29 && ((($_POST['year'] % 4) == 0 && ($_POST['year'] % 100) != 0) || ($_POST['year'] % 400) == 0))));
+			return(0 < $_POST['day'] && 0 < $_POST['year'] && ($_POST['day'] <= 28 || ($_POST['year'] == 29 && ((($_POST['year'] % 4) == 0 && ($_POST['year'] % 100) != 0) || ($_POST['year'] % 400) == 0))));
 	}
 }
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 
 function register() {
 	if(isset($_POST['register'])) {
@@ -86,26 +90,20 @@ function login() {
 }
 
 function account($id = null) {
+<<<<<<< HEAD
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	
+	if(isset($_POST['update'])) { //Formulaire de changement de données
+			extract($_POST);
+			updateUser($id, $name, $lastname, $mail);
+=======
 	global $JS_FILES;
-	global $CSS_FILES;
 	$JS_FILES[] = 'script_users.js';
-	$JS_FILES[] = 'flexcroll.js';
-	$CSS_FILES[] = 'flexcrollstyles.css';
 	$userID = $_SESSION[USER_MODEL][USER_PK];
 	
 	/* Récupération des decks de l'utilisateur */
-	$userDecks = getUserDecks($userID, array('de_id', 'de_name'));
-	
-	if(!empty($userDecks)) {
-		foreach($userDecks as $deck){
-			$userDecksInfo = getDeckInfos($deck['de_id'], array('us_id', 'de_name', 'de_status'));
-			$nbCards = nbCartes($deck['de_id']);	
-			$cardsInDeck = getCardsInDeckInfo($deck['de_id']);
-		}
-	}else{
-		$cardsInDeck = -1;
-	}
-	
+	$userDecks = _getUserDecks($userID);
+
 	/* Récupération des cartes ajoutées par l'utilisateur */
 	$userCards = getUserCards($userID);
 
@@ -114,10 +112,14 @@ function account($id = null) {
 			updateUser($userID, $name, $lastname, $birthdate, $mail);
 			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
 			redirect('users', 'account', array( $userID));
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 	}
 	
 	if(isset($_POST['updatePwd'])) { //Formulaire de changement de mot de passe
 			extract($_POST);
+<<<<<<< HEAD
+			updateUser($id, $pwd);
+=======
 			$userInfos = checkLogin($pseudo, encrypt($oldPass));
 			debug($userInfos);
 			if(encrypt($password) != encrypt($passConfirm)) {
@@ -128,12 +130,16 @@ function account($id = null) {
 			updatePwd($id, $password);
 			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
 			redirect('users', 'account', array( $userID));
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 	}
 	
 	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
 			extract($_POST);
 			$results = approchSearchUser($login);
+<<<<<<< HEAD
+=======
 			$user = getUserInfos($id);
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 			$reelfriends = getSpecificArrayValues(getReelFriends($id), 'us_pseudo');
 			$askedfriends = getSpecificArrayValues(getAskedFriends($id), 'us_pseudo');
 			$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($id), 'us_pseudo');
@@ -141,6 +147,9 @@ function account($id = null) {
 				if(!in_array($result['us_pseudo'], $reelfriends)) {
 					if(!in_array($result['us_pseudo'], $askedfriends)) {
 						if(!in_array($result['us_pseudo'], $whoAskedMe)) {
+<<<<<<< HEAD
+							$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_pseudo'], '2'));
+=======
 							if($result['us_pseudo'] != $user['us_pseudo']){
 							debug($result);
 								$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2'));
@@ -148,6 +157,7 @@ function account($id = null) {
 							else{
 								$result['action'] = 'C\'est vous !';
 							}
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 						}
 						else{
 							$result['action'] = 'Cette personne vous a demandé en amis';
@@ -166,25 +176,21 @@ function account($id = null) {
 							'login' => $login);			
 			render('research', $vars);
 	}
-	
-	if(isset($_POST['deck'])) { //Formulaire de création d'un deck
-			extract($_POST);
-			if(!isset($public)){
-			$public='0';
-			}
-			addDeck($userID, $deck_name, $public);
-			setMessage('Votre nouveau deck est prêt', FLASH_SUCCESS);
-			redirect('users', 'account', array( $userID));
-	}
 	$user = getUserInfos($id);
 	$reelFriends = getReelFriends($id);
 	$askedFriends = getAskedFriends($id);
 	$invitations = getFriendsWhoAskedMe($id);
 	if (is_array($invitations)){ //gérer les invitations venant d'autres utilisateurs
 		foreach($invitations as &$invitation){
+<<<<<<< HEAD
+			setMessage('Vous avez reçu une demande d\'amis', FLASH_MESSAGE);
+			$invitation['accept'] = createLink('Accepter', 'users', 'newFriend', array($invitation['us_pseudo'], '1'));
+			$invitation['refuse'] = createLink('Refuser', 'users', 'newFriend', array($invitation['us_pseudo'], '0'));
+=======
 			setMessage('Vous avez reçu une demande d\'amis', FLASH_INFOS);
 			$invitation['accept'] = createLink('Accepter', 'users', 'newFriend', array($invitation['us_id'], ACCEPT_INVITATION));
 			$invitation['refuse'] = createLink('Refuser', 'users', 'newFriend', array($invitation['us_id'], DECLINE_INVITATION));
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 		}
 	}
 	$nbFriends = countFriends($id);
@@ -192,15 +198,36 @@ function account($id = null) {
 					'reelFriends' => $reelFriends,
 					'askedFriends' => $askedFriends,
 					'invitations' => $invitations,
+<<<<<<< HEAD
+					'nbFriends' => $nbFriends);
+	render('account', $vars);
+}
+function newFriend($pseudo, $action){
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	$friendID = exactSearchUser($pseudo);
+	$fr_id = $friendID['us_id'];
+	//$action=2 : envoyer une invitation
+	//$action=1 : accepter une invitation
+	//$action=0 : refuser une invitation
+	
+	if(isLogged()) {
+		if($action == 2){
+			invitFriend($fr_id, $userID);
+			setMessage('Votre invitation a bien été envoyée', FLASH_SUCCESS);
+			
+		}
+		if($action == 1){
+			acceptFriend($fr_id, $userID);
+			setMessage('Vous avez accepté l\'invitation', FLASH_SUCCESS);
+		}
+		if($action == 0){
+			refuseFriend($fr_id, $userID);
+			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
+=======
 					'nbFriends' => $nbFriends,
-					'userDecks' => $userDecks,
-					'userDecksInfo' => $userDecksInfo,
-					'cardsInDeck' => $cardsInDeck,
-					'nbCards' => $nbCards);
+					'userCards' => $userCards);
 	render('account', $vars);
 	$JS_FILES = array_pop($JS_FILES);
-	$JS_FILES = array_pop($JS_FILES);
-	$CSS_FILES = array_pop($CSS_FILES);
 }
 
 function newFriend($fr_id, $action){
@@ -220,12 +247,24 @@ function newFriend($fr_id, $action){
 				refuseFriend($fr_id, $userID);
 				setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
 				break;
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 		}
 	}
 	else{
 		setMessage('Vous n\'êtes pas connecté !', FLASH_ERROR);
 	}
+<<<<<<< HEAD
+	redirect('users', 'account', array( $userID));
+}
+
+function sendInvitation($pseudo){
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	setMessage('Une invitation a été envoyée', FLASH_SUCCESS);
+	$vars = array($userID);
+	render('account', $vars);
+=======
 	redirect('users', 'account', array($userID));
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 }
 
 function logout() {

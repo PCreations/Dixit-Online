@@ -95,8 +95,11 @@ function account($id = null) {
 	
 	/* Récupération des decks de l'utilisateur */
 	$userDecks = getUserDecks($userID, array('de_id', 'de_name'));
+	
 	if(!empty($userDecks)) {
 		foreach($userDecks as $deck){
+			$userDecksInfo = getDeckInfos($deck['de_id'], array('us_id', 'de_name', 'de_status'));
+			$nbCards = nbCartes($deck['de_id']);	
 			$cardsInDeck = getCardsInDeckInfo($deck['de_id']);
 		}
 	}else{
@@ -163,6 +166,16 @@ function account($id = null) {
 							'login' => $login);			
 			render('research', $vars);
 	}
+	
+	if(isset($_POST['deck'])) { //Formulaire de création d'un deck
+			extract($_POST);
+			if(!isset($public)){
+			$public='0';
+			}
+			addDeck($userID, $deck_name, $public);
+			setMessage('Votre nouveau deck est prêt', FLASH_SUCCESS);
+			redirect('users', 'account', array( $userID));
+	}
 	$user = getUserInfos($id);
 	$reelFriends = getReelFriends($id);
 	$askedFriends = getAskedFriends($id);
@@ -181,7 +194,9 @@ function account($id = null) {
 					'invitations' => $invitations,
 					'nbFriends' => $nbFriends,
 					'userDecks' => $userDecks,
-					'cardsInDeck' => $cardsInDeck);
+					'userDecksInfo' => $userDecksInfo,
+					'cardsInDeck' => $cardsInDeck,
+					'nbCards' => $nbCards);
 	render('account', $vars);
 	$JS_FILES = array_pop($JS_FILES);
 	$JS_FILES = array_pop($JS_FILES);

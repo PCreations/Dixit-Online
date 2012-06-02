@@ -29,15 +29,15 @@ function displaySide(i){
 
 function displayArrow(){
 		j = document.getElementById('sides').offsetLeft;
-		if(j > '-900' && j < '-800'){
-			document.getElementById('fleche-droite').style.visibility = 'hidden';
+		if(j > '-1000' && j < '-900'){
+			document.getElementById('fleche-droite-vide').style.visibility = 'hidden';
 		}else{
-			document.getElementById('fleche-droite').style.visibility = 'visible';
+			document.getElementById('fleche-droite-vide').style.visibility = 'visible';
 		}
 		if(j < '400' && j > '300'){
-			document.getElementById('fleche-gauche').style.visibility = 'hidden';
+			document.getElementById('fleche-gauche-vide').style.visibility = 'hidden';
 		}else{
-			document.getElementById('fleche-gauche').style.visibility = 'visible';
+			document.getElementById('fleche-gauche-vide').style.visibility = 'visible';
 		}
 	}
 

@@ -54,52 +54,6 @@
 	z-index : 2;
 }
 
-#login .retour
-{
-	position : absolute;
-	top : 44%;
-	width : 60px;
-	height :43px;
-	left : 32%;
-	z-index : 1;
-}
-#register .retour
-{
-	position : absolute;
-	top : 44%;
-	width : 60px;
-	height :43px;
-	left : 29%;
-	z-index : 1;
-}
-#login .oups
-{
-	position : absolute;
-		top : 50%;
-	width : 60px;
-	height :43px;
-	left : 32%;
-	z-index : 1;
-	cursor : pointer;
-}
-
-#login .retour, #login .oups, #register .retour
-{
-	-moz-transition-duration: 0.5s;-moz-transition-property:-moz-transform;-moz-transition-timing-function: ease;
-	-webkit-transition-duration: 0.5s;-webkit-transition-property:-webkit-transform;-webkit-transition-timing-function: ease;
-	-o-transition-duration: 0.5s;-o-transition-property:-o-transform;-o-transition-timing-function: ease;
-	transition-duration: 0.5s;transition-property:transform;transition-timing-function: ease;
-}
-
-#login .retour:hover, #login .oups:hover, #register .retour:hover
-{
-	-webkit-transform: translateX(-10px);
-	-moz-transform: translateX(-10px);
-	-o-transform: translateX(-10px);
-	transform: translateX(-10px);
-}
-
-
 #login form, #profil #account1 form, #register form
 {
 	width : 70%;
@@ -169,7 +123,7 @@
 	cursor:pointer;
 	margin-top:10px;
 	margin-left:40px;
-	margin-bottom:20px;
+	margin-bottom:15px;
 }
 
 .lower_textimg
@@ -332,6 +286,7 @@
 #account4
 {
 	padding : 0px 60px 0px 80px;
+	overflow :hidden;
 }
 #account4 #side1, #account4 #side2, #account4 #side3
 {
@@ -339,12 +294,11 @@
 	width : 600px;
 	height : 450px;
 	vertical-align : top;
-	
 }
 #account4 #sides
 {
 	position : relative;
-	top : -60px;
+	top : -45px;
 	display : inline-block;
 	left : -710px;
 	height : 450px;
@@ -353,19 +307,13 @@
 
 #account4 #side2
 {
-	background-color :blue;
 	margin-right : 80px;
 }
 #account4 #side1
 {
-	background-color :pink;
 	margin-right : 80px;
 }
-#account4 #side3
-{
-	background-color :yellow;
-}
-#account4 #fleche-droite
+#account4 #fleche-droite-vide
 {
 	position : relative;
 	top : 160px;
@@ -376,7 +324,7 @@
 	z-index : 20;
 	cursor : pointer;
 }
-#account4 #fleche-gauche
+#account4 #fleche-gauche-vide
 {
 	position : relative;
 	top : 160px;
@@ -387,6 +335,21 @@
 	cursor : pointer;
 	visibility : visible;
 }
+#profil #account4 #side3 form
+{
+	width : 20%;
+	display : inline-block;
+}
+#profil #account4  form input
+{
+	border: #CCC 1px solid;
+	display : inline-block;
+}
+#profil #account4  form input:hover 
+{
+	border: #999 1px solid;
+	background-color: #ccc;
+}
 #account4 select, #account4 p
 {
 	display : inline-block;
@@ -395,6 +358,7 @@
 {
 	margin : auto ;
 	height : 360px;
+	width : 583px;
 	overflow : auto;
 }
 

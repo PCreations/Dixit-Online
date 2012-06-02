@@ -104,14 +104,47 @@
 	</div>
 	
 	<div id="account4">
-			<img  id="fleche-gauche" onclick="displaySide('gauche');" src="<?php echo IMG_DIR;?>fleche-gauche.png" />
-			<img  id="fleche-droite" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite.png" />
+			<img  id="fleche-gauche-vide" onclick="displaySide('gauche');" src="<?php echo IMG_DIR;?>fleche-gauche-vide.png" />
+			<img  id="fleche-droite-vide" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite-vide.png" />
 		<div id="sides">
 			<div id="side1">
-				<h1> YES !!!</h1>
+				<p>Creez un nouveau deck</p></br></br>
+				<form method="POST">
+					<input type="text" name="deck_name" value="Nom"></input>
+					<input type="checkbox" name='public'><font size="1">Public</font>
+					<input type="hidden" name="deck"></input>
+					<input type="submit" value="Creer">
+				</form>
+				</br></br>
+				<p>Ajouter une carte</p></br></br>
+				<form method="POST">
+					<input type="text" name="card_name" value="Nom"></input>
+					<input type="file" name="card_image"></input>
+					<input type="hidden" name="card"></input>
+					<input type="submit" value="Ajouter">
+				</form>
 			</div>
 			<div id="side2">
-				<h1> YES 2 !!!</h1>
+				<p> Vos decks  </p>
+				<table>
+					<head>
+							<th>Nom</th>
+							<th>Créateur</th>
+							<th>Nombre de cartes</th>
+							<th>Statut</th>
+					</head>
+					<body><?php debug($userDecksInfo); ?>
+						<?php foreach($userDecksInfo as $deck): ?>
+						
+						<tr>
+							<td><?php echo $deck['de_name'];?></td>
+							<td><?php echo $deck['us_name'];?></td>
+							<td><?php echo $deck['nbCards'];?></td>
+							<td><?php echo $deck['de_status'];?></td>
+						</tr>
+						<?php endforeach; ?>
+					</body>
+				</table>
 			</div>
 			<div id="side3">
 				<p>Afficher le groupe de carte :</p> 
@@ -138,14 +171,18 @@
 			</div>
 			<p class="link"><?php echo createLink('supprimer', 'users', ''); ?></p>
 			<p>Ajouter dans le groupe :</p> 
-				<select name="deck">
-					<option value="-1">Toutes</option>
-								<?php foreach($userDecks as $deck): ?>
-									<option value='
-									<?php echo $deck['de_id'];?>
-									'><?php echo $deck['de_name'];?></option>
-									<?php endforeach; ?>
-				</select>
+				<form method="POST">
+					<select name="deck">
+						<option value="-1">Toutes</option>
+									<?php foreach($userDecks as $deck): ?>
+										<option value='
+										<?php echo $deck['de_id'];?>
+										'><?php echo $deck['de_name'];?></option>
+										<?php endforeach; ?>
+					</select>
+					<input type="hidden" name="moveCards" />
+					<input class="submit" type="submit" value="ok">
+				</form>
 			</div>
 		</div>
 	</div>

@@ -124,14 +124,13 @@ function room($gameID) {
 	}
 	$userID = $_SESSION[USER_MODEL][USER_PK];
 
-	$playersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
-	if(!in_array($userID, $playersInGame)) {
+	if(!isInGame($gameID, $userID)) {
 		setMessage('Vous ne jouez pas dans cette partie', FLASH_ERROR);
 		redirect('games');
 	}
 	if(!checkPlayersInGame($gameID)) {
 		setMessage('La partie commence !', FLASH_INFOS);
-		redirect('games', 'play', $gameID);
+		redirect('games', 'play', array($gameID));
 	}
 	$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
 	$gameInfos['host'] = getOneRowResult(getUserInfos($gameInfos['us_id']), 'us_pseudo');
@@ -147,13 +146,20 @@ function room($gameID) {
 }
 
 function test() {
-	$nbPlayers = 3;
-	$test = 0;
-	if(($test == ($nbPlayers-1)) || ($test == 0)) {
-		echo 'OK';
-	}
-	else {
-		echo 'PAS OK';
+	$pick = getPick(2);
+	if(empty($pick)) {
+		//On sélectionne toutes les cartes qui ont déjà été posée pour cette partie
+		$discardedCards = getSpecificArrayValues(getDiscardedCards(2), 'ca_id');
+		debug($discardedCards);
+
+		//Réinsertion dans la pioche des cartes après les avoir mélangées
+		shuffle($discardedCards);
+
+		debug($discardedCards);
+
+		foreach($discardedCards as $order => $cardID) {
+			savePick(2, $order, $cardID);
+		}
 	}
 }
 
@@ -214,9 +220,11 @@ function _startGame($gameID) {
 		$i++;
 	}
 
+	shuffle($deck);
+
 	//Sauvegarde de la pioche
-	foreach($deck as $card) {
-		savePick($gameID, $card['ca_id']);
+	foreach($deck as $order => $card) {
+		savePick($gameID, $order, $card['ca_id']);
 	}
 
 }
@@ -539,8 +547,23 @@ function _dealPoints($turn) {
 }
 
 //Fonction démarrant un nouveau tour
-function _startNewTurn($gameID, $storytellerID) {
+function _startNewTurn($gameID, $storytellerID, $turnID) {
 	//maj date fin tour
+
+	$pick = getPick($gameID);
+	$nbPlayersInGame = getOneRowResult(countPlayersInGame($gameID), 'nbTotalPlayer');
+	
+	if(count($pick) < $nbPlayersInGame) {
+		//On sélectionne toutes les cartes qui ont déjà été posée pour cette partie
+		$discardedCards = getSpecificArrayValues(getDiscardedCards($gameID, $turnID), 'ca_id');
+
+		//Réinsertion dans la pioche des cartes après les avoir mélangées
+		shuffle($discardedCards);
+
+		foreach($discardedCards as $order => $cardID) {
+			savePick($gameID, $order, $cardID);
+		}
+	}
 
 	//Joueurs en jeu :
 	$players = getSpecificArrayValues(getOrderUserInfos($gameID, array('u.us_id')), 'us_id');
@@ -552,6 +575,7 @@ function _startNewTurn($gameID, $storytellerID) {
 		_setPlayerStatus($gameID, $playerID, 0);
 		_pickCard($newTurnID, $gameID, $playerID);
 	}
+
 }
 function _getNextStorytellerID($gameID, $storytellerID){
 
@@ -567,19 +591,6 @@ function _getNextStorytellerID($gameID, $storytellerID){
 }
 
 function _pickCard($turnID, $gameID, $userID) {
-	$pick = getPick($gameID);
-	if(empty($pick)) {
-		//On sélectionne toutes les cartes qui ont déjà été posée pour cette partie
-		$discardedCards = getSpecificArrayValues(getDiscardedCards($gameID), 'ca_id');
-
-		//Réinsertion dans la pioche des cartes après les avoir mélangées
-		shuffle($discardedCards);
-
-		foreach($discardedCards as $cardID) {
-			savePick($gameID, $cardID);
-		}
-	}
-
 	//Défaussement de la pioche
 	$cardID = shiftPick($gameID);
 	addCardInHand($turnID, $cardID, $userID);
@@ -958,7 +969,7 @@ function _ajaxData($gameID, $oldPhase, $oldTurnID) {
 				//Partie finie
 			}
 			else if($oldTurnID == $turnID) { /* Vérification si le nouveau tour n'a pas déjà commencé */
-				_startNewTurn($gameID, $storytellerID);
+				_startNewTurn($gameID, $storytellerID, $oldTurnID);
 			}
 		}
 	}

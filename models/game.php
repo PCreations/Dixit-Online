@@ -149,6 +149,16 @@ function getPlayersInGame($gameID) {
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function countPlayersInGame($gameID) {
+	global $db;
+
+	$query = $db->prepare('SELECT nbTotalPlayer
+						FROM total_players_in_game
+						WHERE ga_id = ?');
+	$query->execute(array($gameID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
 function isInGame($gameID, $userID) {
 	global $db;
 

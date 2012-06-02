@@ -226,18 +226,31 @@ function countCardVoteInTurn($cardID, $turnID) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
-function getDiscardedCards($gameID) {
+function getDiscardedCards($gameID, $turnID) {
 	global $db;
 
-	$query = $db->query('SELECT DISTINCT(h.ca_id)
+	$query = $db->prepare('SELECT DISTINCT(h.ca_id)
 			FROM hands as h
 			INNER JOIN turns as t
 			ON t.tu_id = h.tu_id
 			INNER JOIN games as g
 			ON g.ga_id = t.ga_id
 			WHERE h.tu_played_id IS NOT NULL
-			AND g.ga_id = ?');
-	$query->execute(array($gameID));
+			AND g.ga_id = :gameID
+			AND h.ca_id NOT IN (SELECT c.ca_id
+								FROM cards as c
+								INNER JOIN hands as h
+								ON h.ca_id = c.ca_id
+								INNER JOIN turns as t
+								ON t.tu_id = h.tu_id
+								INNER JOIN games as g
+								ON g.ga_id = t.ga_id
+								WHERE
+						 		h.tu_id <= :turnID
+								AND h.tu_played_id IS NULL
+								AND g.ga_id = :gameID)');
+	$query->execute(array('gameID' => $gameID,
+							'turnID' => $turnID));
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -259,6 +272,7 @@ function shiftPick($gameID) {
 	$query = $db->prepare('SELECT ca_id
 						FROM pick
 						WHERE ga_id = ?
+						ORDER BY pi_order
 						LIMIT 1');
 	$query->execute(array($gameID));
 	$results = $query->fetch(PDO::FETCH_ASSOC);
@@ -290,18 +304,20 @@ function getPick($gameID) {
 
 	$query = $db->prepare('SELECT ca_id
 						FROM pick
-						WHERE ga_id = ?');
+						WHERE ga_id = ?
+						ORDER BY pi_order');
 	$query->execute(array($gameID));
 
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function savePick($gameID, $cardID) {
+function savePick($gameID, $order, $cardID) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO pick(ga_id, ca_id)
-						VALUES(:gameID, :cardID)');
+	$query = $db->prepare('INSERT INTO pick(ga_id, ca_id, pi_order)
+						VALUES(:gameID, :cardID, :order)');
 	$query->execute(array('cardID' => $cardID,
-						'gameID' => $gameID));
+						'gameID' => $gameID,
+						'order' => $order));
 	$query->closeCursor();
 }

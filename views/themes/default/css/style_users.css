@@ -346,23 +346,20 @@
 	position : relative;
 	top : -60px;
 	display : inline-block;
-	left : -625px;
+	left : -710px;
 	height : 450px;
-	width : 2200px;
+	width : 2000px;
 }
-#account4 #sides
-{
 
-}
 #account4 #side2
 {
 	background-color :blue;
-	margin-right : 40px;
+	margin-right : 80px;
 }
 #account4 #side1
 {
 	background-color :pink;
-	margin-right : 40px;
+	margin-right : 80px;
 }
 #account4 #side3
 {

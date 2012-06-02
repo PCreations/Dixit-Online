@@ -11,7 +11,7 @@ function displaySide(i){
 	if(i=='droite'){
 		j = document.getElementById('sides').offsetLeft;
 		if(j > '-800'){
-			jleft = j-1000;
+			jleft = j-1080;
 			document.getElementById('sides').style.left = jleft+'px';
 			 $('sides').toggleClass('sides_change');  
 		}
@@ -19,7 +19,7 @@ function displaySide(i){
 	if(i=='gauche'){
 		j = document.getElementById('sides').offsetLeft;
 		if(j < '300'){
-			jleft = j+200;
+			jleft = j+280;
 			document.getElementById('sides').style.left = jleft+'px';
 		}
 	}

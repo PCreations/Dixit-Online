@@ -6,7 +6,7 @@ Dixit.IMG_DIR = 'http://localhost/dixit/views/themes/default/img/';
 Dixit.FLASH_SUCCESS = 0;
 Dixit.FLASH_INFOS = 2;
 Dixit.FLASH_MESSAGE = 3;
-Dixit.alert = function setMessage(message, type) {
+Dixit.alert = function(message, type) {
 	var flash;
 	$('#flash').remove();
 	console.log("setMessage");

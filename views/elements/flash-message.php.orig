@@ -1,0 +1,7 @@
+<div id="flash" class="message">
+<<<<<<< HEAD
+	<p><?php echo $messageFlash['msg']; ?></p>
+=======
+	<p><img src="<?php echo IMG_DIR;?>notif_info.png"/><?php echo $messageFlash['msg']; ?></p>
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
+</div>

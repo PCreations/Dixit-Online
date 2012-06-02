@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+<div id="profil">
+	<h1 id="1" onclick="changeOnglet('1');">Acceuil</h1>
+	<h1 id="2" onclick="changeOnglet('2');">Votre Compte</h1>
+	<h1 id="3" onclick="changeOnglet('3');">Vos Amis</h1>
+	<h1 id="4" onclick="changeOnglet('4');">Vos Cartes</h1>
+	
+	<div id="account1">
+		<img class="avatar" src="<?php echo IMG_DIR;?>" alt=""/>
+		<p> Bienvenue <?php echo $user['us_name'] ; ?> <?php echo $user['us_lastname'] ; ?> </p>
+=======
+
 <div id="profil">
 
 <img class="image_link" id="1" src="<?php echo IMG_DIR;?>compte_accueil.png" onclick="changeOnglet('1');">
@@ -8,6 +20,7 @@
 	<div id="account1">
 		<img class="avatar" src="<?php echo IMG_DIR;?>" alt=""/>
 		<p> Bienvenue <?php echo $user['us_lastname'] ; ?> <?php echo $user['us_name'] ; ?> </p>
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 		</br>
 			<ul>
 				<?php foreach($invitations as $invitation): ?>
@@ -29,6 +42,22 @@
 			<p><span><b>Pseudo : </b></span> 	<?php echo $user['us_pseudo'] ; ?> </p>
 			<p><span><b>Adresse mail: 	</b></span> <?php echo $user['us_mail'] ; ?> </p>
 			<p><span><b>Date de naissance: </b></span> 	<?php echo $user['us_birthdate'] ; ?> </p>
+<<<<<<< HEAD
+			<div id="popupButton"><input type="submit" value="Modifier vos informations"/></div>
+			<div id="popupButton"><input type="submit" value="Changer de Mot de Passe"/></div>
+		</div>
+		<img src="<?php echo IMG_DIR;?>" alt=""/>
+		<div id="popup">
+			<a id="popupClose">x</a>
+			<form method="POST">
+				<fieldset>
+					<legend>Modifier vos informations personnelles</legend>
+						<p><label for="us_name">Prénom: </label><input name="name" type="text" value="<?php echo $user['us_name'] ; ?>"/></p>
+						<p><label for="us_lastname">Nom: </label><input name="lastname" type="text" value="<?php echo $user['us_lastname'] ; ?>"/></p>
+						<p><label for="us_name">Pseudo: </label><input name="name" type="text" value="<?php echo $user['us_pseudo'] ; ?>"/></p>
+						<p><label for="us_mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
+						<p><label for="us_name">Date de naissance: </label><input name="name" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
+=======
 			<div id="popupButton1" class="popupButton"><input type="submit" value="Modifier vos informations"/></div>
 			<div id="popupButton2" class="popupButton"><input type="submit" value="Changer de Mot de Passe"/></div>
 		</div>
@@ -42,11 +71,15 @@
 						<p><label for="name">Nom: </label><input name="name" type="text" value="<?php echo $user['us_name'] ; ?>"/></p>
 						<p><label for="birthdate">Date de naissance: </label><input name="birthdate" type="text" value="<?php echo $user['us_birthdate'] ; ?>"/></p>
 						<p><label for="mail">Mail: </label><input name="mail" type="text" value="<?php echo $user['us_mail'] ; ?>"/></p>
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 						<input type="hidden" name="update" />
 						<input  type="submit" value="Enregistrer"/>
 				</fieldset>
 			</form>
 		</div>
+<<<<<<< HEAD
+		<div id="backgroundPopup"></div> 
+=======
 		<div id="backgroundPopup1" class="backgroundPopup"></div> 
 		<div id="popup2" class="popup">
 			<a id="popupClose2" class="popupClose">x</a>
@@ -63,6 +96,7 @@
 			</form>
 		</div>
 		<div id="backgroundPopup2" class="backgroundPopup"></div> 
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
 	</div>
 	
 	<div id="account3">
@@ -104,49 +138,7 @@
 	</div>
 	
 	<div id="account4">
-			<img  id="fleche-gauche" onclick="displaySide('gauche');" src="<?php echo IMG_DIR;?>fleche-gauche.png" />
-			<img  id="fleche-droite" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite.png" />
-		<div id="sides">
-			<div id="side1">
-				<h1> YES !!!</h1>
-			</div>
-			<div id="side2">
-				<h1> YES 2 !!!</h1>
-			</div>
-			<div id="side3">
-				<p>Afficher le groupe de carte :</p> 
-				<select name="deck">
-					<option value="-1">Toutes</option>
-								<?php foreach($userDecks as $deck): ?>
-									<?php echo $deck['de_id'];?>
-									<option value='<?php echo $deck['de_id'];?>'><?php echo $deck['de_name'];?></option>
-								<?php endforeach; ?>
-				</select>
-				<div id="gallery_conteneur">
-					<div id="gallery" class="flexcroll">
-						<?php foreach($cardsInDeck as $card): ?>
-							<div class="carte">
-								<img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
-								<div id="selectable" >
-									<img  class="bouton" src="<?php echo IMG_DIR;?>bouton_dore.png" />
-									<img class="ui-state-default" id="btnCardID<?php echo $card['ca_id'] ;?>" src="<?php echo IMG_DIR;?>bouton.png" />
-								</div>
-							</div>
-						<?php endforeach;?>
-				</div>
-				
-			</div>
-			<p class="link"><?php echo createLink('supprimer', 'users', ''); ?></p>
-			<p>Ajouter dans le groupe :</p> 
-				<select name="deck">
-					<option value="-1">Toutes</option>
-								<?php foreach($userDecks as $deck): ?>
-									<option value='
-									<?php echo $deck['de_id'];?>
-									'><?php echo $deck['de_name'];?></option>
-									<?php endforeach; ?>
-				</select>
-			</div>
-		</div>
+		<p>En construction</p>
 	</div>
+	
 </div>

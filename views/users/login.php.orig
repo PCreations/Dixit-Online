@@ -1,0 +1,20 @@
+<div id="login">
+<<<<<<< HEAD
+=======
+	<a href="../../dixit"><img class="retour" src="<?php echo IMG_DIR;?>retour.png"></a>
+	<img class="oups" src="<?php echo IMG_DIR;?>oups.png" onclick="alert('Vous avez oublié votre login ou votre mot de passe ?');">
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
+	<form method="post">
+		<fieldset>
+			<legend>Connectez-vous</legend>
+				<p><label for="pseudo">Pseudo : </label><input value="<?php isset($pseudo) ? $pseudo : '';?>" type="text" name="pseudo" id="pseudo" /></p>
+				<p><label for="password">Mot de passe : </label><input value="<?php isset($password) ? $password : '';?>" type="password" name="password" id="password" /></p>
+				<input type="hidden" name="login" />
+				<input class="submit"type="submit" value="Connexion" />
+		</fieldset>
+	</form>
+<<<<<<< HEAD
+=======
+	
+>>>>>>> eaf01ed73e2b4d5695a9a569de10f51c0b0d1c00
+</div>

@@ -1,5 +1,4 @@
 <div id="register">
-	<a href="../../dixit"><img class="retour" src="<?php echo IMG_DIR;?>retour.png"></a>
 	<form method="post">
 		<fieldset>
 		<legend>S'inscrire sur Dixit</legend>

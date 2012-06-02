@@ -1,6 +1,4 @@
 <div id="login">
-	<a href="../../dixit"><img class="retour" src="<?php echo IMG_DIR;?>retour.png"></a>
-	<img class="oups" src="<?php echo IMG_DIR;?>oups.png" onclick="alert('Vous avez oublié votre login ou votre mot de passe ?');">
 	<form method="post">
 		<fieldset>
 			<legend>Connectez-vous</legend>

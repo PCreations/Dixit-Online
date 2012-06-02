@@ -192,14 +192,11 @@
 	padding-bottom : 0px;
 }
 
-#main #stIndice {
-	position: relative;
-	top: -10px;
-	text-align: center;
-}
-
-#main #stIndice input {
-	display: inline;
+#table #stIndice {
+	margin: auto;
+    position: relative;
+    bottom: 170px;
+    width: 171px;
 }
 
 #main  .image_carte 

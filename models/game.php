@@ -292,6 +292,18 @@ function getOrderUserInfos($gameID, $fields = array('*')) {
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getUsersPointsInTurn($userID, $turnID) {
+	global $db;
+
+	$query = $db->prepare('SELECT points
+						FROM earned_points
+						WHERE us_id = :userID
+						AND tu_id = :turnID');
+	$query->execute(array('userID' => $userID,
+						'turnID' => $turnID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
 function getTotalUserPointsInGame($gameID, $userID) {
 	global $db;
 

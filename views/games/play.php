@@ -187,7 +187,7 @@
 		$('#handForm').submit();
 	}
 
-	/*setInterval(function(){
+	setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			var $elem = $('#chatMessages');
 			$('#chatMessages').empty();
@@ -209,7 +209,7 @@
 				changePhaseNotification(phaseID);
 			}
 		});
-	}, 5000);*/
+	}, 5000);
 	
 	function parseJSON(json) {
 		var obj = $.parseJSON(json);
@@ -267,22 +267,28 @@
 		switch(phaseID) {
 			case STORYTELLER_PHASE:
 				phase = 'Un nouveau tour commence : tour du conteur';
+				Dixit.alert(phase, FLASH_INFOS);
 				break;
 			case BOARD_PHASE:
 				phase = 'Tour des joueurs';
+				Dixit.alert(phase, FLASH_INFOS);
 				break;
 			case VOTE_PHASE:
 				phase = 'Phase de vote';
+				Dixit.alert(phase, FLASH_INFOS);
 				break;
 			case POINTS_PHASE:
-				phase = 'Décompte des points';
+				$.post(BASE_URL+"games/_getUserPointsMsg/", {userID: userID, turnID: turnID, gameID: gameID}, function(data) {
+					phase = data;
+					Dixit.alert(phase, FLASH_INFOS);
+				});
 				break;
 			default:
-				phase = '      Erreur';
+				phase = 'Erreur';
+				Dixit.alert(phase, FLASH_INFOS);
 				break;
 		}
-
-		setMessage(phase, FLASH_INFOS);
+		
 		/*alert(phase);*/
 
 	}

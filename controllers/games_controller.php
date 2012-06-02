@@ -147,12 +147,14 @@ function room($gameID) {
 }
 
 function test() {
-	$a = array(1,2,3);
-	$b = array(1,3);
-	debug($a);
-	debug($b);
-	debug(array_diff($a,$b));
-	debug(array_diff($b,$a));
+	$nbPlayers = 3;
+	$test = 0;
+	if(($test == ($nbPlayers-1)) || ($test == 0)) {
+		echo 'OK';
+	}
+	else {
+		echo 'PAS OK';
+	}
 }
 
 function quiteGame($gameID, $userID) {
@@ -493,7 +495,7 @@ function _getCurrentGameTurn($gameID, $field) {
 	return getOneRowResult(getCurrentGameTurn($gameID), $field);
 }
 
-//Distribue les points et retourne true si un joueur a atteint la limite de point pour cette partie
+//Distribue les points
 function _dealPoints($turn) {
 	$storytellerCardID = getOneRowResult(getPlayerCardInBoard($turn['tu_id'], $turn['us_id']), 'ca_id');
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
@@ -511,15 +513,10 @@ function _dealPoints($turn) {
 	}
 	$nbPlayers = count($players);
 
-	debug($players);
-	debug($playersPoints);
-	echo 'storyteller card : ' . $storytellerCardID;
-	debug($cards);
-
-	if(($cards[$storytellerCardID]['total'] == ($nbPlayers -1)) || ($cards[$storytellerCardID]['total'] == 0)) { //Tout le monde a trouvé ou personne n'a trouvé la carte du conteur
+	if(($cards[$storytellerCardID]['total'] == $nbPlayers-1) || ($cards[$storytellerCardID]['total'] == 0)) { //Tout le monde a trouvé ou personne n'a trouvé la carte du conteur
 		unset($cards[$storytellerCardID]);
 		foreach($cards as $card) {
-			$playersPoints[$card['us_id']] += 2 + $card['total']; //On ajoute 2 points aux joueurs + 1 point par vote sur leur carte
+			$playersPoints[$card['us_id']] += 2+$card['total']; //On ajoute 2 points aux joueurs + 1 point par vote sur leur carte
 		}
 	}
 	else {
@@ -572,7 +569,7 @@ function _getNextStorytellerID($gameID, $storytellerID){
 function _pickCard($turnID, $gameID, $userID) {
 	$pick = getPick($gameID);
 	if(empty($pick)) {
-		//On sélectionne toutes les cartes qui ont déjà été posé pour cette partie
+		//On sélectionne toutes les cartes qui ont déjà été posée pour cette partie
 		$discardedCards = getSpecificArrayValues(getDiscardedCards($gameID), 'ca_id');
 
 		//Réinsertion dans la pioche des cartes après les avoir mélangées
@@ -776,7 +773,7 @@ function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus
 function _getUserVotedCardInTurn($turnID, $userID) {
 	$result = getUserVotedCardInTurn($turnID, $userID);
 	if(!empty($result)) {
-		return $result['ca_id'];
+		return (int)$result['ca_id'];
 	}
 	else
 		return -1;
@@ -839,6 +836,78 @@ function _getGameMessages($gameID, $json = false) {
 			echo $messagesTexts;
 	else
 		return $messagesTexts;
+}
+
+function _getUserPointsMsg() {
+	$msg = '';
+	$turnID = $_POST['turnID'];
+	$userID = $_POST['userID'];
+	$gameID = $_POST['gameID'];
+	/*$turnID = 30;
+	$gameID = 2;*/
+
+	$storytellerID = _getCurrentGameTurn($gameID, 'us_id');
+
+	/* Carte voté par le joueur */
+	$userVoteCardID = _getUserVotedCardInTurn($turnID, $userID);
+
+	/* Liste des votes pour chaque carte */
+	$cardsVotes = getTurnsVote($turnID);
+	/*debug($cardsVotes);*/
+
+	/* Nombre de joueurs dans la partie */
+	$playersInGame = (int)getOneRowResult(getGameInfos($gameID, array('ga_nb_players')), 'ga_nb_players');
+
+	/* Carte du storyteller */
+	$stCardID = getOneRowResult(getPlayerCardInBoard($turnID, $storytellerID), 'ca_id');
+	/*echo "stCardID";
+	var_dump($stCardID);*/
+
+
+	/* Nombre de vote sur la carte du storyteller */
+	$nbVoteOnStCard = getOneRowResult(countCardVoteInTurn($stCardID, $turnID), 'nbVotes');
+
+	if($storytellerID == $userID) {
+		if($nbVoteOnStCard == $playersInGame-1) {
+			$msg = 'Tout le monde a trouvé votre carte ! Votre indice était trop simple.<br />Vous <strong>ne gagnez aucun point</strong>';
+		}
+		else if($nbVoteOnStCard == 0) {
+			$msg = 'Personne n\'a trouvé votre carte ! Votre indice était trop difficile.<br />Vous <strong>ne gagnez aucun point</strong>';
+		}
+		else {
+			$msg = 'Bravo ! Certains joueurs ont trouvés votre carte. <br />Vous <strong>gagnez 3 points </strong>';
+		}
+	}
+	else {
+		if($nbVoteOnStCard == $playersInGame-1) {
+			$msg = 'Tous les joueurs ont trouvé la carte du conteur. <br />Vous <strong>gangez 2 points </strong>';
+		}
+		else {
+			$usersPoints = (int)getOneRowResult(getUsersPointsInTurn($userID, $turnID), 'points');
+			if($userVoteCardID == $stCardID) {
+				$msg = 'Bravo ! Vous avez trouvé la carte du conteur. ';
+				if($usersPoints-3 > 0) {
+					$msg .= 'De plus, <strong>'.(($usersPoints-3 == 1) ? $usersPoints-3 . ' joueur a voté pour votre carte</strong>' : $usersPoints-3 . ' joueurs ont voté pour votre carte').'</strong><br />';
+				}
+				else {
+					$msg .= 'Aucun joueur n\'a voté pour votre carte<br />';
+				}
+				$msg .= 'Vous <strong>gagnez '.$usersPoints.' points</strong>';
+			}
+			else {
+				$msg = 'Vous n\'avez pas trouvé la carte du conteur. ';
+				if($usersPoints-2 > 0) {
+					$msg .= 'Mais <strong>'.(($usersPoints-2 == 1) ? $usersPoints-2 . ' joueur a voté pour votre carte' : $usersPoints-2 . ' joueurs ont voté pour votre carte').'</strong><br />';
+				}
+				else {
+					$msg .= 'Aucun joueur n\'a voté pour votre carte<br />';
+				}
+				$msg .= ($usersPoints != 0) ? 'Vous <strong>gagnez '.$usersPoints.' points</strong>' : 'Vous <strong>ne gagnez pas de point</strong>';
+			}
+		}
+	}
+
+	echo $msg;
 }
 
 function _roomAjax() {

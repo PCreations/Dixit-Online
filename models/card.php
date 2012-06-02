@@ -214,6 +214,18 @@ function getCardVoteInTurn($cardID, $turnID) {
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function countCardVoteInTurn($cardID, $turnID) {
+	global $db;
+
+	$query = $db->prepare('SELECT COUNT(us_id) as nbVotes
+						FROM votes
+						WHERE ca_id = :cardID
+						AND tu_id = :turnID');
+	$query->execute(array('cardID' => $cardID,
+						'turnID' => $turnID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
 function getDiscardedCards($gameID) {
 	global $db;
 

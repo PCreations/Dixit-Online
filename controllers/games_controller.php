@@ -29,7 +29,7 @@ function index() {
 		$partiesEnAttente = filterGames($name, $nbplayers, $nbpoints, $deck, $public);
 	}
 
-	foreach($partiesEnAttente as &$partie) {
+	/*foreach($partiesEnAttente as &$partie) {
 			if(isLogged()) {
 				$userID = $_SESSION[USER_MODEL][USER_PK];
 
@@ -46,10 +46,11 @@ function index() {
 				$partie['action'] = 'Aucune action possible. ' . createLink('connectez-vous', 'users', 'login', null, array('title' => 'connectez-vous')) . ' pour rejoindre une partie';
 			}
 		}
+	}*/
 		
-		debug($partiesEnAttente);
-		$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos, 'vars_filtrage' => $vars_filtrage);
-		render('index', $vars);
+	debug($partiesEnAttente);
+	$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos, 'vars_filtrage' => $vars_filtrage);
+	render('index', $vars);
 }
 
 
@@ -98,37 +99,16 @@ function joinGame($gameID, $userID) {
 				setMessage('Vous êtes déjà dans cette partie', FLASH_ERROR);
 				redirect('games');
 			}
-			$gameInfos = getGameInfos($gameID, array('ga_password', 'us_id'));
-			$allowAccess = true;
-			if($gameInfos['us_id'] != $userID) {
-				if($gameInfos['ga_password'] != '') {
-					$allowAccess = false;
-					if(isset($_POST['game_password'])) {
-						if(encrypt($_POST['game_password']) == $gameInfos['ga_password'])
-							$allowAccess = true;
-						else {
-							setMessage('Mauvais mot de passe', FLASH_ERROR);
-							redirect('games', 'joinGame', array($gameID, $userID));
-						}
-					}
-					else {
-						render('game_access');
-						echo "HAHAHA";
-					}
-				}
+			if(!addPlayerInGame($gameID, $userID)) {
+				setMessage('Impossible de rejoindre la partie, une erreur interne est survenue.', FLASH_ERROR);
+				redirect('games');
 			}
-			if($allowAccess) {
-				if(!addPlayerInGame($gameID, $userID)) {
-					setMessage('Impossible de rejoindre la partie, une erreur interne est survenue.', FLASH_ERROR);
-					redirect('games');
+			else {
+				if(!checkPlayersInGame($gameID)) {
+					_startGame($gameID);
 				}
-				else {
-					if(!checkPlayersInGame($gameID)) {
-						_startGame($gameID);
-					}
-					setMessage('Vous avez rejoint la partie', FLASH_SUCCESS);
-					redirect('games', 'room', array($gameID));
-				}
+				setMessage('Vous avez rejoint la partie', FLASH_SUCCESS);
+				redirect('games', 'room', array($gameID));
 			}
 		}
 		else {
@@ -151,18 +131,45 @@ function room($gameID) {
 		redirect('users', 'login');
 	}
 	$userID = $_SESSION[USER_MODEL][USER_PK];
-
-	if(!isInGame($gameID, $userID)) {
-		setMessage('Vous ne jouez pas dans cette partie', FLASH_ERROR);
-		redirect('games');
+	$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'ga_password', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
+	if($gameInfos['us_id'] != $userID) {
+		if($gameInfos['ga_password'] != '') {
+			if(!isset($_SESSION['game']['password']))
+				$_SESSION['game']['password'] = '';
+			if(isset($_POST['game_password'])) {
+				if(encrypt($_POST['game_password']) == $gameInfos['ga_password']) {
+					$_SESSION['game']['password'] = encrypt($_POST['game_password']);
+				}
+				else {
+					setMessage('Mauvais mot de passe', FLASH_ERROR);
+					redirect('games', 'room', array($gameID));
+				}
+			}
+			else {
+				if($_SESSION['game']['password'] != $gameInfos['ga_password'])
+					render('game_access');
+			}
+		}
 	}
+
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+
+	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+
+	if(!in_array($userID, $usersInGame)) {
+		$gameInfos['action'] = createLink('rejoindre', 'games', 'joinGame', array($gameInfos['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
+	}
+	else{
+		$gameInfos['action'] = createLink('quitter', 'games', 'quiteGame', array($gameInfos['ga_id'], $userID), array('title' => 'Quitter la partie'));
+	}
+
 	if(!checkPlayersInGame($gameID)) {
 		setMessage('La partie commence !', FLASH_INFOS);
 		redirect('games', 'play', array($gameID));
 	}
-	$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'ga_password', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
+	
 	$gameInfos['ready'] = checkPlayersInGame($gameID);
-	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+	
 	foreach($usersInGame as &$userInGame) {
 		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
 	}

@@ -1,12 +1,12 @@
 /****************Left*********************/
-#left
+#left, #left_room
 {
 	width:655px;
 	display:inline-block;
 	vertical-align: top;
 }
 
-#conteur
+#conteur, #conteur_room
 {
 
 	margin-bottom:15px;
@@ -16,19 +16,19 @@
 	background-repeat:no-repeat;
 }
 
-#profil_conteur
+#profil_conteur, #profil_conteur_room
 {
 	display:inline-block;
 	border-radius : 4px;
 	vertical-align : top;
 	
 }
-#conteur .conteur_info
+#conteur .conteur_info, #conteur_room .conteur_info
 {
 	display:inline-block;
 	margin-left : 15px;
 }
-#conteur p
+#conteur p, #conteur_room p
 {
 	margin-top : 0px;
 	margin-bottom : 0px;
@@ -46,7 +46,7 @@
 	padding-bottom : 10px;
 }
 
-#table
+#table, #table_room
 {
 	width:615px;
 	height:239px;
@@ -237,7 +237,7 @@
 }
 
 /****************Aside*********************/
-#sidebar
+#sidebar, #sidebar_room
 {
 	width:203px;
 	height:715px;
@@ -249,7 +249,7 @@
 	background-image:url("../img/bg_sidebar.png");
 }
 
-#label_joueurs
+#label_joueurs, #label_joueurs_room
 {
 	margin-top:2px;
 	margin-left:10px;

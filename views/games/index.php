@@ -1,8 +1,3 @@
-<?php
-
- ?>
-
-<h1>Parties</h1>
 	<div id="games">
 		<div id="left_side">
 			<div id="creer">
@@ -50,7 +45,7 @@
 									echo ('<img src="'.IMG_DIR.'cadenas.png">');
 								}?>
 								</td>
-								<td class="nom"><?php echo createLink($partie['ga_name'], 'games', 'joinGame', array($partie['ga_id'], $_SESSION[USER_MODEL][USER_PK]), array('title' => 'Accéder à la room de cette partie'));?></td>
+								<td class="nom"><?php echo createLink($partie['ga_name'], 'games', 'room', array($partie['ga_id'], $_SESSION[USER_MODEL][USER_PK]), array('title' => 'Accéder à la room de cette partie'));?></td>
 								<td class="createur"><?php echo $partie['us_name'];?></td>
 								<td class="joueurs"><?php echo $partie['nbPlayersInGame'] . '/' . $partie['ga_nb_players'];?></td>
 								<td class="points"><?php echo $partie['ga_points_limit'];?></td>

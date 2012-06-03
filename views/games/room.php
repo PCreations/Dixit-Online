@@ -1,15 +1,18 @@
-<div id="content">
-	<div id="left">
-		<div id="conteur">
-			<img id="profil_conteur" src="<?php echo IMG_DIR;?>profil.png"/>
+<div id="content_room">
+	<div id="left_room">
+		<div id="conteur_room">
+			<img id="profil_conteur_room" src="<?php echo IMG_DIR;?>profil.png"/>
 			<div class="conteur_info">
 				<h1>Salon d'attente pour la partie : <?php echo $gameInfos['ga_name'];?></h1>
 			</div>
 		</div>
+		<div id="table_room">
+			<p><?php echo $gameInfos['action'];?></p>
+		</div>
 	</div>
-	<div id="sidebar">
-		<div id="players">
-			<img id="label_joueurs" src="<?php echo IMG_DIR;?>joueurs.png">
+	<div id="sidebar_room">
+		<div id="players_room">
+			<img id="label_joueurs_room" src="<?php echo IMG_DIR;?>joueurs.png">
 			<?php foreach($usersInGame as $player): ?>
 			<div class="joueur">
 				<img class="profil_joueur" src="<?php echo IMG_DIR;?>profil.png">

@@ -352,6 +352,11 @@ body {
 	float:right;
 }
 
+#ping
+{
+	visibility:hidden;
+}
+
 /****************Footer*********************/
 footer
 {

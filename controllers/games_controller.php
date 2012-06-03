@@ -998,6 +998,9 @@ function _roomAjax() {
 	$oldUsersInGame = $_POST['usersInGame'];
 	$startGame = (boolean)!checkPlayersInGame($gameID);
 	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+	foreach($usersInGame as $user) {
+		$userInGameName[$user] = getUserInfos($user, array('us_pseudo', 'us_id'));
+	}
 	$joinGame = true;
 	$diff = array();
 	if(count($usersInGame) > count($oldUsersInGame)) { //Un ou plusieurs joueurs sont rentrés en jeu
@@ -1013,7 +1016,7 @@ function _roomAjax() {
 		$usersNames[] = getOneRowResult(getUserInfos($userID), 'us_pseudo');
 	}
 	$gameMessages = _getGameMessages($gameID, true);
-	echo json_encode(compact("oldUsersInGame", "startGame", "gameMessages", "usersNames", "joinGame", "usersInGame"));
+	echo json_encode(compact("oldUsersInGame", "startGame", "gameMessages", "usersNames", "joinGame", "usersInGame", "userInGameName"));
 }
 
 function _ajaxData($gameID, $oldPhase, $oldTurnID) {

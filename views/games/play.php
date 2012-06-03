@@ -109,6 +109,7 @@
 	gameIsStarted = <?php echo ($gameIsStarted) ? '1' : '0';?>;
 	gameID = <?php echo $turn['game']['ga_id'];?>;
 	userID = <?php echo $_SESSION[USER_MODEL][USER_PK];?>;
+	hostID = <?php echo $gameInfos['us_id'];?>;
 	BASE_URL = '<?php echo BASE_URL;?>';
 	IMG_DIR = '<?php echo IMG_DIR;?>';
 	FLASH_SUCCESS = '<?php echo FLASH_SUCCESS;?>';
@@ -371,6 +372,7 @@
 		$.post(Dixit.BASE_URL+"games/_roomAjax",{gameID: gameID, usersInGame: usersInGame}, function(json) {
 			var result = $.parseJSON(json);
 			usersInGame = result.usersInGame;
+			displayRoomPlayersInfos(result.userInGameName);
 			var notif = '';
 			var textAction = (result.joinGame) ? "rejoint" : "quitté";
 			if(result.usersNames != -1) {
@@ -392,5 +394,19 @@
 			}
 		});
 	}, 2000);
+
+	function displayRoomPlayersInfos(userInGameName) {
+			text = '';
+			console.log(userInGameName);
+			$("#players_room").html('<img id="label_joueurs_room" src="'+IMG_DIR+'joueurs.png">');
+
+			$.each(userInGameName, function(key, player) {
+				console.log(player);
+				$("#players_room").append('<div class="joueur">'
+											+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
+											+'<p class="infos_joueur">'+player.us_pseudo+((player.us_id == hostID) ? ' : hôte' : '')+'</p>'
+										+'</div>');
+			});
+		}
 
 </script>

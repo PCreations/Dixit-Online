@@ -82,7 +82,23 @@
 			</div>
 		</div>
 </div>
+
+<div id="ping">
+
+</div>
+
 <script type="text/javascript">
+
+/*$("header").click(function() {
+  $("#ping").html("<object type='audio/mpeg' width='100' height='40' data='<?php echo BASE_URL;?>views/themes/default/ping.mp3'><param name='filename' value='<?php echo BASE_URL;?>views/themes/default/ping.mp3' /><param name='autostart' value='true' /><param name='loop' value='false' /></object>");
+ setTimeout("callback_ping()",500);
+});
+
+function callback_ping(){
+	$("#ping").html("");
+}*/
+
+
 
 	//Par défaut le tour courant et la phase courante sont ceux défini en PHP (i.e le premier tour et la première phase)
 	gameIsStarted = <?php echo ($gameIsStarted) ? '1' : '0';?>;

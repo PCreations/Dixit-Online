@@ -142,6 +142,9 @@ function joinGame($gameID, $userID) {
 
 function room($gameID) {
 	global $JS_FILES;
+	global $CSS_FILES;
+
+	$CSS_FILES[] = 'style_partie.css';
 	$JS_FILES[] = 'room.js';
 	if(!isLogged()) {
 		setMessage('Vous devez être connecté pour accéder à cette page', FLASH_ERROR);
@@ -158,16 +161,16 @@ function room($gameID) {
 		redirect('games', 'play', array($gameID));
 	}
 	$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'ga_password', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
-	$gameInfos['host'] = getOneRowResult(getUserInfos($gameInfos['us_id']), 'us_pseudo');
 	$gameInfos['ready'] = checkPlayersInGame($gameID);
 	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
-
-	unset($gameInfos['us_id']);
-	debug($gameInfos);
+	foreach($usersInGame as &$userInGame) {
+		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
+	}
 	$vars = array('gameInfos' => $gameInfos,
-				'usersInGame' => json_encode($usersInGame));
+				'usersInGame' => $usersInGame);
 	render('room', $vars);
 	$JS_FILES = array_pop($JS_FILES);
+	$CSS_FILES = array_pop($CSS_FILES);
 }
 
 function test() {

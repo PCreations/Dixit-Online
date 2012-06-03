@@ -1,4 +1,24 @@
-<h1>Salon d'attente pour la partie : <?php echo $gameInfos['ga_name'];?></h1>
+<div id="content">
+	<div id="left">
+		<div id="conteur">
+			<img id="profil_conteur" src="<?php echo IMG_DIR;?>profil.png"/>
+			<div class="conteur_info">
+				<h1>Salon d'attente pour la partie : <?php echo $gameInfos['ga_name'];?></h1>
+			</div>
+		</div>
+	</div>
+	<div id="sidebar">
+		<div id="players">
+			<img id="label_joueurs" src="<?php echo IMG_DIR;?>joueurs.png">
+			<?php foreach($usersInGame as $player): ?>
+			<div class="joueur">
+				<img class="profil_joueur" src="<?php echo IMG_DIR;?>profil.png">
+				<p class="infos_joueur"><?php echo $player['us_pseudo'] . (($player['us_id'] == $gameInfos['us_id']) ? ' : Hôte' : '');?></p>
+			</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</div>
 
 <script type="text/javascript">
 	gameID = <?php echo $gameInfos['ga_id'];?>;

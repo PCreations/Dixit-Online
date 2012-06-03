@@ -1,3 +1,32 @@
+body {
+	overflow: hidden;
+}
+
+#contentLeft, #contentRight {
+	display: inline-block;
+	position: relative;
+}
+
+#contentRight {
+	bottom: 755px;
+	right: -2000;
+}
+
+.arrowGame, .arrowRoom {
+	position: fixed;
+	cursor: pointer;
+}
+
+.arrowGame {
+	top: 0;
+	right: 0;
+}
+
+.arrowRoom {
+	top: 0;
+	left: 0;
+}
+
 /****************Left*********************/
 #left, #left_room
 {

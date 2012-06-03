@@ -120,66 +120,6 @@ function joinGame($gameID, $userID) {
 	$CSS_FILES[] = array_pop($CSS_FILES);
 }
 
-function room($gameID) {
-	global $JS_FILES;
-	global $CSS_FILES;
-
-	$CSS_FILES[] = 'style_partie.css';
-	$JS_FILES[] = 'room.js';
-	if(!isLogged()) {
-		setMessage('Vous devez être connecté pour accéder à cette page', FLASH_ERROR);
-		redirect('users', 'login');
-	}
-	$userID = $_SESSION[USER_MODEL][USER_PK];
-	$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'ga_password', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
-	if($gameInfos['us_id'] != $userID) {
-		if($gameInfos['ga_password'] != '') {
-			if(!isset($_SESSION['game']['password']))
-				$_SESSION['game']['password'] = '';
-			if(isset($_POST['game_password'])) {
-				if(encrypt($_POST['game_password']) == $gameInfos['ga_password']) {
-					$_SESSION['game']['password'] = encrypt($_POST['game_password']);
-				}
-				else {
-					setMessage('Mauvais mot de passe', FLASH_ERROR);
-					redirect('games', 'room', array($gameID));
-				}
-			}
-			else {
-				if($_SESSION['game']['password'] != $gameInfos['ga_password'])
-					render('game_access');
-			}
-		}
-	}
-
-	$userID = $_SESSION[USER_MODEL][USER_PK];
-
-	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
-
-	if(!in_array($userID, $usersInGame)) {
-		$gameInfos['action'] = createLink('rejoindre', 'games', 'joinGame', array($gameInfos['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
-	}
-	else{
-		$gameInfos['action'] = createLink('quitter', 'games', 'quiteGame', array($gameInfos['ga_id'], $userID), array('title' => 'Quitter la partie'));
-	}
-
-	if(!checkPlayersInGame($gameID)) {
-		setMessage('La partie commence !', FLASH_INFOS);
-		redirect('games', 'play', array($gameID));
-	}
-	
-	$gameInfos['ready'] = checkPlayersInGame($gameID);
-	
-	foreach($usersInGame as &$userInGame) {
-		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
-	}
-	$vars = array('gameInfos' => $gameInfos,
-				'usersInGame' => $usersInGame);
-	render('room', $vars);
-	$JS_FILES = array_pop($JS_FILES);
-	$CSS_FILES = array_pop($CSS_FILES);
-}
-
 function test() {
 	$pick = getPick(2);
 	if(empty($pick)) {
@@ -281,6 +221,65 @@ function _dealCards(&$deck, $nbCards, $nbPlayers) {
 	return $hands;
 }
 
+function room($gameID) {
+	global $JS_FILES;
+	global $CSS_FILES;
+
+	$CSS_FILES[] = 'style_partie.css';
+	$JS_FILES[] = 'room.js';
+	if(!isLogged()) {
+		setMessage('Vous devez être connecté pour accéder à cette page', FLASH_ERROR);
+		redirect('users', 'login');
+	}
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'ga_password', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
+	if($gameInfos['us_id'] != $userID) {
+		if($gameInfos['ga_password'] != '') {
+			if(!isset($_SESSION['game']['password']))
+				$_SESSION['game']['password'] = '';
+			if(isset($_POST['game_password'])) {
+				if(encrypt($_POST['game_password']) == $gameInfos['ga_password']) {
+					$_SESSION['game']['password'] = encrypt($_POST['game_password']);
+				}
+				else {
+					setMessage('Mauvais mot de passe', FLASH_ERROR);
+					redirect('games', 'room', array($gameID));
+				}
+			}
+			else {
+				if($_SESSION['game']['password'] != $gameInfos['ga_password'])
+					render('game_access');
+			}
+		}
+	}
+
+	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+
+	if(!in_array($userID, $usersInGame)) {
+		$gameInfos['action'] = createLink('rejoindre', 'games', 'joinGame', array($gameInfos['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
+	}
+	else{
+		$gameInfos['action'] = createLink('quitter', 'games', 'quiteGame', array($gameInfos['ga_id'], $userID), array('title' => 'Quitter la partie'));
+	}
+
+	if(!checkPlayersInGame($gameID)) {
+		setMessage('La partie commence !', FLASH_INFOS);
+		redirect('games', 'play', array($gameID));
+	}
+	
+	$gameInfos['ready'] = checkPlayersInGame($gameID);
+	
+	foreach($usersInGame as &$userInGame) {
+		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
+	}
+	$vars = array('gameInfos' => $gameInfos,
+				'usersInGame' => $usersInGame);
+	render('room', $vars);
+	$JS_FILES = array_pop($JS_FILES);
+	$CSS_FILES = array_pop($CSS_FILES);
+}
+
+
 function play($gameID) {
 	global $CSS_FILES;
 	global $JS_FILES;
@@ -289,7 +288,7 @@ function play($gameID) {
 	$JS_FILES[] = 'fancybox2/source/helpers/jquery.fancybox-buttons.js';
 	$JS_FILES[] = 'fancybox2/source/helpers/jquery.fancybox-thumbs.js';
 	$JS_FILES[] = 'fancybox2/source/helpers/jquery.fancybox-media.js';
-
+	$JS_FILES[] = 'play.js';
 
 	$CSS_FILES[] = 'style_partie.css';
 	$CSS_FILES[] = 'jquery.fancybox.css';
@@ -303,67 +302,105 @@ function play($gameID) {
 	}
 	else {
 		$userID = $_SESSION[USER_MODEL][USER_PK];
-		if(!isInGame($gameID, $userID)) {
+		/*if(!isInGame($gameID, $userID)) {
 			setMessage('Vous ne jouez pas dans cette partie', FLASH_ERROR);
 			redirect('games');
 		}
 		else if(checkPlayersInGame($gameID)) {
 			setMessage('Cette partie n\'a pas encore débutée', FLASH_ERROR);
 			redirect('games');
-		}
-		else {
-			$currentTurn = getCurrentGameTurn($gameID);
-			$phase = _getActualGamePhase($gameID, $currentTurn['tu_id']);
-			
-			if($phase == POINTS_PHASE) {
-				if(_notAlreadyDealsPoints($currentTurn['tu_id'])) {
-					_dealPoints($currentTurn);
-					
-				}
-				/*if(_checkIfPlayersAreReady($gameID))
-					_startNewTurn($currentTurn['ga_id'], $currentTurn['us_id']);*/
-				if(_checkIfPlayersAreReady($gameID)) {
-					if(_isGameOver($gameID)) {
-						redirect('games', 'gameOver', array($gameID));
+		}*/
+
+		/* Données liées à la room */
+		$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'ga_password', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
+		if($gameInfos['us_id'] != $userID) {
+			if($gameInfos['ga_password'] != '') {
+				if(!isset($_SESSION['game']['password']))
+					$_SESSION['game']['password'] = '';
+				if(isset($_POST['game_password'])) {
+					if(encrypt($_POST['game_password']) == $gameInfos['ga_password']) {
+						$_SESSION['game']['password'] = encrypt($_POST['game_password']);
+					}
+					else {
+						setMessage('Mauvais mot de passe', FLASH_ERROR);
+						redirect('games', 'room', array($gameID));
 					}
 				}
+				else {
+					if($_SESSION['game']['password'] != $gameInfos['ga_password'])
+						render('game_access');
+				}
 			}
-
-			$storyteller = ($_SESSION[USER_MODEL][USER_PK] == $currentTurn['us_id']); //permet de savoir si le joueur connecté est actuellement le conteur ou non
-			
-			$nextStorytellerID = _getNextStorytellerID($gameID, $currentTurn['us_id']);
-			$nextStoryteller = getOneRowResult(getUserInfos($nextStorytellerID, array('us_pseudo')), 'us_pseudo');
-			
-			$gameInfos = getGameInfos($gameID);
-			$gameCreatorInfos = getUserInfos($gameInfos['us_id'], array('us_pseudo'));
-
-			$actionStatus = _checkAction($phase, $_SESSION[USER_MODEL][USER_PK], $currentTurn['tu_id']);
-			$playersInfos = _getPlayersInfos($gameID, $currentTurn['tu_id'], $currentTurn['us_id'], $phase);
-			$currentTurn['storyteller']['us_pseudo'] = getOneRowResult(getUserInfos($currentTurn['us_id'], array('us_pseudo')), 'us_pseudo');
-
-			unset($playersInfos['storyteller']);
-			unset($currentTurn['ga_id']);
-			unset($gameInfos['us_id']);
-
-			$gameInfos['host'] = $gameCreatorInfos['us_pseudo'];
-			$currentTurn['game'] = $gameInfos;
-			$currentTurn['players'] = $playersInfos;
-			
-			$vars = array();
-			$vars['turn'] = $currentTurn;
-			$vars['turn']['phase'] = _getPhaseInfos($storyteller, $phase, $actionStatus);
-			$vars['actionStatus'] = $actionStatus;
-			$vars['storyteller'] = $storyteller;
-			$vars['nextStoryteller'] = $nextStoryteller;
-			//debug($vars);
-			render('play', $vars);
 		}
+
+		$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+
+		if(!in_array($userID, $usersInGame)) {
+			$gameInfos['action'] = createLink('rejoindre', 'games', 'joinGame', array($gameInfos['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
+		}
+		else{
+			$gameInfos['action'] = createLink('quitter', 'games', 'quiteGame', array($gameInfos['ga_id'], $userID), array('title' => 'Quitter la partie'));
+		}
+
+		foreach($usersInGame as &$userInGame) {
+			$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
+		}
+
+		/* Fin données liées à la room */
+
+		$currentTurn = getCurrentGameTurn($gameID);
+		$phase = _getActualGamePhase($gameID, $currentTurn['tu_id']);
+		
+		if($phase == POINTS_PHASE) {
+			if(_notAlreadyDealsPoints($currentTurn['tu_id'])) {
+				_dealPoints($currentTurn);
+				
+			}
+			/*if(_checkIfPlayersAreReady($gameID))
+				_startNewTurn($currentTurn['ga_id'], $currentTurn['us_id']);*/
+			if(_checkIfPlayersAreReady($gameID)) {
+				if(_isGameOver($gameID)) {
+					redirect('games', 'gameOver', array($gameID));
+				}
+			}
+		}
+
+		$storyteller = ($_SESSION[USER_MODEL][USER_PK] == $currentTurn['us_id']); //permet de savoir si le joueur connecté est actuellement le conteur ou non
+		
+		$nextStorytellerID = _getNextStorytellerID($gameID, $currentTurn['us_id']);
+		$nextStoryteller = getOneRowResult(getUserInfos($nextStorytellerID, array('us_pseudo')), 'us_pseudo');
+
+		$actionStatus = _checkAction($phase, $_SESSION[USER_MODEL][USER_PK], $currentTurn['tu_id']);
+		$playersInfos = _getPlayersInfos($gameID, $currentTurn['tu_id'], $currentTurn['us_id'], $phase);
+		$currentTurn['storyteller']['us_pseudo'] = getOneRowResult(getUserInfos($currentTurn['us_id'], array('us_pseudo')), 'us_pseudo');
+
+		unset($playersInfos['storyteller']);
+		unset($currentTurn['ga_id']);
+
+		$currentTurn['game'] = $gameInfos;
+		$currentTurn['players'] = $playersInfos;
+		
+		$vars = array();
+		$vars['gameIsStarted'] = (boolean)_checkIfPlayersAreReady($gameID);
+		$vars['turn'] = $currentTurn;
+		$vars['turn']['phase'] = _getPhaseInfos($storyteller, $phase, $actionStatus);
+		$vars['actionStatus'] = $actionStatus;
+		$vars['storyteller'] = $storyteller;
+		$vars['nextStoryteller'] = $nextStoryteller;
+		$vars['gameInfos'] = $gameInfos;
+		$vars['usersInGame'] = $usersInGame;
+		$vars['jsonUsersInGame'] = json_encode($usersInGame);
+		//debug($vars);
+		render('play', $vars);
+		
 	}
 	
 	for($i=0; $i<4; $i++) {
 		$CSS_FILES = array_pop($CSS_FILES);
 		$JS_FILES = array_pop($JS_FILES);
 	}
+
+	$JS_FILES = array_pop($JS_FILES);
 	
 }
 

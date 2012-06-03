@@ -85,6 +85,8 @@ function newGame() {
 }
 
 function joinGame($gameID, $userID) {
+	global $CSS_FILES;
+	$CSS_FILES[] = 'style_users.css';
 	if(!isLogged()) {
 		setMessage('Vous devez être connecté pour rejoindre une partie', FLASH_ERROR);
 		redirect('games');
@@ -96,16 +98,37 @@ function joinGame($gameID, $userID) {
 				setMessage('Vous êtes déjà dans cette partie', FLASH_ERROR);
 				redirect('games');
 			}
-			if(!addPlayerInGame($gameID, $userID)) {
-				setMessage('Impossible de rejoindre la partie, une erreur interne est survenue.', FLASH_ERROR);
-				redirect('games');
-			}
-			else {
-				if(!checkPlayersInGame($gameID)) {
-					_startGame($gameID);
+			$gameInfos = getGameInfos($gameID, array('ga_password', 'us_id'));
+			$allowAccess = true;
+			if($gameInfos['us_id'] != $userID) {
+				if($gameInfos['ga_password'] != '') {
+					$allowAccess = false;
+					if(isset($_POST['game_password'])) {
+						if(encrypt($_POST['game_password']) == $gameInfos['ga_password'])
+							$allowAccess = true;
+						else {
+							setMessage('Mauvais mot de passe', FLASH_ERROR);
+							redirect('games', 'joinGame', array($gameID, $userID));
+						}
+					}
+					else {
+						render('game_access');
+						echo "HAHAHA";
+					}
 				}
-				setMessage('Vous avez rejoint la partie', FLASH_SUCCESS);
-				redirect('games', 'room', array($gameID));
+			}
+			if($allowAccess) {
+				if(!addPlayerInGame($gameID, $userID)) {
+					setMessage('Impossible de rejoindre la partie, une erreur interne est survenue.', FLASH_ERROR);
+					redirect('games');
+				}
+				else {
+					if(!checkPlayersInGame($gameID)) {
+						_startGame($gameID);
+					}
+					setMessage('Vous avez rejoint la partie', FLASH_SUCCESS);
+					redirect('games', 'room', array($gameID));
+				}
 			}
 		}
 		else {
@@ -113,6 +136,8 @@ function joinGame($gameID, $userID) {
 			redirect('games');
 		}
 	}
+
+	$CSS_FILES[] = array_pop($CSS_FILES);
 }
 
 function room($gameID) {
@@ -132,7 +157,7 @@ function room($gameID) {
 		setMessage('La partie commence !', FLASH_INFOS);
 		redirect('games', 'play', array($gameID));
 	}
-	$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
+	$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'ga_password', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
 	$gameInfos['host'] = getOneRowResult(getUserInfos($gameInfos['us_id']), 'us_pseudo');
 	$gameInfos['ready'] = checkPlayersInGame($gameID);
 	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
@@ -552,7 +577,7 @@ function _startNewTurn($gameID, $storytellerID, $turnID) {
 
 	$pick = getPick($gameID);
 	$nbPlayersInGame = getOneRowResult(countPlayersInGame($gameID), 'nbTotalPlayer');
-	
+
 	if(count($pick) < $nbPlayersInGame) {
 		//On sélectionne toutes les cartes qui ont déjà été posée pour cette partie
 		$discardedCards = getSpecificArrayValues(getDiscardedCards($gameID, $turnID), 'ca_id');

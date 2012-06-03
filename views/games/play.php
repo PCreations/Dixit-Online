@@ -9,7 +9,11 @@
 				</div>
 			</div>
 			<div id="table_room">
-				<p><?php echo $gameInfos['action'];?></p>
+				<?php if(!$gameIsStarted) { ?>
+					<p><?php echo $gameInfos['action'];?></p>
+				<?php } if($gameIsOver) { ?>
+					<p><?php echo _getClassement($gameInfos['ga_id']);?></p>
+				<?php } ?>
 			</div>
 		</div>
 		<div id="sidebar_room">
@@ -27,7 +31,6 @@
 </div>
 <div id="contentRight">
 	<img class="arrowRoom" src="<?php echo IMG_DIR;?>arrow_left.png" />
-	<?php if($gameIsStarted) { ?>
 		<div id="content">
 			<div id="left">
 				<div id="conteur">
@@ -78,27 +81,18 @@
 				</div>
 			</div>
 		</div>
-	<?php } else { ?>
-		<div id="content">
-			<div id="left">
-				<div id="conteur">
-					<img id="profil_conteur" src="<?php echo IMG_DIR;?>profil.png"/>
-					<div class="conteur_info">
-						<h1>La partie n'a pas encore débutée</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	<?php } ?>
 </div>
 <script type="text/javascript">
 
 	//Par défaut le tour courant et la phase courante sont ceux défini en PHP (i.e le premier tour et la première phase)
 	gameIsStarted = <?php echo ($gameIsStarted) ? '1' : '0';?>;
+	gameIsOver = <?php echo ($gameIsOver) ? '1' : '0';?>;
 	gameID = <?php echo $turn['game']['ga_id'];?>;
 	userID = <?php echo $_SESSION[USER_MODEL][USER_PK];?>;
 	hostID = <?php echo $gameInfos['us_id'];?>;
-	showedWindow = (gameIsStarted) ? 'play' : 'room';
+	showedWindow = (gameIsStarted && !gameIsOver) ? 'play' : 'room';
+	notificationGameStart = <?php echo ($gameIsStarted) ? 'false' : 'true';?>;
+
 	BASE_URL = '<?php echo BASE_URL;?>';
 	IMG_DIR = '<?php echo IMG_DIR;?>';
 	FLASH_SUCCESS = '<?php echo FLASH_SUCCESS;?>';
@@ -107,113 +101,117 @@
 	FLASH_MESSAGE = '<?php echo FLASH_MESSAGE;?>';
 
 	swapWindow(showedWindow);
-	if(gameIsStarted != 0) {
-		<?php if($gameIsStarted) { ?>
-			phaseID = <?php echo $turn['phase']['id'];?>;
-			turnID = <?php echo $turn['tu_id'];?>;
-		<?php } ?>
-		
-		function readyForNextTurn() {
-			//$('#readyForNextTurn').click();
-			$.ajax({
-			  url: BASE_URL+"games/_setPlayerStatus/"+gameID+"/"+userID+"/1",
-			  async: false,
-			  type: "POST",
-			  success: function(data) {
-					$('#readyForNextTurn').remove();
-			  }
+	phaseID = <?php echo (isset($turn['phase']['id'])) ? $turn['phase']['id'] : 0;?>;
+	turnID = <?php echo (isset($turn['tu_id'])) ? $turn['tu_id'] : 0;?>;
+	
+	function readyForNextTurn() {
+		//$('#readyForNextTurn').click();
+		$.ajax({
+		  url: BASE_URL+"games/_setPlayerStatus/"+gameID+"/"+userID+"/1",
+		  async: false,
+		  type: "POST",
+		  success: function(data) {
+				$('#readyForNextTurn').remove();
+		  }
+		});
+		/*$.post(BASE_URL+"games/_setPlayerStatus/"+gameID+"/"+userID+"/1", function(data) {
+			$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
+				
 			});
-			/*$.post(BASE_URL+"games/_setPlayerStatus/"+gameID+"/"+userID+"/1", function(data) {
-				$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
-					
-				});
-			});*/
-		}
+		});*/
+	}
 
-		$(document).ready(function() {
-			$('.handCardLabel').each(function(i) { 
-				$(this).click(function() {
-					chooseSTcard($(this).attr('for'));
-				});
+	$(document).ready(function() {
+		$('.handCardLabel').each(function(i) { 
+			$(this).click(function() {
+				chooseSTcard($(this).attr('for'));
 			});
-			$('.boardCardLabel').each(function(i) { 
-				$(this).click(function() {
-					voteForCard($(this).attr('for'));
-				});
+		});
+		$('.boardCardLabel').each(function(i) { 
+			$(this).click(function() {
+				voteForCard($(this).attr('for'));
 			});
-			$(".fancybox").fancybox();
+		});
+		$(".fancybox").fancybox();
+	});
+
+	function selectCard(inputName, divID, cardID) {
+		console.log($('#'+divID+' input[name='+inputName+']').val());
+
+		/* Parcours des cartes pour replacer le bouton rouge normal */
+		$('#'+divID+' .bouton').each(function(i) { 
+			$(this).attr('src', IMG_DIR+'bouton.png');
 		});
 
-		function selectCard(inputName, divID, cardID) {
-			console.log($('#'+divID+' input[name='+inputName+']').val());
+		/* Bouton doré pour la carte sélectionnée */
+		$('#'+divID+' #btnCardID'+cardID).attr('src', IMG_DIR+'bouton_dore.png');
 
-			/* Parcours des cartes pour replacer le bouton rouge normal */
-			$('#'+divID+' .bouton').each(function(i) { 
-				$(this).attr('src', IMG_DIR+'bouton.png');
+		/* Modification de la valeur du champ hidden cardID en conséquence */
+		$('#'+divID+' input[name='+inputName+']').val(cardID);
+
+		console.log($('#'+divID+' input[name='+inputName+']').val());
+
+		if(divID == 'table') {
+			/* Ajout de la carte */
+			$.post(BASE_URL+"cards/vote/", {cardID: cardID, turnID: turnID}, function(data) {
+				/* Redirection vers la bonne page */
+				$(location).attr('href',BASE_URL+'games/play/'+gameID);
 			});
+		}
+	}
 
-			/* Bouton doré pour la carte sélectionnée */
-			$('#'+divID+' #btnCardID'+cardID).attr('src', IMG_DIR+'bouton_dore.png');
+	function updateCard(inputName, divID, cardID) {
 
-			/* Modification de la valeur du champ hidden cardID en conséquence */
-			$('#'+divID+' input[name='+inputName+']').val(cardID);
+		/* Parcours des cartes pour replacer le bouton rouge normal */
+		$('#'+divID+' .bouton').each(function(i) { 
+			$(this).attr('src', IMG_DIR+'bouton.png');
+				buttonID = $(this).attr('id');
+				currentCardID = buttonID.substring(9);
+				console.log("ID carte bouton : "+currentCardID);
+			$(this).attr('onclick', 'updateCard("'+inputName+'", "'+divID+'", '+currentCardID+')');
+		});
 
-			console.log($('#'+divID+' input[name='+inputName+']').val());
+		/* Bouton doré pour la carte sélectionnée */
+		$('#'+divID+' #btnCardID'+cardID).attr('src', IMG_DIR+'bouton_dore.png');
+		$('#'+divID+' #btnCardID'+cardID).attr('onclick', '');
 
-			if(divID == 'table') {
-				/* Ajout de la carte */
-				$.post(BASE_URL+"cards/vote/", {cardID: cardID, turnID: turnID}, function(data) {
-					/* Redirection vers la bonne page */
-					$(location).attr('href',BASE_URL+'games/play/'+gameID);
-				});
+		/* Modification de la valeur du champ hidden cardID en conséquence */
+		$('#'+divID+' input[name='+inputName+']').val(cardID);
+
+		console.log("updateCard");
+		/* Update de la carte */
+		$.post(BASE_URL+"cards/updateVote/", {cardID: cardID, turnID: turnID}, function(data) {
+			/* Update boutons */
+			
+			/*$(location).attr('href',BASE_URL+'games/play/'+gameID);*/
+		});
+	}
+
+	function voteForCard(id) {
+		$('input[name=cardID]').val([id]);
+
+		var card = $('input[name="cardID"]:checked').val();
+		$('#boardForm').submit();
+	}
+
+	function chooseSTcard(id) {
+		// On coche Non
+		$('input[name=cardID]').val([id]);
+
+		var card = $('input[name="cardID"]:checked').val();
+		$('#handForm').submit();
+	}
+
+	
+	setInterval(function(){
+		console.log("GameIsStarted ?");
+		console.log(gameIsStarted);
+		if(gameIsStarted){
+			if(notificationGameStart) {
+				Dixit.alert('La partie commence !', Dixit.FLASH_INFOS);
+				notificationGameStart = false;
+				$(location).attr('href',BASE_URL+'games/play/'+gameID);
 			}
-		}
-
-		function updateCard(inputName, divID, cardID) {
-
-			/* Parcours des cartes pour replacer le bouton rouge normal */
-			$('#'+divID+' .bouton').each(function(i) { 
-				$(this).attr('src', IMG_DIR+'bouton.png');
-					buttonID = $(this).attr('id');
-					currentCardID = buttonID.substring(9);
-					console.log("ID carte bouton : "+currentCardID);
-				$(this).attr('onclick', 'updateCard("'+inputName+'", "'+divID+'", '+currentCardID+')');
-			});
-
-			/* Bouton doré pour la carte sélectionnée */
-			$('#'+divID+' #btnCardID'+cardID).attr('src', IMG_DIR+'bouton_dore.png');
-			$('#'+divID+' #btnCardID'+cardID).attr('onclick', '');
-
-			/* Modification de la valeur du champ hidden cardID en conséquence */
-			$('#'+divID+' input[name='+inputName+']').val(cardID);
-
-			console.log("updateCard");
-			/* Update de la carte */
-			$.post(BASE_URL+"cards/updateVote/", {cardID: cardID, turnID: turnID}, function(data) {
-				/* Update boutons */
-				
-				/*$(location).attr('href',BASE_URL+'games/play/'+gameID);*/
-			});
-		}
-
-		function voteForCard(id) {
-			$('input[name=cardID]').val([id]);
-
-			var card = $('input[name="cardID"]:checked').val();
-			$('#boardForm').submit();
-		}
-
-		function chooseSTcard(id) {
-			// On coche Non
-			$('input[name=cardID]').val([id]);
-
-			var card = $('input[name="cardID"]:checked').val();
-			$('#handForm').submit();
-		}
-
-		
-
-		setInterval(function(){
 			$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
 				var oldPhase = phaseID;
 				var result = parseJSON(json);
@@ -225,107 +223,112 @@
 					changePhaseNotification(phaseID);
 				}
 			});
-		}, 5000);
-		
-		function parseJSON(json) {
-			var obj = $.parseJSON(json);
-			text = '';
-			$.each(obj, function(key, val) {
-				text +=key + '>' + val + '\n';
-			});
-			displayPhaseInfos($.parseJSON(obj.phaseInfos));
-			$("#storyteller").html("<b>"+obj.storyteller+"</b>");
-			$("#turnComment").html("<b>«&nbsp;&nbsp;</b>"+obj.turnComment+"<b>&nbsp;&nbsp;»</b>");
-			displayPlayersInfos($.parseJSON(obj.playersInfos));
-			if(obj.board != '') {
-				$("#table").html(obj.board);
-			}
-			if(obj.hand != '') {
-				$("#hand").html(obj.hand);
-			}
-			return {'phaseID': obj.phase, 'turnID': obj.turnID};
 		}
-
-		function displayPhaseInfos(phaseInfos) {
-			text = '';
-			$.each(phaseInfos, function(key, val) {
-				text +=key + '>' + val + '\n';
-			});
-			console.log(text);
-			$("#phaseInfos").html("<h1>Phase actuelle : "+phaseInfos.title+"</h1><h2>"+phaseInfos.infos+"</h2>");
+	}, 5000);
+	
+	function parseJSON(json) {
+		var obj = $.parseJSON(json);
+		text = '';
+		$.each(obj, function(key, val) {
+			text +=key + '>' + val + '\n';
+		});
+		displayPhaseInfos($.parseJSON(obj.phaseInfos));
+		$("#storyteller").html("<b>"+obj.storyteller+"</b>");
+		$("#turnComment").html("<b>«&nbsp;&nbsp;</b>"+obj.turnComment+"<b>&nbsp;&nbsp;»</b>");
+		displayPlayersInfos($.parseJSON(obj.playersInfos));
+		if(obj.board != '') {
+			$("#table").html(obj.board);
 		}
-
-		function displayPlayersInfos(playersInfos) {
-			text = '';
-			$.each(playersInfos, function(key, val) {
-				playersInfos.key = $.parseJSON(playersInfos.val);
-			});
-			
-			$("#players").html('<img id="label_joueurs" src="'+IMG_DIR+'joueurs.png">');
-
-			$.each(playersInfos, function(key, player) {
-				console.log(player);
-				$("#players").append('<div class="joueur">'
-										+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
-										+'<p class="infos_joueur">'+player.us_pseudo+((player.role == 'conteur') ? ' : conteur' : '')+'<br />'+((player.points != null) ? player.points : '0')+'points<br />'+player.status+'</p>'
-									+'</div>');
-			});
+		if(obj.hand != '') {
+			$("#hand").html(obj.hand);
 		}
-
-		function changePhaseNotification(phaseID) {
-			var STORYTELLER_PHASE = 0;
-			var BOARD_PHASE = 1;
-			var VOTE_PHASE = 2;
-			var POINTS_PHASE = 3;
-			var phase;
-
-			console.log(phaseID);
-			switch(phaseID) {
-				case STORYTELLER_PHASE:
-					phase = 'Un nouveau tour commence : tour du conteur';
-					Dixit.alert(phase, FLASH_INFOS);
-					break;
-				case BOARD_PHASE:
-					phase = 'Tour des joueurs';
-					Dixit.alert(phase, FLASH_INFOS);
-					break;
-				case VOTE_PHASE:
-					phase = 'Phase de vote';
-					Dixit.alert(phase, FLASH_INFOS);
-					break;
-				case POINTS_PHASE:
-					$.post(BASE_URL+"games/_getUserPointsMsg/", {userID: userID, turnID: turnID, gameID: gameID}, function(data) {
-						phase = data;
-						Dixit.alert(phase, FLASH_INFOS);
-					});
-					break;
-				default:
-					phase = 'Erreur';
-					Dixit.alert(phase, FLASH_INFOS);
-					break;
-			}
-			
-			/*alert(phase);*/
-
-		}
-		
-		// FlipCards
-		$("#table .carte").hover(function(){
-			$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
-			$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(360deg)');
-			$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(180deg)');
-			$(this).children('.image_carte_flip').css('-moz-transform','rotateY(180deg)');
-		}, 
-		  function() {
-			$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
-			$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(180deg)');
-			$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(0deg)');
-			$(this).children('.image_carte_flip').css('-moz-transform','rotateY(0deg)');
-		  });
+		return {'phaseID': obj.phase, 'turnID': obj.turnID};
 	}
-	else {
-		$('.arrowGame').hide();
+
+	function displayPhaseInfos(phaseInfos) {
+		text = '';
+		$.each(phaseInfos, function(key, val) {
+			text +=key + '>' + val + '\n';
+		});
+		console.log(text);
+		$("#phaseInfos").html("<h1>Phase actuelle : "+phaseInfos.title+"</h1><h2>"+phaseInfos.infos+"</h2>");
 	}
+
+	function displayPlayersInfos(playersInfos) {
+		text = '';
+		$.each(playersInfos, function(key, val) {
+			playersInfos.key = $.parseJSON(playersInfos.val);
+		});
+		
+		$("#players").html('<img id="label_joueurs" src="'+IMG_DIR+'joueurs.png">');
+
+		$.each(playersInfos, function(key, player) {
+			console.log(player);
+			$("#players").append('<div class="joueur">'
+									+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
+									+'<p class="infos_joueur">'+player.us_pseudo+((player.role == 'conteur') ? ' : conteur' : '')+'<br />'+((player.points != null) ? player.points : '0')+'points<br />'+player.status+'</p>'
+								+'</div>');
+		});
+	}
+
+	function changePhaseNotification(phaseID) {
+		var STORYTELLER_PHASE = 0;
+		var BOARD_PHASE = 1;
+		var VOTE_PHASE = 2;
+		var POINTS_PHASE = 3;
+		var GAME_OVER = 4;
+		var phase;
+
+		console.log(phaseID);
+		switch(phaseID) {
+			case STORYTELLER_PHASE:
+				phase = 'Un nouveau tour commence : tour du conteur';
+				Dixit.alert(phase, FLASH_INFOS);
+				break;
+			case BOARD_PHASE:
+				phase = 'Tour des joueurs';
+				Dixit.alert(phase, FLASH_INFOS);
+				break;
+			case VOTE_PHASE:
+				phase = 'Phase de vote';
+				Dixit.alert(phase, FLASH_INFOS);
+				break;
+			case POINTS_PHASE:
+				$.post(BASE_URL+"games/_getUserPointsMsg/", {userID: userID, turnID: turnID, gameID: gameID}, function(data) {
+					phase = data;
+					Dixit.alert(phase, FLASH_INFOS);
+				});
+				break;
+			case GAME_OVER:
+				phase = 'Fin de la partie';
+				$(location).attr('href',BASE_URL+'games/play/'+gameID);
+				Dixit.alert(phase, FLASH_INFOS);
+				break;
+			default:
+				phase = 'Erreur';
+				Dixit.alert(phase, FLASH_INFOS);
+				break;
+		}
+		
+		/*alert(phase);*/
+
+	}
+	
+	// FlipCards
+	$("#table .carte").hover(function(){
+		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
+		$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(360deg)');
+		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(180deg)');
+		$(this).children('.image_carte_flip').css('-moz-transform','rotateY(180deg)');
+	}, 
+	  function() {
+		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
+		$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(180deg)');
+		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(0deg)');
+		$(this).children('.image_carte_flip').css('-moz-transform','rotateY(0deg)');
+	  });
+	
+	if(!gameIsStarted || gameIsOver) $('.arrowGame').hide();
 
 	$('#gameChat').submit(function() {
 		sendMsg();
@@ -369,6 +372,11 @@
 		$.post(Dixit.BASE_URL+"games/_roomAjax",{gameID: gameID, usersInGame: usersInGame}, function(json) {
 			var result = $.parseJSON(json);
 			usersInGame = result.usersInGame;
+			if(!gameIsStarted) {
+				phaseID = result.phaseID;
+				turnID = result.turnID;
+			}
+			gameIsStarted = result.startGame;
 			displayRoomPlayersInfos(result.userInGameName);
 			var notif = '';
 			var textAction = (result.joinGame) ? "rejoint" : "quitté";

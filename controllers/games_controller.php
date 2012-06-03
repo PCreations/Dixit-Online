@@ -8,6 +8,7 @@ define('STORYTELLER_PHASE', 0);
 define('BOARD_PHASE', 1);
 define('VOTE_PHASE', 2);
 define('POINTS_PHASE', 3);
+define('GAME_OVER', 4);
 
 //constante de statut
 define('ACTION_IN_PROGRESS', 4);
@@ -243,14 +244,6 @@ function play($gameID) {
 	}
 	else {
 		$userID = $_SESSION[USER_MODEL][USER_PK];
-		/*if(!isInGame($gameID, $userID)) {
-			setMessage('Vous ne jouez pas dans cette partie', FLASH_ERROR);
-			redirect('games');
-		}
-		else if(checkPlayersInGame($gameID)) {
-			setMessage('Cette partie n\'a pas encore débutée', FLASH_ERROR);
-			redirect('games');
-		}*/
 
 		/* Données liées à la room */
 		$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'ga_password', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
@@ -323,6 +316,7 @@ function play($gameID) {
 		
 		$vars = array();
 		$vars['gameIsStarted'] = (boolean)!checkPlayersInGame($gameID);
+		$vars['gameIsOver'] = (boolean)_isGameOver($gameID);
 		$vars['turn'] = $currentTurn;
 		$vars['turn']['phase'] = _getPhaseInfos($storyteller, $phase, $actionStatus);
 		$vars['actionStatus'] = $actionStatus;
@@ -367,9 +361,6 @@ function gameOver($gameID) {
 }
 
 function _isGameOver($gameID = null) {
-	if(isPost())
-		extract($_POST);
-
 	$boolean = false;
 	$gamePointsLimit = getOneRowResult(getGameInfos($gameID, array('ga_points_limit')), 'ga_points_limit');
 
@@ -380,10 +371,7 @@ function _isGameOver($gameID = null) {
 		}
 	}
 	
-	if(isPost())
-		echo $boolean ? 'true' : 'false';
-	else
-		return $boolean;
+	return $boolean;
 
 }
 
@@ -492,6 +480,9 @@ function _getPhaseInfos($storyteller = null, $phaseID = null, $actionStatus = nu
 function _getActualGamePhase($gameID = null, $turnID = null) {
 	$nbCards = count(getCardsInBoard($turnID));
 	$nbPlayers = count(getPlayersInGame($gameID));
+	if(_isGameOver($gameID)) {
+		return GAME_OVER;
+	}
 	if($nbCards == 0) {
 			return STORYTELLER_PHASE;
 	}
@@ -638,6 +629,9 @@ function _checkAction($phase, $playerID, $turnID) {
 				$action = false;
 			else
 				$action = true;
+			break;
+		case GAME_OVER:
+			$action = true;
 			break;
 	}
 
@@ -933,11 +927,21 @@ function _getUserPointsMsg() {
 	echo $msg;
 }
 
+function _getStorytellerInfo() {
+	return '<p id="storyteller" ><b>'.$stPseudo.'</b></p><p id="turnComment"><b>«&nbsp;&nbsp;</b>'.$stComment.'<b>&nbsp;&nbsp;»</b></p>';
+}
+
+function _getClassement($gameID) {
+	return "classement";
+}
+
 function _roomAjax() {
 	$gameID = $_POST['gameID'];
 	$oldUsersInGame = $_POST['usersInGame'];
 	$startGame = (boolean)!checkPlayersInGame($gameID);
 	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+	$turnID = _getCurrentGameTurn($gameID, 'tu_id');
+	$phaseID = _getActualGamePhase($gameID, $turnID);
 	foreach($usersInGame as $user) {
 		$userInGameName[$user] = getUserInfos($user, array('us_pseudo', 'us_id'));
 	}
@@ -956,7 +960,7 @@ function _roomAjax() {
 		$usersNames[] = getOneRowResult(getUserInfos($userID), 'us_pseudo');
 	}
 	$gameMessages = _getGameMessages($gameID, true);
-	echo json_encode(compact("oldUsersInGame", "startGame", "gameMessages", "usersNames", "joinGame", "usersInGame", "userInGameName"));
+	echo json_encode(compact("turnID", "phaseID", "oldUsersInGame", "startGame", "gameMessages", "usersNames", "joinGame", "usersInGame", "userInGameName"));
 }
 
 function _ajaxData($gameID, $oldPhase, $oldTurnID) {
@@ -973,17 +977,18 @@ function _ajaxData($gameID, $oldPhase, $oldTurnID) {
 	$playersInfos = json_encode(_getPlayersInfos($gameID, $turnID, $storytellerID, $phase));
 	$board = '';
 	$hand = '';
+	$classement = '';
 
+	if($phase == GAME_OVER) {
+		$classement = _getClassement($gameID);
+	}
 	if($phase == BOARD_PHASE) {
 		$board = _getBoard(BOARD_PHASE, $gameID, array('tu_id' => $turnID,
 														'us_id' => $storytellerID), $userID == $storytellerID, $actionStatus);	
 	}
 	if($phase == POINTS_PHASE) {
 		if(_checkIfPlayersAreReady($gameID)) {
-			if(_isGameOver($gameID)) {
-				//Partie finie
-			}
-			else if($oldTurnID == $turnID) { /* Vérification si le nouveau tour n'a pas déjà commencé */
+			if($oldTurnID == $turnID) { /* Vérification si le nouveau tour n'a pas déjà commencé */
 				_startNewTurn($gameID, $storytellerID, $oldTurnID);
 			}
 		}
@@ -994,7 +999,7 @@ function _ajaxData($gameID, $oldPhase, $oldTurnID) {
 		$hand = _getHand($phase, $userID, $gameID, $turnID, $userID == $storytellerID, $actionStatus);
 	}
 
-	$result = compact("userID", "turnID", "storytellerID", "turnComment", "storyteller", "phase", "actionStatus", "phaseInfos", "playersInfos", "board", "hand");
+	$result = compact("userID", "turnID", "storytellerID", "turnComment", "storyteller", "phase", "actionStatus", "phaseInfos", "playersInfos", "board", "hand", "classement");
 
 	echo json_encode($result);
 }

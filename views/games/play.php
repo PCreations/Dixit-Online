@@ -22,18 +22,6 @@
 				</div>
 				<?php endforeach; ?>
 			</div>
-			<div id="chat">
-				<img id="label_chat" src="<?php echo IMG_DIR;?>chat.png">
-				<div id="chatMessages">
-					<?php 
-					echo _getGameMessages($turn['game']['ga_id']);
-					?>
-				</div>
-				<form id="gameChat" action="<?php echo BASE_URL;?>chats/addGameMessage" method="POST">
-					<textarea name="gameMsg" id="gameMsg"></textarea>
-					<input type="submit" value="Envoyer" id="sendGameMsg"/>
-				</form>
-			</div>
 		</div>
 	</div>
 </div>
@@ -77,8 +65,8 @@
 					<?php endforeach; ?>
 				</div>
 				<div id="chat">
-					<img id="label_chat" src="<?php echo IMG_DIR;?>chat.png">
-					<div id="chatMessages">
+					<img class="label_chat" src="<?php echo IMG_DIR;?>chat.png">
+					<div class="chatMessages">
 						<?php 
 						echo _getGameMessages($turn['game']['ga_id']);
 						?>
@@ -324,12 +312,19 @@
 		// FlipCards
 		$("#table .carte").hover(function(){
 			$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
+			$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(360deg)');
 			$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(180deg)');
+			$(this).children('.image_carte_flip').css('-moz-transform','rotateY(180deg)');
 		}, 
-		  function () {
+		  function() {
 			$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
+			$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(180deg)');
 			$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(0deg)');
+			$(this).children('.image_carte_flip').css('-moz-transform','rotateY(0deg)');
 		  });
+	}
+	else {
+		$('.arrowGame').hide();
 	}
 
 	$('#gameChat').submit(function() {
@@ -350,21 +345,21 @@
 		var message = $('#gameMsg').val();
 		$.post(BASE_URL+"chats/_addGameMessage",{gameID: gameID, userID: userID, message: message}, function(data) {
 			$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
-				$('#chatMessages').empty();
-				$('#chatMessages').html(data);
+				$('.chatMessages').empty();
+				$('.chatMessages').html(data);
 				$('#gameMsg').val('');
-				$('#chatMessages').animate({scrollTop: $('#chatMessages').prop('scrollHeight')}, 500);
+				$('.chatMessages').animate({scrollTop: $('.chatMessages').prop('scrollHeight')}, 500);
 			});
 		}, "json");
 	}
 
 	setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
-			var $elem = $('#chatMessages');
-			$('#chatMessages').empty();
-			$('#chatMessages').html(data);
+			var $elem = $('.chatMessages');
+			$('.chatMessages').empty();
+			$('.chatMessages').html(data);
 			// $('#chatMessages').scrollTop($('#chatMessages').prop('scrollHeight'));
-			$('#chatMessages').animate({scrollTop: $('#chatMessages').prop('scrollHeight')}, 500);
+			$('.chatMessages').animate({scrollTop: $('.chatMessages').prop('scrollHeight')}, 500);
 		});
 	}, 2000);
 
@@ -391,24 +386,21 @@
 				}
 				Dixit.alert(notif, Dixit.FLASH_INFOS);
 			}
-			else {
-				//alert('null');
-			}
 		});
 	}, 2000);
 
 	function displayRoomPlayersInfos(userInGameName) {
-			text = '';
-			console.log(userInGameName);
-			$("#players_room").html('<img id="label_joueurs_room" src="'+IMG_DIR+'joueurs.png">');
+		text = '';
+		console.log(userInGameName);
+		$("#players_room").html('<img id="label_joueurs_room" src="'+IMG_DIR+'joueurs.png">');
 
-			$.each(userInGameName, function(key, player) {
-				console.log(player);
-				$("#players_room").append('<div class="joueur">'
-											+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
-											+'<p class="infos_joueur">'+player.us_pseudo+((player.us_id == hostID) ? ' : hôte' : '')+'</p>'
-										+'</div>');
-			});
-		}
+		$.each(userInGameName, function(key, player) {
+			console.log(player);
+			$("#players_room").append('<div class="joueur">'
+										+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
+										+'<p class="infos_joueur">'+player.us_pseudo+((player.us_id == hostID) ? ' : hôte' : '')+'</p>'
+									+'</div>');
+		});
+	}
 
 </script>

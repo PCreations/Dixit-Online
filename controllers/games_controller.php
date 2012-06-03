@@ -108,7 +108,7 @@ function joinGame($gameID, $userID) {
 					_startGame($gameID);
 				}
 				setMessage('Vous avez rejoint la partie', FLASH_SUCCESS);
-				redirect('games', 'room', array($gameID));
+				redirect('games', 'play', array($gameID));
 			}
 		}
 		else {
@@ -221,65 +221,6 @@ function _dealCards(&$deck, $nbCards, $nbPlayers) {
 	return $hands;
 }
 
-function room($gameID) {
-	global $JS_FILES;
-	global $CSS_FILES;
-
-	$CSS_FILES[] = 'style_partie.css';
-	$JS_FILES[] = 'room.js';
-	if(!isLogged()) {
-		setMessage('Vous devez être connecté pour accéder à cette page', FLASH_ERROR);
-		redirect('users', 'login');
-	}
-	$userID = $_SESSION[USER_MODEL][USER_PK];
-	$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'ga_password', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
-	if($gameInfos['us_id'] != $userID) {
-		if($gameInfos['ga_password'] != '') {
-			if(!isset($_SESSION['game']['password']))
-				$_SESSION['game']['password'] = '';
-			if(isset($_POST['game_password'])) {
-				if(encrypt($_POST['game_password']) == $gameInfos['ga_password']) {
-					$_SESSION['game']['password'] = encrypt($_POST['game_password']);
-				}
-				else {
-					setMessage('Mauvais mot de passe', FLASH_ERROR);
-					redirect('games', 'room', array($gameID));
-				}
-			}
-			else {
-				if($_SESSION['game']['password'] != $gameInfos['ga_password'])
-					render('game_access');
-			}
-		}
-	}
-
-	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
-
-	if(!in_array($userID, $usersInGame)) {
-		$gameInfos['action'] = createLink('rejoindre', 'games', 'joinGame', array($gameInfos['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
-	}
-	else{
-		$gameInfos['action'] = createLink('quitter', 'games', 'quiteGame', array($gameInfos['ga_id'], $userID), array('title' => 'Quitter la partie'));
-	}
-
-	if(!checkPlayersInGame($gameID)) {
-		setMessage('La partie commence !', FLASH_INFOS);
-		redirect('games', 'play', array($gameID));
-	}
-	
-	$gameInfos['ready'] = checkPlayersInGame($gameID);
-	
-	foreach($usersInGame as &$userInGame) {
-		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
-	}
-	$vars = array('gameInfos' => $gameInfos,
-				'usersInGame' => $usersInGame);
-	render('room', $vars);
-	$JS_FILES = array_pop($JS_FILES);
-	$CSS_FILES = array_pop($CSS_FILES);
-}
-
-
 function play($gameID) {
 	global $CSS_FILES;
 	global $JS_FILES;
@@ -323,7 +264,7 @@ function play($gameID) {
 					}
 					else {
 						setMessage('Mauvais mot de passe', FLASH_ERROR);
-						redirect('games', 'room', array($gameID));
+						redirect('games', 'play', array($gameID));
 					}
 				}
 				else {
@@ -735,7 +676,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	if($phase == BOARD_PHASE) {
 		//récupération de la carte du joueur
 		foreach($cards as $card) {
-			$board .= '<div class="carte"><img class="image_carte hidden_fance" src="' . IMG_DIR . 'cards/back.jpg" alt="card back" title="Carte face cachée"/></div>';
+			$board .= '<div class="carte"><img class="image_carte hidden_face" src="' . IMG_DIR . 'cards/back.jpg" alt="card back" title="Carte face cachée"/></div>';
 			$board .= "\n";
 		}
 	}
@@ -782,12 +723,12 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid white;border-radius: 5px;"' : '';
 			
 			$owner=getCardOwner($card['ca_id'], $turn['tu_id']);
-			$back_content="Carte de<br>".$pseudo = getOneRowResult(getUserInfos($owner['us_id']), 'us_pseudo')."<br><br>Votée par <br>";
+			$back_content="Carte de<br />".$pseudo = getOneRowResult(getUserInfos($owner['us_id']), 'us_pseudo')."<br /><br />Votée par <br />";
 			
 			$voters=getCardVoteInTurn($card['ca_id'], $turn['tu_id']);
 			foreach($voters as $voter) {
 				$pseudo=getOneRowResult(getUserInfos($voter['us_id']), 'us_pseudo');
-				$back_content.=$pseudo."<br>";
+				$back_content.=$pseudo."<br />";
 			}
 			
 			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><div class="back_carte"><img class="image_back_carte" src="' . IMG_DIR . 'cards/back_empty.jpg"/><p>'.$back_content.'</p></div><img '.$style.' class="image_carte_flip" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" /></div>';
@@ -796,7 +737,6 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	}
 
 	$board .= "</div>";
-	$board .= "</form>";
 	return $board;
 }
 
@@ -805,8 +745,8 @@ function _getHand($phase, $userID, $gameID, $turnID, $storyteller, $actionStatus
 	$handDisplay = '<div id="cartes">';
 	switch($phase) {
 		case STORYTELLER_PHASE:
-			$handDisplay .= '<form method="post" action="' . BASE_URL . 'cards/addStorytellerCard">';
 			if($storyteller) {
+				$handDisplay .= '<form method="post" action="' . BASE_URL . 'cards/addStorytellerCard">';
 				foreach($hand as $card) {
 					$handDisplay .= '<div class="carte"><a class="fancybox" rel="hand" href="' . IMG_DIR . 'cards/' . $card['ca_image'] . '"><img class="image_carte" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" title="' . $card['ca_id'] . '" /></a><img id="btnCardID'. $card['ca_id'] .'" onclick="selectCard(\'cardID\', \'main\','. $card['ca_id'] .');" class="bouton" src="' . IMG_DIR . 'bouton.png" /></div>';
 				}

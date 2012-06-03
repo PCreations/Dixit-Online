@@ -8,7 +8,6 @@ body {
 }
 
 #contentRight {
-	bottom: 755px;
 	right: -2000;
 }
 
@@ -100,8 +99,11 @@ body {
 	margin-right: 10px;
 	top:-90px;
 	-webkit-perspective:800px;
-    -webkit-transition: -webkit-transform 1500ms ease;
-    -webit-transform-style: preserve-3d;
+    -webkit-transition: -webkit-transform 1000ms ease;
+    -webkit-transform-style: preserve3d;
+    -moz-perspective:800px;
+    -moz-transition: -webkit-transform 1000ms ease;
+    -moz-transform-style: preserve-3d;
 }
 
 
@@ -114,9 +116,13 @@ body {
 	top:90px;
 	margin:0px;
 	-webkit-transform: translateZ(-10px) rotateY(180deg);
-    -webkit-transition: -webkit-transform 1500ms ease;
-    -webit-transform-style: preserve-3d;
+    -webkit-transition: -webkit-transform 1000ms ease;
+    -webkit-transform-style: preserve3d;
 	-webkit-backface-visibility: hidden;
+	-moz-transform: translateZ(-10px) rotateY(180deg);
+    -moz-transition: -webkit-transform 1000ms ease;
+    -moz-transform-style: preserve-3d;
+	-moz-backface-visibility: hidden;
 }
 
 
@@ -127,6 +133,7 @@ body {
 	margin:0px;
 	border-radius : 8px;
 	z-index:1;
+	top: 100px;
 	box-shadow: 6px 6px 6px #352d23;
 	cursor: url("../img/zoom.cur"), default;
 }
@@ -138,19 +145,32 @@ body {
 	top:-90px;
 	box-shadow: 6px 6px 6px #352d23;
 	-webkit-transform: rotateY(000deg);
-    -webkit-transition: -webkit-transform 1500ms ease;
-    -webit-transform-style: preserve-3d;
+    -webkit-transition: -webkit-transform 1000ms ease;
+    -webkit-transform-style: preserve3d;
 	-webkit-backface-visibility: hidden;
+	-moz-transform: rotateY(000deg);
+    -moz-transition: -webkit-transform 1000ms ease;
+    -moz-transform-style: preserve-3d;
+	-moz-backface-visibility: hidden;
 }
 
+#table .hidden_face {
+	cursor: default;
+	top:100px;
+	box-shadow: 6px 6px 6px #352d23;
+}
 #table .hidden_fance {
 	cursor: default;
 	top:-90px;
 	box-shadow: 6px 6px 6px #352d23;
 	-webkit-transform: rotateY(000deg);
-    -webkit-transition: -webkit-transform 1500ms ease;
-    -webit-transform-style: preserve-3d;
+    -webkit-transition: -webkit-transform 1000ms ease;
+    -webkit-transform-style: preserve3d;
 	-webkit-backface-visibility: hidden;
+	-moz-transform: rotateY(000deg);
+    -moz-transition: -webkit-transform 1000ms ease;
+    -moz-transform-style: preserve-3d;
+	-moz-backface-visibility: hidden;
 }
 
 #table .image_back_carte
@@ -175,6 +195,7 @@ body {
 	display:block;
 	width:22px;
 	position:relative;
+	top: 50px;
 	z-index:10;
 	margin-left:auto;
 	margin-right:auto;
@@ -221,11 +242,10 @@ body {
 	padding-bottom : 0px;
 }
 
-#table #stIndice {
+#main #stIndice {
 	margin: auto;
-    position: relative;
-    bottom: 170px;
-    width: 171px;
+	margin-top: 10px;
+	width: 275px;
 }
 
 #main  .image_carte 
@@ -278,7 +298,7 @@ body {
 	background-image:url("../img/bg_sidebar.png");
 }
 
-#label_joueurs, #label_joueurs_room
+#label_joueurs
 {
 	margin-top:2px;
 	margin-left:10px;
@@ -310,21 +330,21 @@ body {
 	font-size: 13px;
 }
 
-#label_chat
+.label_chat
 {
 	margin-top:10px;
 	margin-left:10px;
 	margin-bottom:7px;
 }
 
-#chatMessages {
+.chatMessages {
 	background-color: rgba(255, 255, 255, 0.5);
 	height: 335px;
 	padding: 5px;
 	overflow: auto;
 }
 
-#chatMessages h4 {
+.chatMessages h4 {
 	font-size: 15px;
     margin-left: 5px;
 	margin-top:0px;
@@ -332,7 +352,7 @@ body {
 	margin-bottom:0px;
 }
 
-#chatMessages p {
+.chatMessages p {
 	border-bottom: 1px solid #eeeeee;
     font-size: 14px;
     margin: 5px 0 5px;
@@ -347,7 +367,7 @@ body {
 	width:197px;
 }
 
-#sendGameMsg
+.sendGameMsg
 {
 	float:right;
 }

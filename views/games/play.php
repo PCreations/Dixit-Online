@@ -110,6 +110,7 @@
 	gameID = <?php echo $turn['game']['ga_id'];?>;
 	userID = <?php echo $_SESSION[USER_MODEL][USER_PK];?>;
 	hostID = <?php echo $gameInfos['us_id'];?>;
+	showedWindow = (gameIsStarted) ? 'play' : 'room';
 	BASE_URL = '<?php echo BASE_URL;?>';
 	IMG_DIR = '<?php echo IMG_DIR;?>';
 	FLASH_SUCCESS = '<?php echo FLASH_SUCCESS;?>';
@@ -117,6 +118,7 @@
 	FLASH_INFOS = '<?php echo FLASH_INFOS;?>';
 	FLASH_MESSAGE = '<?php echo FLASH_MESSAGE;?>';
 
+	swapWindow(showedWindow);
 	if(gameIsStarted != 0) {
 		<?php if($gameIsStarted) { ?>
 			phaseID = <?php echo $turn['phase']['id'];?>;

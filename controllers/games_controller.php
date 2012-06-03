@@ -381,7 +381,7 @@ function play($gameID) {
 		$currentTurn['players'] = $playersInfos;
 		
 		$vars = array();
-		$vars['gameIsStarted'] = (boolean)_checkIfPlayersAreReady($gameID);
+		$vars['gameIsStarted'] = (boolean)!checkPlayersInGame($gameID);
 		$vars['turn'] = $currentTurn;
 		$vars['turn']['phase'] = _getPhaseInfos($storyteller, $phase, $actionStatus);
 		$vars['actionStatus'] = $actionStatus;

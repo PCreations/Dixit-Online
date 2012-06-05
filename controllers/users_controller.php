@@ -169,12 +169,48 @@ function account($id = null) {
 	
 	if(isset($_POST['deck'])) { //Formulaire de création d'un deck
 			extract($_POST);
-			if(!isset($public)){
-			$public='0';
-			}
+			if(!empty($deck_name)){
+				if(!isset($public)){
+					$public='0';
+				}	
 			addDeck($userID, $deck_name, $public);
 			setMessage('Votre nouveau deck est prêt', FLASH_SUCCESS);
 			redirect('users', 'account', array( $userID));
+			}
+			else{
+				setMessage('Vous devez donner un nom à votre deck.', FLASH_ERROR);
+			}
+			
+	}
+	if(isset($_POST['card'])) { //Formulaire de création d'un deck
+			extract($_POST);
+			if(!isset($card_image) OR !empty($card_name)){
+					if ($_FILES['card_image']['error'] > 0) {
+						setMessage('Erreur lors du transfert', FLASH_ERROR);
+					}
+					if ($_FILES['card_image']['size'] > $maxsize){
+						setMessage('Votre image dépasse la taille autorisée', FLASH_ERROR);
+					}
+					$extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
+					$extension_upload = strtolower(  substr(  strrchr($_FILES['card_image']['name'], '.')  ,1)  );
+					if ( in_array($extension_upload,$extensions_valides) ){
+						$image_sizes = getimagesize($_FILES['card_image']['tmp_name']);
+						if ($image_sizes[0] != '329' AND $image_sizes[1] != '500'){
+							setMessage('Votre image n\'a pas les bonnes dimensions', FLASH_ERROR);
+						}
+						$path = IMG_DIR.'/img/{$card_name}.{$extension_upload}';
+						$resultat = move_uploaded_file($_FILES['card_image']['tmp_name'],$path);
+						if ($resultat){ 
+							setMessage('Votre image a été correctement ajoutée', FLASH_SUCCESS);
+						}else{
+							setMessage('Le transfert à échoué. Veuillez réessayer.', FLASH_ERROR);
+						}
+					}else{
+						setMessage('Votre image n\'a pas un format valide', FLASH_ERROR);
+					}
+				}else{
+					setMessage('Tous les champs sont obligatoires', FLASH_ERROR);
+				}
 	}
 	$user = getUserInfos($id);
 	$reelFriends = getReelFriends($id);

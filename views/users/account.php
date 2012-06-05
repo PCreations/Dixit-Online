@@ -110,7 +110,7 @@
 			<div id="side1">
 				<p>Creez un nouveau deck</p></br></br>
 				<form method="POST">
-					<input type="text" name="deck_name" value="Nom"></input>
+					<input type="text" name="deck_name" value="Entrez ici un nom" onFocus="javascript:this.value=''"></input>
 					<input type="checkbox" name='public'><font size="1">Public</font>
 					<input type="hidden" name="deck"></input>
 					<input type="submit" value="Creer">
@@ -118,9 +118,10 @@
 				</br></br>
 				<p>Ajouter une carte</p></br></br>
 				<form method="POST">
-					<input type="text" name="card_name" value="Nom"></input>
-					<input type="file" name="card_image"></input>
-					<input type="hidden" name="card"></input>
+					<input type="text" name="card_name" value="Entrez ici un nom" onFocus="javascript:this.value=''"/>
+					<input type="hidden" name="MAX_FILE_SIZE" value="153600" />
+					<input type="file" name="card_image"/>
+					<input type="hidden" name="card"/>
 					<input type="submit" value="Ajouter">
 				</form>
 			</div>

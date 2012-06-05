@@ -109,7 +109,15 @@ function callback_ping(){
 	$("#ping").html("");
 }*/
 
+	// Positionnement des flèches
 
+	w=screen.availWidth;
+	h=screen.availHeight;
+	contentw=900;
+	$(".arrowRoom").css("top",(h/2)-100);
+	$(".arrowGame").css("top",(h/2)-100);
+	$(".arrowRoom").css("left",(w-contentw)/4-75);
+	$(".arrowGame").css("left",w-((w-contentw)/4)-75);
 
 	//Par défaut le tour courant et la phase courante sont ceux défini en PHP (i.e le premier tour et la première phase)
 	gameIsStarted = <?php echo ($gameIsStarted) ? '1' : '0';?>;

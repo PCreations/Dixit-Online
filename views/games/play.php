@@ -153,7 +153,7 @@
 
 		if(divID == 'table') {
 			/* Ajout de la carte */
-			$.post(BASE_URL+"cards/vote/", {cardID: cardID, turnID: turnID}, function(data) {
+			$.post(BASE_URL+"games/vote/", {cardID: cardID, turnID: turnID, gameID: gameID}, function(data) {
 				/* Redirection vers la bonne page */
 				$(location).attr('href',BASE_URL+'games/play/'+gameID);
 			});
@@ -180,9 +180,9 @@
 
 		console.log("updateCard");
 		/* Update de la carte */
-		$.post(BASE_URL+"cards/updateVote/", {cardID: cardID, turnID: turnID}, function(data) {
+		$.post(BASE_URL+"games/updateVote/", {cardID: cardID, turnID: turnID, gameID: gameID}, function(data) {
 			/* Update boutons */
-			
+			Dixit.alert('Votre vote à été mis à jour', Dixit.FLASH_SUCCESS);
 			/*$(location).attr('href',BASE_URL+'games/play/'+gameID);*/
 		});
 	}

@@ -74,7 +74,7 @@ function slideNotifications() {
 	$('#flash').slideDown(800);
 	setTimeout(function(){
 		$('#flash').slideUp(800);
-	}, 5000);
+	}, 3000);
 }
 
 function rtrim(str, charlist) {

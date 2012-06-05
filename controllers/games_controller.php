@@ -29,27 +29,6 @@ function index() {
 		}
 		$partiesEnAttente = filterGames($name, $nbplayers, $nbpoints, $deck, $public);
 	}
-
-	/*foreach($partiesEnAttente as &$partie) {
-			if(isLogged()) {
-				$userID = $_SESSION[USER_MODEL][USER_PK];
-
-				$playersInGame = getSpecificArrayValues(getPlayersInGame($partie['ga_id']), 'us_id');
-
-				if(!in_array($userID, $playersInGame)) {
-					$partie['action'] = createLink('rejoindre', 'games', 'joinGame', array($partie['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
-				}
-				else{
-					$partie['action'] = createLink('quitter', 'games', 'quiteGame', array($partie['ga_id'], $userID), array('title' => 'Quitter la partie'));
-				}
-			}
-			else {
-				$partie['action'] = 'Aucune action possible. ' . createLink('connectez-vous', 'users', 'login', null, array('title' => 'connectez-vous')) . ' pour rejoindre une partie';
-			}
-		}
-	}*/
-		
-	debug($partiesEnAttente);
 	$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos, 'vars_filtrage' => $vars_filtrage);
 	render('index', $vars);
 }
@@ -337,27 +316,6 @@ function play($gameID) {
 
 	$JS_FILES = array_pop($JS_FILES);
 	
-}
-
-function gameOver($gameID) {
-	if(!isLogged()) {
-		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);
-		redirect('games');
-	}
-	else if(!_isGameOver($gameID)) {
-		setMessage('Cette partie n\'est pas terminée', FLASH_ERROR);
-		redirect('games');
-	}
-	else {
-		$playersPoints = _getPlayersPoints($gameID);
-
-		foreach($playersPoints as &$player) {
-			$player['pseudo'] = getOneRowResult(getUserInfos($player['us_id'], array('us_pseudo')), 'us_pseudo');
-		}
-
-		$vars['playersPoints'] = $playersPoints;
-		render('game-over', $vars);
-	}
 }
 
 function _isGameOver($gameID = null) {
@@ -679,12 +637,12 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 		shuffle($cards);
 		if(!$storyteller) {
 			$votedCardId = _getUserVotedCardInTurn($turn['tu_id'], $_SESSION[USER_MODEL][USER_PK]);
-			$board .= '<form id="boardForm" method="post" action="' . BASE_URL . 'cards/vote">';
+			$board .= '<form id="boardForm" method="post" action="' . BASE_URL . 'games/vote">';
 			foreach($cards as $card) {
 				$buttonImg = '';
 				if($userCardID != $card['ca_id']) {
 					if($votedCardId != -1) {//i.e si le joueur a déjà voté
-						$buttonImg = '<img class="bouton" id="btnCardID'. $card['ca_id'] .'" onclick="updateCard(\'cardID\', \'table\','. $card['ca_id'] .');alert(\'test\');" src="' . IMG_DIR . 'bouton.png" />';
+						$buttonImg = '<img class="bouton" id="btnCardID'. $card['ca_id'] .'" onclick="updateCard(\'cardID\', \'table\','. $card['ca_id'] .');" src="' . IMG_DIR . 'bouton.png" />';
 					}
 					else {
 						$buttonImg = '<img class="bouton" id="btnCardID'. $card['ca_id'] .'" onclick="selectCard(\'cardID\', \'table\','. $card['ca_id'] .');" src="' . IMG_DIR . 'bouton.png" />';
@@ -855,7 +813,7 @@ function _getGameMessages($gameID, $json = false) {
 		return $messagesTexts;
 }
 
-function _getUserPointsMsg() {
+function _getUserPointsMsg($turnID = null, $userID = null, $gameID = null, $return = false) {
 	$msg = '';
 	$turnID = $_POST['turnID'];
 	$userID = $_POST['userID'];
@@ -924,7 +882,71 @@ function _getUserPointsMsg() {
 		}
 	}
 
-	echo $msg;
+	if($return)
+		return $msg;
+	else
+		echo $msg;
+}
+
+function vote() {
+	if(!isPost()) {
+		trigger_error('Vous n\'avez pas accès à cette page');
+		die();
+	}
+	if(!isLogged()) {
+		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);
+		redirect('users', 'login');
+	}
+	else {
+		if(!isset($_POST['cardID'])) {
+			setMessage('Vous devez sélectionner une carte', FLASH_ERROR);
+		}
+		else if($_POST['cardID'] == getOneRowResult(getPlayerCardInBoard($_POST['turnID'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id')) {
+			setMessage('Vous ne pouvez pas voter pour votre propre carte', FLASH_ERROR);
+		}
+		else {
+			extract($_POST);
+			addGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
+			if(_getActualGamePhase($gameID, $turnID) != POINTS_PHASE) {
+				setMessage('Votre vote a été pris en compte. Vous pouvez le modifier tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);
+			}
+			else {
+				setMessage(_getUserPointsMsg($turnID, $_SESSION[USER_MODEL][USER_PK], $gameID, true), FLASH_INFOS);
+			}
+		}
+	}
+	die();
+
+}
+
+function updateVote() {
+	if(!isPost()) {
+		trigger_error('Vous n\'avez pas accès à cette page');
+		die();
+	}
+	if(!isLogged()) {
+		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);
+		redirect('users', 'login');
+	}
+	else {
+		if(!isset($_POST['cardID'])) {
+			setMessage('Vous devez sélectionner une carte', FLASH_ERROR);
+		}
+		else if($_POST['cardID'] == getOneRowResult(getPlayerCardInBoard($_POST['turnID'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id')) {
+			setMessage('Vous ne pouvez pas voter pour votre propre carte', FLASH_ERROR);
+		}
+		else {
+			extract($_POST);
+			updateGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
+			if(_getActualGamePhase($gameID, $turnID) != POINTS_PHASE) {
+				setMessage('Votre vote a été pris en compte. Vous pouvez le modifier tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);
+			}
+			else {
+				setMessage(_getUserPointsMsg($turnID, $_SESSION[USER_MODEL][USER_PK], $gameID, true), FLASH_INFOS);
+			}
+		}
+	}
+
 }
 
 function _getStorytellerInfo() {
@@ -932,7 +954,13 @@ function _getStorytellerInfo() {
 }
 
 function _getClassement($gameID) {
-	return "classement";
+	$playersPoints = _getPlayersPoints($gameID);
+
+	foreach($playersPoints as &$player) {
+		$player['pseudo'] = getOneRowResult(getUserInfos($player['us_id'], array('us_pseudo')), 'us_pseudo');
+	}
+
+	return $playersPoints;
 }
 
 function _roomAjax() {

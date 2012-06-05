@@ -98,9 +98,13 @@ function account($id = null) {
 	if($userDecks != NULL){
 		foreach($userDecks as &$deck){
 			$deck['de_status'] = getOneRowResult(getDeckInfos($deck['de_id'], array('de_status')), 'de_status');
+			if($deck['de_status'] == 0){
+				$deck['de_status']= 'Privé';
+			}else{
+				$deck['de_status']= 'Public';
+			}
 			$deck['nbCards'] = getOneRowResult(nbCartes($deck['de_id']), 'nbCartes');
 			$deck['cardsInDeckInfo'] = getCardsInDeckInfo($deck['de_id']);
-			$deck['action'] = "Modifier";
 		}
 	}else{
 		$result = "";

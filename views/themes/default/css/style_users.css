@@ -470,24 +470,31 @@
 	margin-left : 50px;
 }
 
-#account4 #side2  table {
+#account4 #side2  table .deck{
 	border-collapse: collapse;
 	margin : auto;
 	margin-right : 20px;
-	width : 560px;
+	display :inline-block;
 }
 
-	#account4 #side2  tr{
+	#account4 #side2  .deck tr{
 		background-color: rgba(255,255,255,0.5);
 		display: block;
 		margin-bottom: 5px;
 		height : 25px;
 	}
-	#account4 #side2  th{
-		width : 28%;
+	#account4 #side2 .deck th{
+		width : 125px;
 	}
-	#account4 #side2  td{
+	#account4 #side2 .deck td{
 		padding-left: 10px;
-		width : 28%;
+		width : 125px;
 		text-align : center;
 	}
+#account4 #side2 table{
+	display : inline-block;
+}
+.pen 
+{
+	width : 26px;
+}

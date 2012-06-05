@@ -98,7 +98,7 @@
 					<p>
 						<input name="login" type="text" value="Login"/>
 						<input type="hidden" name="research" />
-						<input class="popup" border=0 src="<?php echo IMG_DIR;?>search_icone.png" type=image value=submit align="top" > 
+						<input  border=0 src="<?php echo IMG_DIR;?>search_icone.png" type=image value=submit align="top" > 
 					</p>
 			</form>
 	</div>
@@ -109,6 +109,11 @@
 		<div id="sides">
 			<div id="side1">
 				<h3>Creez un nouveau deck</h3>
+				<div id="warning">
+					<img src="<?php echo IMG_DIR;?>warning2.png" alt="#"/>
+					<p>Par défaut les decks sont <strong>privés</strong>, c'est-à-dire que vous seul pouvez créer une partie utilisant un de vos decks privés.</p>
+					</p>
+				</div>
 				<form method="POST">
 					<label for="deck_name" >Nom : </label><input type="text" name="deck_name" onFocus="javascript:this.value=''"></input>
 					<input type="checkbox" name='public'><font size="1">Public</font>
@@ -133,12 +138,11 @@
 			</div>
 			<div id="side2">
 				<h3>Vos decks</h3>
-				<table>
+				<table class="deck">
 					<head>
 							<th>Nom</th>
-							<th>Nombre de cartes</th>
+							<th>Nb cartes</th>
 							<th>Statut</th>
-							<th>Action</th>
 					</head>
 					<body>
 						<?php  foreach($userDecks as &$deck): ?>
@@ -146,9 +150,17 @@
 								<td><?php echo $deck['de_name'];?></td>
 								<td><?php echo $deck['nbCards'];?></td>
 								<td><?php echo $deck['de_status'];?></td>
-								<td><?php echo $deck['action'];?></td>
 							</tr>
 							<?php endforeach;?>
+					</body>
+				</table>
+				<table>
+					<body>
+						<?php  foreach($userDecks as &$deck): ?>
+						<tr>
+							<td><img class="pen"src="<?php echo IMG_DIR;?>pen.png" alt="#"/></a></td>
+						</tr>
+						<?php endforeach;?>
 					</body>
 				</table>
 			</div>

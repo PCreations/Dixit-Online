@@ -250,9 +250,10 @@ function play($gameID) {
 			}
 		}
 
-		$usersInGames = _getUsersInGames($gameID);
-		
-		if(!in_array($userID, $usersInGame)) {
+		$usersInGameIDs = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+		$usersInGame = _getUsersInGame($gameID);
+
+		if(!in_array($userID, $usersInGameIDs)) {
 			$gameInfos['action'] = createLink('rejoindre', 'games', 'joinGame', array($gameInfos['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
 		}
 		else{
@@ -982,30 +983,28 @@ function _getClassement($gameID) {
 
 function _roomAjax() {
 	$gameID = $_POST['gameID'];
-	$oldUsersInGame = $_POST['usersInGame'];
+	$oldUsersIDs = $_POST['usersIDs'];
 	$startGame = (boolean)!checkPlayersInGame($gameID);
-	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+	$usersIDs = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
 	$turnID = _getCurrentGameTurn($gameID, 'tu_id');
 	$phaseID = _getActualGamePhase($gameID, $turnID);
-	foreach($usersInGame as $user) {
-		$userInGameName[$user] = getUserInfos($user, array('us_pseudo', 'us_id'));
-	}
 	$joinGame = true;
 	$diff = array();
-	if(count($usersInGame) > count($oldUsersInGame)) { //Un ou plusieurs joueurs sont rentrés en jeu
+	if(count($usersIDs) > count($oldUsersIDs)) { //Un ou plusieurs joueurs sont rentrés en jeu
 		$joinGame = true;
-		$diff = array_diff($usersInGame, $oldUsersInGame);
+		$diff = array_diff($usersIDs, $oldUsersIDs);
 	}
-	else if(count($oldUsersInGame) > count($usersInGame)) {
+	else if(count($oldUsersIDs) > count($usersIDs)) {
 		$joinGame = false;
-		$diff = array_diff($oldUsersInGame, $usersInGame);
+		$diff = array_diff($oldUsersIDs, $usersIDs);
 	}
 	$usersNames = (!empty($diff)) ? array() : -1;
 	foreach($diff as $userID) {
 		$usersNames[] = getOneRowResult(getUserInfos($userID), 'us_pseudo');
 	}
+	$usersInGame = _getUsersInGame($gameID);
 	$gameMessages = _getGameMessages($gameID, true);
-	echo json_encode(compact("turnID", "phaseID", "oldUsersInGame", "startGame", "gameMessages", "usersNames", "joinGame", "usersInGame", "userInGameName"));
+	echo json_encode(compact("turnID", "phaseID", "oldUsersIDs", "startGame", "gameMessages", "usersNames", "joinGame", "usersIDs", "usersInGame"));
 }
 
 function _ajaxData($gameID, $oldPhase, $oldTurnID) {

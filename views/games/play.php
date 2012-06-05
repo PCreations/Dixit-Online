@@ -400,18 +400,18 @@ function callback_ping(){
 		});
 	}, 2000);
 
-	usersInGame = <?php echo $jsonUsersInGame;?>;
+	usersIDs = <?php echo $jsonUsersInGame;?>;
 
 	setInterval(function() {
-		$.post(Dixit.BASE_URL+"games/_roomAjax",{gameID: gameID, usersInGame: usersInGame}, function(json) {
+		$.post(Dixit.BASE_URL+"games/_roomAjax",{gameID: gameID, usersIDs: usersIDs}, function(json) {
 			var result = $.parseJSON(json);
-			usersInGame = result.usersInGame;
+			usersIDs = result.usersIDs;
 			if(!gameIsStarted) {
 				phaseID = result.phaseID;
 				turnID = result.turnID;
 			}
 			gameIsStarted = result.startGame;
-			displayRoomPlayersInfos(result.userInGameName);
+			displayRoomPlayersInfos(result.usersInGame);
 			var notif = '';
 			var textAction = (result.joinGame) ? "rejoint" : "quitté";
 			if(result.usersNames != -1) {
@@ -431,12 +431,12 @@ function callback_ping(){
 		});
 	}, 2000);
 
-	function displayRoomPlayersInfos(userInGameName) {
+	function displayRoomPlayersInfos(usersInGame) {
 		text = '';
-		console.log(userInGameName);
+		console.log(usersInGame);
 		$("#players_room").html('<img id="label_joueurs_room" src="'+IMG_DIR+'joueurs.png">');
 
-		$.each(userInGameName, function(key, player) {
+		$.each(usersInGame, function(key, player) {
 			console.log(player);
 			$("#players_room").append('<div class="joueur">'
 										+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'

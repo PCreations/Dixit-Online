@@ -27,6 +27,7 @@ function index() {
 		if(!isset($public)){
 			$public='off';
 		}
+		debug($public);
 		$partiesEnAttente = filterGames($name, $nbplayers, $nbpoints, $deck, $public);
 	}
 

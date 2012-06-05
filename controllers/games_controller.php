@@ -280,6 +280,8 @@ function play($gameID) {
 		foreach($usersInGame as &$userInGame) {
 			$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
 		}
+		
+		$cards = getCardsInDeckInfo($gameInfos['us_id']);
 
 		/* Fin données liées à la room */
 
@@ -326,6 +328,7 @@ function play($gameID) {
 		$vars['gameInfos'] = $gameInfos;
 		$vars['usersInGame'] = $usersInGame;
 		$vars['jsonUsersInGame'] = json_encode($usersInGame);
+		$vars['cards'] = $cards;
 		//debug($vars);
 		render('play', $vars);
 		
@@ -667,6 +670,8 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	foreach($cardsIDs as $cardID) {
 		$cards[] = getCardInfos($cardID);
 	}
+	
+	
 
 	if($phase == BOARD_PHASE) {
 		//récupération de la carte du joueur

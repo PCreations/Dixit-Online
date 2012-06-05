@@ -15,6 +15,17 @@
 					<p><?php echo _getClassement($gameInfos['ga_id']);?></p>
 				<?php } ?>
 			</div>
+			<div id="deck_room">
+				<div id="gallery">
+					<div id="gallery_conteneur">
+							<?php foreach($cards as $card): ?>
+								<div class="carte">
+									<img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
+								</div>
+							<?php endforeach;?>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div id="sidebar_room">
 			<div id="players_room">

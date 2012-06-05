@@ -83,6 +83,57 @@ body {
 	background-image:url("../img/bg_table.png");
 }
 
+#table, #deck_room
+{
+	width:615px;
+	height:305px;
+	margin-bottom:10px;
+	padding:20px;
+	background-image:url("../img/bg_main.png");
+}
+
+/*affichage du deck dans la room*/
+#deck_room #gallery
+{
+	margin : auto ;
+	top:10px;
+	height : 290px;
+	width : 583px;
+	overflow : auto;
+}
+
+#deck_room #gallery_conteneur
+{
+	background-color: rgba(255, 255, 255, 0.5);
+	display : inline-block;
+	border-radius : 6px;
+	padding : 10px 5px 10px 10px;
+	margin : 10px 0px;
+}
+
+#deck_room .carte
+{
+	display:inline-block;
+	position:relative;
+	width:15%; /*dépend du nombre de cartes*/
+	margin-right: 5px;
+}
+
+#deck_room .image_carte img
+{
+	width:100%; /*dépend du nombre de cartes*/
+}
+
+#deck_room .image_carte
+{
+	position:relative;
+	width:100%;
+	margin:0px;
+	border-radius : 8px;
+	z-index:1;
+	cursor: url("../img/zoom.cur"), default;
+}
+
 #table #cartes
 {
 	margin-top:20px;

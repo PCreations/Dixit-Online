@@ -344,6 +344,12 @@
 {
 	border: #CCC 1px solid;
 	display : inline-block;
+	margin : 5px 0px;
+}
+#profil #account4 label
+{
+	display : inline-block;
+	width : 50px;
 }
 #profil #account4  form input:hover 
 {
@@ -412,6 +418,53 @@
 { 
 	visibility : hidden;
 }
-
-
-
+#survey img
+{
+	width : 150px;
+	display : inline-block;
+	box-shadow: 2px 2px 4px black;
+	border-radius : 12px;
+}
+#survey
+{
+	display : inline-block;
+	width : 150px;
+}	
+#account4 h4
+{
+	margin : 0px;
+}
+#account4 #warning p
+{
+	letter-spacing : 0.1px;
+	font-size : 0.8em;
+	width : 500px;
+}
+#account4 #warning 
+{
+	padding : 10px;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius : 12px;
+	margin : 10px 0px;
+}
+#account4 #warning img
+{
+	display : inline-block;
+}
+#account4 #side1 form
+{
+	display : inline-block;
+	vertical-align :top;
+}
+#account4 #side1  .card 
+{
+	width : 290px;
+	display : inline-block;
+	margin-left : 40px;
+	
+}
+#account4 #side1 .card  .submit
+{
+	margin-top : 20px;
+	margin-left : 50px;
+}

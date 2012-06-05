@@ -182,35 +182,56 @@ function account($id = null) {
 			}
 			
 	}
-	if(isset($_POST['card'])) { //Formulaire de création d'un deck
+	if(isset($_POST['card'])) { //Formulaire d'upload d'image
 			extract($_POST);
-			if(!isset($card_image) OR !empty($card_name)){
-					if ($_FILES['card_image']['error'] > 0) {
-						setMessage('Erreur lors du transfert', FLASH_ERROR);
-					}
-					if ($_FILES['card_image']['size'] > $maxsize){
-						setMessage('Votre image dépasse la taille autorisée', FLASH_ERROR);
+			print_r($_FILES);
+			/*Erreurs*/
+			if($_FILES['userfile']['error'] == '1'){
+				setMessage('Votre image dépasse le poids autorisée', FLASH_ERROR);
+			}
+			if($_FILES['userfile']['error'] == '3' OR $_FILES['userfile']['error'] == '4' ){
+				setMessage('Le fichier n\'a pas été téléchargé, ou alors seulement partiellement', FLASH_ERROR);
+			}
+			if($_FILES['userfile']['error'] == '5' ){
+				setMessage('Aucun fichier n\'a été téléchargé', FLASH_ERROR);
+			}
+			if($_FILES['userfile']['error'] == '6'){
+				setMessage('Erreur interne', FLASH_ERROR);
+			}
+			/*Vérifications*/
+			if(isset($_FILES['userfile'])){
+				if(!empty($card_name)){
+					if ($_FILES['userfile']['error'] == '2'){
+						setMessage('Votre image dépasse le poids autorisée', FLASH_ERROR);
 					}
 					$extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
-					$extension_upload = strtolower(  substr(  strrchr($_FILES['card_image']['name'], '.')  ,1)  );
+					$extension_upload = strtolower(  substr(  strrchr($_FILES['userfile']['name'], '.')  ,1)  );
 					if ( in_array($extension_upload,$extensions_valides) ){
-						$image_sizes = getimagesize($_FILES['card_image']['tmp_name']);
-						if ($image_sizes[0] != '329' AND $image_sizes[1] != '500'){
-							setMessage('Votre image n\'a pas les bonnes dimensions', FLASH_ERROR);
-						}
-						$path = IMG_DIR.'/img/{$card_name}.{$extension_upload}';
-						$resultat = move_uploaded_file($_FILES['card_image']['tmp_name'],$path);
-						if ($resultat){ 
-							setMessage('Votre image a été correctement ajoutée', FLASH_SUCCESS);
+						if ( !empty($_FILES['userfile']['tmp_name'] )){
+							$image_sizes = getimagesize($_FILES['userfile']['tmp_name']);
+							if (($image_sizes[0] == '329') AND ($image_sizes[1] == '500')){
+								$path ='C:/wamp/www/dixit/views/themes/default/img/cards/'.basename($_FILES['userfile']['name']);
+								if (move_uploaded_file($_FILES['userfile']['tmp_name'],$path)){
+									addCardIn($userID, $card_name, $_FILES['userfile']['name']);
+									setMessage('Votre image a été correctement ajoutée', FLASH_SUCCESS);
+								}else{
+									setMessage('Le transfert à échoué. Veuillez réessayer.', FLASH_ERROR);
+								}
+							}else{
+								setMessage('Votre image n\'a pas les bonnes dimensions', FLASH_ERROR);
+							}	
 						}else{
-							setMessage('Le transfert à échoué. Veuillez réessayer.', FLASH_ERROR);
+							setMessage('Votre image dépasse le poids autorisée', FLASH_ERROR);
 						}
 					}else{
 						setMessage('Votre image n\'a pas un format valide', FLASH_ERROR);
 					}
 				}else{
-					setMessage('Tous les champs sont obligatoires', FLASH_ERROR);
+					setMessage('Veuillez donner un nom à votre image', FLASH_ERROR);
 				}
+			}else{
+				setMessage('Veuillez sélectionner un fichier', FLASH_ERROR);
+			}
 	}
 	$user = getUserInfos($id);
 	$reelFriends = getReelFriends($id);

@@ -108,22 +108,28 @@
 			<img  id="fleche-droite-vide" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite-vide.png" />
 		<div id="sides">
 			<div id="side1">
-				<p>Creez un nouveau deck</p></br></br>
+				<h4>Creez un nouveau deck</h4></br>
 				<form method="POST">
-					<input type="text" name="deck_name" value="Entrez ici un nom" onFocus="javascript:this.value=''"></input>
+					<label for="deck_name" >Nom : </label><input type="text" name="deck_name" onFocus="javascript:this.value=''"></input>
 					<input type="checkbox" name='public'><font size="1">Public</font>
 					<input type="hidden" name="deck"></input>
 					<input type="submit" value="Creer">
 				</form>
 				</br></br>
-				<p>Ajouter une carte</p></br></br>
-				<form method="POST">
-					<input type="text" name="card_name" value="Entrez ici un nom" onFocus="javascript:this.value=''"/>
+				<h4>Ajouter une carte</h4>
+				<div id="warning">
+					<img src="<?php echo IMG_DIR;?>warning.png" alt="#"/>
+					<p>Pour éviter les problèmes dus au déformations d'images, la taille de votre image doit faire exactement <strong>329px</strong> de large et <strong>500px</strong> de hauteur. Le poids est limité à <strong>150Ko</strong>.
+					</br>Les formats pris en charge sont <strong>'.png', '.jpeg', '.jpg', '.gif'</strong>. </p>
+				</div>
+				<form class="card" enctype="multipart/form-data" name="card" method="POST">
+					 <label for="card_name" >Nom : </label><input type="text" name="card_name" onFocus="javascript:this.value=''"/>
 					<input type="hidden" name="MAX_FILE_SIZE" value="153600" />
-					<input type="file" name="card_image"/>
+					 <label for="userfile" > </label><input name="userfile" type="file" onchange="preview();" />
 					<input type="hidden" name="card"/>
-					<input type="submit" value="Ajouter">
+					<input class="submit" type="submit" value="Ajouter">
 				</form>
+				<div id="survey"> </div>
 			</div>
 			<div id="side2">
 				<p> Vos decks  </p>

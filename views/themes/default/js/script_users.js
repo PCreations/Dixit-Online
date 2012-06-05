@@ -41,6 +41,13 @@ function displayArrow(){
 		}
 	}
 
+function preview(){
+	alert('plop');
+	imgCalque = document.getElementById("survey") ;
+	imgCalque.innerHTML = "<p>hello</p><img id='imgPrev' src='C:/Users/Cécilia/Dropbox/Dixit/medias/cartes/carte_2.png'/>";
+}
+// +document.forms[\"card\"].elements[\"userfile\"].value+
+
 $(document).ready(function(){ 
 	changeOnglet('1');
 	

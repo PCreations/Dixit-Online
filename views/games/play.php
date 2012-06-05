@@ -334,14 +334,19 @@ function callback_ping(){
 	$("#table .carte").hover(function(){
 		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
 		$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(360deg)');
+		$(this).children('.back_carte').css('-o-transform','translateZ(-10px) rotateY(360deg)');
 		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(180deg)');
 		$(this).children('.image_carte_flip').css('-moz-transform','rotateY(180deg)');
+		$(this).children('.image_carte_flip').css('-o-transform','rotateY(180deg)');
+		
 	}, 
 	  function() {
 		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
 		$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(180deg)');
+		$(this).children('.back_carte').css('-o-transform','translateZ(-10px) rotateY(180deg)');
 		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(0deg)');
 		$(this).children('.image_carte_flip').css('-moz-transform','rotateY(0deg)');
+		$(this).children('.image_carte_flip').css('-o-transform','rotateY(0deg)');
 	  });
 	
 	if(!gameIsStarted || gameIsOver) $('.arrowGame').hide();

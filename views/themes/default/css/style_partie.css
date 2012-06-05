@@ -104,6 +104,9 @@ body {
     -moz-perspective:800px;
     -moz-transition: -webkit-transform 1000ms ease;
     -moz-transform-style: preserve-3d;
+	-o-perspective:800px;
+    -o-transition: -webkit-transform 1000ms ease;
+    -o-transform-style: preserve-3d;
 }
 
 
@@ -123,6 +126,10 @@ body {
     -moz-transition: -webkit-transform 1000ms ease;
     -moz-transform-style: preserve-3d;
 	-moz-backface-visibility: hidden;
+	-o-transform: translateZ(-10px) rotateY(180deg);
+    -o-transition: -webkit-transform 1000ms ease;
+    -o-transform-style: preserve-3d;
+	-o-backface-visibility: hidden;
 }
 
 
@@ -152,6 +159,10 @@ body {
     -moz-transition: -webkit-transform 1000ms ease;
     -moz-transform-style: preserve-3d;
 	-moz-backface-visibility: hidden;
+	-o-transform: rotateY(000deg);
+    -o-transition: -webkit-transform 1000ms ease;
+    -o-transform-style: preserve-3d;
+	-o-backface-visibility: hidden;
 }
 
 #table .hidden_face {
@@ -171,6 +182,10 @@ body {
     -moz-transition: -webkit-transform 1000ms ease;
     -moz-transform-style: preserve-3d;
 	-moz-backface-visibility: hidden;
+	-o-transform: rotateY(000deg);
+    -o-transition: -webkit-transform 1000ms ease;
+    -o-transform-style: preserve-3d;
+	-o-backface-visibility: hidden;
 }
 
 #table .image_back_carte
@@ -187,7 +202,10 @@ body {
 	position:relative;
 	display:block;
 	top:-200px;
-
+	padding:10px;
+	padding-top:20px;
+	text-align:center;
+	color:white;
 }
 
 #table .bouton

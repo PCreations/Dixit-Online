@@ -221,7 +221,6 @@ function addTurn($gameID, $userID) {
 						VALUES(:gameID, :userID, NOW())');
 	$query->execute(array('gameID' => $gameID,
 						'userID' => $userID));
-	$query->closeCursor();
 
 	return $db->lastInsertId();
 }
@@ -350,4 +349,18 @@ function getTotalDealedPointsInTurn($turnID) {
 	$query->execute(array($turnID));
 
 	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function lockTables() {
+	global $db;
+
+	$query = $db->query('LOCK TABLE turns WRITE, pick WRITE, plays WRITE, plays as pl WRITE, games as ga WRITE, games as g WRITE, users as u WRITE, hands WRITE');
+	$query->closeCursor();
+}
+
+function unlockTables() {
+	global $db;
+
+	$query = $db->query('UNLOCK tables');
+	$query->closeCursor();
 }

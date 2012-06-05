@@ -511,7 +511,7 @@ function _dealPoints($turn) {
 //Fonction démarrant un nouveau tour
 function _startNewTurn($gameID, $storytellerID, $turnID) {
 	//maj date fin tour
-
+	lockTables();
 	$pick = getPick($gameID);
 	$nbPlayersInGame = getOneRowResult(countPlayersInGame($gameID), 'nbTotalPlayer');
 
@@ -537,6 +537,7 @@ function _startNewTurn($gameID, $storytellerID, $turnID) {
 		_setPlayerStatus($gameID, $playerID, 0);
 		_pickCard($newTurnID, $gameID, $playerID);
 	}
+	unlockTables();
 
 }
 function _getNextStorytellerID($gameID, $storytellerID){
@@ -685,7 +686,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 			
 			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><div class="back_carte"><img class="image_back_carte" src="' . IMG_DIR . 'cards/back_empty.jpg"/><p>'.$back_content.'</p></div><img '.$style.' class="image_carte_flip" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" /></div>';
 		}
-		$board .= '<div id="stIndice"><input type="button" id="readyForNextTurn" onclick="readyForNextTurn();" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
+		$board .= '<div id="readyButton"><input type="button" id="readyForNextTurn" onclick="readyForNextTurn();" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
 	}
 
 	$board .= "</div>";

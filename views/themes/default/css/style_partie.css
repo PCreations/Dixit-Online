@@ -248,6 +248,12 @@ body {
 	width: 275px;
 }
 
+#readyButton {
+	margin: auto;
+	margin-top: 100px;
+	width: 275px;
+}
+
 #main  .image_carte 
 {
 	width:100%;

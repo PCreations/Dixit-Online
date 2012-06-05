@@ -15,7 +15,7 @@ define('ACTION_IN_PROGRESS', 4);
 define('ACTION_DONE', 5);
 
 function index() {
-	$deckInfos = getAllDecks(array('de_id', 'de_name'));
+	$deckInfos = getAllowedDecks($_SESSION[USER_MODEL][USER_PK],array('de_id', 'de_name'));
 
 	if(!isPost()) {
 		$partiesEnAttente = getWaitingGames();

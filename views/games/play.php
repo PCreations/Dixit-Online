@@ -11,8 +11,26 @@
 			<div id="table_room">
 				<?php if(!$gameIsStarted) { ?>
 					<p><?php echo $gameInfos['action'];?></p>
+					<table id="usersInfos" border="1">
+						<tr id="firstTR">
+							<th>Joueur</th>
+							<th>Nombre de parties gagnées</th>
+							<th>Points d'expérience (classement)</th>
+						</tr>
+						<?php foreach($usersInGame as $user): ?>
+						<tr>
+							<td><?php echo $user['us_pseudo'];?></td>
+							<td><?php echo $user['nbWin'];?></td>
+							<td><?php echo $user['xp'].' ('.$user['classement'].')';?></td>
+						</tr>
+						<?php endforeach ?>
+					</table>
 				<?php } if($gameIsOver) { ?>
-					<p><?php echo _getClassement($gameInfos['ga_id']);?></p>
+					<ul><?php $classement = _getClassement($gameInfos['ga_id']);?>
+						<?php foreach($classement as $player) :?>
+							<li><strong><?php echo $player['us_pseudo'];?> :</strong><?php echo $player['points'];?> points (+<?php echo $player['xp'];?>XP)</li>	
+						<?php endforeach;?>
+					</ul>
 				<?php } ?>
 			</div>
 		</div>

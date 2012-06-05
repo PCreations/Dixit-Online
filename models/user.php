@@ -152,3 +152,50 @@ function exactSearchUser($login){
 	$query->execute(array('login' => $login));
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
+
+function getUsersTotalWinGames($userID) {
+	global $db;
+	$query = $db->prepare('SELECT COUNT(us_id) as nbWin
+						FROM users_xp
+						WHERE ga_position = 1
+						AND us_id = ?');
+	$query->execute(array($userID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function getUserXP($userID) {
+	global $db;
+	$query = $db->prepare('SELECT SUM(us_xp) as xp
+						FROM users_xp
+						WHERE us_id = ?');
+	$query->execute(array($userID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function getUserClassement($userID) {
+	global $db;
+
+	$db->query('SET @numLine := 0');
+	$query = $db->prepare('SELECT classement FROM 
+						(SELECT @numLine := @numLine+1 as classement, xp, id 
+							FROM
+							(SELECT SUM(us_xp) as xp, users_xp.us_id as id
+								FROM users_xp
+								GROUP BY id
+								ORDER BY xp DESC) 
+							as total) 
+						as playerClassement
+						WHERE id = ?');
+	$query->execute(array($userID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function getDixitClassement() {
+	global $db;
+	$query = $db->query('SELECT SUM(us_xp) as xp, u.us_pseudo
+					FROM users_xp
+					NATURAL JOIN users as u
+					GROUP BY u.us_id
+					ORDER BY xp DESC');
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}

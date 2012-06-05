@@ -34,7 +34,6 @@ Dixit.alert = function(message, type) {
 			break;
 	}
 	$("#ping").html("<audio autoplay='autoplay'><source src='<?php echo BASE_URL;?>views/themes/default/ping.mp3' /><source src='<?php echo BASE_URL;?>views/themes/default/ping.ogg' /></audio>");
-	alert("test");
 
 	
 	$("body").append(flash);

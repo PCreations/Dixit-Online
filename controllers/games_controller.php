@@ -226,6 +226,10 @@ function play($gameID) {
 
 		/* Données liées à la room */
 		$gameInfos = getGameInfos($gameID, array('ga_id', 'ga_name', 'ga_password', 'us_id', 'de_id', 'ga_creation_date', 'ga_nb_players', 'ga_points_limit'));
+		if(!$gameInfos) {
+			setMessage('Cette partie n\'existe pas', FLASH_ERROR);
+			redirect('games');
+		}
 		if($gameInfos['us_id'] != $userID) {
 			if($gameInfos['ga_password'] != '') {
 				if(!isset($_SESSION['game']['password']))
@@ -246,17 +250,13 @@ function play($gameID) {
 			}
 		}
 
-		$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
-
+		$usersInGames = _getUsersInGames($gameID);
+		
 		if(!in_array($userID, $usersInGame)) {
 			$gameInfos['action'] = createLink('rejoindre', 'games', 'joinGame', array($gameInfos['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
 		}
 		else{
 			$gameInfos['action'] = createLink('quitter', 'games', 'quiteGame', array($gameInfos['ga_id'], $userID), array('title' => 'Quitter la partie'));
-		}
-
-		foreach($usersInGame as &$userInGame) {
-			$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
 		}
 
 		/* Fin données liées à la room */
@@ -318,6 +318,19 @@ function play($gameID) {
 	
 }
 
+function _getUsersInGame($gameID) {
+	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
+
+	foreach($usersInGame as &$userInGame) {
+		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
+		$userInGame['nbWin'] = getOneRowResult(getUsersTotalWinGames($userInGame['us_id']), 'nbWin');
+		$userInGame['xp'] = getOneRowResult(getUserXP($userInGame['us_id']), 'xp');
+		$userInGame['classement'] = getOneRowResult(getUserClassement($userInGame['us_id']), 'classement');
+	}
+
+	return $usersInGame;
+}
+
 function _isGameOver($gameID = null) {
 	$boolean = false;
 	$gamePointsLimit = getOneRowResult(getGameInfos($gameID, array('ga_points_limit')), 'ga_points_limit');
@@ -331,14 +344,6 @@ function _isGameOver($gameID = null) {
 	
 	return $boolean;
 
-}
-
-function _getPlayersPoints($gameID) {
-	$players = getPlayersInGame($gameID);
-	foreach($players as &$player) {
-		$player['points'] = getOneRowResult(getTotalUserPointsInGame($gameID, $player['us_id']), 'nbPoints');
-	}
-	return $players;
 }
 
 function _notAlreadyDealsPoints($turnID) {
@@ -955,12 +960,23 @@ function _getStorytellerInfo() {
 }
 
 function _getClassement($gameID) {
-	$playersPoints = _getPlayersPoints($gameID);
-
+	$playersPoints = getClassement($gameID);
+	$gameInfos = getGameInfos($gameID, array('ga_nb_players', 'ga_points_limit'));
+	$nbBonusPosition = (int)$gameInfos['ga_nb_players'] / 3;
+	$totalBonusPoint = (int)$gameInfos['ga_nb_players'] * 2;
+	$actualPosition = 1;
+	$nbPlayers = (int)$gameInfos['ga_nb_players'];
 	foreach($playersPoints as &$player) {
-		$player['pseudo'] = getOneRowResult(getUserInfos($player['us_id'], array('us_pseudo')), 'us_pseudo');
+		$bonusPoint = 0;
+		if($actualPosition <= $nbBonusPosition)
+			$bonusPoint = $totalBonusPoint * (1 / $actualPosition);
+		$playerPoint = (int)$player['points'];
+		$pointLimit = (int)$gameInfos['ga_points_limit'];
+		$playerXP = (int)$playerPoint/$pointLimit*(($nbPlayers/6*100)+$bonusPoint*$nbPlayers);
+		$player['xp'] = $playerXP;
+		addXPtoPlayer($player['us_id'], $playerXP, $actualPosition, $gameID);
+		$actualPosition++;
 	}
-
 	return $playersPoints;
 }
 
@@ -1009,7 +1025,8 @@ function _ajaxData($gameID, $oldPhase, $oldTurnID) {
 	$classement = '';
 
 	if($phase == GAME_OVER) {
-		$classement = _getClassement($gameID);
+		/* Distribution des points d'expériences */
+		$playersPoints = _getClassement($gameID);
 	}
 	if($phase == BOARD_PHASE) {
 		$board = _getBoard(BOARD_PHASE, $gameID, array('tu_id' => $turnID,

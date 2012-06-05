@@ -8,7 +8,17 @@
     </head>
 	<body>
 		<header>
-			<img src="<?php echo IMG_DIR;?>titre.png"/>
+			<a href="<?php
+				if (isLogged()==0){
+					echo BASE_URL;
+				}
+				else{
+					echo BASE_URL."games/index";
+				}
+				?>">
+				
+				<img src="<?php echo IMG_DIR;?>titre.png"/>
+			</a>
 		</header>
 		<section>
 			<?php echo $contentForLayout;?>

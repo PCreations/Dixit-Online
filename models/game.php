@@ -32,7 +32,7 @@ function filterGames($name, $nbplayers, $nbpoints, $deck, $public) {
 		$prequery.=' AND de.de_id = :deck';
 	}
 	if ($public=='on'){
-		$prequery.=' AND ga.ga_password IS NULL';
+		$prequery.=' AND ga.ga_password=""';
 	}
 	$query = $db->prepare('SELECT us.us_name, ga.ga_id, ga.ga_name, ga.us_id, ga.ga_creation_date, ga.ga_password, ga.ga_nb_players, ga.ga_points_limit, de.de_name, de.de_id, total.nbTotalPlayer as nbPlayersInGame
 						FROM games as ga

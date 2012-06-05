@@ -33,6 +33,17 @@
 					</ul>
 				<?php } ?>
 			</div>
+			<div id="deck_room">
+				<div id="gallery">
+					<div id="gallery_conteneur">
+							<?php foreach($cards as $card): ?>
+								<div class="carte">
+									<img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
+								</div>
+							<?php endforeach;?>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div id="sidebar_room">
 			<div id="players_room">
@@ -116,7 +127,15 @@ function callback_ping(){
 	$("#ping").html("");
 }*/
 
+	// Positionnement des flèches
 
+	w=screen.availWidth;
+	h=screen.availHeight;
+	contentw=900;
+	$(".arrowRoom").css("top",(h/2)-100);
+	$(".arrowGame").css("top",(h/2)-100);
+	$(".arrowRoom").css("left",(w-contentw)/4-75);
+	$(".arrowGame").css("left",w-((w-contentw)/4)-75);
 
 	//Par défaut le tour courant et la phase courante sont ceux défini en PHP (i.e le premier tour et la première phase)
 	gameIsStarted = <?php echo ($gameIsStarted) ? '1' : '0';?>;
@@ -352,14 +371,19 @@ function callback_ping(){
 	$("#table .carte").hover(function(){
 		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
 		$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(360deg)');
+		$(this).children('.back_carte').css('-o-transform','translateZ(-10px) rotateY(360deg)');
 		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(180deg)');
 		$(this).children('.image_carte_flip').css('-moz-transform','rotateY(180deg)');
+		$(this).children('.image_carte_flip').css('-o-transform','rotateY(180deg)');
+		
 	}, 
 	  function() {
 		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
 		$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(180deg)');
+		$(this).children('.back_carte').css('-o-transform','translateZ(-10px) rotateY(180deg)');
 		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(0deg)');
 		$(this).children('.image_carte_flip').css('-moz-transform','rotateY(0deg)');
+		$(this).children('.image_carte_flip').css('-o-transform','rotateY(0deg)');
 	  });
 	
 	if(!gameIsStarted || gameIsOver) $('.arrowGame').hide();

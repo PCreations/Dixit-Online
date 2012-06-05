@@ -27,6 +27,7 @@ function index() {
 		if(!isset($public)){
 			$public='off';
 		}
+		debug($public);
 		$partiesEnAttente = filterGames($name, $nbplayers, $nbpoints, $deck, $public);
 	}
 	$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos, 'vars_filtrage' => $vars_filtrage);
@@ -260,6 +261,12 @@ function play($gameID) {
 			$gameInfos['action'] = createLink('quitter', 'games', 'quiteGame', array($gameInfos['ga_id'], $userID), array('title' => 'Quitter la partie'));
 		}
 
+		foreach($usersInGame as &$userInGame) {
+			$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
+		}
+		
+		$cards = getCardsInDeckInfo($gameInfos['us_id']);
+
 		/* Fin données liées à la room */
 
 		$currentTurn = getCurrentGameTurn($gameID);
@@ -305,6 +312,7 @@ function play($gameID) {
 		$vars['gameInfos'] = $gameInfos;
 		$vars['usersInGame'] = $usersInGame;
 		$vars['jsonUsersInGame'] = json_encode($usersInGame);
+		$vars['cards'] = $cards;
 		//debug($vars);
 		render('play', $vars);
 		
@@ -631,6 +639,8 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	foreach($cardsIDs as $cardID) {
 		$cards[] = getCardInfos($cardID);
 	}
+	
+	
 
 	if($phase == BOARD_PHASE) {
 		//récupération de la carte du joueur
@@ -682,12 +692,19 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 			$style = ($card['ca_id'] == $storytellerCardID) ? 'style="border: 2px solid white;border-radius: 5px;"' : '';
 			
 			$owner=getCardOwner($card['ca_id'], $turn['tu_id']);
-			$back_content="Carte de<br />".$pseudo = getOneRowResult(getUserInfos($owner['us_id']), 'us_pseudo')."<br /><br />Votée par <br />";
+			$back_content="Carte de<br />".$pseudo = getOneRowResult(getUserInfos($owner['us_id']), 'us_pseudo')."<br /><br />";
 			
 			$voters=getCardVoteInTurn($card['ca_id'], $turn['tu_id']);
-			foreach($voters as $voter) {
-				$pseudo=getOneRowResult(getUserInfos($voter['us_id']), 'us_pseudo');
-				$back_content.=$pseudo."<br />";
+			if(!empty($voters)){
+				$back_content.="Votée par <br />";
+				foreach($voters as $voter) {
+					$pseudo=getOneRowResult(getUserInfos($voter['us_id']), 'us_pseudo');
+					$back_content.=$pseudo."<br />";
+				}
+			}
+			else
+			{
+				$back_content.="Personne n'a voté pour cette carte";
 			}
 			
 			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><div class="back_carte"><img class="image_back_carte" src="' . IMG_DIR . 'cards/back_empty.jpg"/><p>'.$back_content.'</p></div><img '.$style.' class="image_carte_flip" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" /></div>';

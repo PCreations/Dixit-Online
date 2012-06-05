@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Mar 05 Juin 2012 à 18:09
+-- Généré le : Mar 05 Juin 2012 à 23:41
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -25,7 +25,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Structure de la table `boards`
 --
 
-DROP TABLE IF EXISTS `boards`;
 CREATE TABLE IF NOT EXISTS `boards` (
   `tu_id` int(11) NOT NULL,
   `ca_id` int(11) NOT NULL,
@@ -44,7 +43,6 @@ CREATE TABLE IF NOT EXISTS `boards` (
 -- Structure de la table `cards`
 --
 
-DROP TABLE IF EXISTS `cards`;
 CREATE TABLE IF NOT EXISTS `cards` (
   `ca_id` int(11) NOT NULL AUTO_INCREMENT,
   `us_id` int(11) NOT NULL,
@@ -118,7 +116,6 @@ INSERT INTO `cards` (`ca_id`, `us_id`, `ca_name`, `ca_image`) VALUES
 -- Structure de la table `cards_decks`
 --
 
-DROP TABLE IF EXISTS `cards_decks`;
 CREATE TABLE IF NOT EXISTS `cards_decks` (
   `ca_id` int(11) NOT NULL,
   `de_id` int(11) NOT NULL,
@@ -190,7 +187,6 @@ INSERT INTO `cards_decks` (`ca_id`, `de_id`) VALUES
 -- Structure de la table `chats`
 --
 
-DROP TABLE IF EXISTS `chats`;
 CREATE TABLE IF NOT EXISTS `chats` (
   `us_id` int(11) NOT NULL,
   `ga_id` int(11) NOT NULL,
@@ -211,7 +207,6 @@ CREATE TABLE IF NOT EXISTS `chats` (
 -- Structure de la table `decks`
 --
 
-DROP TABLE IF EXISTS `decks`;
 CREATE TABLE IF NOT EXISTS `decks` (
   `de_id` int(11) NOT NULL AUTO_INCREMENT,
   `us_id` int(11) NOT NULL,
@@ -234,7 +229,6 @@ INSERT INTO `decks` (`de_id`, `us_id`, `de_name`, `de_status`) VALUES
 -- Structure de la table `earned_points`
 --
 
-DROP TABLE IF EXISTS `earned_points`;
 CREATE TABLE IF NOT EXISTS `earned_points` (
   `us_id` int(11) NOT NULL,
   `tu_id` int(11) NOT NULL,
@@ -254,7 +248,6 @@ CREATE TABLE IF NOT EXISTS `earned_points` (
 -- Structure de la table `errors`
 --
 
-DROP TABLE IF EXISTS `errors`;
 CREATE TABLE IF NOT EXISTS `errors` (
   `er_id` int(11) NOT NULL AUTO_INCREMENT,
   `er_msg` varchar(255) NOT NULL,
@@ -273,7 +266,6 @@ CREATE TABLE IF NOT EXISTS `errors` (
 -- Structure de la table `games`
 --
 
-DROP TABLE IF EXISTS `games`;
 CREATE TABLE IF NOT EXISTS `games` (
   `ga_id` int(11) NOT NULL AUTO_INCREMENT,
   `de_id` int(11) NOT NULL,
@@ -299,7 +291,6 @@ CREATE TABLE IF NOT EXISTS `games` (
 -- Structure de la table `hands`
 --
 
-DROP TABLE IF EXISTS `hands`;
 CREATE TABLE IF NOT EXISTS `hands` (
   `ca_id` int(11) NOT NULL,
   `us_id` int(11) NOT NULL,
@@ -322,7 +313,6 @@ CREATE TABLE IF NOT EXISTS `hands` (
 -- Structure de la table `messages`
 --
 
-DROP TABLE IF EXISTS `messages`;
 CREATE TABLE IF NOT EXISTS `messages` (
   `me_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `me_text` varchar(255) DEFAULT NULL,
@@ -341,7 +331,6 @@ CREATE TABLE IF NOT EXISTS `messages` (
 -- Structure de la table `pick`
 --
 
-DROP TABLE IF EXISTS `pick`;
 CREATE TABLE IF NOT EXISTS `pick` (
   `ga_id` int(11) NOT NULL,
   `ca_id` int(11) NOT NULL,
@@ -361,7 +350,6 @@ CREATE TABLE IF NOT EXISTS `pick` (
 -- Structure de la table `plays`
 --
 
-DROP TABLE IF EXISTS `plays`;
 CREATE TABLE IF NOT EXISTS `plays` (
   `us_id` int(11) NOT NULL,
   `ga_id` int(11) NOT NULL,
@@ -381,7 +369,6 @@ CREATE TABLE IF NOT EXISTS `plays` (
 --
 -- Doublure de structure pour la vue `total_players_in_game`
 --
-DROP VIEW IF EXISTS `total_players_in_game`;
 CREATE TABLE IF NOT EXISTS `total_players_in_game` (
 `ga_id` int(11)
 ,`nbTotalPlayer` bigint(21)
@@ -392,7 +379,6 @@ CREATE TABLE IF NOT EXISTS `total_players_in_game` (
 -- Structure de la table `turns`
 --
 
-DROP TABLE IF EXISTS `turns`;
 CREATE TABLE IF NOT EXISTS `turns` (
   `tu_id` int(11) NOT NULL AUTO_INCREMENT,
   `ga_id` int(11) NOT NULL,
@@ -403,7 +389,7 @@ CREATE TABLE IF NOT EXISTS `turns` (
   PRIMARY KEY (`tu_id`),
   KEY `ga_id` (`ga_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
 
 --
 -- Contenu de la table `turns`
@@ -436,7 +422,6 @@ DELIMITER ;
 -- Structure de la table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `us_id` int(11) NOT NULL AUTO_INCREMENT,
   `us_name` varchar(255) DEFAULT NULL,
@@ -466,7 +451,6 @@ INSERT INTO `users` (`us_id`, `us_name`, `us_lastname`, `us_pseudo`, `us_passwor
 -- Structure de la table `users_cards_votes`
 --
 
-DROP TABLE IF EXISTS `users_cards_votes`;
 CREATE TABLE IF NOT EXISTS `users_cards_votes` (
   `us_id` int(11) NOT NULL,
   `ca_id` int(11) NOT NULL,
@@ -485,7 +469,6 @@ CREATE TABLE IF NOT EXISTS `users_cards_votes` (
 -- Structure de la table `users_friends`
 --
 
-DROP TABLE IF EXISTS `users_friends`;
 CREATE TABLE IF NOT EXISTS `users_friends` (
   `us_id` int(11) NOT NULL,
   `us_friend_id` int(11) NOT NULL,
@@ -503,10 +486,30 @@ CREATE TABLE IF NOT EXISTS `users_friends` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `users_xp`
+--
+
+CREATE TABLE IF NOT EXISTS `users_xp` (
+  `us_id` int(11) NOT NULL,
+  `us_xp` int(11) NOT NULL,
+  `ga_id` int(11) NOT NULL,
+  `ga_position` int(11) NOT NULL,
+  PRIMARY KEY (`us_id`,`ga_id`),
+  KEY `us_id` (`us_id`,`us_xp`,`ga_id`),
+  KEY `ga_id` (`ga_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `users_xp`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `votes`
 --
 
-DROP TABLE IF EXISTS `votes`;
 CREATE TABLE IF NOT EXISTS `votes` (
   `us_id` int(11) NOT NULL,
   `ca_id` int(11) NOT NULL,
@@ -625,6 +628,13 @@ ALTER TABLE `users_cards_votes`
 ALTER TABLE `users_friends`
   ADD CONSTRAINT `users_friends_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `users_friends_ibfk_2` FOREIGN KEY (`us_friend_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `users_xp`
+--
+ALTER TABLE `users_xp`
+  ADD CONSTRAINT `users_xp_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_xp_ibfk_2` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `votes`

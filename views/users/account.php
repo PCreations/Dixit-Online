@@ -108,7 +108,7 @@
 			<img  id="fleche-droite-vide" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite-vide.png" />
 		<div id="sides">
 			<div id="side1">
-				<h4>Creez un nouveau deck</h4></br>
+				<h3>Creez un nouveau deck</h3>
 				<form method="POST">
 					<label for="deck_name" >Nom : </label><input type="text" name="deck_name" onFocus="javascript:this.value=''"></input>
 					<input type="checkbox" name='public'><font size="1">Public</font>
@@ -116,11 +116,11 @@
 					<input type="submit" value="Creer">
 				</form>
 				</br></br>
-				<h4>Ajouter une carte</h4>
+				<h3>Ajouter une carte</h3>
 				<div id="warning">
 					<img src="<?php echo IMG_DIR;?>warning.png" alt="#"/>
 					<p>Pour éviter les problèmes dus au déformations d'images, la taille de votre image doit faire exactement <strong>329px</strong> de large et <strong>500px</strong> de hauteur. Le poids est limité à <strong>150Ko</strong>.
-					</br>Les formats pris en charge sont <strong>'.png', '.jpeg', '.jpg', '.gif'</strong>. </p>
+					</br>Les formats pris en charge sont <strong>'.png', '.jpeg', '.jpg' et '.gif'</strong>. </p>
 				</div>
 				<form class="card" enctype="multipart/form-data" name="card" method="POST">
 					 <label for="card_name" >Nom : </label><input type="text" name="card_name" onFocus="javascript:this.value=''"/>
@@ -132,24 +132,23 @@
 				<div id="survey"> </div>
 			</div>
 			<div id="side2">
-				<p> Vos decks  </p>
+				<h3>Vos decks</h3>
 				<table>
 					<head>
 							<th>Nom</th>
-							<th>Créateur</th>
 							<th>Nombre de cartes</th>
 							<th>Statut</th>
+							<th>Action</th>
 					</head>
-					<body><?php debug($userDecksInfo); ?>
-						<?php foreach($userDecksInfo as $deck): ?>
-						
-						<tr>
-							<td><?php echo $deck['de_name'];?></td>
-							<td><?php echo $deck['us_name'];?></td>
-							<td><?php echo $deck['nbCards'];?></td>
-							<td><?php echo $deck['de_status'];?></td>
-						</tr>
-						<?php endforeach; ?>
+					<body>
+						<?php  foreach($userDecks as &$deck): ?>
+							<tr>
+								<td><?php echo $deck['de_name'];?></td>
+								<td><?php echo $deck['nbCards'];?></td>
+								<td><?php echo $deck['de_status'];?></td>
+								<td><?php echo $deck['action'];?></td>
+							</tr>
+							<?php endforeach;?>
 					</body>
 				</table>
 			</div>

@@ -95,15 +95,15 @@ function account($id = null) {
 	
 	/* Récupération des decks de l'utilisateur */
 	$userDecks = getUserDecks($userID, array('de_id', 'de_name'));
-	
-	if(!empty($userDecks)) {
-		foreach($userDecks as $deck){
-			$userDecksInfo = getDeckInfos($deck['de_id'], array('us_id', 'de_name', 'de_status'));
-			$nbCards = nbCartes($deck['de_id']);	
-			$cardsInDeck = getCardsInDeckInfo($deck['de_id']);
+	if($userDecks != NULL){
+		foreach($userDecks as &$deck){
+			$deck['de_status'] = getOneRowResult(getDeckInfos($deck['de_id'], array('de_status')), 'de_status');
+			$deck['nbCards'] = getOneRowResult(nbCartes($deck['de_id']), 'nbCartes');
+			$deck['cardsInDeckInfo'] = getCardsInDeckInfo($deck['de_id']);
+			$deck['action'] = "Modifier";
 		}
 	}else{
-		$cardsInDeck = -1;
+		$result = "";
 	}
 	
 	/* Récupération des cartes ajoutées par l'utilisateur */
@@ -142,7 +142,6 @@ function account($id = null) {
 					if(!in_array($result['us_pseudo'], $askedfriends)) {
 						if(!in_array($result['us_pseudo'], $whoAskedMe)) {
 							if($result['us_pseudo'] != $user['us_pseudo']){
-							debug($result);
 								$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2'));
 							}
 							else{
@@ -204,14 +203,14 @@ function account($id = null) {
 					if ($_FILES['userfile']['error'] == '2'){
 						setMessage('Votre image dépasse le poids autorisée', FLASH_ERROR);
 					}
-					$extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
+					$extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );//Extensions
 					$extension_upload = strtolower(  substr(  strrchr($_FILES['userfile']['name'], '.')  ,1)  );
 					if ( in_array($extension_upload,$extensions_valides) ){
 						if ( !empty($_FILES['userfile']['tmp_name'] )){
-							$image_sizes = getimagesize($_FILES['userfile']['tmp_name']);
+							$image_sizes = getimagesize($_FILES['userfile']['tmp_name']);//Taille
 							if (($image_sizes[0] == '329') AND ($image_sizes[1] == '500')){
 								$path ='C:/wamp/www/dixit/views/themes/default/img/cards/'.basename($_FILES['userfile']['name']);
-								if (move_uploaded_file($_FILES['userfile']['tmp_name'],$path)){
+								if (move_uploaded_file($_FILES['userfile']['tmp_name'],$path)){//Alors Upload
 									addCardIn($userID, $card_name, $_FILES['userfile']['name']);
 									setMessage('Votre image a été correctement ajoutée', FLASH_SUCCESS);
 								}else{
@@ -251,9 +250,7 @@ function account($id = null) {
 					'invitations' => $invitations,
 					'nbFriends' => $nbFriends,
 					'userDecks' => $userDecks,
-					'userDecksInfo' => $userDecksInfo,
-					'cardsInDeck' => $cardsInDeck,
-					'nbCards' => $nbCards);
+					);
 	render('account', $vars);
 	$JS_FILES = array_pop($JS_FILES);
 	$JS_FILES = array_pop($JS_FILES);

@@ -430,9 +430,10 @@
 	display : inline-block;
 	width : 150px;
 }	
-#account4 h4
+#account4 h3
 {
 	margin : 0px;
+	margin-bottom : 15px;
 }
 #account4 #warning p
 {
@@ -468,3 +469,25 @@
 	margin-top : 20px;
 	margin-left : 50px;
 }
+
+#account4 #side2  table {
+	border-collapse: collapse;
+	margin : auto;
+	margin-right : 20px;
+	width : 560px;
+}
+
+	#account4 #side2  tr{
+		background-color: rgba(255,255,255,0.5);
+		display: block;
+		margin-bottom: 5px;
+		height : 25px;
+	}
+	#account4 #side2  th{
+		width : 28%;
+	}
+	#account4 #side2  td{
+		padding-left: 10px;
+		width : 28%;
+		text-align : center;
+	}

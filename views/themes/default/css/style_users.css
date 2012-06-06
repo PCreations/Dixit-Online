@@ -1,17 +1,4 @@
 /****************Généralités*********************/
-#results
-{
-	width:660px;
-	height:336px;
-	margin : auto;
-	padding : 10px;
-	background : url('../img/parchemin_compte.png') no-repeat center; 
-	-webkit-background-size: cover; 
-	-moz-background-size: cover; 
-	-o-background-size: cover; 
-	background-size: cover;
-
-}
 #profil
 {
 	width : 708px;
@@ -152,9 +139,9 @@
 	display : none;
 }
 
-#profil #account1 a, #results .link a, #account4 .link a
+#profil #account1 a, #account4 .link a
 {
-	
+
 	background-color: rgba(255, 255, 255, 0.5);
 	text-decoration : none;
 	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
@@ -177,9 +164,9 @@
 	margin-left : 20px;
 	background-color: rgba(255, 255, 255, 0.5);
 	box-shadow: 2px 2px 4px black;
-	width : 100px;
+	width : 120px;
 	height : 120px;
-	background : url('../img/unknown.jpg') center;
+	background : url('../img/default_profile.jpg') center;
 }
 #profil #account1 img .message
 {
@@ -187,14 +174,72 @@
 }
 
 /*******Display Friends**********/
-#profil #account3 .friends ul, #profil #account3 ul, #profil #account1  ul
+#profil #account3 #subFriends
+{
+	display : inline-block;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius : 12px;
+	padding : 10px;
+	margin-left : 20px;
+	vertical-align : top;
+}
+#profil #account3 #subFriends .subFriends2, #profil #account3 #subFriends .subFriends3
+{
+	display : none;
+}
+#profil #account3 #subFriends  .subFriends1, #profil #account3 #subFriends .subFriends2
+{
+	display : inline-block;
+	vertical-align : top;
+	width : 450px;
+	height : 114px;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+#profil #account3 #subFriends .subFriends3
+{
+	padding : 10px;
+	display : inline-block;
+	vertical-align : top;
+	width : 450px;
+
+	background-color: rgba(255, 255, 255, 0.5);
+}
+#profil #account3 #subFriends ul.title 
 {
 	list-style : none;
+	padding : 0px;
+	margin : 0px;
+	display : inline-block;
+
+}
+#profil #account3 #subFriends .subFriends1 li, #profil #account3 #subFriends .subFriends2 li
+{	
+	background : url('../img/default_profile.jpg') center;
+}
+#profil #account3 #subFriends ul.title ol
+{
+	padding : 10px 50px 5px 5px;
+	margin : 3px;
+	background-color: rgba(255, 255, 255, 0.5);
+	cursor : pointer;
+}
+#profil #account3 #subFriends ul.title ol:hover
+{
+	background-color: rgba(255, 255, 255, 0.9);
+}
+#profil #account3 .friends{
+	height : 120px;
+}
+#profil #account3 .friends ul, #profil #account1  ul
+{
+	list-style : none;
+	padding : 15px;
+
 }
 #profil #account3 .friends li, #profil #account3 li
 {
 	display : inline-block;
-	margin : 5px;
+	margin : 2px;
 	background-color: rgba(255, 255, 255, 0.5);
 	box-shadow: 2px 2px 4px black;
 }
@@ -206,25 +251,26 @@
 #profil #account3 .friends li
 {
 	width : 100px;
-	height : 120px;
-	background : url('../img/unknown.jpg') center;
+	height : 100px;
+	vertical-align : top;
+	background : url('../img/default_profile.jpg') center;
 }
 #profil #account3.invitations li
 {
-	margin-left : 120px;
+	margin-left : 20px;
 }
 #profil #account3 ul li .invitation
 {
 	width : 100px;
 	height : 120px;
 	display : inline-block;
-	margin-left : 90px;
+	margin-left : 20px;
 }
 #profil #account3 .friends .hidden
 {
 	padding : 5px;
 	position : relative;
-	color : white;
+	color : black;
 	visibility : hidden;
 }
 #profil #account3 .friends form
@@ -239,48 +285,42 @@
 }
 #profil #account3 .friends li:hover
 {
-	opacity : 0.7;
+	opacity : 0.8;
+	cursor : pointer;
 }
 #profil #account3 .friends li:hover .hidden
 {
-	opacity : 0.7;
 	visibility : visible;
-}
-/*********Search Friends*************/
-.research legend
-{
-	padding: 0 10px;
-	font-size: 1.2em;
-}
 
-.research img:hover
-{
-	cursor : pointer;
 }
-
-/*************Search Results************/
-#results table
+#profil  #friendInfo
 {
-	border-collapse: collapse;
-	margin : auto;
-	margin-right : 20px;
-	width : 560px;
+	width : 100px;
+	height : 100px;
 }
-#results tr
+#profil  #friendInfo 
 {
-	background-color: rgba(255,255,255,0.5);
-	display: block;
-	margin-bottom: 5px;
-	height : 25px;
-}
-#results td, #results th
-{
+	background-color: rgba(120, 120, 120, 0.7);
+	color : white;
+	font-size : 0.9em;
+	margin : 0px 10px;
+	padding-top : 5px;
+	width : 100px;
 	text-align : center;
-	width : 60px;
+	position : relative;
+	display : none;
+	border-radius : 6px;
 }
-#results .action
+/*************Search Results************/
+#results
 {
-	width : 300px
+	max-height : 135px;
+	overflow : auto;
+}
+.result
+{
+	background-color: rgba(160, 160, 160, 0.5);
+	margin : 5px 10px;
 }
 /************Decks***************/
 #account4
@@ -344,6 +384,12 @@
 {
 	border: #CCC 1px solid;
 	display : inline-block;
+	margin : 5px 0px;
+}
+#profil #account4 label
+{
+	display : inline-block;
+	width : 50px;
 }
 #profil #account4  form input:hover 
 {
@@ -412,6 +458,101 @@
 { 
 	visibility : hidden;
 }
+#survey img
+{
+	width : 150px;
+	display : inline-block;
+	box-shadow: 2px 2px 4px black;
+	border-radius : 12px;
+}
+#survey
+{
+	display : inline-block;
+	width : 150px;
+}	
+#account3 h3
+{
+	margin : 0px 0px 10px 40px; 
+}
+#account4 h3
+{
+	margin : 0px;
+	margin-bottom : 15px;
+}
+#account4 #warning p
+{
+	letter-spacing : 0.1px;
+	font-size : 0.8em;
+	width : 500px;
+}
+#account4 #warning 
+{
+	padding : 10px;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius : 12px;
+	margin : 10px 0px;
+}
+#account4 #warning img
+{
+	display : inline-block;
+}
+#account4 #side1 form
+{
+	display : inline-block;
+	vertical-align :top;
+}
+#account4 #side1  .card 
+{
+	width : 290px;
+	display : inline-block;
+	margin-left : 40px;
 
+}
+#account4 #side1 .card  .submit
+{
+	margin-top : 20px;
+	margin-left : 50px;
+}
 
+#account4 #side2  table .deck{
+	border-collapse: collapse;
+	margin : auto;
+	margin-right : 20px;
+	display :inline-block;
+}
 
+	#account4 #side2  .deck tr{
+		background-color: rgba(255,255,255,0.5);
+		display: block;
+		margin-bottom: 5px;
+		height : 25px;
+		border-radius : 5px;
+	}
+	#account4 #side2 .deck th{
+		padding-left: 10px;
+		width : 100px;	
+	}
+	#account4 #side2 .deck td{
+		padding-left: 10px;
+		width : 100px;
+		text-align : center;
+	}
+#account4 #side2 table{
+	display : inline-block;
+}
+.pen 
+{
+	width : 26px;
+	cursor : pointer;
+}
+#changeDeck
+{
+	background-color: rgba(255,255,255,0.5);
+	border-radius : 12px;
+	width : 170px;
+	margin : auto;
+	box-shadow: 2px 2px 4px black;
+	padding : 5px 15px;
+	display : none;
+	position : absolute;
+}

@@ -157,6 +157,7 @@ function callback_ping(){
 	swapWindow(showedWindow);
 	phaseID = <?php echo (isset($turn['phase']['id'])) ? $turn['phase']['id'] : 0;?>;
 	turnID = <?php echo (isset($turn['tu_id'])) ? $turn['tu_id'] : 0;?>;
+	alertDelayInactivity = 0;
 	
 	function readyForNextTurn() {
 		//$('#readyForNextTurn').click();
@@ -318,6 +319,13 @@ function callback_ping(){
 
 		$.each(playersInfos, function(key, player) {
 			console.log(player);
+			if(player.inactivityTime > Dixit.TIME_BEFORE_INACTIVE) {
+				alertDelayInactivity++;
+				if(alertDelayInactivity == 3 && player.us_id == userID) {
+					Dixit.alert('Les joueurs vous attendent !', Dixit.FLASH_ALERT);
+					alertDelayInactivity = 0;
+				}
+			}
 			$("#players").append('<div class="joueur">'
 									+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
 									+'<p class="infos_joueur">'+player.us_pseudo+((player.role == 'conteur') ? ' : conteur' : '')+'<br />'+((player.points != null) ? player.points : '0')+'points<br />'+player.status+'</p>'

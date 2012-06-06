@@ -416,6 +416,7 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 				if($inactivityTime >= TIME_BEFORE_INACTIVE) {
 					setPlayerStatus($gameID, $playerID, 'Inactif');		
 					$playersInfos[$i]['status'] = 'Inactif depuis '.$inactivityTime.(($inactivityTime == 1) ? ' seconde' : ' secondes');
+					$playersInfos[$i]['inactivityTime'] = $inactivityTime;
 				}
 			}
 			else { /* Pour tous les autres joueurs qui attendent on mets continuellement à jour le temps de la dernière action pour ne pas avoir d'inactivité en cas de trop longue période d'inactivié de la part d'un autre joueur */

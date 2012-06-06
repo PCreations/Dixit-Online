@@ -6,6 +6,16 @@ function changeOnglet(i){
 	}
 	document.getElementById('account'+i).style.display = 'block';
 }
+function changeOnglet2(i){
+	var j;
+	for (j=1; j<4; j++){
+		$(".subFriends"+j).css('display','none');
+	}
+
+	$(".subFriends"+i).show(900);
+	$(".subFriends"+i).css('display', 'inline-block');
+	$(".title"+i).css('background-color', 'rgba(255, 255, 255, 0.5);');
+}
 
 function displaySide(i){
 	if(i=='droite'){
@@ -24,7 +34,7 @@ function displaySide(i){
 		}
 	}
 	displayArrow();
-	
+
 }
 
 function displayArrow(){
@@ -41,16 +51,70 @@ function displayArrow(){
 		}
 	}
 
+function preview(){ //censée afficher un aperçu de l'image selectionnée pour être téléchargée
+	alert('plop');
+	imgCalque = document.getElementById("survey") ;
+	imgCalque.innerHTML = "<p>hello</p><img id='imgPrev' src='C:/Users/Cécilia/Dropbox/Dixit/medias/cartes/carte_2.png'/>";
+}
+
+function changeDeck(open){ //ouvre un formulaire de modification des decks
+	if(open==0){
+		$("#changeDeck").show('slow');
+		$("#changeDeck").css('display', 'inline-block');
+		open = 1;
+	}else{
+		$("#changeDeck").hide('slow');
+		$("#changeDeck").css('display', 'none');
+		open = 0;
+	}
+}
+function test(){
+
+}
 $(document).ready(function(){ 
 	changeOnglet('1');
-	
+	changeOnglet2('1');
+	open = 0;
+
+	document.getElementById("friendClick").onclick = function() {
+			if(open=='0'){
+				$('#friendInfo').show('slow');
+				$('#friendInfo').css('display', 'inline-block');
+				open = 1;
+			}else{
+				$('#friendInfo').hide('slow', function(){$('#friendInfo').css('display', 'none');});
+				open = 0;
+			}
+		};
+
+	//recherche d'ami
+	$('#loginSearch').keyup( function(){
+		$field = $(this);
+		$('#results').html(''); // on vide les resultats
+		// on commence à traiter à partir du 2ème caractère saisie
+		if( $field.val().length > 1 )
+		{
+			$.post(Dixit.BASE_URL+"users/research", {'loginSearch': $(this).val()}, function(data) {
+				$('#results').html(data);
+			})
+		}
+	});
+	//ouverture du formulaire de modif des decks
+	document.getElementById("pen").onclick = function(){
+		changeDeck('0');
+		document.getElementById("changeDeck").onsubmit = function(){
+			$.post(Dixit.BASE_URL+"users/changeDeck", {'de_id': $(this).title()}, function(data) {
+				$('#changeDeck').html(data);
+				changeDeck('1');
+			});
+		};
+	};
+
+
+
 	/*Sélection des cartes dans le profil*/
 	$( ".carte #selectable" ).selectable();
-	
+
 	displayArrow();
 
 });
-
-
-           
-

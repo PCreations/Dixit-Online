@@ -668,8 +668,8 @@ function _setPlayerStatus($gameID, $userID, $status) {
 function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	
 	$board = '<div id="cartes">';
-	$board .= '<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">';
-		$board .= '<p>'.$turn['phase']['infos'].'</br>';
+	/*$board .= '<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">';
+		$board .= '<p>'.$turn['phase']['infos'].'</br>';*/
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();
 

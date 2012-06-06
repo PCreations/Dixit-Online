@@ -24,16 +24,17 @@
 			</ul>
 		<?php endif; ?>
 
-		<ul>
-			<?php foreach($invitations as $invitation): ?>
-			<li> 
-				<img class= "message" src="<?php echo IMG_DIR;?>message.png" alt=""/><p>Vous avez reçu une invitation</p>
-			</li>
-			<?php endforeach; ?>
-		</ul><br />
+		</br>
+			<ul>
+				<?php foreach($invitations as $invitation): ?>
+				<li> 
+					<img class= "message" src="<?php echo IMG_DIR;?>message.png" alt=""/><p>Vous avez reçu une invitation</p>
+				</li>
+				<?php endforeach; ?>
+			</ul></br>
 		<?php echo createLink('Jouer', 'games', 'index');?>
 		<?php echo createLink('Déconnexion', 'users', 'logout');?>
-		<p><br /><br /></p>
+		<p></br></br></p>
 	</div>
 	
 	<div id="account2">
@@ -81,41 +82,58 @@
 	</div>
 	
 	<div id="account3">
-		
 			<p> Vous avez <b><?php echo $nbFriends['nbFriends']?> </b>amis.</p>
 			<ul class="friends">
 				<?php foreach($reelFriends as $reelFriend): ?>
-				<li> <div class="hidden"><?php echo $reelFriend['us_pseudo'];?><br /><?php echo createLink('Supprimer', 'users', 'newFriend', array($reelFriend['us_pseudo'], '0'));?></div></li>
-				<?php endforeach; ?>
-			</ul>
-			<br />
-			<p><b>Vous avez envoyé des invitations:</b></p>
-			<ul>
-				<?php foreach($askedFriends as $askedFriend): ?>
-				<li> <div class="hidden"><?php echo $askedFriend['us_pseudo'];?></div></li>
-				<?php endforeach; ?>
-			</ul>
-			<p><b>Vous avez reçus des invitations :</b></p>
-			<ul id="invitations">
-				<?php foreach($invitations as $invitation): ?>
-				<li> 
-					<div class="invitation">
-						<?php echo $invitation['us_pseudo'];?><br />
-						<?php echo $invitation['accept'];?><br />
-						<?php echo $invitation['refuse'];?>
+					<li id="friendClick" > <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></div></li>
+					<div id="friendInfo">
+						<?php echo $reelFriend['us_pseudo'];?></br>
+						<?php echo $reelFriend['us_name'];?> <?php echo $reelFriend['us_lastname'];?></br>
+						<?php echo $reelFriend['us_birthdate'];?></br>
+						<?php echo createLink('Supprimer', 'users', 'newFriend', array($reelFriend['us_pseudo'], '0'));?>
 					</div>
-				</li>
 				<?php endforeach; ?>
 			</ul>
-			<br />
-			<form class="research" method="POST">
-					<legend>Ajouter un ami</legend>
-					<p>
-						<input name="login" type="text" value="Login"/>
-						<input type="hidden" name="research" />
-						<input class="popup" border=0 src="<?php echo IMG_DIR;?>search_icone.png" type=image value=submit align="top" > 
-					</p>
-			</form>
+			</br>
+			<h3>Gérez vos Amis</h3>
+			<div id="subFriends">
+				<ul class="title">
+					<ol class="title1" onclick="changeOnglet2('1');">Vos demandes</ol>
+					<ol class="title2" onclick="changeOnglet2('2');">Vos invitations</ol>
+					<ol class="title3" onclick="changeOnglet2('3');">Rechercher un ami</ol>
+				</ul>
+				<div class="subFriends1">
+					<ul>
+						<?php if(empty($askedFriends)){echo('<p><font size="2">Recherchez vos amis avant de leur envoyer une demande</font></p>');}foreach($askedFriends as $askedFriend): ?>
+						<li> <div class="hidden"><?php echo $askedFriend['us_pseudo'];?></div></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+				<div class="subFriends2">
+					<ul id="invitations">
+						<?php if(empty($invitation)){echo('<p><font size="2">Vous n\'avez aucune invitation pour le moment.</font></p>');}foreach($invitations as $invitation): ?>
+						<li> 
+							<div class="invitation">
+								<?php echo $invitation['us_pseudo'];?></br>
+								<?php echo $invitation['accept'];?></br>
+								<?php echo $invitation['refuse'];?>
+							</div>
+						</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+				<div class="subFriends3">
+					<form class="research" method="post">
+							<p>
+								<label for="loginSearch"><font size="2">Rechercher un ami</font> </label>
+								<input name="loginSearch" id="loginSearch" type="text" value="Login" onFocus="javascript:this.value=''"/>
+							</p></br>
+					</form>
+					<div id="results">
+						
+					</div>
+				</div>
+			</div>
 	</div>
 	
 	<div id="account4">
@@ -123,43 +141,73 @@
 			<img  id="fleche-droite-vide" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite-vide.png" />
 		<div id="sides">
 			<div id="side1">
-				<p>Creez un nouveau deck</p><br /><br />
+				<h3>Creez un nouveau deck</h3>
+				<div id="warning">
+					<img src="<?php echo IMG_DIR;?>warning2.png" alt="#"/>
+					<p>Par défaut les decks sont <strong>privés</strong>, c'est-à-dire que vous seul pouvez créer une partie utilisant un de vos decks privés.</p>
+				</div>
 				<form method="POST">
-					<input type="text" name="deck_name" value="Nom"></input>
+					<label for="deck_name" >Nom : </label><input type="text" name="deck_name" onFocus="javascript:this.value=''"></input>
 					<input type="checkbox" name='public'><font size="1">Public</font>
 					<input type="hidden" name="deck"></input>
 					<input type="submit" value="Creer">
 				</form>
-				<br /><br />
-				<p>Ajouter une carte</p><br /><br />
-				<form method="POST">
-					<input type="text" name="card_name" value="Nom"></input>
-					<input type="file" name="card_image"></input>
-					<input type="hidden" name="card"></input>
-					<input type="submit" value="Ajouter">
+				</br></br>
+				<h3>Ajouter une carte</h3>
+				<div id="warning">
+					<img src="<?php echo IMG_DIR;?>warning.png" alt="#"/>
+					<p>Pour éviter les problèmes dus au déformations d'images, la taille de votre image doit faire exactement <strong>329px</strong> de large et <strong>500px</strong> de hauteur. Le poids est limité à <strong>150Ko</strong>.
+					</br>Les formats pris en charge sont <strong>'.png', '.jpeg', '.jpg' et '.gif'</strong>. </p>
+				</div>
+				<form class="card" enctype="multipart/form-data" name="card" method="POST">
+					 <label for="card_name" >Nom : </label><input type="text" name="card_name" onFocus="javascript:this.value=''"/>
+					<input type="hidden" name="MAX_FILE_SIZE" value="153600" />
+					 <label for="userfile" > </label><input name="userfile" type="file" onchange="preview();" />
+					<input type="hidden" name="card"/>
+					<input class="submit" type="submit" value="Ajouter">
 				</form>
+				<div id="survey"> </div>
 			</div>
 			<div id="side2">
-				<p> Vos decks  </p>
-				<table>
+				<h3>Vos decks</h3>
+				<table class="deck">
 					<head>
 							<th>Nom</th>
-							<th>Créateur</th>
-							<th>Nombre de cartes</th>
+							<th>Nb cartes</th>
 							<th>Statut</th>
 					</head>
-					<body><?php debug($userDecksInfo); ?>
-						<?php foreach($userDecksInfo as $deck): ?>
-						
-						<tr>
-							<td><?php echo $deck['de_name'];?></td>
-							<td><?php echo $deck['us_name'];?></td>
-							<td><?php echo $deck['nbCards'];?></td>
-							<td><?php echo $deck['de_status'];?></td>
-						</tr>
-						<?php endforeach; ?>
+					<body>
+						<?php  foreach($userDecks as &$deck): ?>
+							<tr>
+								<td><?php echo $deck['de_name'];?></td>
+								<td><?php echo $deck['nbCards'];?></td>
+								<td><?php echo $deck['de_status'];?></td>
+							</tr>
+							<?php endforeach;?>
 					</body>
 				</table>
+				<table>
+					<body>
+						<?php  foreach($userDecks as &$deck): ?>
+						<tr>
+							<td><img class="pen" id="pen" src="<?php echo IMG_DIR;?>pen.png" alt="#" title="<?php echo($deck['de_id']);?>"/></td>
+						</tr>
+						<?php endforeach;?>
+					</body>
+					
+				</table>
+				<div id="changeDeck">
+					<form method="POST">
+						<legend>Modifier le deck</legend>
+							<input type="text" name="de_name" ></br>
+							<input type="checkbox" name='public'><font size="1">Public</font><br>
+							<input type="hidden" name="changeDeck"/>
+							<input class="submit" type="submit" value="Enregistrer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input border='0' class="submit" src="<?php echo IMG_DIR;?>poubelle.png" type=image Value=submit align="middle" >
+					</form>
+				</div>
+				</br></br>
+				<h3>Voir les decks de vos amis</h3>
 			</div>
 			<div id="side3">
 				<p>Afficher le groupe de carte :</p> 
@@ -172,7 +220,7 @@
 				</select>
 				<div id="gallery_conteneur">
 					<div id="gallery" class="flexcroll">
-						<?php foreach($cardsInDeck as $card): ?>
+						<?php foreach($deck['cardsInDeckInfo'] as $card): ?>
 							<div class="carte">
 								<img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
 								<div id="selectable" >

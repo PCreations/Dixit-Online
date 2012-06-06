@@ -1024,7 +1024,7 @@ function _getClassement($gameID) {
 			$bonusPoint = $totalBonusPoint * (1 / $actualPosition);
 		$playerPoint = (int)$player['points'];
 		$pointLimit = (int)$gameInfos['ga_points_limit'];
-		$playerXP = (int)$playerPoint/$pointLimit*(($nbPlayers/6*100)+$bonusPoint*$nbPlayers);
+		$playerXP = (int)($playerPoint/$pointLimit*(($nbPlayers/6*100)+$bonusPoint*$nbPlayers));
 		$player['xp'] = $playerXP;
 		addXPtoPlayer($player['us_id'], $playerXP, $actualPosition, $gameID);
 		$actualPosition++;

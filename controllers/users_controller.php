@@ -102,8 +102,8 @@ function account($id = null) {
 
 	/* Récupération des informations utilisateurs */
 	$user = getUserInfos($id);
-	$user['classement'] = getUserClassement($id);
-	$user['xp'] = getUserXP($id);
+	$user['classement'] = getOneRowResult(getUserClassement($id), 'classement');
+	$user['xp'] = getOneRowResult(getUserXP($id), 'xp');
 	
 	if(!empty($userDecks)) {
 		foreach($userDecks as $deck){

@@ -84,10 +84,10 @@ function countFriends($id){
 
 function getReelFriends($id){
 	global $db;
-	$query = $db->prepare('	SELECT us_pseudo FROM users_friends, users
+	$query = $db->prepare('	SELECT us_pseudo, us_name, us_lastname, us_birthdate  FROM users_friends, users
 							WHERE users_friends.us_id = users.us_id AND us_friend_id = :id AND uf_status = 1
 							UNION
-							SELECT us_pseudo
+							SELECT us_pseudo, us_name, us_lastname, us_birthdate
 							FROM users_friends, users
 							WHERE us_friend_id = users.us_id AND users_friends.us_id = :id  AND uf_status = 1');
 	$query->execute(array('id' => $id));

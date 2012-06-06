@@ -94,6 +94,20 @@ function getWaitingGames() {
 	return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
+/* Récupère la liste des parties en cours */
+function getGameInProgressForUser($userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT p.ga_id, g.ga_name
+						FROM plays as p
+						INNER JOIN games as g
+						ON g.ga_id = p.ga_id				
+						WHERE p.us_id = :userID
+						AND p.ga_id NOT IN (SELECT ga_id FROM users_xp WHERE us_id = :userID)');
+	$query->execute(array('userID' => $userID));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function addPlayerInGame($gameID, $userID) {
 	global $db;
 
@@ -125,6 +139,17 @@ function getPlayerStatus($gameID, $userID) {
 	$query->execute(array('gameID' => $gameID,
 						'userID' => $userID));
 	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function updatePlayerActionTime($gameID, $userID) {
+	global $db;
+
+	$query = $db->prepare('UPDATE plays
+						SET pl_last_action = NOW()
+						WHERE ga_id = :gameID
+						AND us_id = :userID');
+	$query->execute(array('gameID' => $gameID,
+						'userID' => $userID));
 }
 
 function removePlayerFromGame($gameID, $userID) {
@@ -221,7 +246,6 @@ function addTurn($gameID, $userID) {
 						VALUES(:gameID, :userID, NOW())');
 	$query->execute(array('gameID' => $gameID,
 						'userID' => $userID));
-	$query->closeCursor();
 
 	return $db->lastInsertId();
 }
@@ -331,6 +355,24 @@ function getTotalUserPointsInGame($gameID, $userID) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+function getClassement($gameID) {
+	global $db;
+
+	$query = $db->prepare('SELECT SUM(points) as points, us.us_pseudo, us.us_id
+						FROM earned_points as ep
+						NATURAL JOIN users as us
+						INNER JOIN turns as tu
+						ON tu.tu_id = ep.tu_id
+						INNER JOIN games as ga
+						ON ga.ga_id = tu.ga_id
+						WHERE ga.ga_id = ?
+						GROUP BY ep.us_id
+						ORDER BY points DESC');
+	$query->execute(array($gameID));
+
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function addPoints($userID, $turnID, $points) {
 	global $db;
 
@@ -350,4 +392,34 @@ function getTotalDealedPointsInTurn($turnID) {
 	$query->execute(array($turnID));
 
 	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function addXPtoPlayer($userID, $xp, $position, $gameID) {
+	global $db;
+
+	$query = $db->prepare('INSERT INTO users_xp(us_id,us_xp,ga_id,ga_position)
+						VALUES(:userID, :xp, :gameID, :position)');
+	try {
+		$query->execute(array('userID' => $userID,
+							'xp' => $xp,
+							'gameID' => $gameID,
+							'position' => $position));
+	}
+	catch(Exception $e) {
+		/* do something */
+	}
+}
+
+function lockTables() {
+	global $db;
+
+	$query = $db->query('LOCK TABLE turns WRITE, pick WRITE, plays WRITE, plays as pl WRITE, games as ga WRITE, games as g WRITE, users as u WRITE, hands WRITE');
+	$query->closeCursor();
+}
+
+function unlockTables() {
+	global $db;
+
+	$query = $db->query('UNLOCK tables');
+	$query->closeCursor();
 }

@@ -11,8 +11,27 @@
 			<div id="table_room">
 				<?php if(!$gameIsStarted) { ?>
 					<p><?php echo $gameInfos['action'];?></p>
+					<h3>Informations sur les joueurs :</h3>
+					<table id="usersInfos" border="1">
+						<tr id="firstTR">
+							<th>Joueur</th>
+							<th>% parties gagnées</th>
+							<th>Points d'expérience (classement)</th>
+						</tr>
+						<?php foreach($usersInGame as $user): ?>
+						<tr>
+							<td><?php echo $user['us_pseudo'];?></td>
+							<td><?php echo $user['percentageWins'].'% ('.$user['nbWins'].'/'.$user['nbGames'].')';?></td>
+							<td><?php echo $user['xp'].' ('.$user['classement'].')';?></td>
+						</tr>
+						<?php endforeach ?>
+					</table>
 				<?php } if($gameIsOver) { ?>
-					<p><?php echo _getClassement($gameInfos['ga_id']);?></p>
+					<ul><?php $classement = _getClassement($gameInfos['ga_id']);?>
+						<?php foreach($classement as $player) :?>
+							<li><strong><?php echo $player['us_pseudo'];?> :</strong><?php echo $player['points'];?> points (+<?php echo $player['xp'];?>XP)</li>	
+						<?php endforeach;?>
+					</ul>
 				<?php } ?>
 			</div>
 			<div id="deck_room">
@@ -52,6 +71,9 @@
 					</div>
 				</div>
 				<div id="table">
+					<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">
+					<p><?php echo $turn['phase']['infos'];?></br>
+					Le prochain conteur est <?php echo $nextStoryteller;?></p>
 					<?php
 					echo _getBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn, $storyteller, $actionStatus);
 					?>
@@ -63,9 +85,6 @@
 						echo _getHand($turn['phase']['id'], $_SESSION[USER_MODEL][USER_PK], $turn['game']['ga_id'], $turn['tu_id'], $storyteller, $actionStatus);
 						?>
 					</div>
-					<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">
-					<p><?php echo $turn['phase']['infos'];?></br>
-					Le prochain conteur est <?php echo $nextStoryteller;?></p>
 				</div>
 			</div>
 			<div id="sidebar">
@@ -188,7 +207,7 @@ function callback_ping(){
 
 		if(divID == 'table') {
 			/* Ajout de la carte */
-			$.post(BASE_URL+"cards/vote/", {cardID: cardID, turnID: turnID}, function(data) {
+			$.post(BASE_URL+"games/vote/", {cardID: cardID, turnID: turnID, gameID: gameID}, function(data) {
 				/* Redirection vers la bonne page */
 				$(location).attr('href',BASE_URL+'games/play/'+gameID);
 			});
@@ -215,9 +234,9 @@ function callback_ping(){
 
 		console.log("updateCard");
 		/* Update de la carte */
-		$.post(BASE_URL+"cards/updateVote/", {cardID: cardID, turnID: turnID}, function(data) {
+		$.post(BASE_URL+"games/updateVote/", {cardID: cardID, turnID: turnID, gameID: gameID}, function(data) {
 			/* Update boutons */
-			
+			Dixit.alert('Votre vote à été mis à jour', Dixit.FLASH_SUCCESS);
 			/*$(location).attr('href',BASE_URL+'games/play/'+gameID);*/
 		});
 	}
@@ -406,18 +425,18 @@ function callback_ping(){
 		});
 	}, 2000);
 
-	usersInGame = <?php echo $jsonUsersInGame;?>;
+	usersIDs = <?php echo $jsonUsersInGame;?>;
 
 	setInterval(function() {
-		$.post(Dixit.BASE_URL+"games/_roomAjax",{gameID: gameID, usersInGame: usersInGame}, function(json) {
+		$.post(Dixit.BASE_URL+"games/_roomAjax",{gameID: gameID, usersIDs: usersIDs}, function(json) {
 			var result = $.parseJSON(json);
-			usersInGame = result.usersInGame;
+			usersIDs = result.usersIDs;
 			if(!gameIsStarted) {
 				phaseID = result.phaseID;
 				turnID = result.turnID;
 			}
 			gameIsStarted = result.startGame;
-			displayRoomPlayersInfos(result.userInGameName);
+			displayRoomPlayersInfos(result.usersInGame);
 			var notif = '';
 			var textAction = (result.joinGame) ? "rejoint" : "quitté";
 			if(result.usersNames != -1) {
@@ -437,12 +456,12 @@ function callback_ping(){
 		});
 	}, 2000);
 
-	function displayRoomPlayersInfos(userInGameName) {
+	function displayRoomPlayersInfos(usersInGame) {
 		text = '';
-		console.log(userInGameName);
+		console.log(usersInGame);
 		$("#players_room").html('<img id="label_joueurs_room" src="'+IMG_DIR+'joueurs.png">');
 
-		$.each(userInGameName, function(key, player) {
+		$.each(usersInGame, function(key, player) {
 			console.log(player);
 			$("#players_room").append('<div class="joueur">'
 										+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'

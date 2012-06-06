@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('card'));
+useModels(array('card', 'game'));
 
 /*function chooseCard($turnID, $gameID) {
 	global $referer;
@@ -56,7 +56,7 @@ function addCard($gameID, $turnID, $cardID) {
 	}
 	else {
 		$userID = $_SESSION[USER_MODEL][USER_PK];
-
+		updatePlayerActionTime($gameID, $userID, time());
 		if(!_isOwnedBy($cardID, $userID, $turnID, $gameID)) { //Vérification si la carte appartient bien au joueur
 			setMessage('Vous essayer d\'ajouter une carte qui ne vous appartient pas', FLASH_ERROR);
 			redirect('games', 'play', array($gameID));
@@ -99,6 +99,7 @@ function addStorytellerCard() {
 	else {
 		if(!empty($_POST['comment']) && isset($_POST['cardID']) && $_POST['cardID'] != -1) {
 			extract($_POST);
+			updatePlayerActionTime($gameID, $_SESSION[USER_MODEL][USER_PK], time());
 			addTurnComment($turnID, $comment);
 			updatePlayedTurn($cardID, $_SESSION[USER_MODEL][USER_PK], $turnID);
 			addCardInBoard($cardID, $turnID);
@@ -114,54 +115,4 @@ function addStorytellerCard() {
 			redirect('games', 'play', array($_POST['gameID']));
 		}
 	}
-}
-
-function vote() {
-	if(!isPost()) {
-		trigger_error('Vous n\'avez pas accès à cette page');
-		die();
-	}
-	if(!isLogged()) {
-		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);
-		redirect('users', 'login');
-	}
-	else {
-		if(!isset($_POST['cardID'])) {
-			setMessage('Vous devez sélectionner une carte', FLASH_ERROR);
-		}
-		else if($_POST['cardID'] == getOneRowResult(getPlayerCardInBoard($_POST['turnID'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id')) {
-			setMessage('Vous ne pouvez pas voter pour votre propre carte', FLASH_ERROR);
-		}
-		else {
-			extract($_POST);
-			setMessage('Votre vote a été pris en compte. Vous pouvez le modifier tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);
-			addGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
-		}
-	}
-
-}
-
-function updateVote() {
-	if(!isPost()) {
-		trigger_error('Vous n\'avez pas accès à cette page');
-		die();
-	}
-	if(!isLogged()) {
-		setMessage('Vous n\'êtes pas connecté', FLASH_ERROR);
-		redirect('users', 'login');
-	}
-	else {
-		if(!isset($_POST['cardID'])) {
-			setMessage('Vous devez sélectionner une carte', FLASH_ERROR);
-		}
-		else if($_POST['cardID'] == getOneRowResult(getPlayerCardInBoard($_POST['turnID'], $_SESSION[USER_MODEL][USER_PK]), 'ca_id')) {
-			setMessage('Vous ne pouvez pas voter pour votre propre carte', FLASH_ERROR);
-		}
-		else {
-			extract($_POST);
-			setMessage('Votre vote a été pris en compte. Vous pouvez le modifier à nouveau tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);
-			updateGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
-		}
-	}
-
 }

@@ -284,6 +284,7 @@ body {
 #main
 {
 	width:615px;
+	height: 307px;
 	padding:20px;
 	background-image:url("../img/bg_main.png");
 	background-repeat:no-repeat;
@@ -317,6 +318,12 @@ body {
 	width: 275px;
 }
 
+#readyButton {
+	margin: auto;
+	margin-top: 100px;
+	width: 171px;
+}
+
 #main  .image_carte 
 {
 	width:100%;
@@ -346,7 +353,6 @@ body {
 #label_tour
 {
 	margin-left:10px;
-	margin-top:30px;
 }
 
 #main p

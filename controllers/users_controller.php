@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user', 'card', 'deck'));
+useModels(array('user', 'card', 'deck', 'game'));
 define('SEND_INVITATION', 2);
 define('ACCEPT_INVITATION', 1);
 define('DECLINE_INVITATION', 0);
@@ -92,9 +92,18 @@ function account($id = null) {
 	$JS_FILES[] = 'flexcroll.js';
 	$CSS_FILES[] = 'flexcrollstyles.css';
 	$userID = $_SESSION[USER_MODEL][USER_PK];
+
 	
 	/* Récupération des decks de l'utilisateur */
 	$userDecks = getUserDecks($userID, array('de_id', 'de_name'));
+
+	/* Récupération des parties en cours de l'utilisateur */
+	$gamesInProgress = getGameInProgressForUser($userID);
+
+	/* Récupération des informations utilisateurs */
+	$user = getUserInfos($id);
+	$user['classement'] = getUserClassement($id);
+	$user['xp'] = getUserXP($id);
 	
 	if(!empty($userDecks)) {
 		foreach($userDecks as $deck){
@@ -133,7 +142,6 @@ function account($id = null) {
 	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
 			extract($_POST);
 			$results = approchSearchUser($login);
-			$user = getUserInfos($id);
 			$reelfriends = getSpecificArrayValues(getReelFriends($id), 'us_pseudo');
 			$askedfriends = getSpecificArrayValues(getAskedFriends($id), 'us_pseudo');
 			$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($id), 'us_pseudo');
@@ -176,7 +184,7 @@ function account($id = null) {
 			setMessage('Votre nouveau deck est prêt', FLASH_SUCCESS);
 			redirect('users', 'account', array( $userID));
 	}
-	$user = getUserInfos($id);
+	
 	$reelFriends = getReelFriends($id);
 	$askedFriends = getAskedFriends($id);
 	$invitations = getFriendsWhoAskedMe($id);
@@ -189,6 +197,7 @@ function account($id = null) {
 	}
 	$nbFriends = countFriends($id);
 	$vars = array(	'user' => $user,
+					'gamesInProgress' => $gamesInProgress,
 					'reelFriends' => $reelFriends,
 					'askedFriends' => $askedFriends,
 					'invitations' => $invitations,

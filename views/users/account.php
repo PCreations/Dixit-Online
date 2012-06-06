@@ -7,18 +7,33 @@
 
 	<div id="account1">
 		<img class="avatar" src="<?php echo IMG_DIR;?>" alt=""/>
-		<p> Bienvenue <?php echo $user['us_lastname'] ; ?> <?php echo $user['us_name'] ; ?> </p>
-		</br>
+		<p> Bienvenue <?php echo $user['us_name'] ; ?> <?php echo $user['us_lastname'] ; ?> </p>
+		<p><?php if($user['classement'] != '') {
+				echo 'Vous êtes à la '.$user['classement'].(($user['classement'] == 1) ? 'ère ' : 'ème'). 'place du '.l('classement générale', 'games', 'classement', null, array('title' => 'Voir le classement général')).' avec '.$user['xp'].' points d\'expérience';
+			}
+			else
+				echo 'Vous n\'êtes pas encore dans le '.l('classement générale', 'games', 'classement', null, array('title' => 'Voir le classement général')).' du site';
+			?></p>
+		<br />
+		<?php if(!empty($gamesInProgress)): ?>
+			<p>Vous avez <?php echo count($gamesInProgress);?> parties en cours !</p>
 			<ul>
-				<?php foreach($invitations as $invitation): ?>
-				<li> 
-					<img class= "message" src="<?php echo IMG_DIR;?>message.png" alt=""/><p>Vous avez reçu une invitation</p>
-				</li>
-				<?php endforeach; ?>
-			</ul></br>
+				<?php foreach($gamesInProgress as $games): ?>
+					<li><?php echo l($games['ga_name'], 'games', 'play', array($games['ga_id']), array('title' => 'Jouer'));?></li>
+				<?php endforeach;?>
+			</ul>
+		<?php endif; ?>
+
+		<ul>
+			<?php foreach($invitations as $invitation): ?>
+			<li> 
+				<img class= "message" src="<?php echo IMG_DIR;?>message.png" alt=""/><p>Vous avez reçu une invitation</p>
+			</li>
+			<?php endforeach; ?>
+		</ul><br />
 		<?php echo createLink('Jouer', 'games', 'index');?>
 		<?php echo createLink('Déconnexion', 'users', 'logout');?>
-		<p></br></br></p>
+		<p><br /><br /></p>
 	</div>
 	
 	<div id="account2">
@@ -70,10 +85,10 @@
 			<p> Vous avez <b><?php echo $nbFriends['nbFriends']?> </b>amis.</p>
 			<ul class="friends">
 				<?php foreach($reelFriends as $reelFriend): ?>
-				<li> <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></br><?php echo createLink('Supprimer', 'users', 'newFriend', array($reelFriend['us_pseudo'], '0'));?></div></li>
+				<li> <div class="hidden"><?php echo $reelFriend['us_pseudo'];?><br /><?php echo createLink('Supprimer', 'users', 'newFriend', array($reelFriend['us_pseudo'], '0'));?></div></li>
 				<?php endforeach; ?>
 			</ul>
-			</br>
+			<br />
 			<p><b>Vous avez envoyé des invitations:</b></p>
 			<ul>
 				<?php foreach($askedFriends as $askedFriend): ?>
@@ -85,14 +100,14 @@
 				<?php foreach($invitations as $invitation): ?>
 				<li> 
 					<div class="invitation">
-						<?php echo $invitation['us_pseudo'];?></br>
-						<?php echo $invitation['accept'];?></br>
+						<?php echo $invitation['us_pseudo'];?><br />
+						<?php echo $invitation['accept'];?><br />
 						<?php echo $invitation['refuse'];?>
 					</div>
 				</li>
 				<?php endforeach; ?>
 			</ul>
-			</br>
+			<br />
 			<form class="research" method="POST">
 					<legend>Ajouter un ami</legend>
 					<p>
@@ -108,15 +123,15 @@
 			<img  id="fleche-droite-vide" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite-vide.png" />
 		<div id="sides">
 			<div id="side1">
-				<p>Creez un nouveau deck</p></br></br>
+				<p>Creez un nouveau deck</p><br /><br />
 				<form method="POST">
 					<input type="text" name="deck_name" value="Nom"></input>
 					<input type="checkbox" name='public'><font size="1">Public</font>
 					<input type="hidden" name="deck"></input>
 					<input type="submit" value="Creer">
 				</form>
-				</br></br>
-				<p>Ajouter une carte</p></br></br>
+				<br /><br />
+				<p>Ajouter une carte</p><br /><br />
 				<form method="POST">
 					<input type="text" name="card_name" value="Nom"></input>
 					<input type="file" name="card_image"></input>

@@ -33,8 +33,8 @@ Dixit.alert = function(message, type) {
 					+'</div>';
 			break;
 	}
-	$("#ping").html("<audio autoplay='autoplay'><source src='"+Dixit.BASE_URL+"views/themes/default/ping.mp3' /><source src='"+Dixit.BASE_URL+"views/themes/default/ping.ogg' /></audio>");
 
+	$("#ping").html("<audio autoplay='autoplay'><source src='"+Dixit.BASE_URL+"views/themes/default/ping.mp3' /><source src='"+Dixit.BASE_URL+"views/themes/default/ping.ogg' /></audio>");
 	
 	$("body").append(flash);
 	slideNotifications();
@@ -77,7 +77,7 @@ function slideNotifications() {
 	$('#flash').slideDown(800);
 	setTimeout(function(){
 		$('#flash').slideUp(800);
-	}, 5000);
+	}, 3000);
 }
 
 function rtrim(str, charlist) {

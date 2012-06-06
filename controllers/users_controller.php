@@ -134,42 +134,6 @@ function account($id = null) {
 			redirect('users', 'account', array( $userID));
 	}
 	
-	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
-			extract($_POST);
-			$results = approchSearchUser($login);
-			$user = getUserInfos($id);
-			$reelfriends = getSpecificArrayValues(getReelFriends($id), 'us_pseudo');
-			$askedfriends = getSpecificArrayValues(getAskedFriends($id), 'us_pseudo');
-			$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($id), 'us_pseudo');
-			foreach($results as &$result){
-				if(!in_array($result['us_pseudo'], $reelfriends)) {
-					if(!in_array($result['us_pseudo'], $askedfriends)) {
-						if(!in_array($result['us_pseudo'], $whoAskedMe)) {
-							if($result['us_pseudo'] != $user['us_pseudo']){
-								$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2'));
-							}
-							else{
-								$result['action'] = 'C\'est vous !';
-							}
-						}
-						else{
-							$result['action'] = 'Cette personne vous a demandé en amis';
-						}
-					}
-					else{
-						$result['action'] = 'Vous avez déjà invité cette personne';
-					}
-				}
-				else{
-					$result['action'] = 'Vous êtes déjà amis';
-				}
-			}
-		
-			$vars = array('results' => $results,
-							'login' => $login);			
-			render('research', $vars);
-	}
-	
 	if(isset($_POST['deck'])) { //Formulaire de création d'un deck
 			extract($_POST);
 			if(!empty($deck_name)){
@@ -261,6 +225,60 @@ function account($id = null) {
 	$JS_FILES = array_pop($JS_FILES);
 	$CSS_FILES = array_pop($CSS_FILES);
 }
+
+function research(){
+	 //Formulaire de recherche d'ami
+		$userID = $_SESSION[USER_MODEL][USER_PK];
+			extract($_POST);
+			$results = approchSearchUser($loginSearch);
+			// affichage d'un message "pas de résultats"
+			if( empty($results))
+			{
+				echo ('<h3 style="text-align:center; margin:10px 0;">Pas de résultats pour cette recherche</h3>');
+			}else{
+				$user = getUserInfos($userID);
+				$reelfriends = getSpecificArrayValues(getReelFriends($userID), 'us_pseudo');
+				$askedfriends = getSpecificArrayValues(getAskedFriends($userID), 'us_pseudo');
+				$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($userID), 'us_pseudo');
+				foreach($results as &$result){
+					if(!in_array($result['us_pseudo'], $reelfriends)) {
+						if(!in_array($result['us_pseudo'], $askedfriends)) {
+							if(!in_array($result['us_pseudo'], $whoAskedMe)) {
+								if($result['us_pseudo'] != $user['us_pseudo']){
+									$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2'));
+								}
+								else{
+									$result['action'] = 'C\'est vous !';
+								}
+							}
+							else{
+								$result['action'] = 'Cette personne vous a demandé en amis';
+							}
+						}
+						else{
+							$result['action'] = 'Vous avez déjà invité cette personne';
+						}
+					}
+					else{
+						$result['action'] = 'Vous êtes déjà amis';
+					}
+					}
+							foreach($results as $result){
+									echo ('<div class="result"
+									<p><strong>'.$result['us_pseudo'].'</strong>
+									&nbsp;&nbsp;<i>'.$result['us_name'].'
+									'.$result['us_lastname'].'</i></br>
+									'.$result['action'].'</p></div>');
+								}
+				}
+			
+}
+
+function changeDeck(){
+	echo('<script>alert(\'plop\');</script>');
+
+}
+
 function newFriend($fr_id, $action){
 	$userID = $_SESSION[USER_MODEL][USER_PK];
 	

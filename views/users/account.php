@@ -66,45 +66,58 @@
 	</div>
 	
 	<div id="account3">
-		
 			<p> Vous avez <b><?php echo $nbFriends['nbFriends']?> </b>amis.</p>
 			<ul class="friends">
 				<?php foreach($reelFriends as $reelFriend): ?>
-				<li> <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></br><?php echo createLink('Supprimer', 'users', 'newFriend', array($reelFriend['us_pseudo'], '0'));?></div></li>
+				<li id="friendClick"> <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></div></li>
+				<div id="friendInfo">
+					<span><?php echo $reelFriend['us_pseudo'];?></br></span>
+					<span><?php echo $reelFriend['us_name'];?> <?php echo $reelFriend['us_lastname'];?></br></span>
+					<span><?php echo $reelFriend['us_birthdate'];?></br></span>
+					<span><?php echo createLink('Supprimer', 'users', 'newFriend', array($reelFriend['us_pseudo'], '0'));?></span>
+				</div>
 				<?php endforeach; ?>
 			</ul>
 			</br>
-			<div class="subFriends">
-				<h3>Vos demandes</h3>
-				<ul>
-					<?php foreach($askedFriends as $askedFriend): ?>
-					<li> <div class="hidden"><?php echo $askedFriend['us_pseudo'];?></div></li>
-					<?php endforeach; ?>
+			<h3>Gérez vos Amis</h3>
+			<div id="subFriends">
+				<ul class="title">
+					<ol class="title1" onclick="changeOnglet2('1');">Vos demandes</ol>
+					<ol class="title2" onclick="changeOnglet2('2');">Vos invitations</ol>
+					<ol class="title3" onclick="changeOnglet2('3');">Rechercher un ami</ol>
 				</ul>
+				<div class="subFriends1">
+					<ul>
+						<?php if(empty($askedFriends)){echo('<p><font size="2">Recherchez vos amis avant de leur envoyer une demande</font></p>');}foreach($askedFriends as $askedFriend): ?>
+						<li> <div class="hidden"><?php echo $askedFriend['us_pseudo'];?></div></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+				<div class="subFriends2">
+					<ul id="invitations">
+						<?php if(empty($invitation)){echo('<p><font size="2">Vous n\'avez aucune invitation pour le moment.</font></p>');}foreach($invitations as $invitation): ?>
+						<li> 
+							<div class="invitation">
+								<?php echo $invitation['us_pseudo'];?></br>
+								<?php echo $invitation['accept'];?></br>
+								<?php echo $invitation['refuse'];?>
+							</div>
+						</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+				<div class="subFriends3">
+					<form class="research" method="post">
+							<p>
+								<label for="loginSearch"><font size="2">Rechercher un ami</font> </label>
+								<input name="loginSearch" id="loginSearch" type="text" value="Login" onFocus="javascript:this.value=''"/>
+							</p></br>
+					</form>
+					<div id="results">
+						
+					</div>
+				</div>
 			</div>
-			<div class="subFriends">
-				<h3>Vos invitations<h3>
-				<ul id="invitations">
-					<?php foreach($invitations as $invitation): ?>
-					<li> 
-						<div class="invitation">
-							<?php echo $invitation['us_pseudo'];?></br>
-							<?php echo $invitation['accept'];?></br>
-							<?php echo $invitation['refuse'];?>
-						</div>
-					</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-			</br>
-			<form class="research" method="POST">
-					<legend>Ajouter un ami</legend>
-					<p>
-						<input name="login" type="text" value="Login"/>
-						<input type="hidden" name="research" />
-						<input  border=0 src="<?php echo IMG_DIR;?>search_icone.png" type=image value=submit align="top" > 
-					</p>
-			</form>
 	</div>
 	
 	<div id="account4">
@@ -161,7 +174,7 @@
 					<body>
 						<?php  foreach($userDecks as &$deck): ?>
 						<tr>
-							<td><img class="pen" id="pen/<?php echo ($deck['de_id']);?>" src="<?php echo IMG_DIR;?>pen.png" alt="#" onclick="changeDeck('');"/></td>
+							<td><img class="pen" id="pen" src="<?php echo IMG_DIR;?>pen.png" alt="#" title="<?php echo($deck['de_id']);?>"/></td>
 						</tr>
 						<?php endforeach;?>
 					</body>
@@ -170,11 +183,11 @@
 				<div id="changeDeck">
 					<form method="POST">
 						<legend>Modifier le deck</legend>
-							<input type="text" name="de_name" value="<?php isset($deck['de_name']) ? $deck['de_name'] : '';?>"></br>
-							<input type="checkbox" name='public' cheked><font size="1">Public</font>
-							<input type="checkbox" name='private'><font size="1">Privé</font></br>
+							<input type="text" name="de_name" ></br>
+							<input type="checkbox" name='public'><font size="1">Public</font><br>
 							<input type="hidden" name="changeDeck"/>
-							<input class="submit" type="submit" value="Enregistrer">
+							<input class="submit" type="submit" value="Enregistrer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input border='0' class="submit" src="<?php echo IMG_DIR;?>poubelle.png" type=image Value=submit align="middle" >
 					</form>
 				</div>
 				</br></br>

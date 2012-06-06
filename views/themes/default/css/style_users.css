@@ -1,17 +1,4 @@
 /****************Généralités*********************/
-#results
-{
-	width:660px;
-	height:336px;
-	margin : auto;
-	padding : 10px;
-	background : url('../img/parchemin_compte.png') no-repeat center; 
-	-webkit-background-size: cover; 
-	-moz-background-size: cover; 
-	-o-background-size: cover; 
-	background-size: cover;
-
-}
 #profil
 {
 	width : 708px;
@@ -152,7 +139,7 @@
 	display : none;
 }
 
-#profil #account1 a, #results .link a, #account4 .link a
+#profil #account1 a, #account4 .link a
 {
 	
 	background-color: rgba(255, 255, 255, 0.5);
@@ -177,9 +164,9 @@
 	margin-left : 20px;
 	background-color: rgba(255, 255, 255, 0.5);
 	box-shadow: 2px 2px 4px black;
-	width : 100px;
+	width : 120px;
 	height : 120px;
-	background : url('../img/unknown.jpg') center;
+	background : url('../img/default_profile.jpg') center;
 }
 #profil #account1 img .message
 {
@@ -187,24 +174,72 @@
 }
 
 /*******Display Friends**********/
-#profil #account3 .subFriends
+#profil #account3 #subFriends
 {
 	display : inline-block;
-	width : 43%;
-	height : 200px;
 	background-color: rgba(255, 255, 255, 0.5);
 	border-radius : 12px;
-	padding : 0px 10px;
+	padding : 10px;
 	margin-left : 20px;
+	vertical-align : top;
 }
-#profil #account3 .friends ul, #profil #account3 ul, #profil #account1  ul
+#profil #account3 #subFriends .subFriends2, #profil #account3 #subFriends .subFriends3
+{
+	display : none;
+}
+#profil #account3 #subFriends  .subFriends1, #profil #account3 #subFriends .subFriends2
+{
+	display : inline-block;
+	vertical-align : top;
+	width : 450px;
+	height : 114px;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+#profil #account3 #subFriends .subFriends3
+{
+	padding : 10px;
+	display : inline-block;
+	vertical-align : top;
+	width : 450px;
+
+	background-color: rgba(255, 255, 255, 0.5);
+}
+#profil #account3 #subFriends ul.title 
 {
 	list-style : none;
+	padding : 0px;
+	margin : 0px;
+	display : inline-block;
+
+}
+#profil #account3 #subFriends .subFriends1 li, #profil #account3 #subFriends .subFriends2 li
+{	
+	background : url('../img/default_profile.jpg') center;
+}
+#profil #account3 #subFriends ul.title ol
+{
+	padding : 10px 50px 5px 5px;
+	margin : 3px;
+	background-color: rgba(255, 255, 255, 0.5);
+	cursor : pointer;
+}
+#profil #account3 #subFriends ul.title ol:hover
+{
+	background-color: rgba(255, 255, 255, 0.9);
+}
+#profil #account3 .friends{
+	height : 120px;
+}
+#profil #account3 .friends ul, #profil #account1  ul
+{
+	list-style : none;
+	padding : 15px;
+
 }
 #profil #account3 .friends li, #profil #account3 li
 {
 	display : inline-block;
-	margin : 5px;
+	margin : 2px;
 	background-color: rgba(255, 255, 255, 0.5);
 	box-shadow: 2px 2px 4px black;
 }
@@ -216,25 +251,26 @@
 #profil #account3 .friends li
 {
 	width : 100px;
-	height : 120px;
-	background : url('../img/unknown.jpg') center;
+	height : 100px;
+	vertical-align : top;
+	background : url('../img/default_profile.jpg') center;
 }
 #profil #account3.invitations li
 {
-	margin-left : 120px;
+	margin-left : 20px;
 }
 #profil #account3 ul li .invitation
 {
 	width : 100px;
 	height : 120px;
 	display : inline-block;
-	margin-left : 90px;
+	margin-left : 20px;
 }
 #profil #account3 .friends .hidden
 {
 	padding : 5px;
 	position : relative;
-	color : white;
+	color : black;
 	visibility : hidden;
 }
 #profil #account3 .friends form
@@ -249,48 +285,34 @@
 }
 #profil #account3 .friends li:hover
 {
-	opacity : 0.7;
+	opacity : 0.8;
+	cursor : pointer;
 }
 #profil #account3 .friends li:hover .hidden
 {
-	opacity : 0.7;
 	visibility : visible;
-}
-/*********Search Friends*************/
-.research legend
-{
-	padding: 0 10px;
-	font-size: 1.2em;
-}
 
-.research img:hover
-{
-	cursor : pointer;
 }
-
+#profil  #friendInfo
+{
+	width : 100px;
+	height : 100px;
+}
+#profil  #friendInfo span
+{
+	background-color : black;
+	color : white;
+}
 /*************Search Results************/
-#results table
+#results
 {
-	border-collapse: collapse;
-	margin : auto;
-	margin-right : 20px;
-	width : 560px;
+	max-height : 135px;
+	overflow : auto;
 }
-#results tr
+.result
 {
-	background-color: rgba(255,255,255,0.5);
-	display: block;
-	margin-bottom: 5px;
-	height : 25px;
-}
-#results td, #results th
-{
-	text-align : center;
-	width : 60px;
-}
-#results .action
-{
-	width : 300px
+	background-color: rgba(160, 160, 160, 0.5);
+	margin : 5px 10px;
 }
 /************Decks***************/
 #account4
@@ -440,7 +462,11 @@
 	display : inline-block;
 	width : 150px;
 }	
-#account4 h3, #account2 h3
+#account3 h3
+{
+	margin : 0px 0px 10px 40px; 
+}
+#account4 h3
 {
 	margin : 0px;
 	margin-bottom : 15px;
@@ -485,7 +511,6 @@
 	margin : auto;
 	margin-right : 20px;
 	display :inline-block;
-	vertical-align : top;
 }
 
 	#account4 #side2  .deck tr{
@@ -521,4 +546,5 @@
 	box-shadow: 2px 2px 4px black;
 	padding : 5px 15px;
 	display : none;
+	position : absolute;
 }

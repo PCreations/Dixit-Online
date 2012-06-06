@@ -398,9 +398,10 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 			/* Gestion inactivité */
 			if($actionStatus == ACTION_IN_PROGRESS) {
 				$lastActionTime = getUserLastActionTime($gameID, $playerID);
+
 			}
 			setPlayerStatus($gameID, $playerID, 'Inactif');
-			$playerInfos[$i]['status'] = 'Inactif depuis'
+			$playerInfos[$i]['status'] = 'Inactif depuis';
 			$playersInfos[$i]['status'] = _getStatus($actionStatus, $phase, $playersInfos[$i]['role']);
 		}
 		else {

@@ -11,9 +11,38 @@
 			<div id="table_room">
 				<?php if(!$gameIsStarted) { ?>
 					<p><?php echo $gameInfos['action'];?></p>
+					<table id="usersInfos" border="1">
+						<tr id="firstTR">
+							<th>Joueur</th>
+							<th>Nombre de parties gagnées</th>
+							<th>Points d'expérience (classement)</th>
+						</tr>
+						<?php foreach($usersInGame as $user): ?>
+						<tr>
+							<td><?php echo $user['us_pseudo'];?></td>
+							<td><?php echo $user['nbWin'];?></td>
+							<td><?php echo $user['xp'].' ('.$user['classement'].')';?></td>
+						</tr>
+						<?php endforeach ?>
+					</table>
 				<?php } if($gameIsOver) { ?>
-					<p><?php echo _getClassement($gameInfos['ga_id']);?></p>
+					<ul><?php $classement = _getClassement($gameInfos['ga_id']);?>
+						<?php foreach($classement as $player) :?>
+							<li><strong><?php echo $player['us_pseudo'];?> :</strong><?php echo $player['points'];?> points (+<?php echo $player['xp'];?>XP)</li>	
+						<?php endforeach;?>
+					</ul>
 				<?php } ?>
+			</div>
+			<div id="deck_room">
+				<div id="gallery">
+					<div id="gallery_conteneur">
+							<?php foreach($cards as $card): ?>
+								<div class="carte">
+									<img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
+								</div>
+							<?php endforeach;?>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div id="sidebar_room">
@@ -98,7 +127,15 @@ function callback_ping(){
 	$("#ping").html("");
 }*/
 
+	// Positionnement des flèches
 
+	w=screen.availWidth;
+	h=screen.availHeight;
+	contentw=900;
+	$(".arrowRoom").css("top",(h/2)-100);
+	$(".arrowGame").css("top",(h/2)-100);
+	$(".arrowRoom").css("left",(w-contentw)/4-75);
+	$(".arrowGame").css("left",w-((w-contentw)/4)-75);
 
 	//Par défaut le tour courant et la phase courante sont ceux défini en PHP (i.e le premier tour et la première phase)
 	gameIsStarted = <?php echo ($gameIsStarted) ? '1' : '0';?>;
@@ -169,7 +206,7 @@ function callback_ping(){
 
 		if(divID == 'table') {
 			/* Ajout de la carte */
-			$.post(BASE_URL+"cards/vote/", {cardID: cardID, turnID: turnID}, function(data) {
+			$.post(BASE_URL+"games/vote/", {cardID: cardID, turnID: turnID, gameID: gameID}, function(data) {
 				/* Redirection vers la bonne page */
 				$(location).attr('href',BASE_URL+'games/play/'+gameID);
 			});
@@ -196,9 +233,9 @@ function callback_ping(){
 
 		console.log("updateCard");
 		/* Update de la carte */
-		$.post(BASE_URL+"cards/updateVote/", {cardID: cardID, turnID: turnID}, function(data) {
+		$.post(BASE_URL+"games/updateVote/", {cardID: cardID, turnID: turnID, gameID: gameID}, function(data) {
 			/* Update boutons */
-			
+			Dixit.alert('Votre vote à été mis à jour', Dixit.FLASH_SUCCESS);
 			/*$(location).attr('href',BASE_URL+'games/play/'+gameID);*/
 		});
 	}
@@ -334,14 +371,19 @@ function callback_ping(){
 	$("#table .carte").hover(function(){
 		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
 		$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(360deg)');
+		$(this).children('.back_carte').css('-o-transform','translateZ(-10px) rotateY(360deg)');
 		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(180deg)');
 		$(this).children('.image_carte_flip').css('-moz-transform','rotateY(180deg)');
+		$(this).children('.image_carte_flip').css('-o-transform','rotateY(180deg)');
+		
 	}, 
 	  function() {
 		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
 		$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(180deg)');
+		$(this).children('.back_carte').css('-o-transform','translateZ(-10px) rotateY(180deg)');
 		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(0deg)');
 		$(this).children('.image_carte_flip').css('-moz-transform','rotateY(0deg)');
+		$(this).children('.image_carte_flip').css('-o-transform','rotateY(0deg)');
 	  });
 	
 	if(!gameIsStarted || gameIsOver) $('.arrowGame').hide();
@@ -382,18 +424,18 @@ function callback_ping(){
 		});
 	}, 2000);
 
-	usersInGame = <?php echo $jsonUsersInGame;?>;
+	usersIDs = <?php echo $jsonUsersInGame;?>;
 
 	setInterval(function() {
-		$.post(Dixit.BASE_URL+"games/_roomAjax",{gameID: gameID, usersInGame: usersInGame}, function(json) {
+		$.post(Dixit.BASE_URL+"games/_roomAjax",{gameID: gameID, usersIDs: usersIDs}, function(json) {
 			var result = $.parseJSON(json);
-			usersInGame = result.usersInGame;
+			usersIDs = result.usersIDs;
 			if(!gameIsStarted) {
 				phaseID = result.phaseID;
 				turnID = result.turnID;
 			}
 			gameIsStarted = result.startGame;
-			displayRoomPlayersInfos(result.userInGameName);
+			displayRoomPlayersInfos(result.usersInGame);
 			var notif = '';
 			var textAction = (result.joinGame) ? "rejoint" : "quitté";
 			if(result.usersNames != -1) {
@@ -413,12 +455,12 @@ function callback_ping(){
 		});
 	}, 2000);
 
-	function displayRoomPlayersInfos(userInGameName) {
+	function displayRoomPlayersInfos(usersInGame) {
 		text = '';
-		console.log(userInGameName);
+		console.log(usersInGame);
 		$("#players_room").html('<img id="label_joueurs_room" src="'+IMG_DIR+'joueurs.png">');
 
-		$.each(userInGameName, function(key, player) {
+		$.each(usersInGame, function(key, player) {
 			console.log(player);
 			$("#players_room").append('<div class="joueur">'
 										+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'

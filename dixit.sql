@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Sam 02 Juin 2012 à 23:10
+-- Généré le : Mar 05 Juin 2012 à 23:41
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -245,6 +245,24 @@ CREATE TABLE IF NOT EXISTS `earned_points` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `errors`
+--
+
+CREATE TABLE IF NOT EXISTS `errors` (
+  `er_id` int(11) NOT NULL AUTO_INCREMENT,
+  `er_msg` varchar(255) NOT NULL,
+  `er_date` datetime NOT NULL,
+  PRIMARY KEY (`er_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Contenu de la table `errors`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `games`
 --
 
@@ -371,12 +389,32 @@ CREATE TABLE IF NOT EXISTS `turns` (
   PRIMARY KEY (`tu_id`),
   KEY `ga_id` (`ga_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
 
 --
 -- Contenu de la table `turns`
 --
 
+
+--
+-- Déclencheurs `turns`
+--
+DROP TRIGGER IF EXISTS `before_inset_turns`;
+DELIMITER //
+CREATE TRIGGER `before_inset_turns` BEFORE INSERT ON `turns`
+ FOR EACH ROW BEGIN
+	DECLARE oldTurnComment VARCHAR(255);
+	SELECT tu_comment INTO oldTurnComment
+	FROM turns
+	WHERE ga_id = NEW.ga_id
+	ORDER BY tu_id DESC
+	LIMIT 1;
+	IF oldTurnComment = "" THEN
+		INSERT INTO errors(er_msg, er_date) VALUES('ERR_TURN', NOW());
+	END IF;
+END
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -442,6 +480,27 @@ CREATE TABLE IF NOT EXISTS `users_friends` (
 
 --
 -- Contenu de la table `users_friends`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users_xp`
+--
+
+CREATE TABLE IF NOT EXISTS `users_xp` (
+  `us_id` int(11) NOT NULL,
+  `us_xp` int(11) NOT NULL,
+  `ga_id` int(11) NOT NULL,
+  `ga_position` int(11) NOT NULL,
+  PRIMARY KEY (`us_id`,`ga_id`),
+  KEY `us_id` (`us_id`,`us_xp`,`ga_id`),
+  KEY `ga_id` (`ga_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `users_xp`
 --
 
 
@@ -569,6 +628,13 @@ ALTER TABLE `users_cards_votes`
 ALTER TABLE `users_friends`
   ADD CONSTRAINT `users_friends_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `users_friends_ibfk_2` FOREIGN KEY (`us_friend_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `users_xp`
+--
+ALTER TABLE `users_xp`
+  ADD CONSTRAINT `users_xp_ibfk_1` FOREIGN KEY (`us_id`) REFERENCES `users` (`us_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_xp_ibfk_2` FOREIGN KEY (`ga_id`) REFERENCES `games` (`ga_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `votes`

@@ -382,7 +382,8 @@ function _checkIfPlayersAreReady($gameID) {
 
 function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 	$i = 0;
-
+	$playersInfos = array();
+	
 	foreach(getSpecificArrayValues(getPlayersInGame($gameID), 'us_id') as $playerID) {
 		//Récupération des informations des joueurs
 		$playersInfos[$i] = getUserInfos($playerID, array('us_id', 'us_pseudo'));

@@ -11,21 +11,22 @@
 			<div id="table_room">
 				<?php if(!$gameIsStarted) { ?>
 					<p><?php echo $gameInfos['action'];?></p>
-					<h3>Informations sur les joueurs :</h3>
-					<table id="usersInfos" border="1">
-						<tr id="firstTR">
-							<th>Joueur</th>
-							<th>% parties gagnées</th>
-							<th>Points d'expérience (classement)</th>
-						</tr>
-						<?php foreach($usersInGame as $user): ?>
-						<tr>
-							<td><?php echo $user['us_pseudo'];?></td>
-							<td><?php echo $user['percentageWins'].'% ('.$user['nbWins'].'/'.$user['nbGames'].')';?></td>
-							<td><?php echo $user['xp'].' ('.$user['classement'].')';?></td>
-						</tr>
-						<?php endforeach ?>
-					</table>
+					<div class="scroll">
+						<table id="usersInfos" >
+							<tr id="firstTR">
+								<th>Joueur</th>
+								<th>% parties gagnées</th>
+								<th>Points d'expérience (classement)</th>
+							</tr>
+							<?php foreach($usersInGame as $user): ?>
+							<tr>
+								<td><?php echo $user['us_pseudo'];?></td>
+								<td><?php echo $user['percentageWins'].'% ('.$user['nbWins'].'/'.$user['nbGames'].')';?></td>
+								<td><?php echo $user['xp'].' ('.$user['classement'].')';?></td>
+							</tr>
+							<?php endforeach ?>
+						</table>
+					</div>
 				<?php } if($gameIsOver) { ?>
 					<ul><?php $classement = _getClassement($gameInfos['ga_id']);?>
 						<?php foreach($classement as $player) :?>

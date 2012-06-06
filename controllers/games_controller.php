@@ -164,7 +164,7 @@ function _startGame($gameID) {
 	shuffle($playersIDS);
 
 	foreach($playersIDS as $key => $player) {
-		updatePlayerActionTime($gameID, $player['us_id'], time());
+		updatePlayerActionTime($gameID, $player['us_id']);
 		definePlayPosition($gameID, $player['us_id'], $key+1);
 	}
 
@@ -394,7 +394,14 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 			$storytellerInfos = $playersInfos[$i];
 			$playersInfos[$i]['role'] = 'conteur';
 			$status = getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status');
-			$playersInfos[$i]['status'] = _getStatus(($phase == STORYTELLER_PHASE || ($phase == POINTS_PHASE && $status != 'Prêt')) ? ACTION_IN_PROGRESS : ACTION_DONE, $phase, $playersInfos[$i]['role']);
+			$actionStatus = ($phase == STORYTELLER_PHASE || ($phase == POINTS_PHASE && $status != 'Prêt')) ? ACTION_IN_PROGRESS : ACTION_DONE;
+			/* Gestion inactivité */
+			if($actionStatus == ACTION_IN_PROGRESS) {
+				$lastActionTime = getUserLastActionTime($gameID, $playerID);
+			}
+			setPlayerStatus($gameID, $playerID, 'Inactif');
+			$playerInfos[$i]['status'] = 'Inactif depuis'
+			$playersInfos[$i]['status'] = _getStatus($actionStatus, $phase, $playersInfos[$i]['role']);
 		}
 		else {
 			$playersInfos[$i]['role'] = 'joueur';
@@ -648,8 +655,6 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	foreach($cardsIDs as $cardID) {
 		$cards[] = getCardInfos($cardID);
 	}
-	
-	
 
 	if($phase == BOARD_PHASE) {
 		//récupération de la carte du joueur
@@ -939,7 +944,7 @@ function vote() {
 		}
 		else {
 			extract($_POST);
-			updatePlayerActionTime($gameID, $_SESSION[USER_MODEL][USER_PK], time());
+			updatePlayerActionTime($gameID, $_SESSION[USER_MODEL][USER_PK]);
 			addGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
 			if(_getActualGamePhase($gameID, $turnID) != POINTS_PHASE) {
 				setMessage('Votre vote a été pris en compte. Vous pouvez le modifier tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);
@@ -971,7 +976,7 @@ function updateVote() {
 		}
 		else {
 			extract($_POST);
-			updatePlayerActionTime($gameID, $_SESSION[USER_MODEL][USER_PK], time());
+			updatePlayerActionTime($gameID, $_SESSION[USER_MODEL][USER_PK]);
 			updateGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
 			if(_getActualGamePhase($gameID, $turnID) != POINTS_PHASE) {
 				setMessage('Votre vote a été pris en compte. Vous pouvez le modifier tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);

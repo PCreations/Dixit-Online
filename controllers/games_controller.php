@@ -667,9 +667,13 @@ function _setPlayerStatus($gameID, $userID, $status) {
 //Permet d'afficher le tableau des cartes en fonction de la phase. Si la phase est BOARD_PHASE alors les cartes apparaissent face cachées et si c'est la VOTE_PHASE elles apparaissent face visible avec la possibilité de voter
 function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	
-	$board = '<div id="cartes">';
-	/*$board .= '<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">';
-		$board .= '<p>'.$turn['phase']['infos'].'</br>';*/
+	$storytellerID = getOneRowResult(getUserInfos($turn['us_id']), 'us_id');
+	$nextStoryteller = getOneRowResult(getUserInfos($storytellerID, array('us_pseudo')), 'us_pseudo');
+	$phaseInfos = _getPhaseInfos($storyteller, $phase, $actionStatus);
+	$board = '<img id="label_tour" src="'.IMG_DIR.'tour_en_cours.png">';
+		$board .= '<p>Le prochain conteur est : '.$nextStoryteller.'<br />';
+		$board .= $phaseInfos['infos'].'</p>';
+		$board .= '<div id="cartes">';
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();
 

@@ -71,9 +71,6 @@
 					</div>
 				</div>
 				<div id="table">
-					<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">
-					<p><?php echo $turn['phase']['infos'];?></br>
-					Le prochain conteur est <?php echo $nextStoryteller;?></p>
 					<?php
 					echo _getBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn, $storyteller, $actionStatus);
 					?>

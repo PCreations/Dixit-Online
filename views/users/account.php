@@ -69,13 +69,13 @@
 			<p> Vous avez <b><?php echo $nbFriends['nbFriends']?> </b>amis.</p>
 			<ul class="friends">
 				<?php foreach($reelFriends as $reelFriend): ?>
-				<li id="friendClick"> <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></div></li>
-				<div id="friendInfo">
-					<span><?php echo $reelFriend['us_pseudo'];?></br></span>
-					<span><?php echo $reelFriend['us_name'];?> <?php echo $reelFriend['us_lastname'];?></br></span>
-					<span><?php echo $reelFriend['us_birthdate'];?></br></span>
-					<span><?php echo createLink('Supprimer', 'users', 'newFriend', array($reelFriend['us_pseudo'], '0'));?></span>
-				</div>
+					<li id="friendClick" > <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></div></li>
+					<div id="friendInfo">
+						<?php echo $reelFriend['us_pseudo'];?></br>
+						<?php echo $reelFriend['us_name'];?> <?php echo $reelFriend['us_lastname'];?></br>
+						<?php echo $reelFriend['us_birthdate'];?></br>
+						<?php echo createLink('Supprimer', 'users', 'newFriend', array($reelFriend['us_pseudo'], '0'));?>
+					</div>
 				<?php endforeach; ?>
 			</ul>
 			</br>

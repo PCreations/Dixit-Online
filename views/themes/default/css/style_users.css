@@ -298,10 +298,18 @@
 	width : 100px;
 	height : 100px;
 }
-#profil  #friendInfo span
+#profil  #friendInfo 
 {
-	background-color : black;
+	background-color: rgba(120, 120, 120, 0.7);
 	color : white;
+	font-size : 0.9em;
+	margin : 0px 10px;
+	padding-top : 5px;
+	width : 100px;
+	text-align : center;
+	position : relative;
+	display : none;
+	border-radius : 6px;
 }
 /*************Search Results************/
 #results

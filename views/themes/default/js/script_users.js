@@ -68,10 +68,24 @@ function changeDeck(open){ //ouvre un formulaire de modification des decks
 		open = 0;
 	}
 }
-
+function test(){
+	
+}
 $(document).ready(function(){ 
 	changeOnglet('1');
 	changeOnglet2('1');
+	open = 0;
+	
+	document.getElementById("friendClick").onclick = function() {
+			if(open=='0'){
+				$('#friendInfo').show('slow');
+				$('#friendInfo').css('display', 'inline-block');
+				open = 1;
+			}else{
+				$('#friendInfo').hide('slow', function(){$('#friendInfo').css('display', 'none');});
+				open = 0;
+			}
+		};
 	
 	//recherche d'ami
 	$('#loginSearch').keyup( function(){
@@ -85,6 +99,7 @@ $(document).ready(function(){
 			})
 		}
 	});
+	//ouverture du formulaire de modif des decks
 	document.getElementById("pen").onclick = function(){
 		changeDeck('0');
 		document.getElementById("changeDeck").onsubmit = function(){
@@ -95,14 +110,7 @@ $(document).ready(function(){
 		};
 	};
 	
-	document.getElementById("friendClick").onclick = function(){
-		var span = document.getElementById("friendClick").childNodes;
-		for(i=0; i<4; i++){
-			alert(children[i].data);
-			span.show('slow');
-			span.css('display', 'inline-block');
-		}
-	}
+	
 	
 	/*Sélection des cartes dans le profil*/
 	$( ".carte #selectable" ).selectable();

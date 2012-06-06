@@ -74,24 +74,28 @@
 				<?php endforeach; ?>
 			</ul>
 			</br>
-			<p><b>Vous avez envoyé des invitations:</b></p>
-			<ul>
-				<?php foreach($askedFriends as $askedFriend): ?>
-				<li> <div class="hidden"><?php echo $askedFriend['us_pseudo'];?></div></li>
-				<?php endforeach; ?>
-			</ul>
-			<p><b>Vous avez reçus des invitations :</b></p>
-			<ul id="invitations">
-				<?php foreach($invitations as $invitation): ?>
-				<li> 
-					<div class="invitation">
-						<?php echo $invitation['us_pseudo'];?></br>
-						<?php echo $invitation['accept'];?></br>
-						<?php echo $invitation['refuse'];?>
-					</div>
-				</li>
-				<?php endforeach; ?>
-			</ul>
+			<div class="subFriends">
+				<h3>Vos demandes</h3>
+				<ul>
+					<?php foreach($askedFriends as $askedFriend): ?>
+					<li> <div class="hidden"><?php echo $askedFriend['us_pseudo'];?></div></li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<div class="subFriends">
+				<h3>Vos invitations<h3>
+				<ul id="invitations">
+					<?php foreach($invitations as $invitation): ?>
+					<li> 
+						<div class="invitation">
+							<?php echo $invitation['us_pseudo'];?></br>
+							<?php echo $invitation['accept'];?></br>
+							<?php echo $invitation['refuse'];?>
+						</div>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
 			</br>
 			<form class="research" method="POST">
 					<legend>Ajouter un ami</legend>

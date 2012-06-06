@@ -111,10 +111,11 @@ function getGameInProgressForUser($userID) {
 function addPlayerInGame($gameID, $userID) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO plays(us_id, ga_id)
-						VALUES(:userID, :gameID)');
+	$query = $db->prepare('INSERT INTO plays(us_id, ga_id, pl_last_action)
+						VALUES(:userID, :gameID, :time)');
 	return $query->execute(array('userID' => $userID,
-						  	 'gameID' => $gameID));
+						  	 'gameID' => $gameID,
+						  	 'time' => time()));
 }
 
 function setPlayerStatus($gameID, $userID, $status) {
@@ -144,7 +145,7 @@ function getPlayerStatus($gameID, $userID) {
 function getUserLastActionTime($gameID, $userID) {
 	global $db;
 
-	$query = $db->prepare('SELECT pl_last_action,
+	$query = $db->prepare('SELECT pl_last_action
 						FROM plays
 						WHERE ga_id = :gameID
 						AND us_id = :userID');
@@ -157,11 +158,12 @@ function updatePlayerActionTime($gameID, $userID) {
 	global $db;
 
 	$query = $db->prepare('UPDATE plays
-						SET pl_last_action = NOW()
+						SET pl_last_action = :time
 						WHERE ga_id = :gameID
 						AND us_id = :userID');
 	$query->execute(array('gameID' => $gameID,
-						'userID' => $userID));
+						'userID' => $userID,
+						'time' => time()));
 }
 
 function removePlayerFromGame($gameID, $userID) {
@@ -425,7 +427,7 @@ function addXPtoPlayer($userID, $xp, $position, $gameID) {
 function lockTables() {
 	global $db;
 
-	$query = $db->query('LOCK TABLE turns WRITE, pick WRITE, plays WRITE, plays as pl WRITE, games as ga WRITE, games as g WRITE, users as u WRITE, hands WRITE');
+	$query = $db->query('LOCK TABLE turns WRITE, pick WRITE, plays WRITE, plays as pl WRITE, games as ga WRITE, games as g WRITE, users as u WRITE, hands WRITE, total_players_in_game WRITE');
 	$query->closeCursor();
 }
 

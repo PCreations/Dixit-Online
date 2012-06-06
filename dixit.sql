@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Mer 06 Juin 2012 à 13:40
+-- Généré le : Mer 06 Juin 2012 à 16:52
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -355,7 +355,7 @@ CREATE TABLE IF NOT EXISTS `plays` (
   `ga_id` int(11) NOT NULL,
   `pl_position` int(11) NOT NULL,
   `pl_status` enum('Attente','Prêt','Inactif') CHARACTER SET utf8 NOT NULL DEFAULT 'Attente',
-  `pl_last_action` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `pl_last_action` bigint(20) NOT NULL,
   PRIMARY KEY (`us_id`,`ga_id`),
   KEY `ga_id` (`ga_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -390,7 +390,7 @@ CREATE TABLE IF NOT EXISTS `turns` (
   PRIMARY KEY (`tu_id`),
   KEY `ga_id` (`ga_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Contenu de la table `turns`

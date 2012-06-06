@@ -14,6 +14,8 @@ define('GAME_OVER', 4);
 define('ACTION_IN_PROGRESS', 4);
 define('ACTION_DONE', 5);
 
+define('TIME_BEFORE_INACTIVE', 60);
+
 function index() {
 	$deckInfos = getAllowedDecks($_SESSION[USER_MODEL][USER_PK],array('de_id', 'de_name'));
 
@@ -391,25 +393,46 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 		$playersInfos[$i]['points'] = getOneRowResult(getTotalUserPointsInGame($gameID, $playerID), 'nbPoints');
 
 		//Si l'id du joueur vaut celle définie dans la table turns c'est que le joueur est le conteur
+		
 		if ($playerID == $storytellerID) {
 			$storytellerInfos = $playersInfos[$i];
 			$playersInfos[$i]['role'] = 'conteur';
 			$status = getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status');
 			$actionStatus = ($phase == STORYTELLER_PHASE || ($phase == POINTS_PHASE && $status != 'Prêt')) ? ACTION_IN_PROGRESS : ACTION_DONE;
-			/* Gestion inactivité
+
+			/* Gestion inactivité */
 			if($actionStatus == ACTION_IN_PROGRESS) {
 				$lastActionTime = getUserLastActionTime($gameID, $playerID);
 
 			}
 			setPlayerStatus($gameID, $playerID, 'Inactif');
 			$playerInfos[$i]['status'] = 'Inactif depuis';
-			$playersInfos[$i]['status'] = _getStatus($actionStatus, $phase, $playersInfos[$i]['role']); */
+			$playersInfos[$i]['status'] = _getStatus($actionStatus, $phase, $playersInfos[$i]['role']);
 		}
 		else {
 			$playersInfos[$i]['role'] = 'joueur';
 			$playersInfos[$i]['status'] = _getStatus(_checkAction($phase, $playerID, $currentTurnID, 'true'), $phase, $playersInfos[$i]['role']);
 		}
 
+		/* Gestion inactivité */
+		$actionStatus = _checkAction($phase, $playerID, $currentTurnID, 'true');
+		if((boolean)!checkPlayersInGame($gameID)) {
+			/* Si le joueur doit faire une action mais qu'il n'a toujours pas joué */
+			if($actionStatus == ACTION_IN_PROGRESS) {
+				$lastActionTime = (int)getOneRowResult(getUserLastActionTime($gameID, $playerID), 'pl_last_action');
+				$actualTime = time();
+				$inactivityTime = $actualTime - $lastActionTime;
+				if($inactivityTime >= TIME_BEFORE_INACTIVE) {
+					setPlayerStatus($gameID, $playerID, 'Inactif');		
+					$playersInfos[$i]['status'] = 'Inactif depuis '.$inactivityTime.(($inactivityTime == 1) ? ' seconde' : ' secondes');
+					$playersInfos[$i]['inactivityTime'] = $inactivityTime;
+				}
+			}
+			else { /* Pour tous les autres joueurs qui attendent on mets continuellement à jour le temps de la dernière action pour ne pas avoir d'inactivité en cas de trop longue période d'inactivié de la part d'un autre joueur */
+				updatePlayerActionTime($gameID, $playerID);
+			}
+
+		}
 		//Alors on va récupérer sa main et son statut
 		if($playerID == $_SESSION[USER_MODEL][USER_PK]) {
 			$playersInfos[$i]['hand'] = getCardsInHand($_SESSION[USER_MODEL][USER_PK], $currentTurnID, $gameID);
@@ -417,7 +440,6 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 
 		$i++;
 	}
-
 	return $playersInfos;
 }
 
@@ -595,6 +617,7 @@ function _pickCard($turnID, $gameID, $userID) {
 function _checkAction($phase, $playerID, $turnID) {
 	$action;
 
+	$stID = getOneRowResult(getTurnInfos($turnID, array('us_id')), 'us_id');
 	switch($phase) {
 		case BOARD_PHASE:
 			//On tente de récupérer la carte que le joueur a joué pour ce tour. Si le résultat est un tableau c'est qu'une carte à été posée et donc que le joueur a joué pour cette phase
@@ -612,7 +635,10 @@ function _checkAction($phase, $playerID, $turnID) {
 				$action = true;
 			break;
 		case STORYTELLER_PHASE:
-			$action = false;
+			if($stID == $playerID)
+				$action = false;
+			else
+				$action = true;
 			break;
 		case POINTS_PHASE:
 			$gameID = getOneRowResult(getTurnInfos($turnID, array('ga_id')), 'ga_id');
@@ -651,6 +677,8 @@ function _setPlayerStatus($gameID, $userID, $status) {
 function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	
 	$board = '<div id="cartes">';
+	/*$board .= '<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">';
+		$board .= '<p>'.$turn['phase']['infos'].'</br>';*/
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();
 
@@ -1008,7 +1036,7 @@ function _getClassement($gameID) {
 			$bonusPoint = $totalBonusPoint * (1 / $actualPosition);
 		$playerPoint = (int)$player['points'];
 		$pointLimit = (int)$gameInfos['ga_points_limit'];
-		$playerXP = (int)$playerPoint/$pointLimit*(($nbPlayers/6*100)+$bonusPoint*$nbPlayers);
+		$playerXP = (int)($playerPoint/$pointLimit*(($nbPlayers/6*100)+$bonusPoint*$nbPlayers));
 		$player['xp'] = $playerXP;
 		addXPtoPlayer($player['us_id'], $playerXP, $actualPosition, $gameID);
 		$actualPosition++;

@@ -28,11 +28,26 @@
 						</table>
 					</div>
 				<?php } if($gameIsOver) { ?>
-					<ul><?php $classement = _getClassement($gameInfos['ga_id']);?>
-						<?php foreach($classement as $player) :?>
-							<li><strong><?php echo $player['us_pseudo'];?> :</strong><?php echo $player['points'];?> points (+<?php echo $player['xp'];?>XP)</li>	
-						<?php endforeach;?>
-					</ul>
+					<div class="scroll">
+						<table id="usersInfos" >
+							<tr id="firstTR">
+								<th></th>
+								<th>Joueur</th>
+								<th>Points dans la partie</th>
+								<th>Points d'expérience gagnés</th>
+							</tr>
+							<?php $i=0;
+							$classement = _getClassement($gameInfos['ga_id']);?>
+						<?php foreach($classement as $player) : $i++; ?>
+							<tr>
+								<td><?php echo $i;?></td>
+								<td><?php echo $player['us_pseudo'];?></td>
+								<td><?php echo $player['points'];?> points</td>
+								<td>+<?php echo $player['xp'];?> XP</td>
+							</tr>
+							<?php endforeach ?>
+						</table>
+					</div>
 				<?php } ?>
 			</div>
 			<div id="deck_room">
@@ -158,6 +173,7 @@ function callback_ping(){
 	swapWindow(showedWindow);
 	phaseID = <?php echo (isset($turn['phase']['id'])) ? $turn['phase']['id'] : 0;?>;
 	turnID = <?php echo (isset($turn['tu_id'])) ? $turn['tu_id'] : 0;?>;
+	alertDelayInactivity = 0;
 	
 	function readyForNextTurn() {
 		//$('#readyForNextTurn').click();
@@ -319,6 +335,13 @@ function callback_ping(){
 
 		$.each(playersInfos, function(key, player) {
 			console.log(player);
+			if(player.inactivityTime > Dixit.TIME_BEFORE_INACTIVE) {
+				alertDelayInactivity++;
+				if(alertDelayInactivity == 3 && player.us_id == userID) {
+					Dixit.alert('Les joueurs vous attendent !', Dixit.FLASH_ALERT);
+					alertDelayInactivity = 0;
+				}
+			}
 			$("#players").append('<div class="joueur">'
 									+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
 									+'<p class="infos_joueur">'+player.us_pseudo+((player.role == 'conteur') ? ' : conteur' : '')+'<br />'+((player.points != null) ? player.points : '0')+'points<br />'+player.status+'</p>'

@@ -475,6 +475,7 @@
 	margin : auto;
 	margin-right : 20px;
 	display :inline-block;
+	vertical-align : top;
 }
 
 	#account4 #side2  .deck tr{
@@ -482,13 +483,15 @@
 		display: block;
 		margin-bottom: 5px;
 		height : 25px;
+		border-radius : 5px;
 	}
 	#account4 #side2 .deck th{
-		width : 125px;
+		padding-left: 10px;
+		width : 100px;	
 	}
 	#account4 #side2 .deck td{
 		padding-left: 10px;
-		width : 125px;
+		width : 100px;
 		text-align : center;
 	}
 #account4 #side2 table{
@@ -497,4 +500,15 @@
 .pen 
 {
 	width : 26px;
+	cursor : pointer;
+}
+#changeDeck
+{
+	background-color: rgba(255,255,255,0.5);
+	border-radius : 12px;
+	width : 170px;
+	margin : auto;
+	box-shadow: 2px 2px 4px black;
+	padding : 5px 15px;
+	display : none;
 }

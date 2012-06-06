@@ -48,6 +48,20 @@ function preview(){
 }
 // +document.forms[\"card\"].elements[\"userfile\"].value+
 
+function changeDeck(de_id){
+	open = 0;
+	if(open==0){
+		$("#changeDeck").show('slow');
+		$("#changeDeck").css('display', 'inline-block');
+		open = 1;
+	}
+	$(".pen").onClick= (function(){
+		$("#changeDeck").hide('slow');
+		$("#changeDeck").css('display', 'none');
+		open = 0;
+	});
+}
+
 $(document).ready(function(){ 
 	changeOnglet('1');
 	

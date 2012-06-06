@@ -112,7 +112,6 @@
 				<div id="warning">
 					<img src="<?php echo IMG_DIR;?>warning2.png" alt="#"/>
 					<p>Par défaut les decks sont <strong>privés</strong>, c'est-à-dire que vous seul pouvez créer une partie utilisant un de vos decks privés.</p>
-					</p>
 				</div>
 				<form method="POST">
 					<label for="deck_name" >Nom : </label><input type="text" name="deck_name" onFocus="javascript:this.value=''"></input>
@@ -158,11 +157,24 @@
 					<body>
 						<?php  foreach($userDecks as &$deck): ?>
 						<tr>
-							<td><img class="pen"src="<?php echo IMG_DIR;?>pen.png" alt="#"/></a></td>
+							<td><img class="pen" id="pen/<?php echo ($deck['de_id']);?>" src="<?php echo IMG_DIR;?>pen.png" alt="#" onclick="changeDeck('');"/></td>
 						</tr>
 						<?php endforeach;?>
 					</body>
+					
 				</table>
+				<div id="changeDeck">
+					<form method="POST">
+						<legend>Modifier le deck</legend>
+							<input type="text" name="de_name" value="<?php isset($deck['de_name']) ? $deck['de_name'] : '';?>"></br>
+							<input type="checkbox" name='public' cheked><font size="1">Public</font>
+							<input type="checkbox" name='private'><font size="1">Privé</font></br>
+							<input type="hidden" name="changeDeck"/>
+							<input class="submit" type="submit" value="Enregistrer">
+					</form>
+				</div>
+				</br></br>
+				<h3>Voir les decks de vos amis</h3>
 			</div>
 			<div id="side3">
 				<p>Afficher le groupe de carte :</p> 
@@ -175,7 +187,7 @@
 				</select>
 				<div id="gallery_conteneur">
 					<div id="gallery" class="flexcroll">
-						<?php foreach($cardsInDeck as $card): ?>
+						<?php foreach($deck['cardsInDeckInfo'] as $card): ?>
 							<div class="carte">
 								<img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
 								<div id="selectable" >

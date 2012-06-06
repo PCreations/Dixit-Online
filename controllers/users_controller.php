@@ -182,6 +182,7 @@ function account($id = null) {
 			}
 			else{
 				setMessage('Vous devez donner un nom à votre deck.', FLASH_ERROR);
+				redirect('users', 'account', array( $userID));
 			}
 			
 	}
@@ -260,7 +261,6 @@ function account($id = null) {
 	$JS_FILES = array_pop($JS_FILES);
 	$CSS_FILES = array_pop($CSS_FILES);
 }
-
 function newFriend($fr_id, $action){
 	$userID = $_SESSION[USER_MODEL][USER_PK];
 	

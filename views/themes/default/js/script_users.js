@@ -52,7 +52,6 @@ function displayArrow(){
 	}
 
 function preview(){ //censée afficher un aperçu de l'image selectionnée pour être téléchargée
-	alert('plop');
 	imgCalque = document.getElementById("survey") ;
 	imgCalque.innerHTML = "<p>hello</p><img id='imgPrev' src='C:/Users/Cécilia/Dropbox/Dixit/medias/cartes/carte_2.png'/>";
 }
@@ -68,15 +67,13 @@ function changeDeck(open){ //ouvre un formulaire de modification des decks
 		open = 0;
 	}
 }
-function test(){
 
-}
 $(document).ready(function(){ 
 	changeOnglet('1');
 	changeOnglet2('1');
 	open = 0;
 
-	document.getElementById("friendClick").onclick = function() {
+	$("#friendClick").click(function() {
 			if(open=='0'){
 				$('#friendInfo').show('slow');
 				$('#friendInfo').css('display', 'inline-block');
@@ -85,7 +82,7 @@ $(document).ready(function(){
 				$('#friendInfo').hide('slow', function(){$('#friendInfo').css('display', 'none');});
 				open = 0;
 			}
-		};
+		});
 
 	//recherche d'ami
 	$('#loginSearch').keyup( function(){
@@ -100,7 +97,7 @@ $(document).ready(function(){
 		}
 	});
 	//ouverture du formulaire de modif des decks
-	document.getElementById("pen").onclick = function(){
+	/*document.getElementById("pen").onclick = function(){
 		changeDeck('0');
 		document.getElementById("changeDeck").onsubmit = function(){
 			$.post(Dixit.BASE_URL+"users/changeDeck", {'de_id': $(this).title()}, function(data) {
@@ -108,7 +105,7 @@ $(document).ready(function(){
 				changeDeck('1');
 			});
 		};
-	};
+	};*/
 
 
 

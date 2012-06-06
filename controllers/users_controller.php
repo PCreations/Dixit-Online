@@ -222,10 +222,7 @@ function account($id = null) {
 					'askedFriends' => $askedFriends,
 					'invitations' => $invitations,
 					'nbFriends' => $nbFriends,
-					'userDecks' => $userDecks,
-					'userDecksInfo' => $userDecksInfo,
-					'cardsInDeck' => $cardsInDeck,
-					'nbCards' => $nbCards);
+					'userDecks' => $userDecks,);
 	render('account', $vars);
 	$JS_FILES = array_pop($JS_FILES);
 	$JS_FILES = array_pop($JS_FILES);
@@ -268,15 +265,15 @@ function research(){
 					else{
 						$result['action'] = 'Vous êtes déjà amis';
 					}
-					}
-							foreach($results as $result){
-									echo ('<div class="result"
-									<p><strong>'.$result['us_pseudo'].'</strong>
-									&nbsp;&nbsp;<i>'.$result['us_name'].'
-									'.$result['us_lastname'].'</i></br>
-									'.$result['action'].'</p></div>');
-								}
 				}
+				foreach($results as $usersResult){
+						echo '<div class="result"
+						<p><strong>'.$usersResult['us_pseudo'].'</strong>
+						&nbsp;&nbsp;<i>'.$usersResult['us_name'].'
+						'.$usersResult['us_lastname'].'</i></br>
+						'.$usersResult['action'].'</p></div>';
+				}
+			}
 
 }
 

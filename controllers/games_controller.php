@@ -396,14 +396,14 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 			$playersInfos[$i]['role'] = 'conteur';
 			$status = getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status');
 			$actionStatus = ($phase == STORYTELLER_PHASE || ($phase == POINTS_PHASE && $status != 'Prêt')) ? ACTION_IN_PROGRESS : ACTION_DONE;
-			/* Gestion inactivité */
+			/* Gestion inactivité
 			if($actionStatus == ACTION_IN_PROGRESS) {
 				$lastActionTime = getUserLastActionTime($gameID, $playerID);
 
 			}
 			setPlayerStatus($gameID, $playerID, 'Inactif');
 			$playerInfos[$i]['status'] = 'Inactif depuis';
-			$playersInfos[$i]['status'] = _getStatus($actionStatus, $phase, $playersInfos[$i]['role']);
+			$playersInfos[$i]['status'] = _getStatus($actionStatus, $phase, $playersInfos[$i]['role']); */
 		}
 		else {
 			$playersInfos[$i]['role'] = 'joueur';

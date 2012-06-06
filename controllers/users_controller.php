@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user', 'card', 'deck'));
+useModels(array('user', 'card', 'deck', 'game'));
 define('SEND_INVITATION', 2);
 define('ACCEPT_INVITATION', 1);
 define('DECLINE_INVITATION', 0);
@@ -95,6 +95,9 @@ function account($id = null) {
 	
 	/* Récupération des decks de l'utilisateur */
 	$userDecks = getUserDecks($userID, array('de_id', 'de_name'));
+
+	/* Récupération des parties en cours de l'utilisateur */
+	$gamesInProgress = getGameInProgressForUser($userID);
 	
 	if(!empty($userDecks)) {
 		foreach($userDecks as $deck){
@@ -189,6 +192,7 @@ function account($id = null) {
 	}
 	$nbFriends = countFriends($id);
 	$vars = array(	'user' => $user,
+					'gamesInProgress' => $gamesInProgress,
 					'reelFriends' => $reelFriends,
 					'askedFriends' => $askedFriends,
 					'invitations' => $invitations,

@@ -14,13 +14,13 @@
 					<table id="usersInfos" border="1">
 						<tr id="firstTR">
 							<th>Joueur</th>
-							<th>Nombre de parties gagnées</th>
+							<th>% parties gagnées</th>
 							<th>Points d'expérience (classement)</th>
 						</tr>
 						<?php foreach($usersInGame as $user): ?>
 						<tr>
 							<td><?php echo $user['us_pseudo'];?></td>
-							<td><?php echo $user['nbWin'];?></td>
+							<td><?php echo $user['percentageWins'].'% ('.$user['nbWins'].'/'.$user['nbGames'].')';?></td>
 							<td><?php echo $user['xp'].' ('.$user['classement'].')';?></td>
 						</tr>
 						<?php endforeach ?>

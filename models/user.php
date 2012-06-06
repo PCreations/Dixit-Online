@@ -155,10 +155,19 @@ function exactSearchUser($login){
 
 function getUsersTotalWinGames($userID) {
 	global $db;
-	$query = $db->prepare('SELECT COUNT(us_id) as nbWin
+	$query = $db->prepare('SELECT COUNT(us_id) as nbWins
 						FROM users_xp
 						WHERE ga_position = 1
 						AND us_id = ?');
+	$query->execute(array($userID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function getUsersTotalPlayedGames($userID) {
+	global $db;
+	$query = $db->prepare('SELECT COUNT(ga_id) as nbGames
+						FROM users_xp
+						WHERE us_id = ?');
 	$query->execute(array($userID));
 	return $query->fetch(PDO::FETCH_ASSOC);
 }

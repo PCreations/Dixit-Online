@@ -94,6 +94,20 @@ function getWaitingGames() {
 	return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
+/* Récupère la liste des parties en cours */
+function getGameInProgressForUser($userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT p.ga_id, g.ga_name
+						FROM plays as p
+						INNER JOIN games as g
+						ON g.ga_id = p.ga_id				
+						WHERE p.us_id = :userID
+						AND p.ga_id NOT IN (SELECT ga_id FROM users_xp WHERE us_id = :userID)');
+	$query->execute(array('userID' => $userID));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function addPlayerInGame($gameID, $userID) {
 	global $db;
 

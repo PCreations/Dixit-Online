@@ -260,12 +260,8 @@ function play($gameID) {
 		else{
 			$gameInfos['action'] = createLink('quitter', 'games', 'quiteGame', array($gameInfos['ga_id'], $userID), array('title' => 'Quitter la partie'));
 		}
-
-		foreach($usersInGame as &$userInGame) {
-			$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
-		}
 		
-		$cards = getCardsInDeckInfo($gameInfos['us_id']);
+		$cards = getCardsInDeckInfo($gameInfos['de_id']);
 
 		/* Fin données liées à la room */
 
@@ -332,9 +328,13 @@ function _getUsersInGame($gameID) {
 
 	foreach($usersInGame as &$userInGame) {
 		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
-		$userInGame['nbWin'] = getOneRowResult(getUsersTotalWinGames($userInGame['us_id']), 'nbWin');
+		$userInGame['nbWins'] = getOneRowResult(getUsersTotalWinGames($userInGame['us_id']), 'nbWins');
+		$userInGame['nbGames'] = getOneRowResult(getUsersTotalPlayedGames($userInGame['us_id']), 'nbGames');
+		$userInGame['percentageWins'] = ($userInGame['nbGames'] != 0) ? (int)($userInGame['nbWins'] / $userInGame['nbGames'] * 100) : 0;
 		$userInGame['xp'] = getOneRowResult(getUserXP($userInGame['us_id']), 'xp');
+		$userInGame['xp'] = ($userInGame['xp'] == '') ? 0 : $userInGame['xp'];
 		$userInGame['classement'] = getOneRowResult(getUserClassement($userInGame['us_id']), 'classement');
+		$userInGame['classement'] = ($userInGame['classement'] == '') ? 'N.D' : $userInGame['classement'];
 	}
 
 	return $usersInGame;

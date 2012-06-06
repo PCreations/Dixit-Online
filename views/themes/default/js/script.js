@@ -6,6 +6,8 @@ Dixit.IMG_DIR = 'http://127.0.0.1/dixit/views/themes/default/img/';
 Dixit.FLASH_SUCCESS = 0;
 Dixit.FLASH_INFOS = 2;
 Dixit.FLASH_MESSAGE = 3;
+Dixit.FLASH_ALERT = 4;
+Dixit.TIME_BEFORE_INACTIVE = 60;
 Dixit.alert = function(message, type) {
 	var flash;
 	$('#flash').remove();
@@ -26,6 +28,11 @@ Dixit.alert = function(message, type) {
 						+'<p><img src="'+Dixit.IMG_DIR+'notif_info.png"/>'+message+'</p>'
 					+'</div>';
 			break;
+		case Dixit.FLASH_ALERT:
+			flash = '<div id="flash" class="message">'
+						+'<p><img src="'+Dixit.IMG_DIR+'notif_info.png"/>'+message+'</p>'
+					+'</div>';
+			break;
 		case Dixit.FLASH_MESSAGE:
 		default:
 			flash = '<div id="flash" class="message">'
@@ -34,7 +41,12 @@ Dixit.alert = function(message, type) {
 			break;
 	}
 
-	$("#ping").html("<audio autoplay='autoplay'><source src='"+Dixit.BASE_URL+"views/themes/default/ping.mp3' /><source src='"+Dixit.BASE_URL+"views/themes/default/ping.ogg' /></audio>");
+	if(type == Dixit.FLASH_ALERT) {
+		$("#ping").html("<audio autoplay='autoplay'><source src='"+Dixit.BASE_URL+"views/themes/default/bell.mp3' /><source src='"+Dixit.BASE_URL+"views/themes/default/bell.ogg' /></audio>");
+	}
+	else {
+		$("#ping").html("<audio autoplay='autoplay'><source src='"+Dixit.BASE_URL+"views/themes/default/ping.mp3' /><source src='"+Dixit.BASE_URL+"views/themes/default/ping.ogg' /></audio>");
+	}
 	
 	$("body").append(flash);
 	slideNotifications();

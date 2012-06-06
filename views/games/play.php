@@ -11,16 +11,17 @@
 			<div id="table_room">
 				<?php if(!$gameIsStarted) { ?>
 					<p><?php echo $gameInfos['action'];?></p>
+					<h3>Informations sur les joueurs :</h3>
 					<table id="usersInfos" border="1">
 						<tr id="firstTR">
 							<th>Joueur</th>
-							<th>Nombre de parties gagnées</th>
+							<th>% parties gagnées</th>
 							<th>Points d'expérience (classement)</th>
 						</tr>
 						<?php foreach($usersInGame as $user): ?>
 						<tr>
 							<td><?php echo $user['us_pseudo'];?></td>
-							<td><?php echo $user['nbWin'];?></td>
+							<td><?php echo $user['percentageWins'].'% ('.$user['nbWins'].'/'.$user['nbGames'].')';?></td>
 							<td><?php echo $user['xp'].' ('.$user['classement'].')';?></td>
 						</tr>
 						<?php endforeach ?>
@@ -70,6 +71,9 @@
 					</div>
 				</div>
 				<div id="table">
+					<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">
+					<p><?php echo $turn['phase']['infos'];?></br>
+					Le prochain conteur est <?php echo $nextStoryteller;?></p>
 					<?php
 					echo _getBoard($turn['phase']['id'], $turn['game']['ga_id'], $turn, $storyteller, $actionStatus);
 					?>
@@ -81,9 +85,6 @@
 						echo _getHand($turn['phase']['id'], $_SESSION[USER_MODEL][USER_PK], $turn['game']['ga_id'], $turn['tu_id'], $storyteller, $actionStatus);
 						?>
 					</div>
-					<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">
-					<p><?php echo $turn['phase']['infos'];?></br>
-					Le prochain conteur est <?php echo $nextStoryteller;?></p>
 				</div>
 			</div>
 			<div id="sidebar">
@@ -156,6 +157,7 @@ function callback_ping(){
 	swapWindow(showedWindow);
 	phaseID = <?php echo (isset($turn['phase']['id'])) ? $turn['phase']['id'] : 0;?>;
 	turnID = <?php echo (isset($turn['tu_id'])) ? $turn['tu_id'] : 0;?>;
+	alertDelayInactivity = 0;
 	
 	function readyForNextTurn() {
 		//$('#readyForNextTurn').click();
@@ -317,6 +319,13 @@ function callback_ping(){
 
 		$.each(playersInfos, function(key, player) {
 			console.log(player);
+			if(player.inactivityTime > Dixit.TIME_BEFORE_INACTIVE) {
+				alertDelayInactivity++;
+				if(alertDelayInactivity == 3 && player.us_id == userID) {
+					Dixit.alert('Les joueurs vous attendent !', Dixit.FLASH_ALERT);
+					alertDelayInactivity = 0;
+				}
+			}
 			$("#players").append('<div class="joueur">'
 									+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
 									+'<p class="infos_joueur">'+player.us_pseudo+((player.role == 'conteur') ? ' : conteur' : '')+'<br />'+((player.points != null) ? player.points : '0')+'points<br />'+player.status+'</p>'

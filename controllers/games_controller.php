@@ -14,6 +14,8 @@ define('GAME_OVER', 4);
 define('ACTION_IN_PROGRESS', 4);
 define('ACTION_DONE', 5);
 
+define('TIME_BEFORE_INACTIVE', 60);
+
 function index() {
 	$deckInfos = getAllDecks(array('de_id', 'de_name'));
 
@@ -101,6 +103,12 @@ function joinGame($gameID, $userID) {
 	$CSS_FILES[] = array_pop($CSS_FILES);
 }
 
+function classement() {
+	$classement = getDixitClassement();
+	$vars = array('classement' => $classement);
+	render('classement', $vars);
+}
+
 function test() {
 	$pick = getPick(2);
 	if(empty($pick)) {
@@ -129,6 +137,10 @@ function quiteGame($gameID, $userID) {
 			setMessage('Vous ne pouvez pas faire quitter un autre joueur que vous', FLASH_ERROR);
 			redirect('games');
 		}
+		else if(!checkPlayersInGame($gameID)) {
+			setMessage('Vous ne pouvez pas quitter une partie qui a déjà commencé', FLASH_ERROR);
+			redirect('games', 'play', array($gameID));
+		}
 		else if(!isInGame($gameID, $userID)) {
 			setMessage('Ce joueur ne joue pas dans cette partie', FLASH_ERROR);
 			redirect('games');
@@ -154,6 +166,7 @@ function _startGame($gameID) {
 	shuffle($playersIDS);
 
 	foreach($playersIDS as $key => $player) {
+		updatePlayerActionTime($gameID, $player['us_id']);
 		definePlayPosition($gameID, $player['us_id'], $key+1);
 	}
 
@@ -260,22 +273,16 @@ function play($gameID) {
 		else{
 			$gameInfos['action'] = createLink('quitter', 'games', 'quiteGame', array($gameInfos['ga_id'], $userID), array('title' => 'Quitter la partie'));
 		}
-
-		foreach($usersInGame as &$userInGame) {
-			$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
-		}
 		
-		$cards = getCardsInDeckInfo($gameInfos['us_id']);
+		$cards = getCardsInDeckInfo($gameInfos['de_id']);
 
 		/* Fin données liées à la room */
-
 		$currentTurn = getCurrentGameTurn($gameID);
 		$phase = _getActualGamePhase($gameID, $currentTurn['tu_id']);
 		
 		if($phase == POINTS_PHASE) {
 			if(_notAlreadyDealsPoints($currentTurn['tu_id'])) {
 				_dealPoints($currentTurn);
-				
 			}
 			/*if(_checkIfPlayersAreReady($gameID))
 				_startNewTurn($currentTurn['ga_id'], $currentTurn['us_id']);*/
@@ -332,9 +339,13 @@ function _getUsersInGame($gameID) {
 
 	foreach($usersInGame as &$userInGame) {
 		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
-		$userInGame['nbWin'] = getOneRowResult(getUsersTotalWinGames($userInGame['us_id']), 'nbWin');
+		$userInGame['nbWins'] = getOneRowResult(getUsersTotalWinGames($userInGame['us_id']), 'nbWins');
+		$userInGame['nbGames'] = getOneRowResult(getUsersTotalPlayedGames($userInGame['us_id']), 'nbGames');
+		$userInGame['percentageWins'] = ($userInGame['nbGames'] != 0) ? (int)($userInGame['nbWins'] / $userInGame['nbGames'] * 100) : 0;
 		$userInGame['xp'] = getOneRowResult(getUserXP($userInGame['us_id']), 'xp');
+		$userInGame['xp'] = ($userInGame['xp'] == '') ? 0 : $userInGame['xp'];
 		$userInGame['classement'] = getOneRowResult(getUserClassement($userInGame['us_id']), 'classement');
+		$userInGame['classement'] = ($userInGame['classement'] == '') ? 'N.D' : $userInGame['classement'];
 	}
 
 	return $usersInGame;
@@ -381,17 +392,38 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 		$playersInfos[$i]['points'] = getOneRowResult(getTotalUserPointsInGame($gameID, $playerID), 'nbPoints');
 
 		//Si l'id du joueur vaut celle définie dans la table turns c'est que le joueur est le conteur
+		
 		if ($playerID == $storytellerID) {
 			$storytellerInfos = $playersInfos[$i];
 			$playersInfos[$i]['role'] = 'conteur';
 			$status = getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status');
-			$playersInfos[$i]['status'] = _getStatus(($phase == STORYTELLER_PHASE || ($phase == POINTS_PHASE && $status != 'Prêt')) ? ACTION_IN_PROGRESS : ACTION_DONE, $phase, $playersInfos[$i]['role']);
+			$actionStatus = ($phase == STORYTELLER_PHASE || ($phase == POINTS_PHASE && $status != 'Prêt')) ? ACTION_IN_PROGRESS : ACTION_DONE;
+			$playersInfos[$i]['status'] = _getStatus($actionStatus, $phase, $playersInfos[$i]['role']);
 		}
 		else {
 			$playersInfos[$i]['role'] = 'joueur';
 			$playersInfos[$i]['status'] = _getStatus(_checkAction($phase, $playerID, $currentTurnID, 'true'), $phase, $playersInfos[$i]['role']);
 		}
 
+		/* Gestion inactivité */
+		$actionStatus = _checkAction($phase, $playerID, $currentTurnID, 'true');
+		if((boolean)!checkPlayersInGame($gameID)) {
+			/* Si le joueur doit faire une action mais qu'il n'a toujours pas joué */
+			if($actionStatus == ACTION_IN_PROGRESS) {
+				$lastActionTime = (int)getOneRowResult(getUserLastActionTime($gameID, $playerID), 'pl_last_action');
+				$actualTime = time();
+				$inactivityTime = $actualTime - $lastActionTime;
+				if($inactivityTime >= TIME_BEFORE_INACTIVE) {
+					setPlayerStatus($gameID, $playerID, 'Inactif');		
+					$playersInfos[$i]['status'] = 'Inactif depuis '.$inactivityTime.(($inactivityTime == 1) ? ' seconde' : ' secondes');
+					$playersInfos[$i]['inactivityTime'] = $inactivityTime;
+				}
+			}
+			else { /* Pour tous les autres joueurs qui attendent on mets continuellement à jour le temps de la dernière action pour ne pas avoir d'inactivité en cas de trop longue période d'inactivié de la part d'un autre joueur */
+				updatePlayerActionTime($gameID, $playerID);
+			}
+
+		}
 		//Alors on va récupérer sa main et son statut
 		if($playerID == $_SESSION[USER_MODEL][USER_PK]) {
 			$playersInfos[$i]['hand'] = getCardsInHand($_SESSION[USER_MODEL][USER_PK], $currentTurnID, $gameID);
@@ -399,7 +431,6 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 
 		$i++;
 	}
-
 	return $playersInfos;
 }
 
@@ -577,6 +608,7 @@ function _pickCard($turnID, $gameID, $userID) {
 function _checkAction($phase, $playerID, $turnID) {
 	$action;
 
+	$stID = getOneRowResult(getTurnInfos($turnID, array('us_id')), 'us_id');
 	switch($phase) {
 		case BOARD_PHASE:
 			//On tente de récupérer la carte que le joueur a joué pour ce tour. Si le résultat est un tableau c'est qu'une carte à été posée et donc que le joueur a joué pour cette phase
@@ -594,7 +626,10 @@ function _checkAction($phase, $playerID, $turnID) {
 				$action = true;
 			break;
 		case STORYTELLER_PHASE:
-			$action = false;
+			if($stID == $playerID)
+				$action = false;
+			else
+				$action = true;
 			break;
 		case POINTS_PHASE:
 			$gameID = getOneRowResult(getTurnInfos($turnID, array('ga_id')), 'ga_id');
@@ -633,14 +668,14 @@ function _setPlayerStatus($gameID, $userID, $status) {
 function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	
 	$board = '<div id="cartes">';
+	/*$board .= '<img id="label_tour" src="<?php echo IMG_DIR;?>tour_en_cours.png">';
+		$board .= '<p>'.$turn['phase']['infos'].'</br>';*/
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();
 
 	foreach($cardsIDs as $cardID) {
 		$cards[] = getCardInfos($cardID);
 	}
-	
-	
 
 	if($phase == BOARD_PHASE) {
 		//récupération de la carte du joueur
@@ -930,6 +965,7 @@ function vote() {
 		}
 		else {
 			extract($_POST);
+			updatePlayerActionTime($gameID, $_SESSION[USER_MODEL][USER_PK]);
 			addGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
 			if(_getActualGamePhase($gameID, $turnID) != POINTS_PHASE) {
 				setMessage('Votre vote a été pris en compte. Vous pouvez le modifier tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);
@@ -961,6 +997,7 @@ function updateVote() {
 		}
 		else {
 			extract($_POST);
+			updatePlayerActionTime($gameID, $_SESSION[USER_MODEL][USER_PK]);
 			updateGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
 			if(_getActualGamePhase($gameID, $turnID) != POINTS_PHASE) {
 				setMessage('Votre vote a été pris en compte. Vous pouvez le modifier tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);
@@ -990,7 +1027,7 @@ function _getClassement($gameID) {
 			$bonusPoint = $totalBonusPoint * (1 / $actualPosition);
 		$playerPoint = (int)$player['points'];
 		$pointLimit = (int)$gameInfos['ga_points_limit'];
-		$playerXP = (int)$playerPoint/$pointLimit*(($nbPlayers/6*100)+$bonusPoint*$nbPlayers);
+		$playerXP = (int)($playerPoint/$pointLimit*(($nbPlayers/6*100)+$bonusPoint*$nbPlayers));
 		$player['xp'] = $playerXP;
 		addXPtoPlayer($player['us_id'], $playerXP, $actualPosition, $gameID);
 		$actualPosition++;

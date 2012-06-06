@@ -94,13 +94,28 @@ function getWaitingGames() {
 	return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
+/* Récupère la liste des parties en cours */
+function getGameInProgressForUser($userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT p.ga_id, g.ga_name
+						FROM plays as p
+						INNER JOIN games as g
+						ON g.ga_id = p.ga_id				
+						WHERE p.us_id = :userID
+						AND p.ga_id NOT IN (SELECT ga_id FROM users_xp WHERE us_id = :userID)');
+	$query->execute(array('userID' => $userID));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function addPlayerInGame($gameID, $userID) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO plays(us_id, ga_id)
-						VALUES(:userID, :gameID)');
+	$query = $db->prepare('INSERT INTO plays(us_id, ga_id, pl_last_action)
+						VALUES(:userID, :gameID, :time)');
 	return $query->execute(array('userID' => $userID,
-						  	 'gameID' => $gameID));
+						  	 'gameID' => $gameID,
+						  	 'time' => time()));
 }
 
 function setPlayerStatus($gameID, $userID, $status) {
@@ -125,6 +140,30 @@ function getPlayerStatus($gameID, $userID) {
 	$query->execute(array('gameID' => $gameID,
 						'userID' => $userID));
 	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function getUserLastActionTime($gameID, $userID) {
+	global $db;
+
+	$query = $db->prepare('SELECT pl_last_action
+						FROM plays
+						WHERE ga_id = :gameID
+						AND us_id = :userID');
+	$query->execute(array('gameID' => $gameID,
+						'userID' => $userID));
+	return $query->fetch(PDO::FETCH_ASSOC);
+}
+
+function updatePlayerActionTime($gameID, $userID) {
+	global $db;
+
+	$query = $db->prepare('UPDATE plays
+						SET pl_last_action = :time
+						WHERE ga_id = :gameID
+						AND us_id = :userID');
+	$query->execute(array('gameID' => $gameID,
+						'userID' => $userID,
+						'time' => time()));
 }
 
 function removePlayerFromGame($gameID, $userID) {

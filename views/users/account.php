@@ -8,6 +8,12 @@
 	<div id="account1">
 		<img class="avatar" src="<?php echo IMG_DIR;?>" alt=""/>
 		<p> Bienvenue <?php echo $user['us_name'] ; ?> <?php echo $user['us_lastname'] ; ?> </p>
+		<p><?php if($user['classement'] != '') {
+				echo 'Vous êtes à la '.$user['classement'].(($user['classement'] == 1) ? 'ère ' : 'ème'). 'place du '.l('classement générale', 'games', 'classement', null, array('title' => 'Voir le classement général')).' avec '.$user['xp'].' points d\'expérience';
+			}
+			else
+				echo 'Vous n\'êtes pas encore dans le '.l('classement générale', 'games', 'classement', null, array('title' => 'Voir le classement général')).' du site';
+			?></p>
 		<br />
 		<?php if(!empty($gamesInProgress)): ?>
 			<p>Vous avez <?php echo count($gamesInProgress);?> parties en cours !</p>
@@ -17,6 +23,7 @@
 				<?php endforeach;?>
 			</ul>
 		<?php endif; ?>
+
 		<ul>
 			<?php foreach($invitations as $invitation): ?>
 			<li> 

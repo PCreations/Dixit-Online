@@ -101,6 +101,12 @@ function joinGame($gameID, $userID) {
 	$CSS_FILES[] = array_pop($CSS_FILES);
 }
 
+function classement() {
+	$classement = getDixitClassement();
+	$vars = array('classement' => $classement);
+	render('classement', $vars);
+}
+
 function test() {
 	$pick = getPick(2);
 	if(empty($pick)) {
@@ -264,14 +270,12 @@ function play($gameID) {
 		$cards = getCardsInDeckInfo($gameInfos['de_id']);
 
 		/* Fin données liées à la room */
-
 		$currentTurn = getCurrentGameTurn($gameID);
 		$phase = _getActualGamePhase($gameID, $currentTurn['tu_id']);
 		
 		if($phase == POINTS_PHASE) {
 			if(_notAlreadyDealsPoints($currentTurn['tu_id'])) {
 				_dealPoints($currentTurn);
-				
 			}
 			/*if(_checkIfPlayersAreReady($gameID))
 				_startNewTurn($currentTurn['ga_id'], $currentTurn['us_id']);*/

@@ -11,6 +11,7 @@
 			<div id="table_room">
 				<?php if(!$gameIsStarted) { ?>
 					<p><?php echo $gameInfos['action'];?></p>
+					<h3>Informations sur les joueurs :</h3>
 					<table id="usersInfos" border="1">
 						<tr id="firstTR">
 							<th>Joueur</th>

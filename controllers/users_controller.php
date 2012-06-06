@@ -105,26 +105,24 @@ function account($id = null) {
 	$user['classement'] = getOneRowResult(getUserClassement($id), 'classement');
 	$user['xp'] = getOneRowResult(getUserXP($id), 'xp');
 	
-	if(!empty($userDecks)) {
-		foreach($userDecks as $deck){
-			$userDecksInfo = getDeckInfos($deck['de_id'], array('us_id', 'de_name', 'de_status'));
-			$nbCards = nbCartes($deck['de_id']);	
-			$cardsInDeck = getCardsInDeckInfo($deck['de_id']);
+	if($userDecks != NULL){
+		foreach($userDecks as &$deck){
+			$deck['de_status'] = getOneRowResult(getDeckInfos($deck['de_id'], array('de_status')), 'de_status');
+			if($deck['de_status'] == 0){
+				$deck['de_status']= 'Privé';
+			}else{
+				$deck['de_status']= 'Public';
+			}
+			$deck['nbCards'] = getOneRowResult(nbCartes($deck['de_id']), 'nbCartes');
+			$deck['cardsInDeckInfo'] = getCardsInDeckInfo($deck['de_id']);
 		}
 	}else{
-		$cardsInDeck = -1;
+		$result = "";
 	}
 	
 	/* Récupération des cartes ajoutées par l'utilisateur */
 	$userCards = getUserCards($userID);
 
-	if(isset($_POST['update'])) { //Formulaire de changement de données
-			extract($_POST);
-			updateUser($userID, $name, $lastname, $birthdate, $mail);
-			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
-			redirect('users', 'account', array( $userID));
-	}
-	
 	if(isset($_POST['updatePwd'])) { //Formulaire de changement de mot de passe
 			extract($_POST);
 			$userInfos = checkLogin($pseudo, encrypt($oldPass));
@@ -138,51 +136,73 @@ function account($id = null) {
 			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
 			redirect('users', 'account', array( $userID));
 	}
-	
-	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
-			extract($_POST);
-			$results = approchSearchUser($login);
-			$reelfriends = getSpecificArrayValues(getReelFriends($id), 'us_pseudo');
-			$askedfriends = getSpecificArrayValues(getAskedFriends($id), 'us_pseudo');
-			$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($id), 'us_pseudo');
-			foreach($results as &$result){
-				if(!in_array($result['us_pseudo'], $reelfriends)) {
-					if(!in_array($result['us_pseudo'], $askedfriends)) {
-						if(!in_array($result['us_pseudo'], $whoAskedMe)) {
-							if($result['us_pseudo'] != $user['us_pseudo']){
-							debug($result);
-								$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2'));
-							}
-							else{
-								$result['action'] = 'C\'est vous !';
-							}
-						}
-						else{
-							$result['action'] = 'Cette personne vous a demandé en amis';
-						}
-					}
-					else{
-						$result['action'] = 'Vous avez déjà invité cette personne';
-					}
-				}
-				else{
-					$result['action'] = 'Vous êtes déjà amis';
-				}
-			}
-		
-			$vars = array('results' => $results,
-							'login' => $login);			
-			render('research', $vars);
-	}
-	
+
 	if(isset($_POST['deck'])) { //Formulaire de création d'un deck
 			extract($_POST);
-			if(!isset($public)){
-			$public='0';
-			}
+			if(!empty($deck_name)){
+				if(!isset($public)){
+					$public='0';
+				}	
 			addDeck($userID, $deck_name, $public);
 			setMessage('Votre nouveau deck est prêt', FLASH_SUCCESS);
 			redirect('users', 'account', array( $userID));
+			}
+			else{
+				setMessage('Vous devez donner un nom à votre deck.', FLASH_ERROR);
+				redirect('users', 'account', array( $userID));
+			}
+
+	}
+	if(isset($_POST['card'])) { //Formulaire d'upload d'image
+			extract($_POST);
+			print_r($_FILES);
+			/*Erreurs*/
+			if($_FILES['userfile']['error'] == '1'){
+				setMessage('Votre image dépasse le poids autorisée', FLASH_ERROR);
+			}
+			if($_FILES['userfile']['error'] == '3' OR $_FILES['userfile']['error'] == '4' ){
+				setMessage('Le fichier n\'a pas été téléchargé, ou alors seulement partiellement', FLASH_ERROR);
+			}
+			if($_FILES['userfile']['error'] == '5' ){
+				setMessage('Aucun fichier n\'a été téléchargé', FLASH_ERROR);
+			}
+			if($_FILES['userfile']['error'] == '6'){
+				setMessage('Erreur interne', FLASH_ERROR);
+			}
+			/*Vérifications*/
+			if(isset($_FILES['userfile'])){
+				if(!empty($card_name)){
+					if ($_FILES['userfile']['error'] == '2'){
+						setMessage('Votre image dépasse le poids autorisée', FLASH_ERROR);
+					}
+					$extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );//Extensions
+					$extension_upload = strtolower(  substr(  strrchr($_FILES['userfile']['name'], '.')  ,1)  );
+					if ( in_array($extension_upload,$extensions_valides) ){
+						if ( !empty($_FILES['userfile']['tmp_name'] )){
+							$image_sizes = getimagesize($_FILES['userfile']['tmp_name']);//Taille
+							if (($image_sizes[0] == '329') AND ($image_sizes[1] == '500')){
+								$path ='C:/wamp/www/dixit/views/themes/default/img/cards/'.basename($_FILES['userfile']['name']);
+								if (move_uploaded_file($_FILES['userfile']['tmp_name'],$path)){//Alors Upload
+									addCardIn($userID, $card_name, $_FILES['userfile']['name']);
+									setMessage('Votre image a été correctement ajoutée', FLASH_SUCCESS);
+								}else{
+									setMessage('Le transfert à échoué. Veuillez réessayer.', FLASH_ERROR);
+								}
+							}else{
+								setMessage('Votre image n\'a pas les bonnes dimensions', FLASH_ERROR);
+							}	
+						}else{
+							setMessage('Votre image dépasse le poids autorisée', FLASH_ERROR);
+						}
+					}else{
+						setMessage('Votre image n\'a pas un format valide', FLASH_ERROR);
+					}
+				}else{
+					setMessage('Veuillez donner un nom à votre image', FLASH_ERROR);
+				}
+			}else{
+				setMessage('Veuillez sélectionner un fichier', FLASH_ERROR);
+			}
 	}
 	
 	$reelFriends = getReelFriends($id);
@@ -210,6 +230,58 @@ function account($id = null) {
 	$JS_FILES = array_pop($JS_FILES);
 	$JS_FILES = array_pop($JS_FILES);
 	$CSS_FILES = array_pop($CSS_FILES);
+}
+
+function research(){
+	 //Formulaire de recherche d'ami
+		$userID = $_SESSION[USER_MODEL][USER_PK];
+			extract($_POST);
+			$results = approchSearchUser($loginSearch);
+			// affichage d'un message "pas de résultats"
+			if( empty($results))
+			{
+				echo ('<h3 style="text-align:center; margin:10px 0;">Pas de résultats pour cette recherche</h3>');
+			}else{
+				$user = getUserInfos($userID);
+				$reelfriends = getSpecificArrayValues(getReelFriends($userID), 'us_pseudo');
+				$askedfriends = getSpecificArrayValues(getAskedFriends($userID), 'us_pseudo');
+				$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($userID), 'us_pseudo');
+				foreach($results as &$result){
+					if(!in_array($result['us_pseudo'], $reelfriends)) {
+						if(!in_array($result['us_pseudo'], $askedfriends)) {
+							if(!in_array($result['us_pseudo'], $whoAskedMe)) {
+								if($result['us_pseudo'] != $user['us_pseudo']){
+									$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2'));
+								}
+								else{
+									$result['action'] = 'C\'est vous !';
+								}
+							}
+							else{
+								$result['action'] = 'Cette personne vous a demandé en amis';
+							}
+						}
+						else{
+							$result['action'] = 'Vous avez déjà invité cette personne';
+						}
+					}
+					else{
+						$result['action'] = 'Vous êtes déjà amis';
+					}
+					}
+							foreach($results as $result){
+									echo ('<div class="result"
+									<p><strong>'.$result['us_pseudo'].'</strong>
+									&nbsp;&nbsp;<i>'.$result['us_name'].'
+									'.$result['us_lastname'].'</i></br>
+									'.$result['action'].'</p></div>');
+								}
+				}
+
+}
+
+function changeDeck(){
+	echo('<script>alert(\'plop\');</script>');
 }
 
 function newFriend($fr_id, $action){

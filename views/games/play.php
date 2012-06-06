@@ -256,8 +256,6 @@ function callback_ping(){
 
 	
 	setInterval(function(){
-		console.log("GameIsStarted ?");
-		console.log(gameIsStarted);
 		if(gameIsStarted){
 			if(notificationGameStart) {
 				Dixit.alert('La partie commence !', Dixit.FLASH_INFOS);
@@ -267,10 +265,8 @@ function callback_ping(){
 			$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
 				var oldPhase = phaseID;
 				var result = parseJSON(json);
-				console.log(result);
 				phaseID = result.phaseID;
 				turnID = result.turnID;
-				console.log("PHASE ID = "+phaseID);
 				if(phaseID != oldPhase) {
 					changePhaseNotification(phaseID);
 				}
@@ -317,10 +313,13 @@ function callback_ping(){
 		$.each(playersInfos, function(key, player) {
 			console.log(player);
 			if(player.inactivityTime > Dixit.TIME_BEFORE_INACTIVE) {
-				alertDelayInactivity++;
-				if(alertDelayInactivity == 3 && player.us_id == userID) {
-					Dixit.alert('Les joueurs vous attendent !', Dixit.FLASH_ALERT);
-					alertDelayInactivity = 0;
+				console.log("alertDelayInactivity = "+alertDelayInactivity);
+				if(player.us_id == userID) {
+					alertDelayInactivity++;
+					if(alertDelayInactivity == 3) {
+						Dixit.alert('Les joueurs vous attendent !', Dixit.FLASH_ALERT);
+						alertDelayInactivity = 0;
+					}
 				}
 			}
 			$("#players").append('<div class="joueur">'

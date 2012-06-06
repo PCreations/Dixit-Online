@@ -372,14 +372,15 @@ function _notAlreadyDealsPoints($turnID) {
 }
 
 function _checkIfPlayersAreReady($gameID) {
-	$ready = true;
+	/*$ready = true;
 	$playersIDs = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
 	foreach($playersIDs as $playerID) {
 		if(getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status') == 'Attente') {
 			$ready = false;
 		}
 	}
-	return $ready;
+	return $ready;*/
+	return false;
 }
 
 function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
@@ -670,10 +671,12 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 	$storytellerID = getOneRowResult(getUserInfos($turn['us_id']), 'us_id');
 	$nextStoryteller = getOneRowResult(getUserInfos($storytellerID, array('us_pseudo')), 'us_pseudo');
 	$phaseInfos = _getPhaseInfos($storyteller, $phase, $actionStatus);
-	$board = '<img id="label_tour" src="'.IMG_DIR.'tour_en_cours.png">';
-		$board .= '<p>Le prochain conteur est : '.$nextStoryteller.'<br />';
-		$board .= $phaseInfos['infos'].'</p>';
-		$board .= '<div id="cartes">';
+	if(!empty($phaseInfos)) {
+		$board = '<img id="label_tour" src="'.IMG_DIR.'tour_en_cours.png">';
+			$board .= '<p>Le prochain conteur est : '.$nextStoryteller.'<br />';
+			$board .= $phaseInfos['infos'].'</p>';
+			$board .= '<div id="cartes">';
+	}
 	$cardsIDs = getSpecificArrayValues(getCardsInBoard($turn['tu_id']),'ca_id');
 	$cards = array();
 
@@ -918,7 +921,7 @@ function _getUserPointsMsg($turnID = null, $userID = null, $gameID = null, $retu
 	}
 	else {
 		if($nbVoteOnStCard == $playersInGame-1) {
-			$msg = 'Tous les joueurs ont trouvé la carte du conteur. <br />Vous <strong>gangez 2 points </strong>';
+			$msg = 'Tous les joueurs ont trouvé la carte du conteur. <br />Vous <strong>gagnez 2 points </strong>';
 		}
 		else {
 			$usersPoints = (int)getOneRowResult(getUsersPointsInTurn($userID, $turnID), 'points');

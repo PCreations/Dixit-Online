@@ -55,6 +55,11 @@ function newGame() {
 			setMessage('Le nombre de joueurs doit être compris entre 3 et 10', FLASH_ERROR);
 			redirect('games');
 		}
+		else if (!is_numeric($points))
+		{
+			setMessage('Le nombre de joueurs doit être compris entre 3 et 10', FLASH_ERROR);
+			redirect('games');
+		}
 		else
 		{
 			if (!empty($pwd))

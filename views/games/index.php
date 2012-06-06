@@ -59,8 +59,21 @@
 			<div id="filtrer">
 			<!--Filtrage-->
 				<form method="POST">
-					<figure><label for="name">Nom</label><input type="text" name="name" size="10" value='<?php echo $vars_filtrage['name'];?>'></figure>
-					<figure><label for="nbplayers">Nombre de joueurs</label><input type="text" name="nbplayers" size="15" value='<?php echo $vars_filtrage['nbplayers'];?>'></figure>
+					<figure><label for="name">Nom</label><input type="text" name="name" size="25" value='<?php echo $vars_filtrage['name'];?>'></figure>
+					<figure><label for="nbplayers">Joueurs</label>
+					<select name="joueurs">
+							<?php
+							for($i=3; $i<=10; $i++) {
+								echo '<option value="'.$i.'" ';
+								if ($vars_filtrage['nbplayers']==$i)
+								{
+									echo 'selected="selected"';
+								}
+								echo '>'.$i.' joueurs</option>';
+							}
+							?>
+						</select>
+					</figure>
 					<figure><label for="nbpoints">Points max.</label><input type="text" name="nbpoints" size="10" value='<?php echo $vars_filtrage['nbpoints'];?>'></figure>
 					<figure><label for="deck">Cartes</label><select name="deck">
 							<option value="-1">Toutes</option>

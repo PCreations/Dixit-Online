@@ -427,7 +427,7 @@ function addXPtoPlayer($userID, $xp, $position, $gameID) {
 function lockTables() {
 	global $db;
 
-	$query = $db->query('LOCK TABLE turns WRITE, pick WRITE, plays WRITE, plays as pl WRITE, games as ga WRITE, games as g WRITE, users as u WRITE, hands WRITE');
+	$query = $db->query('LOCK TABLE turns WRITE, pick WRITE, plays WRITE, plays as pl WRITE, games as ga WRITE, games as g WRITE, users as u WRITE, hands WRITE, total_players_in_game WRITE');
 	$query->closeCursor();
 }
 

@@ -372,15 +372,14 @@ function _notAlreadyDealsPoints($turnID) {
 }
 
 function _checkIfPlayersAreReady($gameID) {
-	/*$ready = true;
+	$ready = true;
 	$playersIDs = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
 	foreach($playersIDs as $playerID) {
-		if(getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status') == 'Attente') {
+		if(getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status') != 'Prêt') {
 			$ready = false;
 		}
 	}
-	return $ready;*/
-	return false;
+	return $ready;
 }
 
 function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
@@ -394,7 +393,7 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 
 		//Si l'id du joueur vaut celle définie dans la table turns c'est que le joueur est le conteur
 		
-		if ($playerID == $storytellerID) {
+		if($playerID == $storytellerID) {
 			$storytellerInfos = $playersInfos[$i];
 			$playersInfos[$i]['role'] = 'conteur';
 			$status = getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status');
@@ -634,7 +633,8 @@ function _checkAction($phase, $playerID, $turnID) {
 			break;
 		case POINTS_PHASE:
 			$gameID = getOneRowResult(getTurnInfos($turnID, array('ga_id')), 'ga_id');
-			if(getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status') == 'Attente')
+			$playerStatus = getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status');
+			if($playerStatus != 'Prêt')
 				$action = false;
 			else
 				$action = true;

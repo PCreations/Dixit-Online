@@ -135,6 +135,10 @@ function quiteGame($gameID, $userID) {
 			setMessage('Vous ne pouvez pas faire quitter un autre joueur que vous', FLASH_ERROR);
 			redirect('games');
 		}
+		else if(!checkPlayersInGame($gameID)) {
+			setMessage('Vous ne pouvez pas quitter une partie qui a déjà commencé', FLASH_ERROR);
+			redirect('games', 'play', array($gameID));
+		}
 		else if(!isInGame($gameID, $userID)) {
 			setMessage('Ce joueur ne joue pas dans cette partie', FLASH_ERROR);
 			redirect('games');
@@ -160,6 +164,7 @@ function _startGame($gameID) {
 	shuffle($playersIDS);
 
 	foreach($playersIDS as $key => $player) {
+		updatePlayerActionTime($gameID, $player['us_id'], time());
 		definePlayPosition($gameID, $player['us_id'], $key+1);
 	}
 
@@ -934,6 +939,7 @@ function vote() {
 		}
 		else {
 			extract($_POST);
+			updatePlayerActionTime($gameID, $_SESSION[USER_MODEL][USER_PK], time());
 			addGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
 			if(_getActualGamePhase($gameID, $turnID) != POINTS_PHASE) {
 				setMessage('Votre vote a été pris en compte. Vous pouvez le modifier tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);
@@ -965,6 +971,7 @@ function updateVote() {
 		}
 		else {
 			extract($_POST);
+			updatePlayerActionTime($gameID, $_SESSION[USER_MODEL][USER_PK], time());
 			updateGameVote($_SESSION[USER_MODEL][USER_PK], $cardID, $turnID);
 			if(_getActualGamePhase($gameID, $turnID) != POINTS_PHASE) {
 				setMessage('Votre vote a été pris en compte. Vous pouvez le modifier tant que tous les joueurs n\'ont pas voté', FLASH_SUCCESS);

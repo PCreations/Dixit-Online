@@ -56,7 +56,7 @@ function addCard($gameID, $turnID, $cardID) {
 	}
 	else {
 		$userID = $_SESSION[USER_MODEL][USER_PK];
-
+		updatePlayerActionTime($gameID, $userID, time());
 		if(!_isOwnedBy($cardID, $userID, $turnID, $gameID)) { //Vérification si la carte appartient bien au joueur
 			setMessage('Vous essayer d\'ajouter une carte qui ne vous appartient pas', FLASH_ERROR);
 			redirect('games', 'play', array($gameID));
@@ -99,6 +99,7 @@ function addStorytellerCard() {
 	else {
 		if(!empty($_POST['comment']) && isset($_POST['cardID']) && $_POST['cardID'] != -1) {
 			extract($_POST);
+			updatePlayerActionTime($gameID, $_SESSION[USER_MODEL][USER_PK], time());
 			addTurnComment($turnID, $comment);
 			updatePlayedTurn($cardID, $_SESSION[USER_MODEL][USER_PK], $turnID);
 			addCardInBoard($cardID, $turnID);

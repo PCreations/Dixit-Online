@@ -141,6 +141,17 @@ function getPlayerStatus($gameID, $userID) {
 	return $query->fetch(PDO::FETCH_ASSOC);
 }
 
+function updatePlayerActionTime($gameID, $userID) {
+	global $db;
+
+	$query = $db->prepare('UPDATE plays
+						SET pl_last_action = NOW()
+						WHERE ga_id = :gameID
+						AND us_id = :userID');
+	$query->execute(array('gameID' => $gameID,
+						'userID' => $userID));
+}
+
 function removePlayerFromGame($gameID, $userID) {
 	global $db;
 

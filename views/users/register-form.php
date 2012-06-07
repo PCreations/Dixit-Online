@@ -1,7 +1,11 @@
 <div id="register">
-	<form method="post">
+	<form method="post" enctype="multipart/form-data">
 		<fieldset>
 		<legend>S'inscrire sur Dixit</legend>
+				 <p><label for="avatar">Avatar :</label>
+     				<input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
+     				<input type="file" name="avatar" id="avatar"/>
+     			</p>
 				<p><label for="us_name">Prénom : </label>
 					<input value="<?php echo isset($us_name) ? $us_name : '';?>" type="text" name="us_name" id="us_name"/></p>
 				<p><label for="us_lastname">Nom: </label>

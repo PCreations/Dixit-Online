@@ -338,7 +338,7 @@ function _getUsersInGame($gameID) {
 	$usersInGame = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
 
 	foreach($usersInGame as &$userInGame) {
-		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo'));
+		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo', 'us_avatar'));
 		$userInGame['nbWins'] = getOneRowResult(getUsersTotalWinGames($userInGame['us_id']), 'nbWins');
 		$userInGame['nbGames'] = getOneRowResult(getUsersTotalPlayedGames($userInGame['us_id']), 'nbGames');
 		$userInGame['percentageWins'] = ($userInGame['nbGames'] != 0) ? (int)($userInGame['nbWins'] / $userInGame['nbGames'] * 100) : 0;
@@ -387,7 +387,7 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 
 	foreach(getSpecificArrayValues(getPlayersInGame($gameID), 'us_id') as $playerID) {
 		//Récupération des informations des joueurs
-		$playersInfos[$i] = getUserInfos($playerID, array('us_id', 'us_pseudo'));
+		$playersInfos[$i] = getUserInfos($playerID, array('us_id', 'us_pseudo', 'us_avatar'));
 		$playersInfos[$i]['position'] = getOneRowResult(getGameUserPosition($gameID, $playerID), 'pl_position');
 		$playersInfos[$i]['points'] = getOneRowResult(getTotalUserPointsInGame($gameID, $playerID), 'nbPoints');
 
@@ -475,6 +475,10 @@ function _getPhaseInfos($storyteller = null, $phaseID = null, $actionStatus = nu
 				$phase['infos'] = ($actionStatus == ACTION_IN_PROGRESS) ? 'Vous devez indiquez que vous êtes prêt pour le prochain tour' : 'Attendez que tous les joueurs soient prêts';
 				break;
 		}
+	}
+	if($phaseID == GAME_OVER){
+		$phase['title'] = 'Fin de la partie';
+		$phase['infos'] = 'Fin de la partie';
 	}
 	$phase['id'] = $phaseID;
 	return $phase;

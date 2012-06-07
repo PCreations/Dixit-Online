@@ -19,7 +19,6 @@ function check_date(){
 function register() {
 	if(isset($_POST['register'])) {
 		extract($_POST);
-		
 		/* validation du formulaire */
 		if(encrypt($us_password) != encrypt($passConfirm)) {
 			setMessage('Les mots de passe ne coïncident pas', FLASH_ERROR);
@@ -31,12 +30,82 @@ function register() {
 		}
 		else {
 			$us_password = encrypt($us_password);
-			
 			$us_birthdate=$_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
+			if($_FILES['avatar']['error'] > 0) {
+				switch($_FILES['avatar']['error']) {
+					case UPLOAD_ERR_NO_FILE:
+						/* Avatar par défaut */
+						break;
+					case UPLOAD_ERR_INI_SIZE:
+					case UPLOAD_ERR_FORM_SIZE:
+						setMessage('Erreur : le fichier d\'avatar est trop gros', FLASH_ERROR);
+						render('register-form', $_POST);
+						break;
+					case UPLOAD_ERR_PARTIAL:
+						setMessage('Erreur : le fichier d\'avatar n\'a été que partiellement transmis. Veuillez réessayer.', FLASH_ERROR);
+						render('register-form', $_POST);
+						break;
+				}
+			}
+			$allowedMime = array('jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif');
+			$allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
+			$uploadExtension = strtolower(substr(strrchr($_FILES['avatar']['name'], '.') ,1));
+			if(!in_array($uploadExtension,$allowedExtensions)) {
+				setMessage('Erreur : seules les extensions .jpg, .jpeg, .gif et .png sont autorisées', FLASH_ERROR);
+				render('register-form', $_POST);
+			}
+			/* Redimensionnement de l'image */
+			$imgSize = getimagesize($_FILES['avatar']['tmp_name']);
+			$imgHeight = $imgSize[1];
+			$imgWidth = $imgSize[0];
+
+			/* Vérification du Mime-type */
+			if($imgSize['mime'] != $allowedMime[$uploadExtension]) {
+				setMessage('Erreur : le format de l\'image ne semble pas correspondre à son extension', FLASH_ERROR);
+				render('register-form', $_POST);
+			}
+
+			$functionName = "imagecreatefrom".(($uploadExtension == 'jpg' || $uploadExtension == 'jpeg') ? 'jpeg' : $uploadExtension);
+
+			$oldImage = $functionName($_FILES['avatar']['tmp_name']);
+
+			/* Redimensionnement selon la hauteur */
+			if($imgHeight > $imgWidth) {
+				$ratio = $imgHeight / AVATAR_WIDTH;
+				$imgHeight = 120;
+				$imgWidth = $imgWidth / $ratio;
+			}
+			else { /* Redimensionnement selon la largeur */
+				$ratio = $imgWidth / AVATAR_WIDTH;
+				$imgWidth = 120;
+				$imgHeight = $imgHeight / $ratio;
+			}
+
+			$newImage = imagecreatetruecolor($imgWidth, $imgHeight);
+
+			if(!$newImage) {
+				setMessage('Erreur lors de la création de l\'image', FLASH_ERROR);
+				render('register-form', $_POST);
+			}
+
+			if(!imagecopyresampled($newImage , $oldImage, 0, 0, 0, 0, $imgWidth, $imgHeight, $imgSize[0], $imgSize[1])) {
+				setMessage('Erreur lors de la copie de l\'image', FLASH_ERROR);
+				render('register-form', $_POST);
+			}
+			
+			$functionName = "image".(($uploadExtension == 'jpg' || $uploadExtension == 'jpeg') ? 'jpeg' : $uploadExtension);
+
+			if(!$functionName($newImage, THEME_PATH.DS.'img'.DS.'avatars'.DS.$us_pseudo.'.'.$uploadExtension, 100)) {
+				setMessage('Erreur lors de l\'enregistrement de l\'image', FLASH_ERROR);
+				render('register-form', $_POST);
+			}
+			imagedestroy($oldImage);
+
 			if(addUser($us_name,
 					   $us_lastname,
 					   $us_pseudo,
 					   $us_password,
+					   (($_FILES['avatar']['error'] == UPLOAD_ERR_NO_FILE) ? 'default_profile.jpg' : 'avatars/'.$us_pseudo.$uploadExtension),
 					   $us_mail,
 					   $us_birthdate)) {
 				$_SESSION[USER_MODEL][USER_PK] = getLastUserID();

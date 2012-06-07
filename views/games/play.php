@@ -3,7 +3,6 @@
 	<div id="content_room">
 		<div id="left_room">
 			<div id="conteur_room">
-				<img id="profil_conteur_room" src="<?php echo IMG_DIR;?>profil.png"/>
 				<div class="conteur_info">
 					<h1>Salon d'attente pour la partie : <?php echo $gameInfos['ga_name'];?></h1>
 				</div>
@@ -51,7 +50,7 @@
 				<img id="label_joueurs_room" src="<?php echo IMG_DIR;?>joueurs.png">
 				<?php foreach($usersInGame as $player): ?>
 				<div class="joueur">
-					<img class="profil_joueur" src="<?php echo IMG_DIR;?>profil.png">
+					<img class="profil_joueur" src="<?php echo IMG_DIR.$player['us_avatar'];?>" />
 					<p class="infos_joueur"><?php echo $player['us_pseudo'] . (($player['us_id'] == $gameInfos['us_id']) ? ' : Hôte' : '');?></p>
 				</div>
 				<?php endforeach; ?>
@@ -86,16 +85,16 @@
 			</div>
 			<div id="sidebar">
 				<div id="players">
-					<img id="label_joueurs" src="<?php echo IMG_DIR;?>joueurs.png">
+					<img id="label_joueurs" src="<?php echo IMG_DIR;?>joueurs.png" />
 					<?php foreach($turn['players'] as $player): ?>
 					<div class="joueur">
-						<img class="profil_joueur" src="<?php echo IMG_DIR;?>profil.png">
+						<img class="profil_joueur" src="<?php echo IMG_DIR.$player['us_avatar'];?>" />
 						<p class="infos_joueur"><?php echo $player['us_pseudo'] . (($player['role'] == 'conteur') ? ' : conteur' : '');?><br /><?php echo ($player['points'] != null) ? $player['points'] : '0';?> points<br /><?php echo $player['status'];?></p>
 					</div>
 					<?php endforeach; ?>
 				</div>
 				<div id="chat">
-					<img class="label_chat" src="<?php echo IMG_DIR;?>chat.png">
+					<img class="label_chat" src="<?php echo IMG_DIR;?>chat.png" />
 					<div class="chatMessages">
 						<?php 
 						echo _getGameMessages($turn['game']['ga_id']);
@@ -323,7 +322,7 @@ function callback_ping(){
 				}
 			}
 			$("#players").append('<div class="joueur">'
-									+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
+									+'<img class="profil_joueur" src="'+IMG_DIR+player.us_avatar+'">'
 									+'<p class="infos_joueur">'+player.us_pseudo+((player.role == 'conteur') ? ' : conteur' : '')+'<br />'+((player.points != null) ? player.points : '0')+'points<br />'+player.status+'</p>'
 								+'</div>');
 		});
@@ -468,7 +467,7 @@ function callback_ping(){
 		$.each(usersInGame, function(key, player) {
 			console.log(player);
 			$("#players_room").append('<div class="joueur">'
-										+'<img class="profil_joueur" src="'+IMG_DIR+'profil.png">'
+										+'<img class="profil_joueur" src="'+IMG_DIR+player.us_avatar+'">'
 										+'<p class="infos_joueur">'+player.us_pseudo+((player.us_id == hostID) ? ' : hôte' : '')+'</p>'
 									+'</div>');
 		});

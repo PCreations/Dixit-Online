@@ -6,16 +6,17 @@ function getLastUserID() {
 	return $db->lastInsertId();
 }
 
-function addUser($name, $lastName, $pseudo, $password, $mail, $birthdate) {
+function addUser($name, $lastName, $pseudo, $password, $avatar, $mail, $birthdate) {
 	global $db;
 
-	$query = $db->prepare('INSERT INTO users(us_name, us_lastname, us_pseudo, us_password, us_mail, us_birthdate, us_signin_date, us_last_connexion)
-						   VALUES(:name, :lastName, :pseudo, :password, :mail, :birthdate, NOW(), NOW())');
+	$query = $db->prepare('INSERT INTO users(us_name, us_lastname, us_pseudo, us_password, us_avatar, us_mail, us_birthdate, us_signin_date, us_last_connexion)
+						   VALUES(:name, :lastName, :pseudo, :password, :avatar, :mail, :birthdate, NOW(), NOW())');
 	if($query->execute(array(
 					'name' => $name,
 					'lastName' => $lastName,
 					'pseudo' => $pseudo,
 					'password' => $password,
+					'avatar' => $avatar,
 					'mail' => $mail,
 					'birthdate' => $birthdate))) {
 		return true;

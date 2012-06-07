@@ -30,7 +30,7 @@ $JS_FILES = array('jquery-1.7.2.min.js', 'jquery-ui-1.8.20.custom.min.js', 'scri
  */
 $CSS_FILES = array('style_home.css', 'style_users.css', 'style_games.css');
 
-
+define('AVATAR_WIDTH', 120);
 require_once('core/core.php');
 
 

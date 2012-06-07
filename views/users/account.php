@@ -6,7 +6,7 @@
 <img class="image_link" id="4" src="<?php echo IMG_DIR;?>compte_cartes.png" onclick="changeOnglet('4');">
 
 	<div id="account1">
-		<img class="avatar" src="<?php echo IMG_DIR;?>" alt=""/>
+		<img class="avatar" src="<?php echo IMG_DIR.$user['us_avatar'];?>" alt=""/>
 		<p> Bienvenue <?php echo $user['us_name'] ; ?> <?php echo $user['us_lastname'] ; ?> </p>
 		<p><?php if($user['classement'] != '') {
 				echo 'Vous êtes à la '.$user['classement'].(($user['classement'] == 1) ? 'ère ' : 'ème'). 'place du '.l('classement générale', 'games', 'classement', null, array('title' => 'Voir le classement général')).' avec '.$user['xp'].' points d\'expérience';
@@ -48,7 +48,7 @@
 			<div id="popupButton1" class="popupButton"><input type="submit" value="Modifier vos informations"/></div>
 			<div id="popupButton2" class="popupButton"><input type="submit" value="Changer de Mot de Passe"/></div>
 		</div>
-		<img src="<?php echo IMG_DIR;?>" alt=""/>
+		<img src="<?php echo IMG_DIR.$user['us_avatar'];?>" alt=""/>
 		<div id="popup1" class="popup">
 			<a id="popupClose1" class="popupClose">x</a>
 			<form method="POST">

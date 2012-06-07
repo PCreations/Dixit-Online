@@ -5,6 +5,70 @@ function changeOnglet(i){
 		document.getElementById('account'+j).style.display = 'none';
 	}
 	document.getElementById('account'+i).style.display = 'block';
+	
+	/* Cas de l'onglet de gestion des cartes */
+	console.log(i);
+	if(i == '4') {
+		$('#ongletsTitres').css('margin-bottom', '5px');
+		var position = '-750px';
+		$('#sides').css('left', position);
+		$('#fleche-gauche-vide').show();
+		$('#fleche-gauche-vide').click(function() {
+			/* Si on est sur l'onglet du milieu */
+			if(position == '-750px') {
+				/* Alors on se dirige vers l'onglet de gauche */
+				position = '0px';
+				$("#sides").animate({
+					left: position,
+				}, 200, function() {
+					$("#fleche-gauche-vide").hide();
+					$("#fleche-droite-vide").show();
+					$("#fleche-droite-vide").css('left', '700px');
+				});
+			}
+			/* Si on est sur l'onglet de droite */
+			if(position == '-1500px') {
+				/* Alors on se dirige vers l'onglet du milieu */
+				position = '-750px';
+				$("#sides").animate({
+					left: position,
+				}, 200, function() {
+					$("#fleche-gauche-vide").show();
+					$("#fleche-droite-vide").show();
+				});
+			}
+		});
+		$('#fleche-droite-vide').show();
+		$('#fleche-droite-vide').click(function() {
+			/* Si on est sur l'onglet du milieu */
+			if(position == '-750px') {
+				/* Alors on se dirige vers l'onglet de droite */
+				position = '-1500px';
+				$("#sides").animate({
+					left: position,
+				}, 200, function() {
+					$("#fleche-gauche-vide").show();
+					$("#fleche-droite-vide").hide();
+				});
+			}
+			/* Si on est sur l'onglet de gauche */
+			if(position == '0px') {
+				/* Alors on se dirige vers l'onglet du milieu */
+				position = '-750px';
+				$("#sides").animate({
+					left: position,
+				}, 200, function() {
+					$("#fleche-gauche-vide").show();
+					$("#fleche-droite-vide").show();
+					$("#fleche-droite-vide").css('left', '660px');
+				});
+			}
+		});
+	}
+	else {
+		$('#fleche-gauche-vide').hide();
+		$('#fleche-droite-vide').hide();
+	}
 }
 function changeOnglet2(i){
 	var j;
@@ -15,40 +79,6 @@ function changeOnglet2(i){
 	$(".subFriends"+i).css('display', 'inline-block');
 	$(".title"+i).css('background-color', 'rgba(255, 255, 255, 0.5);');
 }
-
-function displaySide(i){
-	if(i=='droite'){
-		j = document.getElementById('sides').offsetLeft;
-		if(j > '-800'){
-			jleft = j-1080;
-			document.getElementById('sides').style.left = jleft+'px';
-			 $('sides').toggleClass('sides_change');  
-		}
-	}
-	if(i=='gauche'){
-		j = document.getElementById('sides').offsetLeft;
-		if(j < '300'){
-			jleft = j+280;
-			document.getElementById('sides').style.left = jleft+'px';
-		}
-	}
-	displayArrow();
-
-}
-
-function displayArrow(){
-		j = document.getElementById('sides').offsetLeft;
-		if(j > '-1000' && j < '-900'){
-			document.getElementById('fleche-droite-vide').style.visibility = 'hidden';
-		}else{
-			document.getElementById('fleche-droite-vide').style.visibility = 'visible';
-		}
-		if(j < '400' && j > '300'){
-			document.getElementById('fleche-gauche-vide').style.visibility = 'hidden';
-		}else{
-			document.getElementById('fleche-gauche-vide').style.visibility = 'visible';
-		}
-	}
 
 function preview(){ //censée afficher un aperçu de l'image selectionnée pour être téléchargée
 	imgCalque = document.getElementById("survey") ;
@@ -97,7 +127,7 @@ $(document).ready(function(){
 	/*Sélection des cartes dans le profil*/
 	$( ".carte #selectable" ).selectable();
 	
-	displayArrow();
+	//displayArrow();
 
 	//ouverture du formulaire de modif des decks
 	$("#pen").click(function(){

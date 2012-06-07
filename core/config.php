@@ -6,7 +6,6 @@ define('GET_VAR_NAME', 'page');
 define('INDEX_ACTION', 'index');
 
 /**  Url de base du site */
-//define('BASE_URL', 'http://tomduchene.fr/dixit/');
 define('BASE_URL', 'http://localhost/dixit/');
 
 /**  Alias de DIRECTORY_SEPARATOR */
@@ -47,9 +46,6 @@ define('FLASH_ERROR',  1);
 
 /** Défini le nom de la constante de message flash  d'information **/
 define('FLASH_INFOS', 2);
-
-/** Défini le nom de la constante de message flash  de notification **/
-define('FLASH_MESSAGE', 3);
 
 /** Défini la clé de sécurité utilisé pour hasher les chaînes de caractères **/
 define('SECURITY_KEY', '5465qs6d564qs5§ù*qs$ù');

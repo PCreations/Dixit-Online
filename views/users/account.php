@@ -1,9 +1,13 @@
 <div id="profil">
 
-<img class="image_link" id="1" src="<?php echo IMG_DIR;?>compte_accueil.png" onclick="changeOnglet('1');">
-<img class="lower_textimg image_link" id="2" src="<?php echo IMG_DIR;?>compte_compte.png" onclick="changeOnglet('2');">
-<img class="image_link" id="3" src="<?php echo IMG_DIR;?>compte_amis.png" onclick="changeOnglet('3');">
-<img class="image_link" id="4" src="<?php echo IMG_DIR;?>compte_cartes.png" onclick="changeOnglet('4');">
+	<div id="ongletsTitres">
+		<img class="image_link" id="1" src="<?php echo IMG_DIR;?>compte_accueil.png" onclick="changeOnglet('1');">
+		<img class="lower_textimg image_link" id="2" src="<?php echo IMG_DIR;?>compte_compte.png" onclick="changeOnglet('2');">
+		<img class="image_link" id="3" src="<?php echo IMG_DIR;?>compte_amis.png" onclick="changeOnglet('3');">
+		<img class="image_link" id="4" src="<?php echo IMG_DIR;?>compte_cartes.png" onclick="changeOnglet('4');">
+	</div>
+	<img  id="fleche-gauche-vide" src="<?php echo IMG_DIR;?>fleche-gauche-vide.png" />
+	<img  id="fleche-droite-vide" src="<?php echo IMG_DIR;?>fleche-droite-vide.png" />
 
 	<div id="account1">
 		<img class="avatar" src="<?php echo IMG_DIR.$user['us_avatar'];?>"  alt=""/>
@@ -82,59 +86,56 @@
 	</div>
 	
 	<div id="account3">
-			<p> Vous avez <b><?php echo $nbFriends['nbFriends']?> </b>amis.</p>
-			<ul class="friends">
-				<?php foreach($reelFriends as $reelFriend): ?>
-					<li id="friendClick" > <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></br></br>
-					<?php echo createLink('Voir', 'users', 'visitFriend', array($reelFriend['us_pseudo']));?></div></li>
-				<?php endforeach; ?>
+		<p> Vous avez <b><?php echo $nbFriends['nbFriends']?> </b>amis.</p>
+		<ul class="friends">
+			<?php foreach($reelFriends as $reelFriend): ?>
+				<li id="friendClick" > <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></br></br>
+				<?php echo createLink('Voir', 'users', 'visitFriend', array($reelFriend['us_pseudo']));?></div></li>
+			<?php endforeach; ?>
+		</ul>
+		</br>
+		<h3>Gérez vos Amis</h3>
+		<div id="subFriends">
+			<ul class="title">
+				<ol class="title1" onclick="changeOnglet2('1');">Vos demandes</ol>
+				<ol class="title2" onclick="changeOnglet2('2');">Vos invitations</ol>
+				<ol class="title3" onclick="changeOnglet2('3');">Rechercher un ami</ol>
 			</ul>
-			</br>
-			<h3>Gérez vos Amis</h3>
-			<div id="subFriends">
-				<ul class="title">
-					<ol class="title1" onclick="changeOnglet2('1');">Vos demandes</ol>
-					<ol class="title2" onclick="changeOnglet2('2');">Vos invitations</ol>
-					<ol class="title3" onclick="changeOnglet2('3');">Rechercher un ami</ol>
+			<div class="subFriends1">
+				<ul>
+					<?php if(empty($askedFriends)){echo('<p><font size="2">Recherchez vos amis avant de leur envoyer une demande</font></p>');}foreach($askedFriends as $askedFriend): ?>
+					<li> <div class="hidden"><?php echo $askedFriend['us_pseudo'];?></br></br><?php echo createLink('Voir', 'users', 'visitFriend', array($askedFriend['us_pseudo']));?></div></li>
+					<?php endforeach; ?>
 				</ul>
-				<div class="subFriends1">
-					<ul>
-						<?php if(empty($askedFriends)){echo('<p><font size="2">Recherchez vos amis avant de leur envoyer une demande</font></p>');}foreach($askedFriends as $askedFriend): ?>
-						<li> <div class="hidden"><?php echo $askedFriend['us_pseudo'];?></br></br><?php echo createLink('Voir', 'users', 'visitFriend', array($askedFriend['us_pseudo']));?></div></li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-				<div class="subFriends2">
-					<ul id="invitations">
-						<?php if(empty($invitation)){echo('<p><font size="2">Vous n\'avez aucune invitation pour le moment.</font></p>');}foreach($invitations as $invitation): ?>
-						<li> 
-							<div class="invitation">
-								<?php echo $invitation['us_pseudo'];?></br>
-								<?php echo createLink('Voir', 'users', 'visitFriend', array($invitation['us_pseudo']));?></br>
-								<?php echo $invitation['accept'];?></br>
-								<?php echo $invitation['refuse'];?>
-							</div>
-						</li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-				<div class="subFriends3">
-					<form class="research" method="post">
-							<p>
-								<label for="loginSearch"><font size="2">Rechercher un ami</font> </label>
-								<input name="loginSearch" id="loginSearch" type="text" value="Login" onFocus="javascript:this.value=''"/>
-							</p></br>
-					</form>
-					<div id="results">
-						
-					</div>
+			</div>
+			<div class="subFriends2">
+				<ul id="invitations">
+					<?php if(empty($invitation)){echo('<p><font size="2">Vous n\'avez aucune invitation pour le moment.</font></p>');}foreach($invitations as $invitation): ?>
+					<li> 
+						<div class="invitation">
+							<?php echo $invitation['us_pseudo'];?></br>
+							<?php echo createLink('Voir', 'users', 'visitFriend', array($invitation['us_pseudo']));?></br>
+							<?php echo $invitation['accept'];?></br>
+							<?php echo $invitation['refuse'];?>
+						</div>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<div class="subFriends3">
+				<form class="research" method="post">
+						<p>
+							<label for="loginSearch"><font size="2">Rechercher un ami</font> </label>
+							<input name="loginSearch" id="loginSearch" type="text" value="Login" onFocus="javascript:this.value=''"/>
+						</p></br>
+				</form>
+				<div id="results">
+					
 				</div>
 			</div>
+		</div>
 	</div>
-	
 	<div id="account4">
-			<img  id="fleche-gauche-vide" onclick="displaySide('gauche');" src="<?php echo IMG_DIR;?>fleche-gauche-vide.png" />
-			<img  id="fleche-droite-vide" onclick="displaySide('droite');" src="<?php echo IMG_DIR;?>fleche-droite-vide.png" />
 		<div id="sides">
 			<div id="side1">
 				<h3>Creez un nouveau deck</h3>
@@ -230,7 +231,6 @@
 							<p>Aucune carte à afficher</p>
 						<?php } ?>
 				</div>
-				
 			</div>
 			<p class="link"><?php echo createLink('supprimer', 'users', ''); ?></p>
 			<p>Ajouter dans le groupe :</p> 

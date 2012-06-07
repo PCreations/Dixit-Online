@@ -1,0 +1,211 @@
+/****************Généralités*********************/
+#visit
+{
+	width : 608px;
+	height: 440px;
+	margin-top : 20px;
+	margin-left : auto;
+	margin-right: auto;
+	padding : 15px;
+	background : url('../img/bg_square2.png') no-repeat top; 
+	-webkit-background-size: cover; 
+	-moz-background-size: cover; 
+	-o-background-size: cover; 
+	background-size: cover;
+	display:inline-block;
+	vertical-align: top;
+}
+#visit h3
+{
+	margin : 0px 0px 10px 40px; 
+}
+#visit  #account1, #visit  #account2, #visit  #account3
+{
+	display : none;
+}
+#visit #friendMenu
+{
+	margin:20px 0px 10px 0px;
+	padding-left : 120px;
+	width : 470px;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius : 6px;
+	display : inline-block;
+}
+#visit  .avatar
+{
+	position : absolute;
+	display : inline-block;
+	margin-left : 20px;
+	margin-top : 15px;
+	box-shadow: 2px 2px 4px black;
+	width : 120px;
+	height : 120px;
+	background : url('../img/default_profile.jpg') center;
+}
+#visit #friendTitle
+{
+	font-size : 1.3em;
+	font-style : bold;
+	letter-spacing : 1.5px;
+	display : inline-block;
+	margin-left : 200px;
+	margin-top : 25px;
+}
+/**************Infos Perso*************/
+#visit #account1 .infos
+{
+	margin : auto;
+	width : 450px;
+}
+/**************Amis*************/
+#visit #account2 .friends{
+	height : 80px;
+}
+#visit #account2 .friends ul
+{
+	list-style : none;
+	padding : 15px;
+
+}
+#visit #account2  .friends li
+{
+	display : inline-block;
+	margin : 2px;
+	box-shadow: 2px 2px 4px black;
+	width : 60px;
+	height : 60px;
+	vertical-align : top;
+	background : url('../img/default_profile.jpg') center;
+}
+#visit #account2 .friends .hidden
+{
+	padding : 5px;
+	position : relative;
+	color : black;
+	visibility : hidden;
+	font-style : bold;
+	font-size : 0.8em;
+}
+#visit #account2 .friends li:hover
+{
+	opacity : 0.8;
+	cursor : pointer;
+}
+#visit #account2 .friends li:hover .hidden
+{
+	visibility : visible;
+
+}
+/**************Cartes*************/
+#visit #account3 .deck
+{
+	margin-top : 20px;
+	margin-left : 20px;
+}
+#visit #account3 #subdeck
+{
+	display : inline-block;
+	background-color: rgba(255, 255, 255, 0.3);
+	border-radius : 6px;
+	padding : 5px;
+	margin-bottom : 5px;
+	vertical-align : top;
+}
+#visit #account3 #subdeck ul 
+{
+	list-style : none;
+	padding : 0px;
+	margin : 0px;
+	display : inline-block;
+	width : 125px;
+}
+#visit #account3 #subdeck ul li
+{
+	background-color: rgba(255, 255, 255, 0.3);
+	cursor : pointer;
+	margin-bottom : 5px;
+	padding : 3px 0px 3px 10px;
+}
+#visit #account3 #subdeck ul li:hover
+{
+	background-color: rgba(255, 255, 255, 0.5);
+}
+#visit #account3 #gallery
+{
+	margin : auto ;
+	height : 260px;
+	width : 420px;
+	overflow-y : auto;
+}
+
+#visit #account3 #gallery_conteneur
+{
+		background-color: rgba(255, 255, 255, 0.3);
+	display : inline-block;
+	border-radius : 6px;
+	padding : 10px 5px 10px 10px;
+}
+#visit #account3 .image_carte img
+{
+	width:100%; /*dépend du nombre de cartes*/
+}
+
+#visit #account3 .image_carte
+{
+	position:relative;
+	border-radius : 8px;
+	z-index:1;
+	cursor: url("../img/zoom.cur"), default;
+	display:inline-block;
+	width:14%; /*dépend du nombre de cartes*/
+	margin-right: 5px;
+}
+/****************Aside*********************/
+#aside
+{
+	width : 138px;
+	height : 450px;
+	margin-left:10px;
+	padding : 5px;
+	margin-top : 20px;
+	display:inline-block;
+	vertical-align: top;
+	background-image:url("../img/bg_sidebar2.png");
+}
+#aside p
+{
+	letter-spacing : 0.1px;
+	font-size : 0.8em;
+	width : 500px;
+	display : inline-block;
+	width : 80px;
+}
+#aside .monCompte 
+{
+	margin : 5px;
+	margin-bottom : 50px;
+}
+#aside .monCompte  img, #aside .action img
+{
+	width : 20px;
+	display : inline-block;
+	margin-left : 15px;
+	margin-right : 5px;
+}
+#aside .monCompte a
+{
+	background-color: rgba(255, 255, 255, 0.5);
+	text-decoration : none;
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+	font-size : 1em;
+	color : black;
+	padding : 3px 6px;
+	margin-left : 20%;
+	margin-top : 5%;
+	display : inline-block;
+}
+#aside .action
+{
+	margin : 5px ;
+}

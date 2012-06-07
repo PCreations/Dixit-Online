@@ -41,7 +41,6 @@ function checkLogin($pseudo, $password) {
 function getUserInfos($id, $fields = array('*')) {
 	global $db;
 	$fields = implode(',', $fields);
-
 	$query = $db->prepare('SELECT '.$fields.' 
 						FROM users
 						WHERE us_id = ?');
@@ -131,6 +130,13 @@ function acceptFriend($fr_id, $us_id){
 function refuseFriend($fr_id, $us_id){
 	global $db;
 	$query = $db->prepare('DELETE FROM users_friends WHERE us_id = :fr_id AND us_friend_id = :us_id');
+	$query->execute(array('fr_id' => $fr_id,
+							'us_id' => $us_id));
+}
+
+function deleteFriendship($fr_id, $us_id){
+	global $db;
+	$query = $db->prepare('DELETE FROM users_friends WHERE (us_id = :fr_id AND us_friend_id = :us_id) OR (us_id = :us_id AND us_friend_id = :fr_id)');
 	$query->execute(array('fr_id' => $fr_id,
 							'us_id' => $us_id));
 }

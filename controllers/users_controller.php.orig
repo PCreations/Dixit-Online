@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user', 'card', 'deck'));
+useModels(array('user', 'card', 'deck', 'game'));
 define('SEND_INVITATION', 2);
 define('ACCEPT_INVITATION', 1);
 define('DECLINE_INVITATION', 0);
@@ -19,6 +19,7 @@ function check_date(){
 function register() {
 	if(isset($_POST['register'])) {
 		extract($_POST);
+		
 		/* validation du formulaire */
 		if(encrypt($us_password) != encrypt($passConfirm)) {
 			setMessage('Les mots de passe ne coïncident pas', FLASH_ERROR);
@@ -30,84 +31,12 @@ function register() {
 		}
 		else {
 			$us_password = encrypt($us_password);
+			
 			$us_birthdate=$_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
-			if($_FILES['avatar']['error'] > 0) {
-				switch($_FILES['avatar']['error']) {
-					case UPLOAD_ERR_NO_FILE:
-						/* Avatar par défaut */
-						break;
-					case UPLOAD_ERR_INI_SIZE:
-					case UPLOAD_ERR_FORM_SIZE:
-						setMessage('Erreur : le fichier d\'avatar est trop gros', FLASH_ERROR);
-						render('register-form', $_POST);
-						break;
-					case UPLOAD_ERR_PARTIAL:
-						setMessage('Erreur : le fichier d\'avatar n\'a été que partiellement transmis. Veuillez réessayer.', FLASH_ERROR);
-						render('register-form', $_POST);
-						break;
-				}
-			}
-			if($_FILES['avatar']['error'] != UPLOAD_ERR_NO_FILE) {
-				$allowedMime = array('jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif');
-				$allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
-				$uploadExtension = strtolower(substr(strrchr($_FILES['avatar']['name'], '.') ,1));
-				if(!in_array($uploadExtension,$allowedExtensions)) {
-					setMessage('Erreur : seules les extensions .jpg, .jpeg, .gif et .png sont autorisées', FLASH_ERROR);
-					render('register-form', $_POST);
-				}
-				/* Redimensionnement de l'image */
-				$imgSize = getimagesize($_FILES['avatar']['tmp_name']);
-				$imgHeight = $imgSize[1];
-				$imgWidth = $imgSize[0];
-
-				/* Vérification du Mime-type */
-				if($imgSize['mime'] != $allowedMime[$uploadExtension]) {
-					setMessage('Erreur : le format de l\'image ne semble pas correspondre à son extension', FLASH_ERROR);
-					render('register-form', $_POST);
-				}
-
-				$functionName = "imagecreatefrom".(($uploadExtension == 'jpg' || $uploadExtension == 'jpeg') ? 'jpeg' : $uploadExtension);
-
-				$oldImage = $functionName($_FILES['avatar']['tmp_name']);
-
-				/* Redimensionnement selon la hauteur */
-				if($imgHeight > $imgWidth) {
-					$ratio = $imgHeight / AVATAR_WIDTH;
-					$imgHeight = 120;
-					$imgWidth = $imgWidth / $ratio;
-				}
-				else { /* Redimensionnement selon la largeur */
-					$ratio = $imgWidth / AVATAR_WIDTH;
-					$imgWidth = 120;
-					$imgHeight = $imgHeight / $ratio;
-				}
-
-				$newImage = imagecreatetruecolor($imgWidth, $imgHeight);
-
-				if(!$newImage) {
-					setMessage('Erreur lors de la création de l\'image', FLASH_ERROR);
-					render('register-form', $_POST);
-				}
-
-				if(!imagecopyresampled($newImage , $oldImage, 0, 0, 0, 0, $imgWidth, $imgHeight, $imgSize[0], $imgSize[1])) {
-					setMessage('Erreur lors de la copie de l\'image', FLASH_ERROR);
-					render('register-form', $_POST);
-				}
-				
-				$functionName = "image".(($uploadExtension == 'jpg' || $uploadExtension == 'jpeg') ? 'jpeg' : $uploadExtension);
-
-				if(!$functionName($newImage, THEME_PATH.DS.'img'.DS.'avatars'.DS.$us_pseudo.'.'.$uploadExtension, 100)) {
-					setMessage('Erreur lors de l\'enregistrement de l\'image', FLASH_ERROR);
-					render('register-form', $_POST);
-				}
-				imagedestroy($oldImage);
-			}
-
 			if(addUser($us_name,
 					   $us_lastname,
 					   $us_pseudo,
 					   $us_password,
-					   (($_FILES['avatar']['error'] == UPLOAD_ERR_NO_FILE) ? 'default_profile.jpg' : 'avatars/'.$us_pseudo.$uploadExtension),
 					   $us_mail,
 					   $us_birthdate)) {
 				$_SESSION[USER_MODEL][USER_PK] = getLastUserID();
@@ -163,18 +92,11 @@ function account($id = null) {
 	$JS_FILES[] = 'flexcroll.js';
 	$CSS_FILES[] = 'flexcrollstyles.css';
 	$userID = $_SESSION[USER_MODEL][USER_PK];
+
 	
 	/* Récupération des decks de l'utilisateur */
 	$userDecks = getUserDecks($userID, array('de_id', 'de_name'));
-
-	/* Récupération des parties en cours de l'utilisateur */
-	$gamesInProgress = getGameInProgressForUser($userID);
-
-	/* Récupération des informations utilisateurs */
-	$user = getUserInfos($id);
-	$user['classement'] = getOneRowResult(getUserClassement($id), 'classement');
-	$user['xp'] = getOneRowResult(getUserXP($id), 'xp');
-
+<<<<<<< HEAD
 	if($userDecks != NULL){
 		foreach($userDecks as &$deck){
 			$deck['de_status'] = getOneRowResult(getDeckInfos($deck['de_id'], array('de_status')), 'de_status');
@@ -185,8 +107,23 @@ function account($id = null) {
 			}
 			$deck['nbCards'] = getOneRowResult(nbCartes($deck['de_id']), 'nbCartes');
 			$deck['cardsInDeckInfo'] = getCardsInDeckInfo($deck['de_id']);
+=======
+
+	/* Récupération des parties en cours de l'utilisateur */
+	$gamesInProgress = getGameInProgressForUser($userID);
+
+	/* Récupération des informations utilisateurs */
+	$user = getUserInfos($id);
+	$user['classement'] = getOneRowResult(getUserClassement($id), 'classement');
+	$user['xp'] = getOneRowResult(getUserXP($id), 'xp');
+	
+	if(!empty($userDecks)) {
+		foreach($userDecks as $deck){
+			$userDecksInfo = getDeckInfos($deck['de_id'], array('us_id', 'de_name', 'de_status'));
+			$nbCards = nbCartes($deck['de_id']);	
+			$cardsInDeck = getCardsInDeckInfo($deck['de_id']);
+>>>>>>> ae7c6382e4e03cdd6e17f3b8a21203f89322a142
 		}
-		
 	}else{
 		$result = "";
 	}
@@ -194,6 +131,13 @@ function account($id = null) {
 	/* Récupération des cartes ajoutées par l'utilisateur */
 	$userCards = getUserCards($userID);
 
+	if(isset($_POST['update'])) { //Formulaire de changement de données
+			extract($_POST);
+			updateUser($userID, $name, $lastname, $birthdate, $mail);
+			setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
+			redirect('users', 'account', array( $userID));
+	}
+	
 	if(isset($_POST['updatePwd'])) { //Formulaire de changement de mot de passe
 			extract($_POST);
 			$userInfos = checkLogin($pseudo, encrypt($oldPass));
@@ -208,6 +152,45 @@ function account($id = null) {
 			redirect('users', 'account', array( $userID));
 	}
 	
+<<<<<<< HEAD
+=======
+	if(isset($_POST['research'])) { //Formulaire de recherche d'ami
+			extract($_POST);
+			$results = approchSearchUser($login);
+			$reelfriends = getSpecificArrayValues(getReelFriends($id), 'us_pseudo');
+			$askedfriends = getSpecificArrayValues(getAskedFriends($id), 'us_pseudo');
+			$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($id), 'us_pseudo');
+			foreach($results as &$result){
+				if(!in_array($result['us_pseudo'], $reelfriends)) {
+					if(!in_array($result['us_pseudo'], $askedfriends)) {
+						if(!in_array($result['us_pseudo'], $whoAskedMe)) {
+							if($result['us_pseudo'] != $user['us_pseudo']){
+							debug($result);
+								$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2'));
+							}
+							else{
+								$result['action'] = 'C\'est vous !';
+							}
+						}
+						else{
+							$result['action'] = 'Cette personne vous a demandé en amis';
+						}
+					}
+					else{
+						$result['action'] = 'Vous avez déjà invité cette personne';
+					}
+				}
+				else{
+					$result['action'] = 'Vous êtes déjà amis';
+				}
+			}
+		
+			$vars = array('results' => $results,
+							'login' => $login);			
+			render('research', $vars);
+	}
+	
+>>>>>>> ae7c6382e4e03cdd6e17f3b8a21203f89322a142
 	if(isset($_POST['deck'])) { //Formulaire de création d'un deck
 			extract($_POST);
 			if(!empty($deck_name)){
@@ -222,7 +205,7 @@ function account($id = null) {
 				setMessage('Vous devez donner un nom à votre deck.', FLASH_ERROR);
 				redirect('users', 'account', array( $userID));
 			}
-
+			
 	}
 	if(isset($_POST['card'])) { //Formulaire d'upload d'image
 			extract($_POST);
@@ -275,7 +258,7 @@ function account($id = null) {
 				setMessage('Veuillez sélectionner un fichier', FLASH_ERROR);
 			}
 	}
-	$user = getUserInfos($id);
+	
 	$reelFriends = getReelFriends($id);
 	$askedFriends = getAskedFriends($id);
 	$invitations = getFriendsWhoAskedMe($id);
@@ -288,6 +271,7 @@ function account($id = null) {
 	}
 	$nbFriends = countFriends($id);
 	$vars = array(	'user' => $user,
+					'gamesInProgress' => $gamesInProgress,
 					'reelFriends' => $reelFriends,
 					'askedFriends' => $askedFriends,
 					'invitations' => $invitations,
@@ -311,8 +295,7 @@ function research(){
 				echo ('<h3 style="text-align:center; margin:10px 0;">Pas de résultats pour cette recherche</h3>');
 			}else{
 				$user = getUserInfos($userID);
-
-				$reelfriends = getReelFriends($userID);
+				$reelfriends = getSpecificArrayValues(getReelFriends($userID), 'us_pseudo');
 				$askedfriends = getSpecificArrayValues(getAskedFriends($userID), 'us_pseudo');
 				$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($userID), 'us_pseudo');
 				foreach($results as &$result){
@@ -320,23 +303,22 @@ function research(){
 						if(!in_array($result['us_pseudo'], $askedfriends)) {
 							if(!in_array($result['us_pseudo'], $whoAskedMe)) {
 								if($result['us_pseudo'] != $user['us_pseudo']){
-
-									$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2')).'</br>'.createLink('Voir', 'users', 'visitFriend', array($result['us_pseudo']));
+									$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2'));
 								}
 								else{
 									$result['action'] = 'C\'est vous !';
 								}
 							}
 							else{
-								$result['action'] = 'Cette personne vous a demandé en amis</br>'.createLink('Voir', 'users', 'visitFriend', array($result['us_pseudo']));
+								$result['action'] = 'Cette personne vous a demandé en amis';
 							}
 						}
 						else{
-							$result['action'] = 'Vous avez déjà invité cette personne</br>'.createLink('Voir', 'users', 'visitFriend', array($result['us_pseudo']));
+							$result['action'] = 'Vous avez déjà invité cette personne';
 						}
 					}
 					else{
-						$result['action'] = 'Vous êtes déjà amis</br>'.createLink('Voir', 'users', 'visitFriend', array($result['us_pseudo']));
+						$result['action'] = 'Vous êtes déjà amis';
 					}
 					}
 							foreach($results as $result){
@@ -350,114 +332,9 @@ function research(){
 			
 }
 
-function displayDeck(){
-	$userID = $_SESSION[USER_MODEL][USER_PK];
-	extract($_POST);
-	
-	$cards = getCardsInDeckInfo($de_id);
-	if(!empty($cards)){
-		foreach($cards as $card){
-				echo('<img class="image_carte" src="'.IMG_DIR.'cards/'.$card['ca_image'].'" alt="'.$card['ca_name'].'"/>');
-		}
-	}else{
-		echo('Ce deck ne contient aucune carte');
-	}
-}
+function changeDeck(){
+	echo('<script>alert(\'plop\');</script>');
 
-function visitFriend($login){
-	global $JS_FILES;
-	global $CSS_FILES;
-	$JS_FILES[] = 'script_users.js';
-	$JS_FILES[] = 'flexcroll.js';
-	$CSS_FILES[] = 'flexcrollstyles.css';
-	
-	$userID = $_SESSION[USER_MODEL][USER_PK];
-	$user = getUserInfos($userID);
-	if(isLogged()) {
-		//Infos sur le profil que l'on visite
-		$id = getOneRowResult(exactSearchUser($login), 'us_id');
-		$friend = getUserInfos($id, array('us_name', 'us_lastname', 'us_birthdate', 'us_pseudo'));
-		$reelfriends = getReelFriends($id);
-		$usersReelfriends = getReelFriends($userID);
-		$nbCommuns = '0';
-		
-		//On cherche les amis en commun
-		if(!empty($usersReelfriends)){
-			foreach($usersReelfriends as $usersFriend){
-				if(in_array($usersFriend['us_pseudo'], $reelfriends)) {
-					$communs = $usersReelfriends;
-					$nbCommuns += '1';
-
-				}
-				if(empty($communs)){
-					$communs = "";
-					$nbCommuns = 'aucun';
-				}
-			}
-		}else{
-					$communs = "";
-					$nbCommuns = 'aucun';
-		}
-
-		//On récupère les decks de l'utilisateur
-		$decks = getUserPublicDecks($id, array('de_id', 'de_name'));
-		if(!empty($decks)){
-			foreach($decks as &$deck){
-				$deck['cardsInDeckInfo'] = getCardsInDeckInfo($deck['de_id']);
-			}
-		}else{
-			$decks = "";
-		}
-		//On cherche si l'utilisateur est ami avec le profil visité
-		if(in_array($login, $usersReelfriends)) {
-			$result='<img src="'.IMG_DIR.'notif_success.png" alt="#"/><p>Amis</p>'.createLink('Retour', 'users', 'account', array($user['us_id'])).'
-		</div>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Actions</strong></p>
-		<div class="action">
-			<img src="'.IMG_DIR.'message.png" alt="#"/>
-			<p>Envoyer un message</p>
-			<img src="'.IMG_DIR.'notif_erreur.png" alt="#"/>
-			<p>'.createLink('Retirer de vos amis', 'users', 'deleteFriend', array($id)).'</p>
-		</div>';
-			}else{
-				$result='<img src="'.IMG_DIR.'notif_erreur.png" alt="#"/><p>Vous n\'êtes pas amis</p>'.createLink('Retour', 'users', 'account', array($user['us_id'])).'
-		</div>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Actions</strong></p>
-		<div class="action">
-			<img src="'.IMG_DIR.'message.png" alt="#"/>
-			<p>Envoyer un message</p>
-			<img src="'.IMG_DIR.'notif_success.png" alt="#"/>
-			<p>'.createLink('Ajouter à vos amis', 'users', 'newFriend', array($id, SEND_INVITATION)).'</p>
-		</div>';
-			}
-
-		
-		$vars = array('friend' => $friend,
-						'user' => $user,
-						'reelfriends' => $reelfriends,
-						'decks' => $decks,
-						'result' => $result,
-						'nbCommuns' => $nbCommuns,
-						'communs' => $communs);
-		render('visit', $vars);
-	}else{
-		setMessage('Vous n\'êtes pas connecté !', FLASH_ERROR);
-		redirect('users', 'account', array($userID));
-	}
-	
-	$JS_FILES = array_pop($JS_FILES);
-	$JS_FILES = array_pop($JS_FILES);
-	$CSS_FILES = array_pop($CSS_FILES);
-}
-function deleteFriend($fr_id){
-	$userID = $_SESSION[USER_MODEL][USER_PK];
-		if(isLogged()) {
-		deleteFriendship($userID, $fr_id);
-		setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
-		}else{
-		setMessage('Vous n\'êtes pas connecté !', FLASH_ERROR);
-	}
-	redirect('users', 'account', array($userID));
 }
 
 function newFriend($fr_id, $action){

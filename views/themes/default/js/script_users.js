@@ -87,6 +87,22 @@ $(document).ready(function(){
 			})
 		}
 	});
+	
+	$(".deckList").click( function(){
+		
+		$field = $(this);
+		$('#gallery').html('');
+		$.post(Dixit.BASE_URL+"users/displayDeck", {'de_id': $(this).val()}, function(data) {
+				$('#gallery').html(data);
+		});
+	});
+	
+	
+	/*Sélection des cartes dans le profil*/
+	$( ".carte #selectable" ).selectable();
+	
+	displayArrow();
+
 	//ouverture du formulaire de modif des decks
 	document.getElementById("pen").onclick = function(){
 		changeDeck('0');
@@ -97,14 +113,6 @@ $(document).ready(function(){
 			});
 		};
 	};
-	
-	
-	
-	/*Sélection des cartes dans le profil*/
-	$( ".carte #selectable" ).selectable();
-	
-	displayArrow();
-
 });
 
 

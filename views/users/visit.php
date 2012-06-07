@@ -35,16 +35,14 @@
 				<div class="deck">
 					<div id="subdeck">
 						<ul>
-							<?php foreach($decks as $deck): ?>
-								<li onclick=""><?php echo $deck['de_name'];?></li>
-							<?php endforeach; ?>
+							<?php if(empty($decks)){echo('<p>Cet utilisateur n\'a pas de deck</p>');}if(!empty($decks)){foreach($decks as $deck): ?>
+								<li class="deckList" name="de_id" value="<?php echo $deck['de_id'];?>"><?php echo $deck['de_name'];?></li>
+							<?php endforeach;}?>
 						</ul>
 					</div>
 					<div id="gallery_conteneur">
 					<div id="gallery" class="flexcroll">
-							<?php foreach($deck['cardsInDeckInfo'] as $card): ?>
-								<img class="image_carte" src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
-							<?php endforeach;?>
+							
 						</div>
 					</div>
 				</div>

@@ -274,6 +274,21 @@ function research(){
 				}
 			
 }
+
+function displayDeck(){
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	extract($_POST);
+	
+	$cards = getCardsInDeckInfo($de_id);
+	if(!empty($cards)){
+		foreach($cards as $card){
+				echo('<img class="image_carte" src="'.IMG_DIR.'cards/'.$card['ca_image'].'" alt="'.$card['ca_name'].'"/>');
+		}
+	}else{
+		echo('Ce deck ne contient aucune carte');
+	}
+}
+
 function visitFriend($login){
 	global $JS_FILES;
 	global $CSS_FILES;
@@ -311,7 +326,7 @@ function visitFriend($login){
 
 		//On récupère les decks de l'utilisateur
 		$decks = getUserPublicDecks($id, array('de_id', 'de_name'));
-		if($decks != NULL){
+		if(!empty($decks)){
 			foreach($decks as &$deck){
 				$deck['cardsInDeckInfo'] = getCardsInDeckInfo($deck['de_id']);
 			}

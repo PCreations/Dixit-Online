@@ -119,11 +119,11 @@
 						<img src="<?php echo IMG_DIR;?>carte.png">
 					</div>
 				</div>
-				<img src="<?php echo IMG_DIR;?>participer.png">
+				<!--<img src="<?php echo IMG_DIR;?>participer.png">
 				<form>
 					<figure class="button2"><input type="button" name="voter" value="Votez pour les cartes des internautes" size="35"/> </figure>
 					<figure class="button2"><input type="button" name="proposer"value="Proposer une carte"/> </figure>
-				</form>
+				</form>-->
 			</div>
 		</div>
 		<div id = "right_side">
@@ -142,17 +142,20 @@
 			<div id="en_ligne">
 				<img src="<?php echo IMG_DIR;?>amis.png">
 				<div class="ami">
-					<img  src="<?php echo IMG_DIR;?>thomas.png">
+					<p>En construction</p>
+				</div>
+				<!--<div class="ami">
+					<img  src="<?php //echo IMG_DIR;?>thomas.png">
 					<p>Thomas Demenat</br>
 					En ligne</p>
 				</div>
 				<div class="ami">
-					<img src="<?php echo IMG_DIR;?>julie.png">
+					<img src="<?php //echo IMG_DIR;?>julie.png">
 					<p>Julie Chupee</br>
 					Partie en cours</p>
 				</div>
 				<div class="ami">
-					<img src="<?php echo IMG_DIR;?>graouh.png">
+					<img src="<?php //echo IMG_DIR;?>graouh.png">
 					<p>Graouh Mraouh</br>
 					Salle d'attente</p>
 				</div>
@@ -164,10 +167,10 @@
 					<h2>Nice !!</h2>
 				</div>
 				<div class="ami">
-					<img src="<?php echo IMG_DIR;?>storm.png">
+					<img src="<?php //echo IMG_DIR;?>storm.png">
 					<p>Stormtrooper n°9</br>
 					Partie en cours</p>
-				</div>
+				</div>-->
 		</div>
 	</div>
 </div>

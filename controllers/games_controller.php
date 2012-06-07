@@ -33,7 +33,6 @@ function index() {
 		if(!isset($public)){
 			$public='off';
 		}
-		debug($public);
 		$partiesEnAttente = filterGames($name, $nbplayers, $nbpoints, $deck, $public);
 	}
 	$vars = array('partiesEnAttente' => $partiesEnAttente , 'deckInfos' => $deckInfos, 'vars_filtrage' => $vars_filtrage);
@@ -116,24 +115,6 @@ function classement() {
 	$classement = getDixitClassement();
 	$vars = array('classement' => $classement);
 	render('classement', $vars);
-}
-
-function test() {
-	$pick = getPick(2);
-	if(empty($pick)) {
-		//On sélectionne toutes les cartes qui ont déjà été posée pour cette partie
-		$discardedCards = getSpecificArrayValues(getDiscardedCards(2), 'ca_id');
-		debug($discardedCards);
-
-		//Réinsertion dans la pioche des cartes après les avoir mélangées
-		shuffle($discardedCards);
-
-		debug($discardedCards);
-
-		foreach($discardedCards as $order => $cardID) {
-			savePick(2, $order, $cardID);
-		}
-	}
 }
 
 function quiteGame($gameID, $userID) {
@@ -309,6 +290,7 @@ function play($gameID) {
 
 		$actionStatus = _checkAction($phase, $_SESSION[USER_MODEL][USER_PK], $currentTurn['tu_id']);
 		$playersInfos = _getPlayersInfos($gameID, $currentTurn['tu_id'], $currentTurn['us_id'], $phase);
+
 		$currentTurn['storyteller']['us_pseudo'] = getOneRowResult(getUserInfos($currentTurn['us_id'], array('us_pseudo')), 'us_pseudo');
 
 		unset($playersInfos['storyteller']);
@@ -408,14 +390,6 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 			$playersInfos[$i]['role'] = 'conteur';
 			$status = getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status');
 			$actionStatus = ($phase == STORYTELLER_PHASE || ($phase == POINTS_PHASE && $status != 'Prêt')) ? ACTION_IN_PROGRESS : ACTION_DONE;
-
-			/* Gestion inactivité */
-			if($actionStatus == ACTION_IN_PROGRESS) {
-				$lastActionTime = getUserLastActionTime($gameID, $playerID);
-
-			}
-			setPlayerStatus($gameID, $playerID, 'Inactif');
-			$playerInfos[$i]['status'] = 'Inactif depuis';
 			$playersInfos[$i]['status'] = _getStatus($actionStatus, $phase, $playersInfos[$i]['role']);
 		}
 		else {
@@ -682,9 +656,8 @@ function _setPlayerStatus($gameID, $userID, $status) {
 			$status = 'Inactif';
 			break;
 	}
-
+	updatePlayerActionTime($gameID, $userID);
 	setPlayerStatus($gameID, $userID, $status);
-
 }
 //Permet d'afficher le tableau des cartes en fonction de la phase. Si la phase est BOARD_PHASE alors les cartes apparaissent face cachées et si c'est la VOTE_PHASE elles apparaissent face visible avec la possibilité de voter
 function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {

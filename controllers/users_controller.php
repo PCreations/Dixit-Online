@@ -1,6 +1,6 @@
 <?php
 
-useModels(array('user', 'card', 'deck'));
+useModels(array('user', 'card', 'deck', 'game'));
 define('SEND_INVITATION', 2);
 define('ACCEPT_INVITATION', 1);
 define('DECLINE_INVITATION', 0);
@@ -275,7 +275,6 @@ function account($id = null) {
 				setMessage('Veuillez sélectionner un fichier', FLASH_ERROR);
 			}
 	}
-	$user = getUserInfos($id);
 	$reelFriends = getReelFriends($id);
 	$askedFriends = getAskedFriends($id);
 	$invitations = getFriendsWhoAskedMe($id);
@@ -339,12 +338,12 @@ function research(){
 						$result['action'] = 'Vous êtes déjà amis</br>'.createLink('Voir', 'users', 'visitFriend', array($result['us_pseudo']));
 					}
 					}
-							foreach($results as $result){
+							foreach($results as $userResult){
 									echo ('<div class="result"
-									<p><strong>'.$result['us_pseudo'].'</strong>
-									&nbsp;&nbsp;<i>'.$result['us_name'].'
-									'.$result['us_lastname'].'</i></br>
-									'.$result['action'].'</p></div>');
+									<p><strong>'.$userResult['us_pseudo'].'</strong>
+									&nbsp;&nbsp;<i>'.$userResult['us_name'].'
+									'.$userResult['us_lastname'].'</i></br>
+									'.$userResult['action'].'</p></div>');
 								}
 				}
 			

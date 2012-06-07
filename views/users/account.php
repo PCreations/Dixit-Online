@@ -14,7 +14,7 @@
 				echo 'Vous êtes à la '.$user['classement'].(($user['classement'] == 1) ? 'ère ' : 'ème'). ' place du '.l('classement général', 'games', 'classement', null, array('class' => 'inside_link', 'title' => 'Voir le classement général')).' avec '.$user['xp'].' points d\'expérience.';
 			}
 			else
-				echo 'Vous n\'êtes pas encore dans le '.l('classement générale', 'games', 'classement', null, array('title' => 'Voir le classement général')).' du site';
+				echo 'Vous n\'êtes pas encore dans le '.l('classement général', 'games', 'classement', null, array('title' => 'Voir le classement général')).' du site';
 			?></p>
 		<br />
 		<?php if(!empty($gamesInProgress)): ?>
@@ -213,15 +213,19 @@
 				</select>
 				<div id="gallery_conteneur">
 					<div id="gallery" class="flexcroll">
-						<?php foreach($deck['cardsInDeckInfo'] as $card): ?>
-							<div class="carte">
-								<img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
-								<div id="selectable" >
-									<img  class="bouton" src="<?php echo IMG_DIR;?>bouton_dore.png" />
-									<img class="ui-state-default" id="btnCardID<?php echo $card['ca_id'] ;?>" src="<?php echo IMG_DIR;?>bouton.png" />
+						<?php if(isset($deck)) { ?>
+							<?php foreach($deck['cardsInDeckInfo'] as $card): ?>
+								<div class="carte">
+									<img class="image_carte"  src="<?php echo IMG_DIR;?>cards/<?php echo $card['ca_image'];?>" alt="<?php echo $card['ca_name'];?>"/>
+									<div id="selectable" >
+										<img  class="bouton" src="<?php echo IMG_DIR;?>bouton_dore.png" />
+										<img class="ui-state-default" id="btnCardID<?php echo $card['ca_id'] ;?>" src="<?php echo IMG_DIR;?>bouton.png" />
+									</div>
 								</div>
-							</div>
-						<?php endforeach;?>
+							<?php endforeach;?>
+						<?php } else { ?>
+							<p>Aucune carte à afficher</p>
+						<?php } ?>
 				</div>
 				
 			</div>

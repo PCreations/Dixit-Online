@@ -100,7 +100,7 @@ $(document).ready(function(){
 	displayArrow();
 
 	//ouverture du formulaire de modif des decks
-	document.getElementById("pen").onclick = function(){
+	$("#pen").click(function(){
 		changeDeck('0');
 		document.getElementById("changeDeck").onsubmit = function(){
 			$.post(Dixit.BASE_URL+"users/changeDeck", {'de_id': $(this).title()}, function(data) {
@@ -108,13 +108,5 @@ $(document).ready(function(){
 				changeDeck('1');
 			});
 		};
-	};
-});
-
-
-	/*Sélection des cartes dans le profil*/
-	$( ".carte #selectable" ).selectable();
-
-	displayArrow();
-
+	});
 });

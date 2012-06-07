@@ -1,8 +1,8 @@
 var Dixit = function() {
 }
 
-Dixit.BASE_URL = 'http://127.0.0.1/dixit/';
-Dixit.IMG_DIR = 'http://127.0.0.1/dixit/views/themes/default/img/';
+Dixit.BASE_URL = 'http://localhost/dixit/';
+Dixit.IMG_DIR = Dixit.BASE_URL+'views/themes/default/img/';
 Dixit.FLASH_SUCCESS = 0;
 Dixit.FLASH_INFOS = 2;
 Dixit.FLASH_MESSAGE = 3;

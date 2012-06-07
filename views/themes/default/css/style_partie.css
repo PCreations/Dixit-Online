@@ -83,6 +83,26 @@ body {
 	background-image:url("../img/bg_table.png");
 }
 
+#table_room #usersInfos
+{
+	width:100%;
+	text-align:center;
+	border-style:none;
+	border-collapse:collapse;
+}
+
+#table_room #usersInfos tr
+{
+	background-color: rgba(255, 255, 255, 0.5);
+	height: 25px;
+}
+
+#table_room .scroll
+{
+	height:150px;
+	overflow-y:auto;
+}
+
 #table, #deck_room
 {
 	width:615px;

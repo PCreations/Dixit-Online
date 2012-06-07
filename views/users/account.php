@@ -6,10 +6,13 @@
 <img class="image_link" id="4" src="<?php echo IMG_DIR;?>compte_cartes.png" onclick="changeOnglet('4');">
 
 	<div id="account1">
-		<img class="avatar" src="<?php echo IMG_DIR.$user['us_avatar'];?>" alt=""/>
-		<p> Bienvenue <?php echo $user['us_name'] ; ?> <?php echo $user['us_lastname'] ; ?> </p>
+		<img class="avatar" src="<?php echo IMG_DIR.$user['us_avatar'];?>"  alt=""/>
+		<p> Bienvenue <?php echo $user['us_name'] ;
+		echo $user['us_lastname'] ;
+		echo "<br/>";
+		echo createLink('Déconnexion', 'users', 'logout');?> </p>
 		<p><?php if($user['classement'] != '') {
-				echo 'Vous êtes à la '.$user['classement'].(($user['classement'] == 1) ? 'ère ' : 'ème'). 'place du '.l('classement générale', 'games', 'classement', null, array('title' => 'Voir le classement général')).' avec '.$user['xp'].' points d\'expérience';
+				echo 'Vous êtes à la '.$user['classement'].(($user['classement'] == 1) ? 'ère ' : 'ème'). ' place du '.l('classement général', 'games', 'classement', null, array('class' => 'inside_link', 'title' => 'Voir le classement général')).' avec '.$user['xp'].' points d\'expérience.';
 			}
 			else
 				echo 'Vous n\'êtes pas encore dans le '.l('classement générale', 'games', 'classement', null, array('title' => 'Voir le classement général')).' du site';
@@ -17,24 +20,19 @@
 		<br />
 		<?php if(!empty($gamesInProgress)): ?>
 			<p>Vous avez <?php echo count($gamesInProgress);?> parties en cours !</p>
-			<ul>
-				<?php foreach($gamesInProgress as $games): ?>
-					<li><?php echo l($games['ga_name'], 'games', 'play', array($games['ga_id']), array('title' => 'Jouer'));?></li>
-				<?php endforeach;?>
-			</ul>
+				<?php foreach($gamesInProgress as $games): 
+					echo l($games['ga_name'], 'games', 'play', array($games['ga_id']), array('class' => 'game_link', 'title' => 'Jouer'));
+				endforeach;?>
 		<?php endif; ?>
-
-		</br>
-			<ul>
-				<?php foreach($invitations as $invitation): ?>
-				<li> 
-					<img class= "message" src="<?php echo IMG_DIR;?>message.png" alt=""/><p>Vous avez reçu une invitation</p>
-				</li>
-				<?php endforeach; ?>
-			</ul></br>
-		<?php echo createLink('Jouer', 'games', 'index');?>
-		<?php echo createLink('Déconnexion', 'users', 'logout');?>
-		<p></br></br></p>
+		<ul>
+			<?php foreach($invitations as $invitation): ?>
+			<li> 
+				<img class= "message" src="<?php echo IMG_DIR;?>message.png" alt=""/><p>Vous avez reçu une invitation</p>
+			</li>
+			<?php endforeach; ?>
+		</ul><br />
+		<?php echo createLink('<img src='.IMG_DIR.'jouer_account.png alt=""/>', 'games', 'index', array(), array('id' => 'jouer'));?>
+		<p><br /><br /></p>
 	</div>
 	
 	<div id="account2">

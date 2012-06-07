@@ -17,7 +17,7 @@ define('ACTION_DONE', 5);
 define('TIME_BEFORE_INACTIVE', 60);
 
 function index() {
-	$deckInfos = getAllDecks(array('de_id', 'de_name'));
+	$deckInfos = getAllowedDecks($_SESSION[USER_MODEL][USER_PK],array('de_id', 'de_name'));
 
 	if(!isPost()) {
 		$partiesEnAttente = getWaitingGames();
@@ -51,6 +51,11 @@ function newGame() {
 			redirect('games');
 		}
 		else if ($joueurs<3 || $joueurs>10)
+		{
+			setMessage('Le nombre de joueurs doit être compris entre 3 et 10', FLASH_ERROR);
+			redirect('games');
+		}
+		else if (!is_numeric($points))
 		{
 			setMessage('Le nombre de joueurs doit être compris entre 3 et 10', FLASH_ERROR);
 			redirect('games');
@@ -384,7 +389,8 @@ function _checkIfPlayersAreReady($gameID) {
 
 function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 	$i = 0;
-
+	$playersInfos = array();
+	
 	foreach(getSpecificArrayValues(getPlayersInGame($gameID), 'us_id') as $playerID) {
 		//Récupération des informations des joueurs
 		$playersInfos[$i] = getUserInfos($playerID, array('us_id', 'us_pseudo', 'us_avatar'));
@@ -398,6 +404,14 @@ function _getPlayersInfos($gameID, $currentTurnID, $storytellerID, $phase) {
 			$playersInfos[$i]['role'] = 'conteur';
 			$status = getOneRowResult(getPlayerStatus($gameID, $playerID), 'pl_status');
 			$actionStatus = ($phase == STORYTELLER_PHASE || ($phase == POINTS_PHASE && $status != 'Prêt')) ? ACTION_IN_PROGRESS : ACTION_DONE;
+
+			/* Gestion inactivité */
+			if($actionStatus == ACTION_IN_PROGRESS) {
+				$lastActionTime = getUserLastActionTime($gameID, $playerID);
+
+			}
+			setPlayerStatus($gameID, $playerID, 'Inactif');
+			$playerInfos[$i]['status'] = 'Inactif depuis';
 			$playersInfos[$i]['status'] = _getStatus($actionStatus, $phase, $playersInfos[$i]['role']);
 		}
 		else {

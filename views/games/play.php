@@ -481,20 +481,40 @@ function callback_ping(){
 		text = '';
 		console.log(usersInGame);
 		$("#players_room").html('<img id="label_joueurs_room" src="'+IMG_DIR+'joueurs.png">');
-		$('#usersInfos').html('<tr id="firstTR">'
-								+'<th></th>'
+		if(!gameIsOver) {
+			$('#usersInfos').html('<tr id="firstTR">'
 								+'<th>Joueur</th>'
 								+'<th>% parties gagnées</th>'
+								+'<th>Points d\'expérience</th>'
+							+'</tr>');
+		}
+		/*else {
+			$('#usersInfos').html('<tr id="firstTR">'
+								+'<th></th>'
+								+'<th>Joueur</th>'
+								+'<th>Points dans la partie</th>'
 								+'<th>Points d\'expérience gagnés</th>'
 							+'</tr>');
+		}*/
+		i=usersInGame.length+1;
 		$.each(usersInGame, function(key, player) {
 			console.log(player);
-			$("#firstTR").after('<tr>'
-									+'<td></td>'
+			i--;
+			if(!gameIsOver) {
+				$("#firstTR").after('<tr>'
 									+'<td>'+player.us_pseudo+'</td>'
 									+'<td>'+((player.nbGames != '0') ? parseInt(parseInt(player.nbWins) / parseInt(player.nbGames) * 100) : 0)+'% ('+player.nbWins+'/'+player.nbGames+')</td>'
 									+'<td>'+player.xp+' XP</td>'
 								+'</tr>');
+			}
+			/*else {
+				$("#firstTR").after('<tr>'
+									+'<td>'+i+'</td>'
+									+'<td>'+player.us_pseudo+'</td>'
+									+'<td>'+player.points+' points</td>'
+									+'<td>+'+player.xp+' XP</td>'
+								+'</tr>');
+			}*/
 			$("#players_room").append('<div class="joueur">'
 										+'<img class="profil_joueur" src="'+IMG_DIR+player.us_avatar+'">'
 										+'<p class="infos_joueur">'+player.us_pseudo+((player.us_id == hostID) ? ' : hôte' : '')+'</p>'

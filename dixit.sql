@@ -397,25 +397,7 @@ CREATE TABLE IF NOT EXISTS `turns` (
 --
 
 
---
--- Déclencheurs `turns`
---
-DROP TRIGGER IF EXISTS `before_inset_turns`;
-DELIMITER //
-CREATE TRIGGER `before_inset_turns` BEFORE INSERT ON `turns`
- FOR EACH ROW BEGIN
-	DECLARE oldTurnComment VARCHAR(255);
-	SELECT tu_comment INTO oldTurnComment
-	FROM turns
-	WHERE ga_id = NEW.ga_id
-	ORDER BY tu_id DESC
-	LIMIT 1;
-	IF oldTurnComment = "" THEN
-		INSERT INTO errors(er_msg, er_date) VALUES('ERR_TURN', NOW());
-	END IF;
-END
-//
-DELIMITER ;
+
 
 -- --------------------------------------------------------
 
@@ -533,7 +515,7 @@ CREATE TABLE IF NOT EXISTS `votes` (
 --
 DROP TABLE IF EXISTS `total_players_in_game`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `total_players_in_game` AS select `ga`.`ga_id` AS `ga_id`,(select count(`plays`.`ga_id`) from `plays` where (`plays`.`ga_id` = `ga`.`ga_id`)) AS `nbTotalPlayer` from `games` `ga`;
+CREATE VIEW `total_players_in_game` AS select `ga`.`ga_id` AS `ga_id`,(select count(`plays`.`ga_id`) from `plays` where (`plays`.`ga_id` = `ga`.`ga_id`)) AS `nbTotalPlayer` from `games` `ga`;
 
 --
 -- Contraintes pour les tables exportées

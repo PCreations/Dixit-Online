@@ -11,10 +11,13 @@
 		echo "<br/>";
 		echo createLink('Déconnexion', 'users', 'logout');?> </p>
 		<p><?php if($user['classement'] != '') {
-				echo 'Vous êtes à la '.$user['classement'].(($user['classement'] == 1) ? 'ère ' : 'ème'). ' place du '.l('classement général', 'games', 'classement', null, array('class' => 'inside_link', 'title' => 'Voir le classement général')).' avec '.$user['xp'].' points d\'expérience.';
+				$start = ($user['us_id'] == $_SESSION[USER_MODEL][USER_PK]) ? 'Vous êtes ' : $user['us_pseudo'].' est ';
+				echo $start . 'à la'.$user['classement'].(($user['classement'] == 1) ? 'ère ' : 'ème'). ' place du '.l('classement général', 'games', 'classement', null, array('class' => 'inside_link', 'title' => 'Voir le classement général')).' avec '.$user['xp'].' points d\'expérience.';
 			}
-			else
-				echo 'Vous n\'êtes pas encore dans le '.l('classement général', 'games', 'classement', null, array('title' => 'Voir le classement général')).' du site';
+			else {
+				$start = ($user['us_id'] == $_SESSION[USER_MODEL][USER_PK]) ? 'Vous n\'êtes' : $user['us_pseudo'].' n\'est ';
+				echo $start . 'pas encore dans le '.l('classement général', 'games', 'classement', null, array('title' => 'Voir le classement général')).' du site';
+			}
 			?></p>
 		<br />
 		<?php if(!empty($gamesInProgress)): ?>

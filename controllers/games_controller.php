@@ -256,7 +256,6 @@ function play($gameID) {
 
 		$usersInGameIDs = getSpecificArrayValues(getPlayersInGame($gameID), 'us_id');
 		$usersInGame = _getUsersInGame($gameID);
-
 		if(!in_array($userID, $usersInGameIDs)) {
 			$gameInfos['action'] = createLink('rejoindre', 'games', 'joinGame', array($gameInfos['ga_id'], $userID), array('title' => 'Rejoindre la partie'));
 		}
@@ -330,6 +329,7 @@ function _getUsersInGame($gameID) {
 
 	foreach($usersInGame as &$userInGame) {
 		$userInGame = getUserInfos($userInGame, array('us_id', 'us_pseudo', 'us_avatar'));
+		$userInGame['points'] = getOneRowResult(getTotalUserPointsInGame($gameID, $userInGame['us_id']), 'nbPoints');
 		$userInGame['nbWins'] = getOneRowResult(getUsersTotalWinGames($userInGame['us_id']), 'nbWins');
 		$userInGame['nbGames'] = getOneRowResult(getUsersTotalPlayedGames($userInGame['us_id']), 'nbGames');
 		$userInGame['percentageWins'] = ($userInGame['nbGames'] != 0) ? (int)($userInGame['nbWins'] / $userInGame['nbGames'] * 100) : 0;

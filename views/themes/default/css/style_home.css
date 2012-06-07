@@ -115,7 +115,7 @@ section
 	margin : auto;
 }
 /****************Article*********************/
-article
+#home_content article
 {
 	width:630px;
 	height : 330px;
@@ -178,7 +178,7 @@ article
 	margin-top : 20px;
 }
 /****************Aside*********************/
-aside
+#home_content aside
 {
 	width:203px;
 	margin-left:10px;

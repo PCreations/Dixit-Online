@@ -30,6 +30,16 @@ function getUserDecks($userID, $fields = array('*')) {
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getUserPublicDecks($userID, $fields = array('*')) {
+	global $db;
+	$fields = implode(',', $fields);
+	$query = $db->prepare('SELECT '.$fields.' 
+						FROM decks
+						WHERE us_id = ? AND de_status = 1');
+	$query->execute(array($userID));
+	return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 // A tester
 function getDeckInfos($id, $fields = array('*')) {
 	global $db;

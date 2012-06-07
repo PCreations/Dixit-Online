@@ -106,6 +106,7 @@ function account($id = null) {
 			$deck['nbCards'] = getOneRowResult(nbCartes($deck['de_id']), 'nbCartes');
 			$deck['cardsInDeckInfo'] = getCardsInDeckInfo($deck['de_id']);
 		}
+		
 	}else{
 		$result = "";
 	}
@@ -237,7 +238,7 @@ function research(){
 				echo ('<h3 style="text-align:center; margin:10px 0;">Pas de résultats pour cette recherche</h3>');
 			}else{
 				$user = getUserInfos($userID);
-				$reelfriends = getSpecificArrayValues(getReelFriends($userID), 'us_pseudo');
+				$reelfriends = getReelFriends($userID);
 				$askedfriends = getSpecificArrayValues(getAskedFriends($userID), 'us_pseudo');
 				$whoAskedMe = getSpecificArrayValues(getFriendsWhoAskedMe($userID), 'us_pseudo');
 				foreach($results as &$result){
@@ -245,22 +246,22 @@ function research(){
 						if(!in_array($result['us_pseudo'], $askedfriends)) {
 							if(!in_array($result['us_pseudo'], $whoAskedMe)) {
 								if($result['us_pseudo'] != $user['us_pseudo']){
-									$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2'));
+									$result['action'] = createLink('Envoyer une demande', 'users', 'newFriend', array($result['us_id'], '2')). createLink('Voir', 'users', 'visitFriend', array($reelFriend['us_pseudo']));
 								}
 								else{
 									$result['action'] = 'C\'est vous !';
 								}
 							}
 							else{
-								$result['action'] = 'Cette personne vous a demandé en amis';
+								$result['action'] = 'Cette personne vous a demandé en amis'.createLink('Voir', 'users', 'visitFriend', array($reelFriend['us_pseudo']));
 							}
 						}
 						else{
-							$result['action'] = 'Vous avez déjà invité cette personne';
+							$result['action'] = 'Vous avez déjà invité cette personne'.createLink('Voir', 'users', 'visitFriend', array($reelFriend['us_pseudo']));
 						}
 					}
 					else{
-						$result['action'] = 'Vous êtes déjà amis';
+						$result['action'] = 'Vous êtes déjà amis'.createLink('Voir', 'users', 'visitFriend', array($reelFriend['us_pseudo']));
 					}
 					}
 							foreach($results as $result){
@@ -273,10 +274,95 @@ function research(){
 				}
 			
 }
+function visitFriend($login){
+	global $JS_FILES;
+	global $CSS_FILES;
+	$JS_FILES[] = 'script_users.js';
+	$JS_FILES[] = 'flexcroll.js';
+	$CSS_FILES[] = 'flexcrollstyles.css';
+	
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+	$user = getUserInfos($userID);
+	if(isLogged()) {
+		//Infos sur le profil que l'on visite
+		$id = getOneRowResult(exactSearchUser($login), 'us_id');
+		$friend = getUserInfos($id, array('us_name', 'us_lastname', 'us_birthdate', 'us_pseudo'));
+		$reelfriends = getReelFriends($id);
+		$usersReelfriends = getSpecificArrayValues(getReelFriends($userID), 'us_pseudo');
+		$nbCommuns = '0';
+		
+		//On cherche les amis en commun
+		foreach($usersReelfriends as $usersFriend){
+			if(in_array($usersFriend['us_pseudo'], $reelfriends)) {
+				$communs = $usersReelfriends['us_pseudo'];
+				$nbCommuns += '1';
+			}
+			if(empty($communs)){
+				$communs = '';
+				$nbCommuns = 'aucun';
+			}
+		}
 
-function changeDeck(){
-	echo('<script>alert(\'plop\');</script>');
+		//On récupère les decks de l'utilisateur
+		$decks = getUserPublicDecks($id, array('de_id', 'de_name'));
+		if($decks != NULL){
+			foreach($decks as &$deck){
+				$deck['cardsInDeckInfo'] = getCardsInDeckInfo($deck['de_id']);
+			}
+		}else{
+			$decks = "";
+		}
+		debug($usersReelfriends);
+		//On cherche si l'utilisateur est ami avec le profil visité
+		if(in_array($login, $usersReelfriends)) {
+			$result='<img src="'.IMG_DIR.'notif_success.png" alt="#"/><p>Amis</p>'.createLink('Retour', 'users', 'account', array($user['us_id'])).'
+		</div>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Actions</strong></p>
+		<div class="action">
+			<img src="'.IMG_DIR.'message.png" alt="#"/>
+			<p>Envoyer un message</p>
+			<img src="'.IMG_DIR.'notif_erreur.png" alt="#"/>
+			<p>'.createLink('Retirer de vos amis', 'users', 'deleteFriend', array($id)).'</p>
+		</div>';
+			}else{
+				$result='<img src="'.IMG_DIR.'notif_erreur.png" alt="#"/><p>Vous n\'êtes pas amis</p>'.createLink('Retour', 'users', 'account', array($user['us_id'])).'
+		</div>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Actions</strong></p>
+		<div class="action">
+			<img src="'.IMG_DIR.'message.png" alt="#"/>
+			<p>Envoyer un message</p>
+			<img src="'.IMG_DIR.'notif_success.png" alt="#"/>
+			<p>'.createLink('Ajouter à vos amis', 'users', 'newFriend', array($id, 'SEND_INVITATION')).'</p>
+		</div>';
+			}
 
+		
+		$vars = array('friend' => $friend,
+						'user' => $user,
+						'reelfriends' => $reelfriends,
+						'decks' => $decks,
+						'result' => $result,
+						'nbCommuns' => $nbCommuns,
+						'communs' => $communs);
+		render('visit', $vars);
+	}else{
+		setMessage('Vous n\'êtes pas connecté !', FLASH_ERROR);
+		redirect('users', 'account', array($userID));
+	}
+	
+	$JS_FILES = array_pop($JS_FILES);
+	$JS_FILES = array_pop($JS_FILES);
+	$CSS_FILES = array_pop($CSS_FILES);
+}
+function deleteFriend($fr_id){
+	$userID = $_SESSION[USER_MODEL][USER_PK];
+		if(isLogged()) {
+		deleteFriendship($userID, $fr_id);
+		setMessage('Vos changements ont été pris en compte', FLASH_SUCCESS);
+		}else{
+		setMessage('Vous n\'êtes pas connecté !', FLASH_ERROR);
+	}
+	redirect('users', 'account', array($userID));
 }
 
 function newFriend($fr_id, $action){

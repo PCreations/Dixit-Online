@@ -75,18 +75,6 @@ $(document).ready(function(){
 	changeOnglet('1');
 	changeOnglet2('1');
 	open = 0;
-	
-	document.getElementById("friendClick").onclick = function() {
-			if(open=='0'){
-				$('#friendInfo').show('slow');
-				$('#friendInfo').css('display', 'inline-block');
-				open = 1;
-			}else{
-				$('#friendInfo').hide('slow', function(){$('#friendInfo').css('display', 'none');});
-				open = 0;
-			}
-		};
-	
 	//recherche d'ami
 	$('#loginSearch').keyup( function(){
 		$field = $(this);

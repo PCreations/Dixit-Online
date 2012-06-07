@@ -8,7 +8,12 @@ html
 	background-size: cover; 
 	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
 }
-
+a
+{
+	text-decoration : none;
+	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
+	color : black;
+}
 /****************Header*********************/
 header
 {

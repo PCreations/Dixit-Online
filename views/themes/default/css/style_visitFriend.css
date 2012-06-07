@@ -205,12 +205,6 @@
 	margin-top : 5%;
 	display : inline-block;
 }
-#aside .action a
-{
-	text-decoration : none;
-	font-family: "Myriad pro", Helvetica, Arial, sans-serif;
-	color : black;
-}
 #aside .action
 {
 	margin : 5px ;

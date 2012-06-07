@@ -69,7 +69,7 @@
 			<p> Vous avez <b><?php echo $nbFriends['nbFriends']?> </b>amis.</p>
 			<ul class="friends">
 				<?php foreach($reelFriends as $reelFriend): ?>
-					<li id="friendClick" > <div class="hidden"><?php echo $reelFriend['us_pseudo'];?>
+					<li id="friendClick" > <div class="hidden"><?php echo $reelFriend['us_pseudo'];?></br></br>
 					<?php echo createLink('Voir', 'users', 'visitFriend', array($reelFriend['us_pseudo']));?></div></li>
 				<?php endforeach; ?>
 			</ul>
@@ -84,7 +84,7 @@
 				<div class="subFriends1">
 					<ul>
 						<?php if(empty($askedFriends)){echo('<p><font size="2">Recherchez vos amis avant de leur envoyer une demande</font></p>');}foreach($askedFriends as $askedFriend): ?>
-						<li> <div class="hidden"><?php echo $askedFriend['us_pseudo'];?></div></li>
+						<li> <div class="hidden"><?php echo $askedFriend['us_pseudo'];?></br></br><?php echo createLink('Voir', 'users', 'visitFriend', array($askedFriend['us_pseudo']));?></div></li>
 						<?php endforeach; ?>
 					</ul>
 				</div>
@@ -94,6 +94,7 @@
 						<li> 
 							<div class="invitation">
 								<?php echo $invitation['us_pseudo'];?></br>
+								<?php echo createLink('Voir', 'users', 'visitFriend', array($invitation['us_pseudo']));?></br>
 								<?php echo $invitation['accept'];?></br>
 								<?php echo $invitation['refuse'];?>
 							</div>

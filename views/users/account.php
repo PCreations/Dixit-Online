@@ -7,8 +7,7 @@
 
 	<div id="account1">
 		<img class="avatar" src="<?php echo IMG_DIR.$user['us_avatar'];?>"  alt=""/>
-		<p> Bienvenue <?php echo $user['us_name'] ;
-		echo $user['us_lastname'] ;
+		<p> Bienvenue <?php echo $user['us_name'].' '.$user['us_lastname'];
 		echo "<br/>";
 		echo createLink('Déconnexion', 'users', 'logout');?> </p>
 		<p><?php if($user['classement'] != '') {
@@ -21,7 +20,7 @@
 		<?php if(!empty($gamesInProgress)): ?>
 			<p>Vous avez <?php echo count($gamesInProgress);?> parties en cours !</p>
 				<?php foreach($gamesInProgress as $games): 
-					echo l($games['ga_name'], 'games', 'play', array($games['ga_id']), array('class' => 'game_link', 'title' => 'Jouer'));
+					echo l($games['ga_name'], 'games', 'play', array($games['ga_id']), array('title' => 'Jouer')).'<br />';
 				endforeach;?>
 		<?php endif; ?>
 		<ul>

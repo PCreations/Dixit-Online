@@ -8,46 +8,48 @@
 				</div>
 			</div>
 			<div id="table_room">
-				<?php if(!$gameIsStarted) { ?>
-					<p><?php echo $gameInfos['action'];?></p>
-					<div class="scroll">
-						<table id="usersInfos" >
-							<tr id="firstTR">
-								<th>Joueur</th>
-								<th>% parties gagnées</th>
-								<th>Points d'expérience (classement)</th>
-							</tr>
-							<?php foreach($usersInGame as $user): ?>
-							<tr>
-								<td><?php echo $user['us_pseudo'];?></td>
-								<td><?php echo $user['percentageWins'].'% ('.$user['nbWins'].'/'.$user['nbGames'].')';?></td>
-								<td><?php echo $user['xp'].' ('.$user['classement'].')';?></td>
-							</tr>
-							<?php endforeach ?>
-						</table>
-					</div>
-				<?php } if($gameIsOver) { ?>
-					<div class="scroll">
-						<table id="usersInfos" >
-							<tr id="firstTR">
-								<th></th>
-								<th>Joueur</th>
-								<th>Points dans la partie</th>
-								<th>Points d'expérience gagnés</th>
-							</tr>
-							<?php $i=0;
-							$classement = _getClassement($gameInfos['ga_id']);?>
-						<?php foreach($classement as $player) : $i++; ?>
-							<tr>
-								<td><?php echo $i;?></td>
-								<td><?php echo $player['us_pseudo'];?></td>
-								<td><?php echo $player['points'];?> points</td>
-								<td>+<?php echo $player['xp'];?> XP</td>
-							</tr>
-							<?php endforeach ?>
-						</table>
-					</div>
-				<?php } ?>
+					<?php if(!$gameIsStarted) { ?>
+						<p><?php echo $gameInfos['action'];?></p>
+					<?php } ?>
+					<?php if($gameIsOver) { ?>
+						<div class="scroll">
+							<table id="usersInfos" >
+								<tr id="firstTR">
+									<th></th>
+									<th>Joueur</th>
+									<th>Points dans la partie</th>
+									<th>Points d'expérience gagnés</th>
+								</tr>
+								<?php $i=0;
+								$classement = _getClassement($gameInfos['ga_id']);?>
+							<?php foreach($classement as $player) : $i++; ?>
+								<tr>
+									<td><?php echo $i;?></td>
+									<td><?php echo $player['us_pseudo'];?></td>
+									<td><?php echo $player['points'];?> points</td>
+									<td>+<?php echo $player['xp'];?> XP</td>
+								</tr>
+								<?php endforeach ?>
+							</table>
+						</div>
+					<?php } else { ?>
+						<div class="scroll">
+							<table id="usersInfos" >
+								<tr id="firstTR">
+									<th>Joueur</th>
+									<th>% parties gagnées</th>
+									<th>Points d'expérience (classement)</th>
+								</tr>
+								<?php foreach($usersInGame as $user): ?>
+								<tr>
+									<td><?php echo $user['us_pseudo'];?></td>
+									<td><?php echo $user['percentageWins'].'% ('.$user['nbWins'].'/'.$user['nbGames'].')';?></td>
+									<td><?php echo $user['xp'].' ('.$user['classement'].')';?></td>
+								</tr>
+								<?php endforeach ?>
+							</table>
+						</div>
+					<?php } ?>
 			</div>
 			<div id="deck_room">
 				<div id="gallery">
@@ -479,9 +481,20 @@ function callback_ping(){
 		text = '';
 		console.log(usersInGame);
 		$("#players_room").html('<img id="label_joueurs_room" src="'+IMG_DIR+'joueurs.png">');
-
+		$('#usersInfos').html('<tr id="firstTR">'
+								+'<th></th>'
+								+'<th>Joueur</th>'
+								+'<th>% parties gagnées</th>'
+								+'<th>Points d\'expérience gagnés</th>'
+							+'</tr>');
 		$.each(usersInGame, function(key, player) {
 			console.log(player);
+			$("#firstTR").after('<tr>'
+									+'<td></td>'
+									+'<td>'+player.us_pseudo+'</td>'
+									+'<td>'+((player.nbGames != '0') ? parseInt(parseInt(player.nbWins) / parseInt(player.nbGames) * 100) : 0)+'% ('+player.nbWins+'/'+player.nbGames+')</td>'
+									+'<td>'+player.xp+' XP</td>'
+								+'</tr>');
 			$("#players_room").append('<div class="joueur">'
 										+'<img class="profil_joueur" src="'+IMG_DIR+player.us_avatar+'">'
 										+'<p class="infos_joueur">'+player.us_pseudo+((player.us_id == hostID) ? ' : hôte' : '')+'</p>'

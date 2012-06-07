@@ -17,6 +17,10 @@ define('ACTION_DONE', 5);
 define('TIME_BEFORE_INACTIVE', 60);
 
 function index() {
+	if(!isLogged()) {
+		setMessage('Vous devez être connecté pour accéder à cette page', FLASH_ERROR);
+		redirect('users', 'login');
+	}
 	$deckInfos = getAllowedDecks($_SESSION[USER_MODEL][USER_PK],array('de_id', 'de_name'));
 
 	if(!isPost()) {
@@ -612,7 +616,6 @@ function _getNextStorytellerID($gameID, $storytellerID){
 		$nextStorytellerPosition = $storytellerPosition+1;
 	else
 		$nextStorytellerPosition = 1;
-
 	return getOneRowResult(getUserByPosition($gameID, $nextStorytellerPosition), 'us_id');
 }
 
@@ -685,9 +688,8 @@ function _setPlayerStatus($gameID, $userID, $status) {
 }
 //Permet d'afficher le tableau des cartes en fonction de la phase. Si la phase est BOARD_PHASE alors les cartes apparaissent face cachées et si c'est la VOTE_PHASE elles apparaissent face visible avec la possibilité de voter
 function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
-	
-	$storytellerID = getOneRowResult(getUserInfos($turn['us_id']), 'us_id');
-	$nextStoryteller = getOneRowResult(getUserInfos($storytellerID, array('us_pseudo')), 'us_pseudo');
+	$nextStorytellerID = _getNextStorytellerID($gameID, $turn['us_id']);
+	$nextStoryteller = getOneRowResult(getUserInfos($nextStorytellerID, array('us_pseudo')), 'us_pseudo');
 	$phaseInfos = _getPhaseInfos($storyteller, $phase, $actionStatus);
 	if(!empty($phaseInfos)) {
 		$board = '<img id="label_tour" src="'.IMG_DIR.'tour_en_cours.png">';
@@ -1093,7 +1095,8 @@ function _ajaxData($gameID, $oldPhase, $oldTurnID) {
 	$storytellerID = _getCurrentGameTurn($gameID, 'us_id');
 	$turnComment = _getCurrentGameTurn($gameID, 'tu_comment');
 	$storyteller = getOneRowResult(getUserInfos($storytellerID, array('us_pseudo')), 'us_pseudo');
-	$nextStoryteller = getOneRowResult(getUserInfos($storytellerID, array('us_pseudo')), 'us_pseudo');
+	$nextStorytellerID = _getNextStorytellerID($gameID, $storytellerID);
+	$nextStoryteller = getOneRowResult(getUserInfos($nextStorytellerID, array('us_pseudo')), 'us_pseudo');
 	$phase = _getActualGamePhase($gameID, $turnID);
 	$actionStatus = _checkAction($phase, $userID, $turnID);
 	$phaseInfos = json_encode(_getPhaseInfos($userID == $storytellerID, $phase, $actionStatus));

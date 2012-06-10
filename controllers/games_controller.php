@@ -14,7 +14,7 @@ define('GAME_OVER', 4);
 define('ACTION_IN_PROGRESS', 4);
 define('ACTION_DONE', 5);
 
-define('TIME_BEFORE_INACTIVE', 60);
+define('TIME_BEFORE_INACTIVE', 6000);
 
 function index() {
 	if(!isLogged()) {
@@ -552,7 +552,6 @@ function _dealPoints($turn) {
 //Fonction démarrant un nouveau tour
 function _startNewTurn($gameID, $storytellerID, $turnID) {
 	//maj date fin tour
-	lockTables();
 	$pick = getPick($gameID);
 	$nbPlayersInGame = getOneRowResult(countPlayersInGame($gameID), 'nbTotalPlayer');
 
@@ -578,8 +577,10 @@ function _startNewTurn($gameID, $storytellerID, $turnID) {
 		_setPlayerStatus($gameID, $playerID, 0);
 		_pickCard($newTurnID, $gameID, $playerID);
 	}
-	unlockTables();
-
+	if(isPost()) {
+		setMessage('Un nouveau tour commence !', FLASH_INFOS);
+		redirect('games', 'play', array($gameID));
+	}
 }
 function _getNextStorytellerID($gameID, $storytellerID){
 
@@ -658,9 +659,13 @@ function _setPlayerStatus($gameID, $userID, $status) {
 	}
 	updatePlayerActionTime($gameID, $userID);
 	setPlayerStatus($gameID, $userID, $status);
+	if(isPost()) {
+		redirect('games', 'play', array($gameID));
+	}
 }
 //Permet d'afficher le tableau des cartes en fonction de la phase. Si la phase est BOARD_PHASE alors les cartes apparaissent face cachées et si c'est la VOTE_PHASE elles apparaissent face visible avec la possibilité de voter
 function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
+	$userID = $_SESSION[USER_MODEL][USER_PK];
 	$nextStorytellerID = _getNextStorytellerID($gameID, $turn['us_id']);
 	$nextStoryteller = getOneRowResult(getUserInfos($nextStorytellerID, array('us_pseudo')), 'us_pseudo');
 	$phaseInfos = _getPhaseInfos($storyteller, $phase, $actionStatus);
@@ -744,7 +749,27 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 			
 			$board .= '<div class="carte" id="'. $card['ca_id'] .'"><div class="back_carte"><img class="image_back_carte" src="' . IMG_DIR . 'cards/back_empty.jpg"/><p>'.$back_content.'</p></div><img '.$style.' class="image_carte_flip" id="'. $card['ca_id'] .'" src="' . IMG_DIR . 'cards/' . $card['ca_image'] . '" alt="' . $card['ca_name'] . '" /></div>';
 		}
-		$board .= '<div id="readyButton"><input type="button" id="readyForNextTurn" onclick="readyForNextTurn();" name="readyForNextTurn" value="Prêt pour le prochain tour" /></div>';
+		/* On cherche le joueur placé juste avant le joueur courant */
+		$userPosition = (int)getOneRowResult(getGameUserPosition($gameID, $userID), 'pl_position');
+		$nbPlayers = getOneRowResult(getGameInfos($gameID, array('ga_nb_players')), 'ga_nb_players');
+		$userStatus = getOneRowResult(getPlayerStatus($gameID, $userID), 'pl_status');
+		if($userPosition > 1 && $userStatus != "Prêt") {
+			$prevUser = getOneRowResult(getUserByPosition($gameID, $userPosition - 1), 'us_id');
+			$prevUserStatus = getOneRowResult(getPlayerStatus($gameID, $prevUser), 'pl_status');
+			$prevUserPseudo = getOneRowResult(getUserInfos($prevUser, array('us_pseudo')), 'us_pseudo');
+			if($prevUserStatus != 'Prêt') {
+				$board .= '<div id="readyButton"><p>Attendez que <strong>'.$prevUserPseudo.'</strong> soit prêt.</p></div>';
+			}
+			else if($userPosition != $nbPlayers) {
+				$board .= '<div id="readyButton"><form method="post" action="'.BASE_URL.'games/_setPlayerStatus/'.$gameID.'/'.$userID.'/1"><input type="hidden" name="gameID" value="'.$gameID.'"/><input type="hidden" name="userID" value="'.$userID.'" /><input type="submit" value="Prêt pour le prochain tour" /></form></div>';
+			}
+			else {
+				$board .= '<div id="readyButton"><form method="post" action="'.BASE_URL.'games/_startNewTurn/'.$gameID.'/'.$turn['us_id'].'/'.$turn['tu_id'].'"><input type="submit" value="Prêt pour le prochain tour" /></form></div>';
+			}
+		}
+		else if($userStatus != "Prêt"){
+			$board .= '<div id="readyButton"><form method="post" action="'.BASE_URL.'games/_setPlayerStatus/'.$gameID.'/'.$userID.'/1"><input type="hidden" name="gameID" value="'.$gameID.'"/><input type="hidden" name="userID" value="'.$userID.'" /><input type="submit" value="Prêt pour le prochain tour" /></form></div>';
+		}
 	}
 
 	$board .= "</div>";
@@ -1093,7 +1118,7 @@ function _ajaxData($gameID, $oldPhase, $oldTurnID) {
 			}
 		}
 	}
-	if($phase != $oldPhase) {
+	if($phase != $oldPhase || $phase == POINTS_PHASE) {
 		$board = _getBoard($phase, $gameID, array('tu_id' => $turnID,
 												'us_id' => $storytellerID), $userID == $storytellerID, $actionStatus);
 		$hand = _getHand($phase, $userID, $gameID, $turnID, $userID == $storytellerID, $actionStatus);

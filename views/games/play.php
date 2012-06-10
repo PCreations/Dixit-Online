@@ -166,29 +166,11 @@ function callback_ping(){
 	FLASH_SUCCESS = '<?php echo FLASH_SUCCESS;?>';
 	FLASH_ERROR = '<?php echo FLASH_ERROR;?>';
 	FLASH_INFOS = '<?php echo FLASH_INFOS;?>';
-	FLASH_MESSAGE = '<?php echo FLASH_MESSAGE;?>';
 
 	swapWindow(showedWindow);
 	phaseID = <?php echo (isset($turn['phase']['id'])) ? $turn['phase']['id'] : 0;?>;
 	turnID = <?php echo (isset($turn['tu_id'])) ? $turn['tu_id'] : 0;?>;
 	alertDelayInactivity = 0;
-	
-	function readyForNextTurn() {
-		//$('#readyForNextTurn').click();
-		$.ajax({
-		  url: BASE_URL+"games/_setPlayerStatus/"+gameID+"/"+userID+"/1",
-		  async: false,
-		  type: "POST",
-		  success: function(data) {
-				$('#readyForNextTurn').remove();
-		  }
-		});
-		/*$.post(BASE_URL+"games/_setPlayerStatus/"+gameID+"/"+userID+"/1", function(data) {
-			$.post(BASE_URL+"games/_ajaxData/"+gameID+"/"+phaseID+"/"+turnID, function(json) {
-				
-			});
-		});*/
-	}
 
 	$(document).ready(function() {
 		$('.handCardLabel').each(function(i) { 
@@ -488,14 +470,6 @@ function callback_ping(){
 								+'<th>Points d\'expérience</th>'
 							+'</tr>');
 		}
-		/*else {
-			$('#usersInfos').html('<tr id="firstTR">'
-								+'<th></th>'
-								+'<th>Joueur</th>'
-								+'<th>Points dans la partie</th>'
-								+'<th>Points d\'expérience gagnés</th>'
-							+'</tr>');
-		}*/
 		i=usersInGame.length+1;
 		$.each(usersInGame, function(key, player) {
 			console.log(player);
@@ -507,14 +481,6 @@ function callback_ping(){
 									+'<td>'+player.xp+' XP</td>'
 								+'</tr>');
 			}
-			/*else {
-				$("#firstTR").after('<tr>'
-									+'<td>'+i+'</td>'
-									+'<td>'+player.us_pseudo+'</td>'
-									+'<td>'+player.points+' points</td>'
-									+'<td>+'+player.xp+' XP</td>'
-								+'</tr>');
-			}*/
 			$("#players_room").append('<div class="joueur">'
 										+'<img class="profil_joueur" src="'+IMG_DIR+player.us_avatar+'">'
 										+'<p class="infos_joueur">'+player.us_pseudo+((player.us_id == hostID) ? ' : hôte' : '')+'</p>'

@@ -1,0 +1,196 @@
+/************* Partie 10 (Pierre : 10) : 08/06/2012 10:51*************/
+ERREUR : 
+JSON = {"turnID":"51","phaseID":0,"oldUsersIDs":[{"us_id":"14","us_pseudo":"Fifou","us_avatar":"avatars/Fifou.png","points":"null","nbWins":"0","nbGames":"1","percentageWins":"0","xp":"16","classement":"7"},{"us_id":"16","us_pseudo":"Chupee","us_avatar":"default_profile.jpg","points":"null","nbWins":"0","nbGames":"0","percentageWins":"0","xp":"0","classement":"N.D"},{"us_id":"10","us_pseudo":"Pierre","us_avatar":"avatars/Pierre.jpg","points":"null","nbWins":"0","nbGames":"1","percentageWins":"0","xp":"0","classement":"8"}],"startGame":true,"gameMessages":"[{"us_id":"14","ga_id":"10","ch_text":"YOOOOO\n","ch_date":"2012-06-08 10:40:34","us_pseudo":"Fifou"}]","usersNames":-1,"joinGame":true,"usersIDs":["14","16","10"],"usersInGame":[{"us_id":"14","us_pseudo":"Fifou","us_avatar":"avatars/Fifou.png","points":null,"nbWins":"0","nbGames":"1","percentageWins":0,"xp":"16","classement":"7"},{"us_id":"16","us_pseudo":"Chupee","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"0","percentageWins":0,"xp":0,"classement":"N.D"},{"us_id":"10","us_pseudo":"Pierre","us_avatar":"avatars/Pierre.jpg","points":null,"nbWins":"0","nbGames":"1","percentageWins":0,"xp":"0","classement":"8"}]}
+
+/************* Partie 10 (Pierre : 10) : 08/06/2012 10:51*************/
+ERREUR : 
+JSON = {"turnID":"51","phaseID":0,"oldUsersIDs":["14","16","10"],"startGame":true,"gameMessages":"[{"us_id":"14","ga_id":"10","ch_text":"YOOOOO\n","ch_date":"2012-06-08 10:40:34","us_pseudo":"Fifou"}]","usersNames":-1,"joinGame":true,"usersIDs":["14","16","10"],"usersInGame":[{"us_id":"14","us_pseudo":"Fifou","us_avatar":"avatars/Fifou.png","points":null,"nbWins":"0","nbGames":"1","percentageWins":0,"xp":"16","classement":"7"},{"us_id":"16","us_pseudo":"Chupee","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"0","percentageWins":0,"xp":0,"classement":"N.D"},{"us_id":"10","us_pseudo":"Pierre","us_avatar":"avatars/Pierre.jpg","points":null,"nbWins":"0","nbGames":"1","percentageWins":0,"xp":"0","classement":"8"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:52*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+
+/************* Partie 9 (Joueur3 : 3) : 08/06/2012 08:53*************/
+ERREUR : 
+JSON = {"turnID":"38","phaseID":0,"oldUsersIDs":["3","2","1"],"startGame":true,"gameMessages":"[]","usersNames":-1,"joinGame":true,"usersIDs":["3","2","1"],"usersInGame":[{"us_id":"3","us_pseudo":"Joueur3","us_avatar":"default_profile.jpg","points":null,"nbWins":"1","nbGames":"3","percentageWins":33,"xp":"165","classement":"2"},{"us_id":"2","us_pseudo":"Joueur2","us_avatar":"default_profile.jpg","points":null,"nbWins":"0","nbGames":"3","percentageWins":0,"xp":"97","classement":"3"},{"us_id":"1","us_pseudo":"Joueur1","us_avatar":"default_profile.jpg","points":null,"nbWins":"2","nbGames":"3","percentageWins":66,"xp":"183","classement":"1"}]}
+

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Mer 06 Juin 2012 à 16:52
+-- Généré le : Sam 09 Juin 2012 à 17:04
 -- Version du serveur: 5.1.53
 -- Version de PHP: 5.3.4
 
@@ -214,14 +214,15 @@ CREATE TABLE IF NOT EXISTS `decks` (
   `de_status` smallint(6) NOT NULL,
   PRIMARY KEY (`de_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `decks`
 --
 
 INSERT INTO `decks` (`de_id`, `us_id`, `de_name`, `de_status`) VALUES
-(1, 1, 'Défaut', 1);
+(1, 1, 'Défaut', 1),
+(2, 1, 'Nouveau deck', 0);
 
 -- --------------------------------------------------------
 
@@ -390,14 +391,32 @@ CREATE TABLE IF NOT EXISTS `turns` (
   PRIMARY KEY (`tu_id`),
   KEY `ga_id` (`ga_id`),
   KEY `us_id` (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=44 ;
 
 --
 -- Contenu de la table `turns`
 --
 
 
-
+--
+-- Déclencheurs `turns`
+--
+DROP TRIGGER IF EXISTS `before_inset_turns`;
+DELIMITER //
+CREATE TRIGGER `before_inset_turns` BEFORE INSERT ON `turns`
+ FOR EACH ROW BEGIN
+	DECLARE oldTurnComment VARCHAR(255);
+	SELECT tu_comment INTO oldTurnComment
+	FROM turns
+	WHERE ga_id = NEW.ga_id
+	ORDER BY tu_id DESC
+	LIMIT 1;
+	IF oldTurnComment = "" THEN
+		INSERT INTO errors(er_msg, er_date) VALUES('ERR_TURN', NOW());
+	END IF;
+END
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -417,16 +436,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `us_signin_date` datetime DEFAULT NULL,
   `us_last_connexion` datetime DEFAULT NULL,
   PRIMARY KEY (`us_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Contenu de la table `users`
 --
 
 INSERT INTO `users` (`us_id`, `us_name`, `us_lastname`, `us_pseudo`, `us_password`, `us_avatar`, `us_mail`, `us_birthdate`, `us_signin_date`, `us_last_connexion`) VALUES
-(1, 'Joueur', '1', 'Joueur1', '1f60877a7aa2de96284f1e0c7b331a8d24a2a50a', NULL, 'test@test.com', '0000-00-00', '2012-05-26 21:59:44', '2012-05-26 21:59:44'),
-(2, 'Joueur', '2', 'Joueur2', '1f60877a7aa2de96284f1e0c7b331a8d24a2a50a', NULL, 'j2@gmail.com', '1991-04-04', '2012-05-26 22:10:00', '2012-05-26 22:10:00'),
-(3, 'Joueur', '3', 'Joueur3', '1f60877a7aa2de96284f1e0c7b331a8d24a2a50a', NULL, '', NULL, NULL, NULL);
+(1, 'Joueur', '1', 'Joueur1', '1f60877a7aa2de96284f1e0c7b331a8d24a2a50a', 'default_profile.jpg', 'test@test.com', '0000-00-00', '2012-05-26 21:59:44', '2012-05-26 21:59:44'),
+(2, 'Joueur', '2', 'Joueur2', '1f60877a7aa2de96284f1e0c7b331a8d24a2a50a', 'default_profile.jpg', 'j2@gmail.com', '1991-04-04', '2012-05-26 22:10:00', '2012-05-26 22:10:00'),
+(3, 'Joueur', '3', 'Joueur3', '1f60877a7aa2de96284f1e0c7b331a8d24a2a50a', 'default_profile.jpg', '', NULL, NULL, NULL),
+(4, 'Pierre', 'Criulanscy', 'Pierro', '1bfa7be49df794c382be62f2f4bf2576cf7e9ddf', 'avatars/Pierro.jpg', 'pierro@yopmail.com', '2012-01-01', '2012-06-07 01:57:50', '2012-06-07 01:57:50'),
+(5, 'Test', 'test', 'test', '4462e926ef675a31e8418155b1165d148a077dd6', 'default_profile.jpg', 'test@est.test', '2012-01-01', '2012-06-07 02:46:54', '2012-06-07 02:46:54');
 
 -- --------------------------------------------------------
 
@@ -465,6 +486,9 @@ CREATE TABLE IF NOT EXISTS `users_friends` (
 -- Contenu de la table `users_friends`
 --
 
+INSERT INTO `users_friends` (`us_id`, `us_friend_id`, `uf_date`, `uf_status`) VALUES
+(1, 2, '0000-00-00 00:00:00', 1),
+(2, 3, '2012-06-06 22:27:22', 1);
 
 -- --------------------------------------------------------
 
@@ -515,7 +539,7 @@ CREATE TABLE IF NOT EXISTS `votes` (
 --
 DROP TABLE IF EXISTS `total_players_in_game`;
 
-CREATE VIEW `total_players_in_game` AS select `ga`.`ga_id` AS `ga_id`,(select count(`plays`.`ga_id`) from `plays` where (`plays`.`ga_id` = `ga`.`ga_id`)) AS `nbTotalPlayer` from `games` `ga`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `total_players_in_game` AS select `ga`.`ga_id` AS `ga_id`,(select count(`plays`.`ga_id`) from `plays` where (`plays`.`ga_id` = `ga`.`ga_id`)) AS `nbTotalPlayer` from `games` `ga`;
 
 --
 -- Contraintes pour les tables exportées

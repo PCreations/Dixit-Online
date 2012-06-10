@@ -26,9 +26,11 @@
 		<br />
 		<?php if(!empty($gamesInProgress)): ?>
 			<p>Vous avez <?php echo count($gamesInProgress);?> parties en cours !</p>
+				<ul>
 				<?php foreach($gamesInProgress as $games): 
-					echo l($games['ga_name'], 'games', 'play', array($games['ga_id']), array('title' => 'Jouer')).'<br />';
+					echo '<li>'.l($games['ga_name'], 'games', 'play', array($games['ga_id']), array('title' => 'Jouer')).'</li>';
 				endforeach;?>
+				</ul>
 		<?php endif; ?>
 		<ul>
 			<?php foreach($invitations as $invitation): ?>

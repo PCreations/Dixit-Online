@@ -292,6 +292,7 @@ function account($id = null) {
 					'invitations' => $invitations,
 					'nbFriends' => $nbFriends,
 					'userDecks' => $userDecks,
+					'gamesInProgress' => $gamesInProgress
 					);
 	render('account', $vars);
 	$JS_FILES = array_pop($JS_FILES);

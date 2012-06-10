@@ -158,6 +158,7 @@ function callback_ping(){
 	gameID = <?php echo $turn['game']['ga_id'];?>;
 	userID = <?php echo $_SESSION[USER_MODEL][USER_PK];?>;
 	hostID = <?php echo $gameInfos['us_id'];?>;
+	storytellerID = <?php echo (isset($turn['us_id'])) ? $turn['us_id'] : -1;?>;
 	showedWindow = (gameIsStarted && !gameIsOver) ? 'play' : 'room';
 	notificationGameStart = <?php echo ($gameIsStarted) ? 'false' : 'true';?>;
 
@@ -185,6 +186,15 @@ function callback_ping(){
 		});
 		$(".fancybox").fancybox();
 	});
+
+	$('#startNewTurn').click(function() {
+		$('#readyButton').empty();
+		$('#readyButton').html('<img src="'+Dixit.IMG_DIR+'ajax-loader.gif" title="Veuillez patientez avant le début du nouveau tour" alt="loading" />');
+		clearInterval(ajaxData);
+		clearInterval(roomAjax);
+		clearInterval(gameMessages);
+		$(location).attr('href', Dixit.BASE_URL+'games/startNewTurn/'+gameID+'/'+storytellerID+'/'+turnID);
+	})
 
 	function selectCard(inputName, divID, cardID) {
 		console.log($('#'+divID+' input[name='+inputName+']').val());
@@ -254,7 +264,7 @@ function callback_ping(){
 	}
 
 	
-	setInterval(function(){
+	var ajaxData = setInterval(function(){
 		if(gameIsStarted){
 			if(notificationGameStart) {
 				Dixit.alert('La partie commence !', Dixit.FLASH_INFOS);
@@ -418,7 +428,7 @@ function callback_ping(){
 		}, "json");
 	}
 
-	setInterval(function(){
+	var gameMessages = setInterval(function(){
 		$.post(BASE_URL+"games/_getGameMessages/"+gameID, function(data) {
 			var $elem = $('.chatMessages');
 			$('.chatMessages').empty();
@@ -430,7 +440,7 @@ function callback_ping(){
 
 	usersIDs = <?php echo $jsonUsersInGame;?>;
 
-	setInterval(function() {
+	var roomAjax = setInterval(function() {
 		$.post(Dixit.BASE_URL+"games/_roomAjax",{gameID: gameID, usersIDs: usersIDs}, function(json) {
 			var result = $.parseJSON(json);
 			usersIDs = result.usersIDs;

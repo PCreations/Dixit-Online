@@ -311,8 +311,8 @@ function play($gameID) {
 		$vars['jsonUsersInGame'] = json_encode($usersInGame);
 		$vars['cards'] = $cards;
 		//debug($vars);
+
 		render('play', $vars);
-		
 	}
 	
 	for($i=0; $i<4; $i++) {
@@ -550,8 +550,25 @@ function _dealPoints($turn) {
 }
 
 //Fonction démarrant un nouveau tour
-function _startNewTurn($gameID, $storytellerID, $turnID) {
+function startNewTurn($gameID, $storytellerID, $turnID) {
 	//maj date fin tour
+	_setPlayerStatus($gameID, $_SESSION[USER_MODEL][USER_PK], 1);
+	$stID = getOneRowResult(getTurnInfos($turnID, array('us_id')), 'us_id');
+	if($stID != $storytellerID) {
+		setMessage('Impossible de démarrer un nouveau tour, données erronnées.', FLASH_ERROR);
+		redirect('games', 'play', array($gameID));
+	}
+	$phase = _getActualGamePhase($gameID, $turnID);
+	if($phase == POINTS_PHASE) {
+		if(!_checkIfPlayersAreReady($gameID)) {
+			setMessage('Impossible de démarrer un nouveau tour : tous les joueurs ne sont pas prêt !', FLASH_ERROR);
+			redirect('games', 'play', array($gameID));
+		}
+	}
+	else {
+		setMessage('Impossible de démarrer un nouveau tour : le tour actuel n\'est pas terminé !', FLASH_ERROR);
+		redirect('games', 'play', array($gameID));
+	}
 	$pick = getPick($gameID);
 	$nbPlayersInGame = getOneRowResult(countPlayersInGame($gameID), 'nbTotalPlayer');
 
@@ -577,13 +594,11 @@ function _startNewTurn($gameID, $storytellerID, $turnID) {
 		_setPlayerStatus($gameID, $playerID, 0);
 		_pickCard($newTurnID, $gameID, $playerID);
 	}
-	if(isPost()) {
-		setMessage('Un nouveau tour commence !', FLASH_INFOS);
-		redirect('games', 'play', array($gameID));
-	}
+	setMessage('Un nouveau tour commence !', FLASH_INFOS);
+	redirect('games', 'play', array($gameID));
 }
-function _getNextStorytellerID($gameID, $storytellerID){
 
+function _getNextStorytellerID($gameID, $storytellerID){
 	$players = getSpecificArrayValues(getOrderUserInfos($gameID, array('u.us_id')), 'us_id');
 	$storytellerPosition = getOneRowResult(getGameUserPosition($gameID, $storytellerID), 'pl_position');
 
@@ -764,7 +779,7 @@ function _getBoard($phase, $gameID, $turn, $storyteller, $actionStatus) {
 				$board .= '<div id="readyButton"><form method="post" action="'.BASE_URL.'games/_setPlayerStatus/'.$gameID.'/'.$userID.'/1"><input type="hidden" name="gameID" value="'.$gameID.'"/><input type="hidden" name="userID" value="'.$userID.'" /><input type="submit" value="Prêt pour le prochain tour" /></form></div>';
 			}
 			else {
-				$board .= '<div id="readyButton"><form method="post" action="'.BASE_URL.'games/_startNewTurn/'.$gameID.'/'.$turn['us_id'].'/'.$turn['tu_id'].'"><input type="submit" value="Prêt pour le prochain tour" /></form></div>';
+				$board .= '<div id="readyButton"><input id="startNewTurn" type="submit" value="Prêt pour le prochain tour" /></div>';
 			}
 		}
 		else if($userStatus != "Prêt"){
@@ -1109,14 +1124,8 @@ function _ajaxData($gameID, $oldPhase, $oldTurnID) {
 	}
 	if($phase == BOARD_PHASE) {
 		$board = _getBoard(BOARD_PHASE, $gameID, array('tu_id' => $turnID,
-														'us_id' => $storytellerID), $userID == $storytellerID, $actionStatus);	
-	}
-	if($phase == POINTS_PHASE) {
-		if(_checkIfPlayersAreReady($gameID)) {
-			if($oldTurnID == $turnID) { /* Vérification si le nouveau tour n'a pas déjà commencé */
-				_startNewTurn($gameID, $storytellerID, $oldTurnID);
-			}
-		}
+														'us_id' => $storytellerID), $userID == $storytellerID, $actionStatus);
+		$hand = _getHand($phase, $userID, $gameID, $turnID, $userID == $storytellerID, $actionStatus);	
 	}
 	if($phase != $oldPhase || $phase == POINTS_PHASE) {
 		$board = _getBoard($phase, $gameID, array('tu_id' => $turnID,

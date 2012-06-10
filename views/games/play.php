@@ -174,6 +174,7 @@ function callback_ping(){
 	alertDelayInactivity = 0;
 
 	$(document).ready(function() {
+		initFlipCards();
 		$('.handCardLabel').each(function(i) { 
 			$(this).click(function() {
 				chooseSTcard($(this).attr('for'));
@@ -279,6 +280,8 @@ function callback_ping(){
 				if(phaseID != oldPhase) {
 					changePhaseNotification(phaseID);
 				}
+				// FlipCards
+				initFlipCards();
 			});
 		}
 	}, 5000);
@@ -381,24 +384,7 @@ function callback_ping(){
 
 	}
 	
-	// FlipCards
-	$("#table .carte").hover(function(){
-		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
-		$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(360deg)');
-		$(this).children('.back_carte').css('-o-transform','translateZ(-10px) rotateY(360deg)');
-		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(180deg)');
-		$(this).children('.image_carte_flip').css('-moz-transform','rotateY(180deg)');
-		$(this).children('.image_carte_flip').css('-o-transform','rotateY(180deg)');
-		
-	}, 
-	  function() {
-		$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
-		$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(180deg)');
-		$(this).children('.back_carte').css('-o-transform','translateZ(-10px) rotateY(180deg)');
-		$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(0deg)');
-		$(this).children('.image_carte_flip').css('-moz-transform','rotateY(0deg)');
-		$(this).children('.image_carte_flip').css('-o-transform','rotateY(0deg)');
-	  });
+	
 	
 	if(!gameIsStarted || gameIsOver) $('.arrowGame').hide();
 
@@ -496,6 +482,26 @@ function callback_ping(){
 										+'<p class="infos_joueur">'+player.us_pseudo+((player.us_id == hostID) ? ' : hôte' : '')+'</p>'
 									+'</div>');
 		});
+	}
+
+	function initFlipCards() {
+		$("#table .carte").hover(function(){
+			$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(360deg)');
+			$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(360deg)');
+			$(this).children('.back_carte').css('-o-transform','translateZ(-10px) rotateY(360deg)');
+			$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(180deg)');
+			$(this).children('.image_carte_flip').css('-moz-transform','rotateY(180deg)');
+			$(this).children('.image_carte_flip').css('-o-transform','rotateY(180deg)');
+			
+		}, 
+		  function() {
+			$(this).children('.back_carte').css('-webkit-transform','translateZ(-10px) rotateY(180deg)');
+			$(this).children('.back_carte').css('-moz-transform','translateZ(-10px) rotateY(180deg)');
+			$(this).children('.back_carte').css('-o-transform','translateZ(-10px) rotateY(180deg)');
+			$(this).children('.image_carte_flip').css('-webkit-transform','rotateY(0deg)');
+			$(this).children('.image_carte_flip').css('-moz-transform','rotateY(0deg)');
+			$(this).children('.image_carte_flip').css('-o-transform','rotateY(0deg)');
+		  });
 	}
 
 </script>
